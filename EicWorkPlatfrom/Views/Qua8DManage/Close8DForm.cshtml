@@ -168,18 +168,9 @@
                                             <textarea rows="4" name="description" class="form-control" readonly ng-model="item.StepHandleContent" />
                                         </td>
                                         <td class="col-md-1">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <a data-toggle="collapse" data-parent="#accordion"
-                                                       href="#collapseOne">{{item.FileName}}</a>
-                                                </div>
-                                                <div id="collapseOne" class="panel-collapse collapse">
-                                                    <div class="panel-body">
-                                                        <img class="img-rounded" ng-src="{{item.ImgUrl}}" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
+                                            <a href="#" class="thumbnail">
+                                                <img class="img-rounded" ng-src="{{item.ImgUrl}}" style="height:100%; width:100%" />
+                                            </a>
                                         <td class="col-md-4"> {{item.SignaturePersons}}</td>
                                     </tr>
                                 </tbody>

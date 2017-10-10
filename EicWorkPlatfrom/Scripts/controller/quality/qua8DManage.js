@@ -522,6 +522,7 @@ qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
             $scope.searchPromise = BDataOpService.query8DDetailDatas(item.ReportId).then(function (datas) {
                 vmManager.detailDataSets = datas;
                 vmManager.detailDataSource = datas;
+                console.log(datas);
                 detailDialog.show();
             });
         },

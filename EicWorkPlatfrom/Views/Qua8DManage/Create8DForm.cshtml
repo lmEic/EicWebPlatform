@@ -82,11 +82,6 @@
             </dialog>
         </div>
         <div class="panel-footer">
-            <dialog ng-if="showImageDialog.open" modal data-close="showImageDialog.close()" style="width:80%">
-                <content dialog-title class="fa fa-bell">
-                    <i class="fa fa-pencil-square">图片显示</i>
-                </content>
-            </dialog>
         </div>
         @*输入界面*@
         <script type="text/ng-template" id="showPutInBody">
@@ -237,23 +232,20 @@
                         </div>
                         <div class="form-group" role="form">
                             @* 上传附件 *@
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseOne">图片显示</a>
-                                </div>
-                                <div id="collapseOne" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <img class="img-rounded" ng-src="{{handelvm.PreviewFileName}}" />
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-md-2 pull-left">
                                 <div yl-upload-file></div>
-                                @*<div ng-if="vmManager.isdisabled ">
-                                        <a href="javascript:;" ng-click="vmManager.showImage()">{{handelvm.FileName}}</a>
-                                    </div>*@
-
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseOne">{{handelvm.FileName}}</a>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <img class="img-rounded" ng-src="{{handelvm.PreviewFileName}}" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <label class="col-md-2" name="signaturePersons" role="form">填报人/单位:</label>
                             <input class="col-md-6 " type="text" name="signaturePersons" role="form" placeholder="签名(以逗号隔开)" ng-model="handelvm.SignaturePersons" required />
