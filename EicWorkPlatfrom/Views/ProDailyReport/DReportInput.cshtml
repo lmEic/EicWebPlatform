@@ -33,11 +33,12 @@
                 <div class="bs-callout bs-callout-success" style="height:480px;overflow-y:auto;">
                     <div class="table-responsive">
                         <div style="padding:10px;overflow-y:auto;height:480px">
-                            <div class="form-group">
+                            <div class="form-group pull-left">
                                 <div class="col-md-4">
                                     <input type="text" placeholder="快速搜索" ng-model="filterErpOrder" />
                                 </div>
                             </div>
+                            <div class="h-split"></div>
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -50,7 +51,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.erpOrderInfoDatas|filter:filterErpOrder  track by $index">
+                                    <tr ng-repeat="item in vmManager.erpOrderInfoDatasSet|filter:filterErpOrder  track by $index">
                                         <td>{{item.OrderId}}</td>
                                         <td>
                                             <a href="javascript:;" ng-click="vmManager.putInDatas(item)">{{item.ProductName}}</a>
@@ -65,8 +66,8 @@
                                 </tbody>
                             </table>
                             @*分页*@
-                            <div ng-if="vmManager.erpOrderInfoDatas.length>0"
-                                 yl-pagination data-dataset="vmManager.erpOrderInfoDatas"
+                            <div ng-if="vmManager.erpOrderInfoDatasSet.length>0"
+                                 yl-pagination data-dataset="vmManager.erpOrderInfoDatasSet"
                                  data-datasource="vmManager.erpOrderInfoDatasSource">
                             </div>
                         </div>
@@ -75,6 +76,7 @@
 
                 </div>
             </div>
+            @*录入界面*@
             <div pageslide ps-open="vmManager.putInDisplay" ps-side="left" ps-speed="0.25" ps-size="100%" ps-container='editWindow'>
                 <div style="padding:10px;overflow-y:auto;height:480px">
                     <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
@@ -261,7 +263,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.productionFlowDatas track by $index">
+                                    <tr ng-repeat="item in vmManager.productionFlowDatasSet track by $index">
                                         <td>{{item.ProcessesIndex}}</td>
                                         <td>
                                             <a href="javascript:;" ng-click="vmManager.showPutInForm(item)">{{item.ProcessesName}}</a>
@@ -273,7 +275,15 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            @*分页*@
+                            <div ng-if="vmManager.productionFlowDatasSet.length>0"
+                                 yl-pagination data-dataset="vmManager.productionFlowDatasSet"
+                                 data-datasource="vmManager.productionFlowDatasSouce">
+                            </div>
                         </div>
+
+
                         <div bs-pane data-title="人员录入信息统计" class="active" data-name="qryUserInfoTab">
                             <a href="javascript:;" ng-click="vmManager.showputInDisplay()">>></a>
                             <table class="table table-condensed table-bordered table-hover">
@@ -304,6 +314,8 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+
                         </div>
                     </div>
                 </div>

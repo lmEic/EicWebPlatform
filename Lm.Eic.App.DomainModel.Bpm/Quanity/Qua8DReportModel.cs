@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -238,6 +239,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public Qua8DReportDetailModel()
         { }
         #region Model
+
+        public string ImgUrl
+        {
+            get
+            {
+
+                var imgUrl = string.Empty;
+                if (FilePath != null)
+                {
+                    string imgFilePath = (FilePath + "\\" + FileName);
+                    var imgBytes = imgFilePath.ToPhotoByte();
+                    imgUrl = imgBytes.ToBase64Url();
+                }
+                return imgUrl;
+            }
+        }
+
+
+
         private string _steptitle;
         /// <summary>
         ///标题

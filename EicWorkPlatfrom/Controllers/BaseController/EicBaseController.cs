@@ -382,7 +382,6 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion
-
         /// <summary>
         /// 获取图像Base64Url
         /// </summary>
@@ -587,7 +586,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 文件预览路径
         /// </summary>
-        public string PreviewFileName { get { return ""; } }
+        public string PreviewFileName { get; set; }
         /// <summary>
         /// 创建实例
         /// </summary>
