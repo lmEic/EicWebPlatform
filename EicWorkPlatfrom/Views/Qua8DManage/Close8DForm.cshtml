@@ -169,7 +169,15 @@
                                         </td>
                                         <td class="col-md-1">
                                             <a href="#" class="thumbnail">
-                                                <img class="img-rounded" ng-src="{{item.ImgUrl}}" style="height:100%; width:100%" />
+                                                <img ng-src="{{item.ImgUrl}}" class="idCardBack" enlarge-pic />
+                                                <div class="mask" close-Pic>
+                                                    <div class="mask-box"></div>
+                                                    <div class="big-pic-wrap">
+                                                        <img src="" alt="" class="bigPic" />
+                                                        <span class="close-pic"><i class="fa fa-close"></i></span>
+                                                    </div>
+                                                </div>
+
                                             </a>
                                         <td class="col-md-4"> {{item.SignaturePersons}}</td>
                                     </tr>
