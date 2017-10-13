@@ -32,13 +32,20 @@
             <div class="pull-left" style="width:55%;" id="editWindow">
                 <div class="bs-callout bs-callout-success" style="height:480px;overflow-y:auto;">
                     <div class="table-responsive">
-                        <div style="padding:10px;overflow-y:auto;height:480px">
-                            <div class="form-group pull-left">
-                                <div class="row col-md-4">
-                                    <input type="text" placeholder="快速搜索" ng-model="filterErpOrder" />
+                        <div style="padding:10px;overflow-y:auto;height:580px">
+                            <div class="row ">
+                                <div class="col-md-4 ">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" placeholder="输入订单快速定位" ng-model="filterErpOrder" />
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="h-split"></div>
+                            <div class="row ">
+                                <div class="h-split"></div>
+                            </div>
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -260,18 +267,27 @@
                                         <th>需录数</th>
                                         <th>已录数</th>
                                         <th>差异数</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.productionFlowDatasSet track by $index">
-                                        <td> <a href="javascript:;" ng-click="vmManager.showPutInForm(item)">{{item.ProcessesIndex}}   <i class="fa fa-pencil-square-o"></i></a></td>
+                                        <td> {{item.ProcessesIndex}}  <a href="javascript:;" ng-click="vmManager.showPutInForm(item)"> <i class="fa fa-pencil-square-o">录入</i></a></td>
                                         <td>
                                             {{item.ProcessesName}}
                                         </td>
                                         <td>{{item.OrderProductNumber}}</td>
                                         <td>{{item.OrderNeedPutInNumber}}</td>
-                                        <td><a href="javascript:;" ng-click="vmManager.showPutInDetail(item)"><i class="fa fa-th-list">    {{item.OrderHavePutInNumber}}</i></a></td>
-                                        <td>{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</td>
+                                        <td>
+                                            {{item.OrderHavePutInNumber}}
+                                            <a href="javascript:;" ng-click="vmManager.showPutInDetail(item)" ng-if="item.OrderHavePutInNumber>0"> <i class="fa fa-th-list label-info"></i></a>
+
+                                        </td>
+                                        <td>
+
+                                            <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber<0" style="color:#FF0000">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
+                                            <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber>0" style="color:#049816">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
