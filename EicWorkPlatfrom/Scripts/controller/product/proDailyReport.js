@@ -517,6 +517,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: '晚班' }],
         putInDate: new Date(),
         productionFlowShow: true,
+        putInDataProcessesName: null,
         ///初始化
         init: function () {
             uiVM = _.clone(initVM);
@@ -654,19 +655,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.InPutDate = vmManager.putInDate;
                 vmManager.havePutInData = [];
                 focusSetter.workerIdFocus = true;
-                $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, uiVM.OrderId, uiVM.ProcessesName).then(function (dailyDatas) {
-                    _.forEach(dailyDatas, function (e) {
-                        var dataItem = _.clone(e);
-                        leeHelper.copyVm(e, dataItem);
-                        dataItem.Id = leeHelper.newGuid();
-                        dataItem.IsServer = true;
-                        vmManager.havePutInData.push(dataItem);
 
-                    });
-
-
-                });
-                vmManager.queryActiveTab = 'qryUserInfoTab';
             }
             else {
                 uiVM.ProcessesIndex = 0;
@@ -679,6 +668,25 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             vmManager.putInDatas(item);
             vmManager.showputInDisplay();
         },
+        //显示明细
+        showPutInDetail: function (item) {
+            console.log(item);
+            vmManager.putInDataProcessesName = item.ProcessesName;
+            vmManager.havePutInData = [];
+            $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, item.OrderId, item.ProcessesName).then(function (dailyDatas) {
+                _.forEach(dailyDatas, function (e) {
+                    var dataItem = _.clone(e);
+                    leeHelper.copyVm(e, dataItem);
+                    dataItem.Id = leeHelper.newGuid();
+                    dataItem.IsServer = true;
+                    vmManager.havePutInData.push(dataItem);
+
+                });
+            });
+            vmManager.queryActiveTab = 'qryUserInfoTab';
+
+        },
+
         showputInDisplay: function () {
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }

@@ -32,13 +32,20 @@
             <div class="pull-left" style="width:55%;" id="editWindow">
                 <div class="bs-callout bs-callout-success" style="height:480px;overflow-y:auto;">
                     <div class="table-responsive">
-                        <div style="padding:10px;overflow-y:auto;height:480px">
-                            <div class="form-group pull-left">
-                                <div class="col-md-4">
-                                    <input type="text" placeholder="快速搜索" ng-model="filterErpOrder" />
+                        <div style="padding:10px;overflow-y:auto;height:580px">
+                            <div class="row ">
+                                <div class="col-md-4 ">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" placeholder="输入订单快速定位" ng-model="filterErpOrder" />
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="h-split"></div>
+                            <div class="row ">
+                                <div class="h-split"></div>
+                            </div>
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -47,7 +54,7 @@
                                         <th>产品规格</th>
                                         <th>生产数量</th>
                                         <th>入库数量</th>
-                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                        @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,9 +66,9 @@
                                         <td>{{item.ProductSpec}}</td>
                                         <td>{{item.ProduceNumber}}</td>
                                         <td>{{item.PutInStoreNumber}}</td>
-                                        <td>
-                                            <button class="btn btn-primary" ng-click="vmManager.putInshowPutInForm(item)"><i class="fa fa-pencil-square-o"></i>录入</button>
-                                        </td>
+                                        @*<td>
+                                                <button class="btn btn-primary" ng-click="vmManager.putInshowPutInForm(item)"><i class="fa fa-pencil-square-o"></i>录入</button>
+                                            </td>*@
                                     </tr>
                                 </tbody>
                             </table>
@@ -250,7 +257,7 @@
             <div class="pull-right" style="width:45%;">
                 <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
                     <div class="table-responsive" bs-tabs bs-active-pane="vmManager.queryActiveTab" cg-busy="{promise:searchPromise}">
-                        <div bs-pane data-title="工艺信息统计" class="active" data-name="qryFolwProcessTab">
+                        <div bs-pane data-title="产品工艺" class="active" data-name="qryFolwProcessTab">
                             <table ng-if="vmManager.productionFlowShow" class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -260,18 +267,27 @@
                                         <th>需录数</th>
                                         <th>已录数</th>
                                         <th>差异数</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.productionFlowDatasSet track by $index">
-                                        <td>{{item.ProcessesIndex}}</td>
+                                        <td> {{item.ProcessesIndex}}  <a href="javascript:;" ng-click="vmManager.showPutInForm(item)"> <i class="fa fa-pencil-square-o">录入</i></a></td>
                                         <td>
-                                            <a href="javascript:;" ng-click="vmManager.showPutInForm(item)">{{item.ProcessesName}}</a>
+                                            {{item.ProcessesName}}
                                         </td>
                                         <td>{{item.OrderProductNumber}}</td>
                                         <td>{{item.OrderNeedPutInNumber}}</td>
-                                        <td>{{item.OrderHavePutInNumber}}</td>
-                                        <td>{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</td>
+                                        <td>
+                                            {{item.OrderHavePutInNumber}}
+                                            <a href="javascript:;" ng-click="vmManager.showPutInDetail(item)" ng-if="item.OrderHavePutInNumber>0"> <i class="fa fa-th-list label-info"></i></a>
+
+                                        </td>
+                                        <td>
+
+                                            <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber<0" style="color:#FF0000">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
+                                            <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber>0" style="color:#049816">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -282,16 +298,13 @@
                                  data-datasource="vmManager.productionFlowDatasSouce">
                             </div>
                         </div>
-
-
-                        <div bs-pane data-title="人员录入信息统计" class="active" data-name="qryUserInfoTab">
-                            <a href="javascript:;" ng-click="vmManager.showputInDisplay()">>></a>
+                        <div bs-pane data-title="工艺明细" class="active" data-name="qryUserInfoTab">
+                            <label>工序站别:<span class="label label-success">{{vmManager.putInDataProcessesName}}</span></label>
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
                                         <th>工号</th>
                                         <th>姓名</th>
-                                        <th>工序站别</th>
                                         <th>录入产量</th>
                                         <th>生产工时</th>
                                         <th>非生产时</th>
@@ -303,7 +316,6 @@
                                     <tr ng-repeat="putInData in  vmManager.havePutInData track by $index">
                                         <td><a href="javascript:;" ng-click="vmManager.showUserInputInfo(putInData)">[<i class="fa fa-male">]{{putInData.WorkerId}} </i></a></td>
                                         <td>{{putInData.WorkerName}}</td>
-                                        <td>{{putInData.ProcessesName}}</td>
                                         <td>{{putInData.TodayProductionCount}}</td>
                                         <td>{{putInData.WorkerProductionTime}}</td>
                                         <td>{{putInData.WorkerNoProductionTime}}</td>
