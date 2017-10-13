@@ -59,11 +59,13 @@
     <Compile Include="Business\MaterialManage\MaterialMakingManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialShipmentManager.cs" />
+    <Compile Include="Business\PurchaseManage\PurchaseManager.cs" />
     <Compile Include="DbAccess\HwDatasTransferDb.cs" />
     <Compile Include="DbAccess\LmErpDb.cs" />
     <Compile Include="Model\HwCollaborationDatasTransferModel.cs" />
     <Compile Include="Model\HwDataTransferEntityBase.cs" />
     <Compile Include="Model\LmErp\ErpMaterialInventoryModel.cs" />
+    <Compile Include="Model\LmErp\ErpPurchaseOnWayModel.cs" />
     <Compile Include="Model\SccManpowerMain.cs" />
     <Compile Include="Model\SccFactoryInventory.cs" />
     <Compile Include="Model\SccOpenPOVO.cs" />
@@ -77,7 +79,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business\PurchaseManage\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="obj\Release\TempPE\" />
   </ItemGroup>
