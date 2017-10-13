@@ -51,7 +51,7 @@
                                     <tr class="info">
                                         <th>工单单号</th>
                                         <th>产品品名</th>
-                                        <th>产品规格</th>
+
                                         <th>生产数量</th>
                                         <th>入库数量</th>
                                         @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
@@ -60,10 +60,9 @@
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.erpOrderInfoDatasSet|filter:filterErpOrder  track by $index">
                                         <td>{{item.OrderId}}</td>
-                                        <td>
+                                        <td title="{{item.ProductSpec}}">
                                             <a href="javascript:;" ng-click="vmManager.putInDatas(item)">{{item.ProductName}}</a>
                                         </td>
-                                        <td>{{item.ProductSpec}}</td>
                                         <td>{{item.ProduceNumber}}</td>
                                         <td>{{item.PutInStoreNumber}}</td>
                                         @*<td>
@@ -90,7 +89,6 @@
                         <fieldset>
                             <div class="dropdown-header">
                                 <label class="control-label">制令单:<span class="label label-primary"> {{vm.OrderId}}</span> </label>
-                                <label class="control-label">需产量单:<span class="label label-default">{{vm.OrderQuantity}}</span></label>
                                 <label class="control-label">品名:<span class="label label-success">{{vm.ProductName}}</span></label>
                                 <label class="control-label">规格:<span class="label label-default">{{vm.ProductSpec}}</span></label>
                             </div>
