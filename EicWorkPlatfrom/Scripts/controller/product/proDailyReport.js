@@ -518,6 +518,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         putInDate: new Date(),
         productionFlowShow: true,
         putInDataProcessesName: null,
+
         ///初始化
         init: function () {
             uiVM = _.clone(initVM);
@@ -545,6 +546,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
            { value: "PT1", label: "成型课" }],
         searchedWorkers: [],
         processesInfos: [],
+        workerId: null,
         isSingle: true,//是否搜寻到的是单个人
         getWorkerInfo: function () {
             if (uiVM.WorkerId === undefined) return;
@@ -567,7 +569,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         vmManager.selectWorker(null);
                     }
                 });
-                $scope.searchedWorkersPrommise = dReportDataOpService.getWorkerDailyLastInfoDatas(uiVM.WorkerId).then(function (dailyInfo) {
+                $scope.searchedWorkersPrommise = dReportDataOpService.getWorkerDailyLastInfoDatas(vmManager.WorkerId).then(function (dailyInfo) {
 
                 });
             }
@@ -577,6 +579,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.WorkerName = worker.Name;
                 uiVM.WorkerId = worker.WorkerId;
                 uiVM.Department = worker.Department;
+                vmManager.WorkerId = worker.WorkerId;
             }
             else {
                 uiVM.Department = null;
@@ -684,9 +687,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 });
             });
             vmManager.queryActiveTab = 'qryUserInfoTab';
-
         },
-
         showputInDisplay: function () {
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }
@@ -723,9 +724,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     if (opResult.Entity.OpSign == leeDataHandler.dataOpMode.add) {
                         vmManager.havePutInData.push(opResult.Entity);
                         vmManager.continueSaveInit();
+                        vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
                     }
-                    vmManager.productionFlowShow = false;
-                    vmManager.isShowhavePutInData = true;
+                    //vmManager.productionFlowShow = false;
+                    /// vmManager.isShowhavePutInData = true;
                 }
             });
         });

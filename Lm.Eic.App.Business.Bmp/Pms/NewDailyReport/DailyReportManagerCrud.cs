@@ -297,12 +297,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).OrderBy(e => e.OrderId).ToList();
         }
         internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department).OrderBy(e => e.OrderId).ToList();
         }
         internal ProductOrderDispatchModel GetOrderInfoBy(string orderid)
         {
