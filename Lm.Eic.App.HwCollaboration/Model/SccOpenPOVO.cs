@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 namespace Lm.Eic.App.HwCollaboration.Model
 {
     /// <summary>
+    /// 采购在途Dto
+    /// </summary>
+    [Serializable]
+    public class PurchaseOnWayDto
+    {
+        public List<SccOpenPOVO> sccOpenPOList { get; set; }
+    }
+    /// <summary>
     /// 采购在途PO信息信息模型
     /// </summary>
     [Serializable]

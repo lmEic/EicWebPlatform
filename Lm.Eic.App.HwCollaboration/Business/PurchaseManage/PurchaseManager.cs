@@ -11,16 +11,44 @@ using Lm.Eic.App.HwCollaboration.Business.MaterialManage;
 
 namespace Lm.Eic.App.HwCollaboration.Business.PurchaseManage
 {
-    public class PurchaseManager : HwCollaborationMaterialBase<SccOpenPOVO>
+    public class PurchaseManager : HwCollaborationMaterialBase<PurchaseOnWayDto>
     {
         public PurchaseManager(string modulename, string apiUrl) : base(modulename, apiUrl)
         {
 
         }
 
-        public override SccOpenPOVO AutoGetDatasFromErp(ErpMaterialQueryCell materialQueryCell)
+        public override PurchaseOnWayDto AutoGetDatasFromErp(ErpMaterialQueryCell materialQueryCell)
         {
-            return base.AutoGetDatasFromErp(materialQueryCell);
+            //string materialId = "349213C0350P0RT";//物料料号
+            PurchaseOnWayDto dto = new PurchaseOnWayDto() { sccOpenPOList = new List<SccOpenPOVO>() };
+            if (materialQueryCell == null) return dto;
+            materialQueryCell.MaterialIdList.ForEach(materialId =>
+            {
+                List<ErpPurchaseOnWayModel> datas = this.erpDbAccess.LoadPurchaseOnWayDatas(materialId);
+                if (datas != null && datas.Count > 0)
+                {
+                    datas.ForEach(d =>
+                    {
+                        SccOpenPOVO sop = new SccOpenPOVO()
+                        {
+                            customerVendorCode = "157",
+                            vdFactoryCode = "421072-001",
+                            businessMode = d.BusinessMode,
+                            poPublishDateStr = d.PoPublishDateStr.ToFormatDate(),
+                            componentVendorCode = d.ComponentVendorCode,
+                            componentVendorName = d.ComponentVendorName,
+                            demandArrivalDateStr = d.DemandArrivalDateStr.ToFormatDate(),
+                            itemCode = d.ItemCode,
+                            openPoQuantity = d.OpenPoQuantity,
+                            poNumber = d.PoNumber,
+                            promisedDeliveryDateStr = d.PromisedDeliveryDateStr.ToFormatDate()
+                        };
+                        dto.sccOpenPOList.Add(sop);
+                    });
+                }
+            });
+            return dto;
         }
     }
 }

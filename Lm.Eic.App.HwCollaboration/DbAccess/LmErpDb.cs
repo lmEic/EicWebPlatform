@@ -74,6 +74,21 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         };
 
         /// <summary>
+        /// 采购单单头字段映射
+        /// </summary>
+        public Dictionary<string, string> PurchaseOrderFieldMap = new Dictionary<string, string> {
+            {"TD008","PurchaseOrderCount"},{"TC004","Supplier"}, {"rtrim(TC001)+'-'+TC002","OrderId"}
+        };
+
+        /// <summary>
+        /// 采购单单身字段映射
+        /// </summary>
+        public Dictionary<string, string> PurchaseOrderItemFieldMap = new Dictionary<string, string> {
+            {"TD003","PurchaseDate"},{"TD004","MaterialId"}, {"rtrim(TD001)+'-'+TD002","OrderId"},
+            {"TD008","PurchaseOrderCount"},{"TD015","PurchaseGivenCount"},{"TD012","PlanArriveDate"}
+        };
+
+        /// <summary>
         /// 关键物料BOM字段映射
         /// </summary>
         public Dictionary<string, string> MaterialKeyBomFieldMap = new Dictionary<string, string> {
@@ -165,6 +180,63 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         }
 
         /// <summary>
+        /// 载入采购单单身数据
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public List<PurchaseOrderItem> LoadPurchaseOrderItems(string materialId)
+        {
+            StringBuilder sqlText = new StringBuilder();
+            sqlText.Append(CreateSelectFieldsSql(this.fieldMapDictionary.PurchaseOrderItemFieldMap, "PURTD"))
+                .AppendFormat("where TD004='{0}' AND TD002='{1}' AND TD018='Y' AND TD016='N'", materialId);
+            return this.LoadDatas<PurchaseOrderItem>(sqlText.ToString());
+        }
+        /// <summary>
+        /// 载入采购单单头数据
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public List<PurchaseOrder> LoadPurchaseOrders(string orderId)
+        {
+            OrderIdCell oc = OrderIdCell.CreateOrderCell(orderId);
+            StringBuilder sqlText = new StringBuilder();
+            sqlText.Append(CreateSelectFieldsSql(this.fieldMapDictionary.PurchaseOrderFieldMap, "PURTC"))
+                .AppendFormat("where TC001='{0}' AND TC002='{1}'", oc.MainId, oc.SubId);
+            return this.LoadDatas<PurchaseOrder>(sqlText.ToString());
+        }
+        /// <summary>
+        /// 获取采购在途未交数据
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public List<ErpPurchaseOnWayModel> LoadPurchaseOnWayDatas(string materialId)
+        {
+            List<ErpPurchaseOnWayModel> rtnDatas = new List<ErpPurchaseOnWayModel>();
+            var datas = LoadPurchaseOrderItems(materialId);
+            if (datas != null)
+            {
+                datas.ForEach(d =>
+                {
+                    var m = LoadPurchaseOrders(d.OrderId).FirstOrDefault();
+                    ErpPurchaseOnWayModel mdl = new ErpPurchaseOnWayModel()
+                    {
+                        BusinessMode = "NORMAL",
+                        ComponentVendorCode = "",
+                        ComponentVendorName = m.Supplier,
+                        DemandArrivalDateStr = d.PlanArriveDate,
+                        ItemCode = d.MaterialId,
+                        OpenPoQuantity = d.PurchaseOrderCount - d.PurchaseGivenCount,
+                        PoNumber = d.OrderId,
+                        PoPublishDateStr = m.CreatedDate,
+                        PromisedDeliveryDateStr = m.PurchaseDate,
+                    };
+                    rtnDatas.Add(mdl);
+                });
+            }
+            return rtnDatas;
+        }
+
+        /// <summary>
         /// 根据产品品号和物料料号载入关键物料BOM信息
         /// </summary>
         /// <param name="productId"></param>
@@ -251,6 +323,46 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         /// ERP中的已领用量
         /// </summary>
         public double ShippedQuantity { get; set; }
+    }
+    /// <summary>
+    /// ERP 采购单单头模型
+    /// </summary>
+    public class PurchaseOrder
+    {
+        public string OrderId { get; set; }
+
+        public string PurchaseDate { get; set; }
+
+        public string Supplier { get; set; }
+
+        /// <summary>
+        /// ERP 中的单据日期
+        /// </summary>
+        public string CreatedDate { get; set; }
+    }
+    /// <summary>
+    /// ERP 采购单单身模型
+    /// </summary>
+    public class PurchaseOrderItem
+    {
+        public string OrderId { get; set; }
+
+        /// <summary>
+        /// ERP中的采购数量
+        /// </summary>
+        public double PurchaseOrderCount { get; set; }
+        /// <summary>
+        /// ERP中的采购已交数量
+        /// </summary>
+        public double PurchaseGivenCount { get; set; }
+        /// <summary>
+        /// 预交货日期
+        /// </summary>
+        public string PlanArriveDate { get; set; }
+        /// <summary>
+        /// ERP中的采购物料料号
+        /// </summary>
+        public string MaterialId { get; set; }
     }
     #endregion
 }
