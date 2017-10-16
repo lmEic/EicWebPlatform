@@ -51,7 +51,6 @@
                                     <tr class="info">
                                         <th>工单单号</th>
                                         <th>产品品名</th>
-
                                         <th>生产数量</th>
                                         <th>入库数量</th>
                                         @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
@@ -65,17 +64,15 @@
                                         </td>
                                         <td>{{item.ProduceNumber}}</td>
                                         <td>{{item.PutInStoreNumber}}</td>
-                                        @*<td>
-                                                <button class="btn btn-primary" ng-click="vmManager.putInshowPutInForm(item)"><i class="fa fa-pencil-square-o"></i>录入</button>
-                                            </td>*@
+
                                     </tr>
                                 </tbody>
                             </table>
                             @*分页*@
-                            <div ng-if="vmManager.erpOrderInfoDatasSet.length>0"
-                                 yl-pagination data-dataset="vmManager.erpOrderInfoDatasSet"
-                                 data-datasource="vmManager.erpOrderInfoDatasSource">
-                            </div>
+                            @*<div ng-if="vmManager.erpOrderInfoDatasSet.length>0"
+                                     yl-pagination data-dataset="vmManager.erpOrderInfoDatasSet"
+                                     data-datasource="vmManager.erpOrderInfoDatasSource">
+                                </div>*@
                         </div>
 
                     </div>
