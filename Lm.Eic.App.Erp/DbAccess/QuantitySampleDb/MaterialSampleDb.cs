@@ -208,7 +208,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         {
 
             List<string> OrderId = new List<string>();
-            string sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = '{0}') AND (TA009='{1}') AND (TA035 NOT LIKE '%镭射雕刻%') order by TA001", department, searchDate.ToDateTimeShortStr());
+            string sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = '{0}') AND (TA003='{1}') AND (TA035 NOT LIKE '%镭射雕刻%') order by TA001", department, searchDate.ToDateTimeShortStr());
             DataTable dt110 = DbHelper.Erp.LoadTable(sql);
             if (dt110.Rows.Count > 0)
             {

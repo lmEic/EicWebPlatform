@@ -14,6 +14,51 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         public StandardProductionFlowModel()
         { }
         #region Model
+        private string _inputtype;
+        /// <summary>
+        ///输入类型
+        /// </summary>
+        public string InputType
+        {
+            set { _inputtype = value; }
+            get { return _inputtype; }
+        }
+        private string _isvisualization;
+        /// <summary>
+        ///是否可视化
+        /// </summary>
+        public string IsVisualization
+        {
+            set { _isvisualization = value; }
+            get { return _isvisualization; }
+        }
+        private string _isvalid;
+        /// <summary>
+        ///是否可见
+        /// </summary>
+        public string IsValid
+        {
+            set { _isvalid = value; }
+            get { return _isvalid; }
+        }
+        private int _productcoefficient;
+        /// <summary>
+        ///生产系数
+        /// </summary>
+        public int ProductCoefficient
+        {
+            set { _productcoefficient = value; }
+            get { return _productcoefficient; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///关键字段
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
+        }
         private string _department;
         /// <summary>
         ///部门
@@ -25,7 +70,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _productid;
         /// <summary>
-        ///物料品号
+        ///品号
         /// </summary>
         public string ProductId
         {
@@ -43,7 +88,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private int _processesindex;
         /// <summary>
-        ///序号
+        ///序列号
         /// </summary>
         public int ProcessesIndex
         {
@@ -52,7 +97,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _processessign;
         /// <summary>
-        ///标志
+        ///标识
         /// </summary>
         public string ProcessesSign
         {
@@ -77,8 +122,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _processestype = value; }
             get { return _processestype; }
         }
-
-
         private string _standardproductiontimetype;
         /// <summary>
         ///标准工时类型
@@ -87,16 +130,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _standardproductiontimetype = value; }
             get { return _standardproductiontimetype; }
-        }
-        // ProductCoefficient
-        private int _productCoefficient = 1;
-        /// <summary>
-        ///生产系统
-        /// </summary>
-        public int ProductCoefficient
-        {
-            set { _productCoefficient = value; }
-            get { return _productCoefficient; }
         }
         private double _standardproductiontime;
         /// <summary>
@@ -152,20 +185,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _mouldname = value; }
             get { return _mouldname; }
         }
-
-        //ParameterKey
-        private string _parameterkey;
-        /// <summary>
-        ///关键字
-        /// </summary>
-        public string ParameterKey
-        {
-            set { _parameterkey = value; }
-            get { return _parameterkey; }
-        }
         private int _mouldholecount;
         /// <summary>
-        ///模穴数量
+        ///模穴数
         /// </summary>
         public int MouldHoleCount
         {
@@ -183,7 +205,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _opperson;
         /// <summary>
-        ///操作人
+        ///
         /// </summary>
         public string OpPerson
         {
@@ -192,7 +214,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _opsign;
         /// <summary>
-        ///操作标识
+        ///
         /// </summary>
         public string OpSign
         {
@@ -201,7 +223,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private DateTime _opdate;
         /// <summary>
-        ///操作日期
+        ///
         /// </summary>
         public DateTime OpDate
         {
@@ -210,7 +232,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private DateTime _optime;
         /// <summary>
-        ///操作时间
+        ///
         /// </summary>
         public DateTime OpTime
         {
@@ -219,7 +241,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private decimal _id_key;
         /// <summary>
-        ///自增键
+        ///
         /// </summary>
         public decimal Id_Key
         {

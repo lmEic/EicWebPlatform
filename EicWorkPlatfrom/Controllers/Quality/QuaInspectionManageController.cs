@@ -553,7 +553,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult QueryFqcERPOrderInspectionInfos(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetFqcERPDatasBy(selectedDepartment, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetERPOrderAndMaterialBy(selectedDepartment, dateFrom, dateTo);
 
             return DateJsonResult(datas);
         }
