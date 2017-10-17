@@ -116,6 +116,9 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ProductName: null,
         ProcessesIndex: 0,
         ProcessesSign: null,
+        InputType: null,
+        IsValid: null,
+        IsVisualization: null,
         ProcessesName: null,
         ProductCoefficient: 1,
         ProcessesType: '人工',
@@ -177,6 +180,12 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
            { value: "MS7", label: "制七课" },
            { value: "MS10", label: "制十课" },
            { value: "PT1", label: "成型课" }],
+        ///部门
+        inputTypes: [
+           { value: "A", label: "制一课" },
+           { value: "E", label: "制二课" },
+            { value: "F", label: "制三课" },
+        ],
         //工时类别
         standardProductionTimeTypes: [{ id: "UPH", text: "UPH" }, { id: "UPS", text: "UPS" }],
         //工艺类别
@@ -292,14 +301,14 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     ///编辑
     operate.editItem = function (item) {
         uiVM = item;
-        uiVM.opSign = leeDataHandler.dataOpMode.edit;
+        uiVM.OpSign = leeDataHandler.dataOpMode.edit;
         $scope.vm = uiVM;
         vmManager.editWindowDisplay = true;
         focusSetter.processesNameFocus = true;
     };
     ///删除 
     operate.deleteItem = function (item) {
-        console.log(item);
+
         leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
             $scope.$apply(function () {
                 if (item.IsServer) {
@@ -345,7 +354,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             var issave = true;
             angular.forEach(vmManager.editDatasSource, function (i) {
                 if (i.ProcessesName == uiVM.ProcessesName) {
-                    console.log(i.ProcessesName);
                     leePopups.alert("已经添加过了！【" + i.ProcessesName + "】");
                     issave = false;
                     return;
@@ -725,9 +733,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         vmManager.havePutInData.push(opResult.Entity);
                         vmManager.continueSaveInit();
                         vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
+
                     }
-                    //vmManager.productionFlowShow = false;
-                    /// vmManager.isShowhavePutInData = true;
+                    vmManager.productionFlowShow = false;
+                    vmManager.isShowhavePutInData = true;
+                    vmManager.putInDisplay = true;
                 }
             });
         });
