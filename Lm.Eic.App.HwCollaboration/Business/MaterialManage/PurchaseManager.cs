@@ -9,11 +9,11 @@ using Lm.Eic.App.HwCollaboration.Model.LmErp;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.App.HwCollaboration.Business.MaterialManage;
 
-namespace Lm.Eic.App.HwCollaboration.Business.PurchaseManage
+namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
 {
     public class PurchaseManager : HwCollaborationMaterialBase<PurchaseOnWayDto>
     {
-        public PurchaseManager(string modulename, string apiUrl) : base(modulename, apiUrl)
+        public PurchaseManager() : base(HwModuleName.PurchaseOnWay, HwAccessApiUrl.PurchaseOnWayApiUrl)
         {
 
         }

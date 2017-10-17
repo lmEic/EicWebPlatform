@@ -85,7 +85,7 @@ namespace EicWorkPlatfrom.Controllers
 
         #endregion
 
-        #region HwInventoryDetail
+        #region Hw Material  Board Detail
         public ActionResult HwInventoryDetail()
         {
             return View();
@@ -94,7 +94,13 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetMaterialDetails()
         {
             var dto = HwCollaborationService.MaterialManager.AutoLoadDataFromErp();
-            var entity = new { inventoryEntity = dto.InvertoryDto, makingEntity = dto.MakingDto, shippingEntity = dto.ShippmentDto };
+            var entity = new
+            {
+                inventoryEntity = dto.InvertoryDto,
+                makingEntity = dto.MakingDto,
+                shippingEntity = dto.ShippmentDto,
+                purchaseEntity = dto.PurchaseDto
+            };
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
@@ -102,27 +108,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             var result = HwCollaborationService.MaterialManager.InventoryManager.SynchronizeDatas(entity);
             return Json(result);
-        }
-        #endregion
-
-        #region HwMakingVoDetail
-        public ActionResult HwMakingVoDetail()
-        {
-            return View();
-        }
-        #endregion
-
-        #region HwShipmentVoDetail
-        public ActionResult HwShipmentVoDetail()
-        {
-            return View();
-        }
-        #endregion
-
-        #region HwPurchaseOnWay
-        public ActionResult HwPurchaseOnWay()
-        {
-            return View();
         }
         #endregion
     }

@@ -17,6 +17,8 @@ namespace Lm.Eic.App.HwCollaboration.Model
         public MaterialMakingDto MakingDto { get; set; }
 
         public MaterialShipmentDto ShippmentDto { get; set; }
+
+        public PurchaseOnWayDto PurchaseDto { get; set; }
     }
     /// <summary>
     /// 库存明细数据传输Dto

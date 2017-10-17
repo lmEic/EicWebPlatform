@@ -202,6 +202,8 @@ namespace Lm.Eic.App.HwCollaboration.Business
         public const string MaterialBaseInfo = "物料基础信息设置";
 
         public const string MaterialKeyBom = "关键物料BOM信息";
+
+        public const string PurchaseOnWay = "采购在途明细";
     }
     /// <summary>
     /// 扩展类
@@ -217,9 +219,9 @@ namespace Lm.Eic.App.HwCollaboration.Business
         {
             Dictionary<string, string> statusDic = new Dictionary<string, string>() {
                 { "1","未生产"},
-                { "2","已发料"},
-                { "3","生产中"},
-                { "Y","已完工"},
+                { "2","发布"},//已发料
+                { "3","在制"},//生产中
+                { "Y","完成"},//已完工
                 { "y","指定完工"}
             };
             return statusDic[orderStatus.Trim()];

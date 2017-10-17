@@ -505,11 +505,13 @@ officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpServi
         inventoryDataEntity: null,
         makingDataEntity: null,
         shipmentDataEntity: null,
+        purchaseOnwayDataEntity: null,
         getMaterialDatas: function () {
             $scope.searchPromise = hwDataOpService.getMaterialDetails().then(function (data) {
                 vmManager.inventoryDataEntity = data.inventoryEntity;
                 vmManager.makingDataEntity = data.makingEntity;
                 vmManager.shipmentDataEntity = data.shippingEntity;
+                vmManager.purchaseOnwayDataEntity = data.purchaseEntity;
             });
         },
     };

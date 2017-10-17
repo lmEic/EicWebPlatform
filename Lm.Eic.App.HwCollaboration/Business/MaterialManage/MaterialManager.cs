@@ -53,6 +53,11 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         {
             get { return OBulider.BuildInstance<MaterialKeyBomManager>(); }
         }
+
+        public PurchaseManager PurchaseManager
+        {
+            get { return OBulider.BuildInstance<PurchaseManager>(); }
+        }
         #endregion
 
 
@@ -64,6 +69,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             dto.InvertoryDto = this.InventoryManager.AutoGetDatasFromErp(bomConfigDatas);
             dto.MakingDto = this.MakingManager.AutoGetDatasFromErp(bomConfigDatas);
             dto.ShippmentDto = this.ShipmentManager.AutoGetDatasFromErp(bomConfigDatas);
+            dto.PurchaseDto = this.PurchaseManager.AutoGetDatasFromErp(bomConfigDatas);
             return dto;
         }
         #endregion
