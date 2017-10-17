@@ -202,6 +202,8 @@ namespace Lm.Eic.App.HwCollaboration.Business
         public const string MaterialBaseInfo = "物料基础信息设置";
 
         public const string MaterialKeyBom = "关键物料BOM信息";
+
+        public const string PurchaseOnWay = "采购在途明细";
     }
     /// <summary>
     /// 扩展类

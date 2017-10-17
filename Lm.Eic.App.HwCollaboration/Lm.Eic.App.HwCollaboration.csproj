@@ -59,7 +59,7 @@
     <Compile Include="Business\MaterialManage\MaterialMakingManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialShipmentManager.cs" />
-    <Compile Include="Business\PurchaseManage\PurchaseManager.cs" />
+    <Compile Include="Business\MaterialManage\PurchaseManager.cs" />
     <Compile Include="DbAccess\HwDatasTransferDb.cs" />
     <Compile Include="DbAccess\LmErpDb.cs" />
     <Compile Include="Model\HwCollaborationDatasTransferModel.cs" />

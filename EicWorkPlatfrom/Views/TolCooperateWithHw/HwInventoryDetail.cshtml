@@ -147,6 +147,57 @@
                     </table>
                 </div>
             </div>
+            <div bs-pane data-title="采购在途" data-name="HwPurchaseOnWayTab">
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">采购在途明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>客户代码</th>
+                                <th>物料编码</th>
+                                <th>采购模式</th>
+                                <th>PO号</th>
+                                <th>下单时间</th>
+                                <th>到料时间</th>
+                                <th>PO数量</th>
+                                <th>承诺交货时间</th>
+                                <th>华为指定供应商</th>
+                                <th>下级供应商名称</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.purchaseOnwayDataEntity.sccOpenPOList">
+                                <td>{{item.vdFactoryCode}}</td>
+                                <td>{{item.customerVendorCode}}</td>
+                                <td>{{item.itemCode}}</td>
+
+                                <td>{{item.businessMode}}</td>
+                                <td>{{item.poNumber}}</td>
+                                <td>{{item.poPublishDateStr}}</td>
+                                <td>{{item.demandArrivalDateStr}}</td>
+                                <td>{{item.openPoQuantity}}</td>
+
+                                <td>{{item.promisedDeliveryDateStr}}</td>
+                                <td>{{item.componentVendorCode}}</td>
+                                <td>{{item.componentVendorName}}</td>
+
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </div>

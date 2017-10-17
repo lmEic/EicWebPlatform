@@ -188,7 +188,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         {
             StringBuilder sqlText = new StringBuilder();
             sqlText.Append(CreateSelectFieldsSql(this.fieldMapDictionary.PurchaseOrderItemFieldMap, "PURTD"))
-                .AppendFormat("where TD004='{0}' AND TD002='{1}' AND TD018='Y' AND TD016='N'", materialId);
+                .AppendFormat("where TD004='{0}' AND TD018='Y' AND TD016='N'", materialId);
             return this.LoadDatas<PurchaseOrderItem>(sqlText.ToString());
         }
         /// <summary>

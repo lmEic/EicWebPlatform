@@ -66,6 +66,8 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
     public class HwDatasConfigDb
     {
         private string selectFileds = "MaterialId, MaterialBaseDataContent, MaterialBomDataContent, OpLog,InventoryType, DataStatus,OpSign, OpPerson, OpDate, OpTime from HwCollaboration_DataConfig";
+
+        #region material base
         /// <summary>
         /// 保存物料基础信息
         /// </summary>
@@ -82,36 +84,12 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
             else
                 return UpdateMaterialBase(model);
         }
-        /// <summary>
-        /// /保存物料BOM信息
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult StoreMaterialBom(HwCollaborationDataConfigModel model)
-        {
-            if (model == null)
-            {
-                return OpResult.SetErrorResult("配置信息不能为NULL!");
-            }
-            if (!IsExist(model.MaterialId))
-                return Insert(model);
-            else
-                return UpdateMaterialBom(model);
-        }
-
-        private OpResult GetOpResult(int record)
-        {
-            if (record > 0)
-                return OpResult.SetSuccessResult("向华为协同平台发送配置数据成功！");
-            else
-                return OpResult.SetErrorResult("向华为协同平台发送配置数据失败!");
-        }
 
         private OpResult Insert(HwCollaborationDataConfigModel entity)
         {
             StringBuilder sqlSb = new StringBuilder();
             sqlSb.Append("Insert into HwCollaboration_DataConfig(MaterialId, MaterialBaseDataContent, MaterialBomDataContent, OpLog,InventoryType, DataStatus,OpSign, OpPerson, OpDate, OpTime)")
-                 .AppendFormat(" values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')", entity.MaterialId, entity.MaterialBaseDataContent, entity.MaterialBomDataContent, entity.OpLog, entity.InventoryType, entity.DataStatus, entity.OpSign, entity.OpPerson, entity.OpDate, entity.OpTime);
+                 .AppendFormat(" values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')", entity.MaterialId, entity.MaterialBaseDataContent, entity.MaterialBomDataContent, entity.OpLog, entity.InventoryType, entity.DataStatus, entity.OpSign, entity.OpPerson, entity.OpDate, entity.OpTime);
             int record = DbHelper.Bpm.ExecuteNonQuery(sqlSb.ToString());
             return GetOpResult(record);
         }
@@ -131,6 +109,28 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
             int record = DbHelper.Bpm.ExecuteNonQuery(sqlSb.ToString());
             return GetOpResult(record);
         }
+        #endregion
+
+        #region material bom
+        /// <summary>
+        /// /保存物料BOM信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreMaterialBom(HwCollaborationDataConfigModel model)
+        {
+            if (model == null)
+            {
+                return OpResult.SetErrorResult("配置信息不能为NULL!");
+            }
+            if (!IsExist(model.MaterialId))
+                return Insert(model);
+            else
+                return UpdateMaterialBom(model);
+        }
+
+
+
         private OpResult UpdateMaterialBom(HwCollaborationDataConfigModel entity)
         {
             StringBuilder sqlSb = new StringBuilder();
@@ -144,6 +144,16 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
                 .AppendFormat("where MaterialId='{0}'", entity.MaterialId);
             int record = DbHelper.Bpm.ExecuteNonQuery(sqlSb.ToString());
             return GetOpResult(record);
+        }
+        #endregion
+
+        #region common method
+        private OpResult GetOpResult(int record)
+        {
+            if (record > 0)
+                return OpResult.SetSuccessResult("向华为协同平台发送配置数据成功！");
+            else
+                return OpResult.SetErrorResult("向华为协同平台发送配置数据失败!");
         }
         /// <summary>
         /// 获取配置数据模型
@@ -173,5 +183,6 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         {
             return DbHelper.Bpm.IsExist(string.Format("select MaterialId from HwCollaboration_DataConfig where MaterialId='{0}'", materialId));
         }
+        #endregion
     }
 }
