@@ -252,6 +252,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         copyConfirm: function () {
             vmManager.copyEditDataSet = [];
             vmManager.copyEditDatasSource = [];
+            vmManager.editDatasList = [];
             if (vmManager.editDatasSource.length <= 0) {
                 leePopups.alert("复制数据不能为空");
                 return;
@@ -390,7 +391,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ///查询数据是否有相同的工艺名称
         if (uiVM.OpSign === leeDataHandler.dataOpMode.add) {
             var issave = true;
-            angular.forEach(vmManager.editDatasSource, function (i) {
+            angular.forEach(vvmManager.editDatasList, function (i) {
                 if (i.ProcessesName == uiVM.ProcessesName) {
                     leePopups.alert("已经添加过了！【" + i.ProcessesName + "】");
                     issave = false;
@@ -403,7 +404,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             confirmData.Id = leeHelper.newGuid();
             confirmData.IsServer = false;//由客户端创建的数据
             vmManager.editDataSet.push(confirmData);
-            vmManager.editDataList.push(confirmData);
+            vmManager.editDatasList.push(confirmData);
             // vmManager.editDataSet = vmManager.editDatasSource;
             vmManager.editWindowDisplay = true;
             vmManager.saveOneinit();
@@ -413,7 +414,8 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 
     //批量保存数据
     operate.saveAll = function () {
-        $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDataList).then(function (opresult) {
+        console.log(vmManager.editDatasList);
+        $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDatasList).then(function (opresult) {
             if (opresult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                 vmManager.handleEditDataSource(vmManager.editDataSet);
