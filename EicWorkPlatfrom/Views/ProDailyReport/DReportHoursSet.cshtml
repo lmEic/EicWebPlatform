@@ -78,6 +78,11 @@
             <div class="pull-right" style="width:55%;">
                 <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
                     <div class="table-responsive" cg-busy="{promise:searchPromise}">
+                        <div class="form-group" ng-show="vm.ProductName.length>0">
+                            <label class="control-label col-md-4">品名:<span class="label label-success">{{vm.ProductName}}</span></label>
+                            <label class="control-label col-md-4">规格:<span class="label label-default">{{vm.ProductId}}</span></label>
+                            <label class="control-label col-md-4">总工时:<span class="label label-primary">{{vmManager.standardHoursCount}}</span></label>
+                        </div>
                         <table class="table table-condensed table-bordered table-hover">
                             <thead>
                                 <tr class="info">
@@ -115,6 +120,7 @@
                     <div style="padding:10px;overflow-y:auto;height:480px">
                         <form role="form" name="formProductionFlow" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                             <fieldset>
+                                @*产品品名 工艺类别*@
                                 <div class="form-group">
                                     <label for="productName" class="col-md-3 control-label">产品品名</label>
                                     <div class="col-md-4">
@@ -132,9 +138,10 @@
                                                 data-bs-options="item.id as item.text for item in vmManager.processesTypes" data-bs-select></button>
                                     </div>
                                 </div>
+                                @*工艺名称 类型 *@
                                 <div class="form-group">
                                     <label for="processesName" class="col-md-3 control-label">工艺名称</label>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <input name="processesName" class="form-control"
                                                focus-if="focus.processesNameFocus" focus-setter
                                                ng-keydown="focus.changeEnter($event,'productNameFocus','processesIndexFocus')"
@@ -147,8 +154,17 @@
                                             <small ng-message="required">工艺名称不能为空</small>
                                         </div>
                                     </div>
-                                    <label>工艺类型</label>
+                                    <label class="col-md-2 control-label">类型</label>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn  btn-default" ng-model="vm.InputType" ng-change="vmManager.changeInputType()"
+                                                data-html="1" data-multiple="0"
+                                                data-animation="am-flip-x" data-placeholder="A"
+                                                bs-options="item.id as item.text for item in vmManager.inputTypes" bs-select>
+                                            <span class="caret"></span>
+                                        </button>
+                                    </div>
                                 </div>
+                                @*工艺序号 工序系数*@
                                 <div class="form-group">
                                     <label for="processesIndex" class="col-md-3 control-label">工艺序号</label>
                                     <div class="col-md-3">
@@ -174,7 +190,29 @@
 
 
                                 </div>
+                                @*标准工时 工时类别*@
                                 <div class="form-group">
+                                    <label for="standardProductionTime" class="col-md-3 control-label">有效性</label>
+                                    <div class="col-md-3">
+                                        <button type="button" name="iIsValid" class="btn btn-primary" ng-model="vm.IsValid"
+                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="是"
+                                                data-bs-options="item.id as item.text for item in vmManager.IsOrNotDatas" data-bs-select></button>
+                                        <div class="error-messages" ng-messages="formProductionFlow.isValid.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">有效性不能为空</small>
+                                        </div>
+                                    </div>
+                                    <label for="standardProductionTimeType" class="col-md-3 control-label">可视化</label>
+                                    <div class="col-md-3">
+                                        <button type="button" name="isVisualization" class="btn btn-primary" ng-model="vm.IsVisualization"
+                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="是"
+                                                data-bs-options="item.id as item.text for item in vmManager.IsOrNotDatas" data-bs-select></button>
+                                        <div class="error-messages" ng-messages="formProductionFlow.isVisualization.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">可视化不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*标准工时 工时类别*@
+                                <div class="form-group" ng-show="vmManager.isShowProductionTime===true">
                                     <label for="standardProductionTime" class="col-md-3 control-label">标准工时</label>
                                     <div class="col-md-3">
                                         <input name="standardProductionTime" type="number" class="form-control"
@@ -195,6 +233,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @*人机配比 磨具编号*@
                                 <div class="form-group" ng-show="vmManager.isShowMachine===true">
                                     <label for="machinePersonRatio" class="col-md-3 control-label">人机配比</label>
                                     <div class="col-md-3">
@@ -210,6 +249,7 @@
                                     </div>
 
                                 </div>
+                                @*磨具名称  模穴数 *@
                                 <div class="form-group" ng-show="vmManager.isShowMachine===true">
                                     <label for="mouldName" class="col-md-3 control-label">磨具名称</label>
                                     <div class="col-md-3">
@@ -225,6 +265,7 @@
                                     </div>
 
                                 </div>
+                                @*备注*@
                                 <div class="form-group">
                                     <label for="remark" class="col-md-3 control-label">备注</label>
                                     <div class="col-md-9">
@@ -253,7 +294,7 @@
                     </div>
                 </div>
                 <div pageslide ps-open="vmManager.copyWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
-                    <div style="padding:10px;overflow-y:auto">
+                    <div style="padding:10px;overflow-y:auto;height:480px ">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <span>

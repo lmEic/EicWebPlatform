@@ -77,8 +77,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             //先依据部门和品名进行数据库清除 然后批量添加进数据库
             if (modelList.Count > 0)
             {
-                //先删除后添加
-                DailyReportCrudFactory.ProductionFlowCrud.DeleteProductFlowModelBy(modelList[0].Department, modelList[0].ProductName);
+                ///先删除后添加
+                /// DailyReportCrudFactory.ProductionFlowCrud.DeleteProductFlowModelBy(modelList[0].Department, modelList[0].ProductName);
                 return DailyReportCrudFactory.ProductionFlowCrud.AddProductFlowModelList(modelList);
             }
             else

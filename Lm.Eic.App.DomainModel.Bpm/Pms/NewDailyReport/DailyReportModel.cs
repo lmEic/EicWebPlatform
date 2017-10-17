@@ -14,51 +14,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         public StandardProductionFlowModel()
         { }
         #region Model
-        private string _inputtype;
-        /// <summary>
-        ///输入类型
-        /// </summary>
-        public string InputType
-        {
-            set { _inputtype = value; }
-            get { return _inputtype; }
-        }
-        private string _isvisualization;
-        /// <summary>
-        ///是否可视化
-        /// </summary>
-        public string IsVisualization
-        {
-            set { _isvisualization = value; }
-            get { return _isvisualization; }
-        }
-        private string _isvalid;
-        /// <summary>
-        ///是否可见
-        /// </summary>
-        public string IsValid
-        {
-            set { _isvalid = value; }
-            get { return _isvalid; }
-        }
-        private int _productcoefficient;
-        /// <summary>
-        ///生产系数
-        /// </summary>
-        public int ProductCoefficient
-        {
-            set { _productcoefficient = value; }
-            get { return _productcoefficient; }
-        }
-        private string _parameterkey;
-        /// <summary>
-        ///关键字段
-        /// </summary>
-        public string ParameterKey
-        {
-            set { _parameterkey = value; }
-            get { return _parameterkey; }
-        }
         private string _department;
         /// <summary>
         ///部门
@@ -94,6 +49,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _processesindex = value; }
             get { return _processesindex; }
+        }
+        private int _productcoefficient;
+        /// <summary>
+        ///生产系数
+        /// </summary>
+        public int ProductCoefficient
+        {
+            set { _productcoefficient = value; }
+            get { return _productcoefficient; }
         }
         private string _processessign;
         /// <summary>
@@ -131,6 +95,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _standardproductiontimetype = value; }
             get { return _standardproductiontimetype; }
         }
+        private double _ups;
+        /// <summary>
+        ///UPS
+        /// </summary>
+        public double UPS
+        {
+            set { _ups = value; }
+            get { return _ups; }
+        }
         private double _standardproductiontime;
         /// <summary>
         ///标准工时
@@ -139,6 +112,33 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _standardproductiontime = value; }
             get { return _standardproductiontime; }
+        }
+        private string _isvalid;
+        /// <summary>
+        ///是否可见
+        /// </summary>
+        public string IsValid
+        {
+            set { _isvalid = value; }
+            get { return _isvalid; }
+        }
+        private string _isvisualization;
+        /// <summary>
+        ///是否可视化
+        /// </summary>
+        public string IsVisualization
+        {
+            set { _isvisualization = value; }
+            get { return _isvisualization; }
+        }
+        private double _machinepersonratio;
+        /// <summary>
+        ///人机配比
+        /// </summary>
+        public double MachinePersonRatio
+        {
+            set { _machinepersonratio = value; }
+            get { return _machinepersonratio; }
         }
         private double _uph;
         /// <summary>
@@ -149,23 +149,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _uph = value; }
             get { return _uph; }
         }
-        private double _ups;
+        private string _inputtype;
         /// <summary>
-        ///UPS
+        ///输入类型
         /// </summary>
-        public double UPS
+        public string InputType
         {
-            set { _ups = value; }
-            get { return _ups; }
-        }
-        private double _machinepersonratio;
-        /// <summary>
-        ///人机配比
-        /// </summary>
-        public double MachinePersonRatio
-        {
-            set { _machinepersonratio = value; }
-            get { return _machinepersonratio; }
+            set { _inputtype = value; }
+            get { return _inputtype; }
         }
         private string _mouldid;
         /// <summary>
@@ -203,6 +194,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _remark = value; }
             get { return _remark; }
         }
+        private string _parameterkey;
+        /// <summary>
+        ///关键字段
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
+        }
         private string _opperson;
         /// <summary>
         ///
@@ -212,15 +212,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _opperson = value; }
             get { return _opperson; }
         }
-        private string _opsign;
-        /// <summary>
-        ///
-        /// </summary>
-        public string OpSign
-        {
-            set { _opsign = value; }
-            get { return _opsign; }
-        }
         private DateTime _opdate;
         /// <summary>
         ///
@@ -229,6 +220,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _opdate = value; }
             get { return _opdate; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
         }
         private DateTime _optime;
         /// <summary>

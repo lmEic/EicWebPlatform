@@ -73,22 +73,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             try
             {
-                SetFixFieldValue(modelList, OpMode.Add);
+                OpResult result = OpResult.SetSuccessResult("数据初始操作!", true);
+                // SetFixFieldValue(modelList, OpMode.Add);
                 //处理内部内容 UPS　UPS处理
                 modelList.ForEach((m) =>
                 {
-                    if (m.StandardProductionTimeType == "UPH")
-                    {
-                        m.UPH = m.StandardProductionTime;
-                        m.UPS = Math.Round(3600 / m.StandardProductionTime, 4);
-                    }
-                    else
-                    {
-                        m.UPH = Math.Round(3600 / m.StandardProductionTime, 4);
-                        m.UPS = m.StandardProductionTime;
-                    }
+                    if (result.Result)
+                        result = Store(m);
                 });
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -120,11 +114,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             if (model.StandardProductionTimeType == "UPH")
             {
                 model.UPH = model.StandardProductionTime;
-                model.UPS = 3600 / model.StandardProductionTime;
+                model.UPS = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
             }
             else
             {
-                model.UPH = 3600 / model.StandardProductionTime;
+                model.UPH = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
                 model.UPS = model.StandardProductionTime;
             }
             //此工艺是否已经存在
@@ -133,7 +127,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
             return irep.Insert(model).ToOpResult(OpContext);
         }
-
         /// <summary>
         /// 编辑
         /// </summary>
