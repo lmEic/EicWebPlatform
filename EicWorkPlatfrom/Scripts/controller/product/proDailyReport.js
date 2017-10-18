@@ -662,6 +662,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         //部门变化载入分配的订单信息
         ////选择产品名称得理该产品的
         putInDatas: function (item) {
+
             uiVM.OrderId = item.OrderId;
             uiVM.ProductId = item.ProductId;
             uiVM.ProductName = item.ProductName;
@@ -672,8 +673,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
-            dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
 
+            dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
                 vmManager.productionFlowDatasSet = datas;
                 vmManager.isShowhavePutInData = false;
                 vmManager.productionFlowDatasSouce = vmManager.productionFlowDatasSet;
@@ -767,6 +768,21 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         inputMultiterm: function () {
             console.log(vmManager.inputMultitermSelect);
         },
+        confirmSearch: function (item) {
+            console.log(item);
+            if (vmManager.erpOrderInfoDatasSet.length > 0) {
+                var data = _.find(vmManager.erpOrderInfoDatasSet, function (e) {
+                    if (e.ProductName.indexOf(item) >= 0) {
+                        return e;
+                    }
+                });
+                if (!_.isUndefined(data)) {
+
+                    vmManager.putInshowPutInForm(data);
+
+                }
+            }
+        },
     };
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();
@@ -799,7 +815,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     //取消
     operate.refresh = function () {
         vmManager.putInDisplay = false;
-        vmManager.init();
+        //  vmManager.init();
     }
     //焦点设置器
     var focusSetter = {
