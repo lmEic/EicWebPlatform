@@ -92,7 +92,7 @@
                             @*工号人员信息*@
                             <div class="form-group">
                                 <label for="workerId" class="col-md-2 control-label">工号</label>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <div class="input-group">
                                         <input name="workerId" class="form-control"
                                                ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo()"
@@ -105,7 +105,7 @@
                                         <div class="input-group-addon" ng-show="vmManager.isSingle">
                                             <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.WorkerName}}</label>
                                         </div>
-                                        <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                        <div class="input-group-btn">
                                             <button type="button" class="btn btn-primary"
                                                     data-animation="am-flip-x"
                                                     bs-dropdown aria-haspopup="true" aria-expanded="false">
@@ -125,13 +125,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <label for="department" class="col-md-2 control-label">部门</label>
-                                <div class="col-md-3">
-                                    <input name="department" class="form-control" ng-model="vm.Department" readonly required />
-                                    <div class="error-messages" ng-messages="formDailyProductionReport.department.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">部门不能为空</small>
-                                    </div>
+                                <div class="col-md-3 well-sm">
+                                    <input type="checkbox" ng-model="vmManager.inputMultitermSelect" ng-change="vmManager.inputMultiterm()" />
+                                    <span data-title="团队合作录入时" data-bs-tooltip>
+                                        <i class="fa fa-user"></i>
+                                        多项录入
+                                    </span>
                                 </div>
+
+                                @*<label for="department" class="col-md-2 control-label">部门</label>
+                                    <div class="col-md-3">
+                                        <input name="department" class="form-control" ng-model="vm.Department" readonly required />
+                                    </div>*@
                             </div>
                             @*录入工序信息*@
                             <div class="form-group ">

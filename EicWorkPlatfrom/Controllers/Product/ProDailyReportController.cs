@@ -232,9 +232,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="wokerId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetWorkerDailyInfoBy(string wokerId)
+        public ContentResult GetWorkerDailyInfoBy(string workerId)
         {
-            var datas = "";
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetWorkerDailyDatasBy(workerId);
+            
             return DateJsonResult(datas);
         }
         /// <summary>

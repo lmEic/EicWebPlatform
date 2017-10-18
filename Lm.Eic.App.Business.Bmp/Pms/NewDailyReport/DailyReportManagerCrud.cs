@@ -378,6 +378,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             DateTime dateShort = date.ToDate();
             return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList();
         }
+        internal List<DailyProductionReportModel> GetWorkerDailyDatasBy(string workerId)
+        {
+            return irep.Entities.Where(e => e.WorkerId == workerId).OrderByDescending(e => e.Id_Key).ToList();
+        }
         #endregion
     }
 }

@@ -233,5 +233,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.DailyProductionReport.GetDailyDatasBy(date, orderId, processesName);
         }
+        public DailyProductionReportModel GetWorkerDailyDatasBy(string workerId)
+        {
+            var datas = DailyReportCrudFactory.DailyProductionReport.GetWorkerDailyDatasBy(workerId);
+            if (datas == null) return null;
+            return datas.FirstOrDefault();
+        }
     }
 }
