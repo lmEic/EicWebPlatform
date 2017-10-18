@@ -875,6 +875,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         /// </summary>
         public string ProcessesName { get; set; }
         /// <summary>
+        /// 输入类型 
+        /// </summary>
+        public string InputType { get; set; }
+        /// <summary>
         ///工单生产数量
         /// </summary>
         public double OrderProductNumber { get; set; }
