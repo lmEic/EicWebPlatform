@@ -559,7 +559,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     var initVM = _.clone(uiVM);
     var vmManager = {
         ///部门 
-        inspectionDataGatherType: null,
+        inspectionDataGatherType: 'A',
         department: leeLoginUser.department,
         queryActiveTab: 'qryFolwProcessTab',
         putInDisplay: false,
