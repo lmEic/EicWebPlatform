@@ -134,6 +134,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId, materialId);
             if (iqcHaveInspectionData == null || iqcHaveInspectionData.Count == 0) return returnList;
             var materialinfo = QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId).Find(e => e.ProductID == materialId);
+            if (materialinfo == null) return returnList;
             ///物料配置项中查找
             var iqcItemConfigdatas = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             if (iqcItemConfigdatas == null || iqcItemConfigdatas.Count == 0) return returnList;

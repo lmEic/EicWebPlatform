@@ -391,7 +391,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ///查询数据是否有相同的工艺名称
         if (uiVM.OpSign === leeDataHandler.dataOpMode.add) {
             var issave = true;
-            angular.forEach(vvmManager.editDatasList, function (i) {
+            angular.forEach(vmManager.editDatasList, function (i) {
                 if (i.ProcessesName == uiVM.ProcessesName) {
                     leePopups.alert("已经添加过了！【" + i.ProcessesName + "】");
                     issave = false;
@@ -673,7 +673,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
-
             dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
                 vmManager.productionFlowDatasSet = datas;
                 vmManager.isShowhavePutInData = false;
@@ -699,8 +698,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //在数据查找相应的信息
         selectProcesses: function (info) {
-            console.log(555555);
-            console.log(info);
             uiVM.ProcessesIndex = info.ProcessesIndex;
             uiVM.ProcessesName = info.ProcessesName;
             uiVM.ProcessesType = info.ProcessesType;
