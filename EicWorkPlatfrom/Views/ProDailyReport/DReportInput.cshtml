@@ -29,23 +29,23 @@
             </div>
         </div>
         <div class="row">
-            <div class="pull-left" style="width:55%;" id="editWindow">
-                <div class="bs-callout bs-callout-success" style="height:480px;overflow-y:auto;">
-                    <div class="table-responsive">
-                        <div style="padding:10px;overflow-y:auto;height:580px">
-                            <div class="row ">
-                                <div class="col-md-4 ">
-                                    <div class="input-group">
-                                        <input class="form-control" type="text" placeholder="输入订单快速定位" ng-model="filterErpOrder" />
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-search"></i>
-                                        </div>
+            <div class="pull-left" style="width:55%;">
+                <div class="bs-callout bs-callout-success">
+                    <div class="table-responsive" style="padding:5px;overflow-y:auto;height:550px">
+                        <div class="row ">
+                            <div class="col-md-4 ">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="输入订单快速定位" ng-model="filterErpOrder" />
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-search"></i>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row ">
-                                <div class="h-split"></div>
-                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="h-split"></div>
+                        </div>
+                        <div id="editWindow" style="height:540px;overflow-y:auto;">
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -67,20 +67,21 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            @*分页*@
-                            @*<div ng-if="vmManager.erpOrderInfoDatasSet.length>0"
-                                     yl-pagination data-dataset="vmManager.erpOrderInfoDatasSet"
-                                     data-datasource="vmManager.erpOrderInfoDatasSource">
-                                </div>*@
                         </div>
+                        @*分页*@
+                        @*<div ng-if="vmManager.erpOrderInfoDatasSet.length>0"
+                                 yl-pagination data-dataset="vmManager.erpOrderInfoDatasSet"
+                                 data-datasource="vmManager.erpOrderInfoDatasSource">
+                            </div>*@
+
 
                     </div>
 
                 </div>
             </div>
             @*录入界面*@
-            <div pageslide ps-open="vmManager.putInDisplay" ps-side="left" ps-speed="0.25" ps-size="100%" ps-container='editWindow' ps-click-outside="false">
-                <div style="padding:10px;overflow-y:auto;height:480px">
+            <div pageslide ps-open="vmManager.putInDisplay" ps-side="left" ps-speed="0.25" ps-size="100%" ps-container='editWindow' ps-click-outside="false" ps-key-listener="true">
+                <div style="padding:5px;overflow-y:auto;height:100%">
                     <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <fieldset>
                             <div class="dropdown-header">
@@ -300,7 +301,7 @@
                 </div>
             </div>
             <div class="pull-right" style="width:45%;">
-                <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
+                <div class="bs-callout bs-callout-info" style="height:580px;overflow-y:auto;">
                     <div class="table-responsive" bs-tabs bs-active-pane="vmManager.queryActiveTab" cg-busy="{promise:searchPromise}">
                         <div bs-pane data-title="产品工艺" class="active" data-name="qryFolwProcessTab">
                             <table ng-if="vmManager.productionFlowShow" class="table table-condensed table-bordered table-hover">
