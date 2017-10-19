@@ -116,7 +116,7 @@
                          data-datasource="vmManager.editDatasSource">
                     </div>
                 </div>
-                <div pageslide ps-open="vmManager.editWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
+                <div pageslide ps-open="vmManager.editWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow' ps-click-outside="false" ps-key-listener="true">
                     <div style="padding:10px;overflow-y:auto;height:480px">
                         <form role="form" name="formProductionFlow" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                             <fieldset>
