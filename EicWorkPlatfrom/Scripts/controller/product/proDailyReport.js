@@ -672,7 +672,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
-            $scope.promise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
+            $scope.searchPromise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
                 vmManager.productionFlowDatasSet = datas;
                 vmManager.isShowhavePutInData = false;
                 vmManager.productionFlowDatasSouce = vmManager.productionFlowDatasSet;
@@ -764,19 +764,21 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         inputMultiterm: function () {
             console.log(vmManager.inputMultitermSelect);
         },
-        confirmSearch: function (item) {
-            console.log(item);
-            if (vmManager.erpOrderInfoDatasSet.length > 0) {
-                var data = _.find(vmManager.erpOrderInfoDatasSet, function (e) {
-                    if (e.ProductName.indexOf(item) >= 0) {
-                        return e;
+        confirmSearch: function ($event, item) {
+            if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
+                if (vmManager.erpOrderInfoDatasSet.length > 0) {
+                    var data = _.find(vmManager.erpOrderInfoDatasSet, function (e) {
+                        if (e.ProductName.indexOf(item) >= 0) {
+                            return e;
+                        }
+                    });
+                    if (!_.isUndefined(data)) {
+
+                        vmManager.putInshowPutInForm(data);
+
                     }
-                });
-                if (!_.isUndefined(data)) {
-
-                    vmManager.putInshowPutInForm(data);
-
                 }
+                console.log(item);
             }
         },
     };
