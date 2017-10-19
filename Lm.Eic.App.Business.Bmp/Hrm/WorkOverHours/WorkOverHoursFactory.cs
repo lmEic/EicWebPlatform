@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 
         private OpResult DeleteWorkOverHours(WorkOverHoursMangeModels model)
         {
-            return irep.Update(e => e.Id_Key == model.Id_Key, s => new WorkOverHoursMangeModels { Id_Key = model.Id_Key }).ToOpResult_Delete(OpContext);
+            return irep.Delete(e => e.WorkerId == model.WorkerId && e.WorkDate==model.WorkDate).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EditWorkOverHours(WorkOverHoursMangeModels model)
@@ -91,7 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         {
             try
             {
-                return irep.Entities.Where(e => e.DepartmentText == departmentText && e.WorkDate == workDate).ToList();
+                return irep.Entities.OrderBy(e=>e.WorkClassType).Where(e => e.DepartmentText == departmentText && e.WorkDate == workDate).ToList();
             }
             catch (Exception ex)
             {

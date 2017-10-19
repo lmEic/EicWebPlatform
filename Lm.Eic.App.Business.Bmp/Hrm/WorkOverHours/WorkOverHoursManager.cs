@@ -8,15 +8,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 {
    public class WorkOverHoursManager
    {
-       /// <summary>
-       /// 查询(1、按日期查询 2、按部门查询)
-       /// </summary>
-       /// <param name="Dto"></param>
-       /// <returns></returns>
+      
+        /// <summary>
+        /// 查询(1、按日期查询 2、按部门查询)
+        /// </summary>
+        /// <param name="Dto"></param>
+        /// <returns></returns>
         public List<WorkOverHoursMangeModels> FindRecordBy(WorkOverHoursDto Dto)
         {
             return WorkOverHoursFactory.WorkOverHoursCrud.FindBy(Dto);
@@ -71,14 +73,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         /// <param name="datas"></param>
         /// <returns></returns>
 
-        public DownLoadFileModel WorkOverHoursDatasDLFM(List<WorkOverHoursMangeModels>datas)
+        public DownLoadFileModel WorkOverHoursDatasDLFM(List<WorkOverHoursMangeModels>datas,string  SiteRootPath,string  filePath,string  fileName)
         {
             try
             {
                 if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
-                return dataGroupping.ExportToExcelMultiSheets<WorkOverHoursMangeModels>(CreateFieldMapping()).CreateDownLoadExcelFileModel("加班人员清单");
-
+                // return dataGroupping.ExportToExcelMultiSheets<WorkOverHoursMangeModels>(CreateFieldMapping()).CreateDownLoadExcelFileModel("加班报表");
+                 return dataGroupping.WorkOverHoursListToExcel<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath).WorkOverExcelTemplae("加班报表"); 
             }
             catch (Exception ex)
             {
@@ -102,6 +104,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             };
             return fieldmapping;
 
+        }
+        /// <summary>
+        /// 后台编辑保存
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+
+        public OpResult StoreWorkOverHours(WorkOverHoursMangeModels model)
+        {
+            try
+            {
+                return WorkOverHoursFactory.WorkOverHoursCrud.Store(model);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
    }
