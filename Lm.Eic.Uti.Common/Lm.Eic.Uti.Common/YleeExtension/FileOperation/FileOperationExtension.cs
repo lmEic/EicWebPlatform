@@ -8,24 +8,22 @@ using System.Text;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeMessage.Log;
 using System.Linq;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {
     public static class FileOperationExtension
-    { 
+    {
         //林旺雷 2017-09-15
-      /// <summary>
-      ///  将实体类列表到处到Excel中 支持Excel2007
-      /// </summary>
-      /// <typeparam name="T">类型</typeparam>
-      /// <param name="dt"></param>
-      /// <param name="patch">绝对路径</param>
-      /// <param name="isCreateTitle">是否生成标题</param>
+        /// <summary>
+        ///  将实体类列表到处到Excel中 支持Excel2007
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="dt"></param>
+        /// <param name="patch">绝对路径</param>
+        /// <param name="isCreateTitle">是否生成标题</param>
         public static void ExportToExcel<T>(this List<T> dt, string patch, bool isCreateTitle, int inputStartRow)
         {
-           // m_ExportToExcel(dt, patch, isCreateTitle, inputStartRow);
+            // m_ExportToExcel(dt, patch, isCreateTitle, inputStartRow);
         }
 
 
@@ -425,7 +423,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
             else
             {
-                  
+
                 FieldMapList.ForEach(e =>
                 {
                     ICell cell = rowHeader.CreateCell(forEachindex);
@@ -493,8 +491,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         private static ISheet WorkOverHoursCreateSheet<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
             if (xlsSheetName == string.Empty) xlsSheetName = "Sheet12";
-            ISheet sheet = workbook.GetSheet(workbook.GetSheetName(0));         
-            ICellStyle cellSytleDate = workbook.CreateCellStyle();         
+            ISheet sheet = workbook.GetSheet(workbook.GetSheetName(0));
+            ICellStyle cellSytleDate = workbook.CreateCellStyle();
             IDataFormat format = workbook.CreateDataFormat();
             cellSytleDate.DataFormat = format.GetFormat("yyyy-mm-dd");
 
@@ -578,7 +576,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 
                 #endregion
 
-                T entity = dataSource[rowIndex];             
+                T entity = dataSource[rowIndex];
                 Type tentity = entity.GetType();
                 PropertyInfo[] tpis = tentity.GetProperties();
                 int colIndex = 1;
@@ -601,11 +599,11 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                             colIndex++;//colIndex=1
                         }
                         else
-                        {                                            
+                        {
                             for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)//tpis=11
-                            {                                
+                            {
                                 if (e.FieldName == tpis[tipsIndex].Name)//workdate 
-                                {                                  
+                                {
                                     object workClassType = tpis[6].GetValue(entity, null);
                                     if (workClassType.ToString() == "白班")
                                     {
@@ -697,7 +695,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         #endregion
                                     }
 
-                                }                             
+                                }
                             }
                         }
                     });
@@ -773,10 +771,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <summary>
         /// 填充表格值
         /// </summary>
-        private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent,IRow rowDeparmentAndWorkdate,IRow rowWorkType, T entity, PropertyInfo[] tpis, int colindex1, int colindex2,int colindex3)
+        private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, T entity, PropertyInfo[] tpis, int colindex1, int colindex2, int colindex3)
         {
-          //  ICell cellContent = rowContent.GetCell(colIndex);//1,2，3，4，5，6，7       
-          //  object value = tpis[tipsIndex].GetValue(entity, null);//2017-10-13,部门名称
+            //  ICell cellContent = rowContent.GetCell(colIndex);//1,2，3，4，5，6，7       
+            //  object value = tpis[tipsIndex].GetValue(entity, null);//2017-10-13,部门名称
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
             object department = tpis[2].GetValue(entity, null);//企业信息中心
@@ -784,19 +782,19 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             object workhours = tpis[4].GetValue(entity, null);//2.5
             object worktype = tpis[5].GetValue(entity, null);//平时加班
             object workclasstype = tpis[6].GetValue(entity, null);//白班      
-       
+
             rowWorkType.GetCell(15).SetCellValue(worktype.ToString());
             rowDeparmentAndWorkdate.GetCell(1).SetCellValue(department.ToString());
             DateTime dateV;
             DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
             rowDeparmentAndWorkdate.GetCell(11).SetCellValue(dateV.ToShortDateString());
-           // rowContent.GetCell(1).SetCellValue(workclasstype.ToString()); 
+            // rowContent.GetCell(1).SetCellValue(workclasstype.ToString()); 
             rowContent.GetCell(colindex1).SetCellValue(workId.ToString());
-            rowContent.GetCell(colindex2).SetCellValue(workName.ToString());         
+            rowContent.GetCell(colindex2).SetCellValue(workName.ToString());
             double doubV = 0;
             double.TryParse(workhours.ToString(), out doubV);
             rowContent.GetCell(colindex3).SetCellValue(doubV);
-                  
+
             //switch (type.ToString())
             //{
             //    case "System.String"://字符串类型
@@ -853,7 +851,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="dataSource">List数组</param>
         /// <param name="propertyStr">要分组的字段</param>
         /// <returns></returns>
-        public static Dictionary<string, List<T>> GetGroupList<T>(this List<T> dataSource, string propertyStr=null ) where T : class, new()
+        public static Dictionary<string, List<T>> GetGroupList<T>(this List<T> dataSource, string propertyStr = null) where T : class, new()
         {
             try
             {
@@ -920,7 +918,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static List<TEntity> GetEntitiesFromExcel<TEntity>(this string fileName)where TEntity:class,new ()
+        public static List<TEntity> GetEntitiesFromExcel<TEntity>(this string fileName) where TEntity : class, new()
         {
             string errMsg = string.Empty;
             List<TEntity> datas = ExcelHelper.ExcelToEntityDatas<TEntity>(fileName, out errMsg);
@@ -941,8 +939,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             {
                 MemoryStream stream = new MemoryStream();
                 HSSFWorkbook workbook = new HSSFWorkbook();
-               
-             
+
+
                 foreach (string i in DicDataSources.Keys)
                 {
                     if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
@@ -967,22 +965,22 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="FieldMapList"></param>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        public static MemoryStream WorkOverHoursListToExcel<T>(this Dictionary<string, List<T>> DicDataSources, List<FileFieldMapping> FieldMapList,string  filepath) where T : class, new()
+        public static MemoryStream WorkOverHoursListToExcel<T>(this Dictionary<string, List<T>> DicDataSources, List<FileFieldMapping> FieldMapList, string filepath) where T : class, new()
         {
             try
             {
-                MemoryStream stream = new MemoryStream();             
-                HSSFWorkbook workbook =(HSSFWorkbook)WorkbookFactory.Create(filepath);          
+                MemoryStream stream = new MemoryStream();
+                HSSFWorkbook workbook = (HSSFWorkbook)WorkbookFactory.Create(filepath);
                 foreach (string i in DicDataSources.Keys)
                 {
                     if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
 
                     ISheet sheet = WorkOverHoursCreateSheet<T>(DicDataSources[i], i, FieldMapList, workbook);
                     sheet.ForceFormulaRecalculation = true;
-               
+
                 }
                 workbook.Write(stream);
-            
+
 
 
                 return stream;
@@ -1037,7 +1035,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             if (ms == null) return dlfm.Default();
             dlfm.FileStream = ms;
             dlfm.ContentType = "application/vnd.ms-excel";
-            dlfm.FileDownLoadName = fileName+ ".xls";
+            dlfm.FileDownLoadName = fileName + ".xls";
             return dlfm;
 
 
@@ -1054,10 +1052,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             if (ms == null) return dlfm.Default();
             dlfm.FileStream = ms;
             dlfm.ContentType = "application/vnd.ms-excel";
-            dlfm.FileDownLoadName = fileName+ ".xls";
+            dlfm.FileDownLoadName = fileName + ".xls";
             return dlfm;
         }
-       
+
         /// <summary>
         /// 获取工序Excel模板
         /// </summary>
@@ -1212,7 +1210,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
     }
 
 
-   
+
 
 
 
