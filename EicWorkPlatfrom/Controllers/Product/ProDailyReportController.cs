@@ -22,8 +22,16 @@ namespace EicWorkPlatfrom.Controllers.Product
             return View();
         }
 
-        #region report hour set method  生产工时工艺录入
+        #region Date Report Hours Set method
         public ActionResult DReportHoursSet()
+        {
+            return View();
+        }
+        #endregion
+
+
+        #region report Flow Set set method  生产工艺录入
+        public ActionResult DReportFlowSet()
         {
             return View();
         }
@@ -235,11 +243,11 @@ namespace EicWorkPlatfrom.Controllers.Product
         public ContentResult GetWorkerDailyInfoBy(string workerId)
         {
             var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetWorkerDailyDatasBy(workerId);
-            
+
             return DateJsonResult(datas);
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="wokerId"></param>
         /// <returns></returns>
@@ -250,7 +258,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             return DateJsonResult(datas);
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
