@@ -142,12 +142,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 well-sm">
-                                    <input type="checkbox" ng-model="vmManager.inputMultitermSelect"
-                                           ng-change="vmManager.inputMultiterm()" />
-                                    <span data-title="团队合作录入时" data-bs-tooltip>
-                                        <i ng-show="!vmManager.inputMultitermSelect" style="color:#0066CC" class="fa fa-user fa-1x">单人录入</i>
-                                        <i ng-show="vmManager.inputMultitermSelect" style="color:#049816" class="fa fa-users fa-2x">团队录入</i>
+                                <div class="col-md-5 well-sm">
+                                    <span data-title="输入模式切换控制" data-bs-tooltip>
+                                        <span class="text-info" ng-click="vmManager.inputMultitermSelect=true;" ng-if="!vmManager.inputMultitermSelect">
+                                            <i class="fa fa-square-o fa-2x"></i>
+                                            <i class="fa fa-user fa-2x">单人录入</i>
+                                        </span>
+                                        <span class="text-success" ng-click="vmManager.inputMultitermSelect=false;" ng-if="vmManager.inputMultitermSelect">
+                                            <i class="fa fa-check-square fa-2x"></i>
+                                            <i class="fa fa-users fa-2x text-success">团队录入</i>
+                                        </span>
                                     </span>
                                 </div>
 
@@ -330,7 +334,6 @@
                                         <th>需录数</th>
                                         <th>已录数</th>
                                         <th>差异数</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
