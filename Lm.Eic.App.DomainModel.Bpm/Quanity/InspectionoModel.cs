@@ -461,7 +461,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _materialname;
         /// <summary>
-        ///品名
+        ///品名   MaterialName
         /// </summary>
         public string MaterialName
         {
@@ -632,14 +632,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private string _inspecitonitem;
+        private string _inspectionitem;
         /// <summary>
-        ///检验项目
+        ///检验项目 inspectionItem  InspecitonItem
         /// </summary>
         public string InspecitonItem
         {
-            set { _inspecitonitem = value; }
-            get { return _inspecitonitem; }
+            set { _inspectionitem = value; }
+            get { return _inspectionitem; }
         }
         private double _materialcount;
         /// <summary>
@@ -1672,9 +1672,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// FQC工单信息模块
     /// </summary>
-    public class InspectionFqcOrderIdModel
+    public class InspectionFqcOrderIdVm
     {
-        public InspectionFqcOrderIdModel()
+        public InspectionFqcOrderIdVm()
         {
 
         }
@@ -1863,6 +1863,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///料号
         /// </summary>
         public string MaterialId { get; set; }
+        /// <summary>
+        /// MaterialName
+        /// </summary>
         public string MaterialName { set; get; }
         public string MaterialSpec { set; get; }
         public string MaterialDrawId { set; get; }
@@ -2022,6 +2025,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public decimal Id_Key { set; get; }
 
         #endregion Model
+
     }
     #endregion
     #endregion

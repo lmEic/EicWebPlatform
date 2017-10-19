@@ -37,10 +37,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
-                sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime / 60 WHEN 'UPH' THEN 60 / StandardProductionTime ");
+                sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime* ProductCoefficient  WHEN 'UPH' THEN 3600* ProductCoefficient / StandardProductionTime ");
                 sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
                 sb.Append("FROM  Pms_StandardProductionFlow ");
-                sb.Append("WHERE(ProductName = '" + productName + "') ");
+                sb.Append("WHERE(ProductName = '" + productName + "') AND (IsValid = 1) ");
                 sb.Append("GROUP BY ProductName ");
                 string sqltext = sb.ToString();
                 return DbHelper.Bpm.LoadEntities<ProductFlowSummaryVm>(sqltext).ToList().FirstOrDefault();
@@ -111,7 +111,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
     public class DailyProductionReportRepository : BpmRepositoryBase<DailyProductionReportModel>, IDailyProductionReportRepository
     { }
 
-    
+
 
 
 

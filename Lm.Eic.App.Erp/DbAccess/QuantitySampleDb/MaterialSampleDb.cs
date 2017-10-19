@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             if (allOrderId == null || allOrderId.Count <= 0) return masterialAllinfo;
             allOrderId.ForEach(e =>
             {
-                if (masterialAllinfo.Count < 200)
+                if (masterialAllinfo.Count < 1000)
                     masterialAllinfo.AddRange(FindMaterialBy(e));
             });
             return masterialAllinfo;
@@ -108,7 +108,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// <param name="searchStartDate"></param>
         /// <param name="searchEndDate"></param>
         /// <returns></returns>
-        private List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
+        public List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
         {
             List<string> eeturnOrderList = new List<string>();
             if (searchEndDate >= searchStartDate)
@@ -206,9 +206,17 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// <returns></returns>
         public List<string> GetAllMaterialOrderBy(DateTime searchDate, string department)
         {
-
             List<string> OrderId = new List<string>();
-            string sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = '{0}') AND (TA009='{1}') AND (TA035 NOT LIKE '%镭射雕刻%') order by TA001", department, searchDate.ToDateTimeShortStr());
+            string sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = '{0}') AND (TA003='{1}') AND (TA035 NOT LIKE '%镭射雕刻%') order by TA001", department, searchDate.ToDateTimeShortStr());
+            if (department == "MS2")
+            {
+                sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = '{0}') AND (TA003='{1}') AND (TA035 NOT LIKE '%镭射雕刻%') AND NOT TA001='527' order by TA001", department, searchDate.ToDateTimeShortStr());
+            }
+            if (department == "MS10")
+            {
+                sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE    (TA003='{0}') AND (TA035 NOT LIKE '%镭射雕刻%') AND  TA001='527' order by TA001", searchDate.ToDateTimeShortStr());
+            }
+
             DataTable dt110 = DbHelper.Erp.LoadTable(sql);
             if (dt110.Rows.Count > 0)
             {

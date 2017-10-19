@@ -29,6 +29,12 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
         templateUrl: wfUrlPrefix + 'WFInternalContactForm'
     });
     //--------------华为协同--------------------
+    $stateProvider.state('hwMaterialBaseInfo', {//物料基础信息
+        templateUrl: hwUrlPrefix + 'HwMaterialBaseInfo'
+    });
+    $stateProvider.state('hwMaterialBomInfo', {//物料BOM信息
+        templateUrl: hwUrlPrefix + 'HwMaterialBomInfo'
+    });
     $stateProvider.state('hwManpowerInput', {//人力管理
         templateUrl: hwUrlPrefix + 'HwManpowerInput'
     });
@@ -37,14 +43,5 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     });
     $stateProvider.state('hwInventoryDetail', {//库存明细
         templateUrl: hwUrlPrefix + 'HwInventoryDetail'
-    });
-    $stateProvider.state('hwMakingVoDetail', {//在制明细
-        templateUrl: hwUrlPrefix + 'HwMakingVoDetail'
-    });
-    $stateProvider.state('hwShipmentVoDetail', {//发料明细
-        templateUrl: hwUrlPrefix + 'HwShipmentVoDetail'
-    });
-    $stateProvider.state('hwPurchaseOnWay', {//采购在途
-        templateUrl: hwUrlPrefix + 'HwPurchaseOnWay'
     });
 })

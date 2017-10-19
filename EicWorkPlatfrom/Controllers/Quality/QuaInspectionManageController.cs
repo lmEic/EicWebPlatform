@@ -11,6 +11,8 @@ using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
+using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -332,19 +334,37 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 上传FQC检验采集数据附件
+        /// 删除抽检项目
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspecitonItem"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DeleteIqcInspectionItemData(string orderid, string materialId, string inspectionItem)
+        {
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.DetailDatasGather.DeleteInspectionItems(orderid, materialId, inspectionItem);
+            return Json(opResult);
+        }
+        /// <summary>
+        /// 上传IQC/FQC检验采集数据附件
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
+        public JsonResult UploadGatherDataAttachFile(HttpPostedFileBase file)
         {
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath, addchangeFileName);
-            return Json("OK");
+            FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.InspectionGatherDataFile, dto.ModuleName);
+            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+            }
+            return Json(result);
         }
-
         /// <summary>
         /// 存储采集的数据
         /// </summary>
@@ -357,8 +377,8 @@ namespace EicWorkPlatfrom.Controllers
             if (gatherData == null) return Json(new OpResult("数据为空", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)
             {
-                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
-                gatherData.SiteRootPath = this.SiteRootPath;
+                gatherData.DocumentPath = Path.Combine(gatherData.DocumentPath, gatherData.FileName);
+                gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
             var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcGatherDatas(gatherData);
             return Json(opResult);
@@ -413,20 +433,6 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 上传FQC检验采集数据附件
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
-        {
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath, addchangeFileName);
-            return Json("OK");
-        }
-
-        /// <summary>
         /// 保存FQC检验采集数据
         /// </summary>
         /// <returns></returns>
@@ -436,8 +442,9 @@ namespace EicWorkPlatfrom.Controllers
             if (gatherData == null) return Json(new OpResult("数据为空，保存失败", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)//上传文件
             {
-                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
-                gatherData.SiteRootPath = this.SiteRootPath;
+                gatherData.DocumentPath = Path.Combine(gatherData.DocumentPath, gatherData.FileName);
+                ///除掉根目录
+                gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
@@ -461,7 +468,20 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult GetInspectionFormManageOfIqcDatas(string formQueryString, int queryOpModel, DateTime dateFrom, DateTime dateTo)
         {
             var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerDatas(formQueryString, queryOpModel, dateFrom, dateTo);
+            TempData["QuaDatas"] = datas;
             return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 导出EXCEl表清册
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult ExportDateToExcel()
+        {
+            var datas = TempData["QuaDatas"] as List<InspectionIqcMasterModel>;
+            //Excel
+            var dlfm = InspectionService.InspectionFormManager.IqcFromManager.BuildDownLoadFileModel(datas);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 查找已经有生成项目
@@ -533,7 +553,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult QueryFqcERPOrderInspectionInfos(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetFqcERPDatasBy(selectedDepartment, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetERPOrderAndMaterialBy(selectedDepartment, dateFrom, dateTo);
 
             return DateJsonResult(datas);
         }

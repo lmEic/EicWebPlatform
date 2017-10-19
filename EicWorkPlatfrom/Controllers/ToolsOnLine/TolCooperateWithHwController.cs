@@ -12,7 +12,7 @@ namespace EicWorkPlatfrom.Controllers
     /// <summary>
     /// 华为协同控制器
     /// </summary>
-    public class TolCooperateWithHwController : Controller
+    public class TolCooperateWithHwController : EicBaseController
     {
         //
         // GET: /TolCooperateWithHw/
@@ -22,6 +22,38 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        #region HwMaterialBaseInfo
+        public ActionResult HwMaterialBaseInfo()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public ContentResult GetMaterialBaseInfo(string materialId)
+        {
+            var entity = HwCollaborationService.MaterialManager.BaseInfoSettor.GetConfigData(materialId);
+            return DateJsonResult(entity);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveMaterialBase(List<HwCollaborationDataConfigModel> entities)
+        {
+            var result = HwCollaborationService.MaterialManager.BaseInfoSettor.SynchronizeDatas(entities);
+            return Json(result);
+        }
+        #endregion
+
+        #region HwMaterialBomInfo
+        public ActionResult HwMaterialBomInfo()
+        {
+            return View();
+        }
+
+        [NoAuthenCheck]
+        public JsonResult SaveMaterialBom(HwCollaborationDataConfigModel entity)
+        {
+            var result = HwCollaborationService.MaterialManager.KeyBomManager.SynchronizeDatas(entity);
+            return Json(result);
+        }
+        #endregion
 
         #region HwManpowerInput
         public ActionResult HwManpowerInput()
@@ -50,35 +82,33 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         #endregion
 
-        #region HwInventoryDetail
+        #region Hw Material  Board Detail
         public ActionResult HwInventoryDetail()
         {
             return View();
         }
-        #endregion
-
-        #region HwMakingVoDetail
-        public ActionResult HwMakingVoDetail()
+        [NoAuthenCheck]
+        public JsonResult GetMaterialDetails()
         {
-            return View();
+            var dto = HwCollaborationService.MaterialManager.AutoLoadDataFromErp();
+            var entity = new
+            {
+                inventoryEntity = dto.InvertoryDto,
+                makingEntity = dto.MakingDto,
+                shippingEntity = dto.ShippmentDto,
+                purchaseEntity = dto.PurchaseDto
+            };
+            return Json(entity, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveMaterialInventory(HwCollaborationDataTransferModel entity)
+        {
+            var result = HwCollaborationService.MaterialManager.InventoryManager.SynchronizeDatas(entity);
+            return Json(result);
         }
         #endregion
-
-        #region HwShipmentVoDetail
-        public ActionResult HwShipmentVoDetail()
-        {
-            return View();
-        }
-        #endregion
-
-        #region HwPurchaseOnWay
-        public ActionResult HwPurchaseOnWay()
-        {
-            return View();
-        }
-        #endregion
-
     }
 }

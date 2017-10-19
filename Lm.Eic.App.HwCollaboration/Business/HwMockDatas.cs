@@ -52,17 +52,43 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 {
                     factoryInventoryList = new List<SccFactoryInventory>() {
                         new SccFactoryInventory() {
-                              customerCode="0971",
-                              faultQty=10,
+                              customerCode="157",
+                              faultQty=0,
                               goodQuantity =1000,
-                              inspectQty =100,
+                              inspectQty =0,
                               stockTime=DateTime.Now.ToDateStr(),
                               vendorFactoryCode="421072-001",
-                              vendorItemCode="111111111111",
+                              vendorItemCode="349213C0350P0RT",
                               vendorItemRevision="",
                               vendorLocation="",
                               vendorStock=""
                         },
+                    }
+                };
+            }
+        }
+
+        public static VendorItemRelationDto VendorItems
+        {
+            get
+            {
+                return new VendorItemRelationDto
+                {
+                    vendorItemList = new List<SccVendorItemRelationVO>() {
+                        new SccVendorItemRelationVO() {
+                             itemCategory= "BOSA Pigtail",
+                             vendorItemCode= "349213C0350P0RT",
+                             customerVendorCode= "157",
+                             leadTime= 0,
+                             vendorItemDesc= "APD",
+                             unitOfMeasure= "PCS",
+                             customerItemCode= "NA",
+                             vendorProductModel= "",
+                             customerProductModel= "",
+                             inventoryType= "FG",
+                             goodPercent= 1,
+                             lifeCycleStatus= "MP"
+                        }
                     }
                 };
             }
