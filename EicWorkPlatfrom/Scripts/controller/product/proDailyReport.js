@@ -115,7 +115,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ProductId: null,
         ProductName: null,
         ProcessesIndex: 0,
-        ProcessesSign: 中继站,
+        ProcessesSign: '中继站',
         InputType: 'A',
         IsValid: 1,
         IsVisualization: 0,
