@@ -47,8 +47,8 @@
                                         <th>需生产数</th>
                                         <th>预计开工日期</th>
                                         <th>预计完工日期</th>
-                                        <th>状态</th>
-                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                        <th>ERP状态</th>
+                                        <th>分配操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,22 +57,22 @@
                                         <td>{{item.ProductName}}</td>
                                         <td>{{item.ProductSpec}}</td>
                                         <td>{{item.ProduceNumber - item.PutInStoreNumber}}</td>
-                                        <td>{{item.PlanStartProductionDate}}</td>
-                                        <td>{{item.PlanEndProductionDate}}</td>
+                                        <td>{{item.ProductionDate}}</td>
+                                        <td>{{item.ValidDate}}</td>
                                         <td>
-                                            <button ng-show="item.ProductStatus=='已分配'" class="btn btn-danger">
+                                            <button ng-show="item.IsValid=='True'" class="btn btn-danger">
                                                 {{item.ProductStatus}} <i class="fa fa-flag-checkered"></i>
                                             </button>
-                                            <button ng-show="item.ProductStatus !='已分配'" class="btn btn-default">
+                                            <button ng-show="item.IsValid =='False'" class="btn btn-default">
                                                 {{item.ProductStatus}}<i class="fa fa-flag"></i>
                                             </button>
                                         </td>
                                         <td>
-                                            <button ng-show="item.ProductStatus !='已分配'" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
-                                                确认分派 <i class="fa fa-angle-double-right"></i>
+                                            <button ng-show="item.IsValid =='False'" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
+                                                未分配<i class="fa fa-angle-double-right"></i>
                                             </button>
-                                            <button ng-show="item.ProductStatus=='已分配'" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
-                                                <i class="fa fa-angle-double-left"></i>  取消分派
+                                            <button ng-show="item.IsValid=='True'" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
+                                                <i class="fa fa-angle-double-left"></i> 已分配
                                             </button>
                                         </td>
                                     </tr>
@@ -89,43 +89,43 @@
                     </div>
                 </div>
             </div>
-            <div bs-pane data-title="已经分配生产工单" data-name="qryTodayHaveDispatchTab">
-                <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
-                    <div class="table-responsive" cg-busy="{promise:searchPromise}">
-                        <table class="table table-condensed table-bordered table-hover">
-                            <thead>
-                                <tr class="info">
-                                    <th>单号</th>
-                                    <th>品名</th>
-                                    <th>需生产量</th>
-                                    <th>开工日期</th>
-                                    <th>完工日期</th>
-                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="item in vmManager.todayHaveDispatchDatas track by $index">
-                                    <td>{{item.OrderId}}</td>
-                                    <td title="{{item.ProductSpec}}">
-                                        {{item.ProductName}}
-                                    </td>
-                                    <td>{{item.ProduceNumber - item.PutInStoreNumber}}</td>
-                                    <td>{{item.ProductionDate}}</td>
-                                    <td>{{item.ValidDate}}</td>
-                                    <td>
-                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.editHaveDispatchOrder(item)" title="编辑">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-danger" ng-click="vmManager.deleteHaveDispatchOrder(item)" title="删除">
-                                            <i class="fa fa-remove"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+            @*<div bs-pane data-title="已经分配生产工单" data-name="qryTodayHaveDispatchTab">
+                    <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
+                        <div class="table-responsive" cg-busy="{promise:searchPromise}">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr class="info">
+                                        <th>单号</th>
+                                        <th>品名</th>
+                                        <th>需生产量</th>
+                                        <th>开工日期</th>
+                                        <th>完工日期</th>
+                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.todayHaveDispatchDatas track by $index">
+                                        <td>{{item.OrderId}}</td>
+                                        <td title="{{item.ProductSpec}}">
+                                            {{item.ProductName}}
+                                        </td>
+                                        <td>{{item.ProduceNumber - item.PutInStoreNumber}}</td>
+                                        <td>{{item.ProductionDate}}</td>
+                                        <td>{{item.ValidDate}}</td>
+                                        <td>
+                                            <button class="btn btn-xs btn-primary" ng-click="vmManager.editHaveDispatchOrder(item)" title="编辑">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-xs btn-danger" ng-click="vmManager.deleteHaveDispatchOrder(item)" title="删除">
+                                                <i class="fa fa-remove"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div>*@
         </div>
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:45%">
             <content dialog-title class="fa fa-bell">

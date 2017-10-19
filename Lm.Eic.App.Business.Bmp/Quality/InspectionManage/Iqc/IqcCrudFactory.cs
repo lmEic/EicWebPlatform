@@ -181,7 +181,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-
+        internal List<InspectionIqcMasterModel> GetIqcMasterDatasBy(DateTime startTime, DateTime endTime)
+        {
+            return irep.Entities.Where(e => e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -387,7 +390,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().OrderBy(f => f.MaterialInDate).ToList();
         }
-
+        /// <summary>
+        /// 删除抽检项目
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        internal OpResult DeleteInspectionItems(string orderid, string materialId, string inspectionItem)
+        {
+            return irep.Delete(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToOpResult_Delete(OpContext);
+        }
         ///// <summary>
         /////  判定些物料在二年内是否有录入记录 
         ///// </summary>

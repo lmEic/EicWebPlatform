@@ -382,7 +382,6 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion
-
         /// <summary>
         /// 获取图像Base64Url
         /// </summary>
@@ -547,13 +546,9 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         public const string Temp = "Temp";
         /// <summary>
-        /// FQC检验采集数据附件文件夹
+        /// FQC/IQC检验采集数据附件文件夹
         /// </summary>
-        public const string FqcInspectionGatherDataFile = "FqcInspectionGatherDataFile";
-        /// <summary>
-        /// IQC检验采集数据附件文件夹
-        /// </summary>
-        public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
+        public const string InspectionGatherDataFile = "InspectionGatherDataFile";
         /// <summary>
         /// RMA文档文件夹
         /// </summary>
@@ -591,7 +586,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 文件预览路径
         /// </summary>
-        public string PreviewFileName { get { return ""; } }
+        public string PreviewFileName { get; set; }
         /// <summary>
         /// 创建实例
         /// </summary>

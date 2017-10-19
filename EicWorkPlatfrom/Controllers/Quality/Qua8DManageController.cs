@@ -9,6 +9,7 @@ using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -96,8 +97,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetQua8DReportStepData(string reportId, ShowStepViewModel step)
         {
-            var data = Qua8DService.Qua8DManager.Qua8DDatail.Get8DStepDetailDatasBy(reportId, step);
-            return Json(data, JsonRequestBehavior.AllowGet);
+            var stepData = Qua8DService.Qua8DManager.Qua8DDatail.Get8DStepDetailDatasBy(reportId, step);
+            
+            return Json(stepData, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -141,7 +143,13 @@ namespace EicWorkPlatfrom.Controllers
             {
                 dto.DocumentFilePath = filePath;
                 dto.FileName = customizeFileName;
+                string imgFilePath = (result.DocumentFilePath + "\\" + result.FileName);
+                var imgBytes = imgFilePath.ToPhotoByte();
+                result.PreviewFileName = imgBytes.ToBase64Url();
             }
+
+
+
             return Json(result);
         }
         #endregion

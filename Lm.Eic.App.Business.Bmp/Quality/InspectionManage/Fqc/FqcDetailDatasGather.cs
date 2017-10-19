@@ -14,10 +14,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult storeInspectionDetial(InspectionFqcDetailModel model, string siteRootPath)
+        public OpResult storeInspectionDetial(InspectionFqcDetailModel model)
         {
-            if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
-                return InspectionManagerCrudFactory.FqcDetailCrud.UploadFileFqcInspectionDetail(model, siteRootPath);
+            //if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
+            //    return InspectionManagerCrudFactory.FqcDetailCrud.UploadFileFqcInspectionDetail(model, siteRootPath);
             return InspectionManagerCrudFactory.FqcDetailCrud.Store(model, true);
         }
         /// <summary>

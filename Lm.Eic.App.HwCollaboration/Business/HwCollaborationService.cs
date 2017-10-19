@@ -21,29 +21,12 @@ namespace Lm.Eic.App.HwCollaboration.Business
         {
             get { return OBulider.BuildInstance<ManPowerManager>(); }
         }
-
         /// <summary>
-        /// 库存明细管理
+        /// 物料管理器
         /// </summary>
-        public static MaterialInventoryManager InventoryManager
+        public static MaterialManager MaterialManager
         {
-            get { return OBulider.BuildInstance<MaterialInventoryManager>(); }
-        }
-
-        /// <summary>
-        /// 在制管理
-        /// </summary>
-        public static MaterialMakingManager MakingManager
-        {
-            get { return OBulider.BuildInstance<MaterialMakingManager>(); }
-        }
-
-        /// <summary>
-        /// 发料管理
-        /// </summary>
-        public static MaterialShipmentManager ShipmentManager
-        {
-            get { return OBulider.BuildInstance<MaterialShipmentManager>(); }
+            get { return OBulider.BuildInstance<MaterialManager>(); }
         }
     }
 }

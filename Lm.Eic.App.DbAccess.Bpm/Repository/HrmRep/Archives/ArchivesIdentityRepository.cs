@@ -43,6 +43,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                     workerId = newid.ToString().PadLeft(6, '0');
                 }
             }
+            else
+            {
+                workerId = string.Format("{0}00001", workerIdNumType);
+            }
             return workerId;
         }
 

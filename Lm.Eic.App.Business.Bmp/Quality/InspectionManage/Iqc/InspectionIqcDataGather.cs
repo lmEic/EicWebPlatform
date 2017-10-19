@@ -39,7 +39,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (model == null) return opReulst;
             ///输入的数据不为空值
             if (model.InspectionItemDatas == null || model.InspectionItemDatas == string.Empty) return opReulst;
-            opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model, model.SiteRootPath);
+            opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model);
             if (opReulst.Result)
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
             return opReulst;
@@ -73,13 +73,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
+
                 ///应该先从 Qms_IqcInspectionDetail 表上找  如果找不到再按规格载入 要测试的数据
                 var haveInspectionDatas = FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
                 if (haveInspectionDatas != null && haveInspectionDatas.Count > 0) return haveInspectionDatas;
-                var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
+                var orderMaterialInfo = GetPuroductSupplierInfo(orderId).Find(e => e.ProductID == materialId);
                 if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryVM>();
                 var iqcNeedInspectionsItemdatas = ItemCondition.getIqcNeedInspectionItemDatas(orderId, materialId, orderMaterialInfo.ProduceInDate);
-
                 if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryVM>();
                 //保存单头数据
                 return HandleInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
@@ -91,6 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
+
         /// <summary>
         /// 处理数据总表
         /// </summary>
@@ -103,7 +104,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             InspectionItemDataSummaryVM model = null;
             iqcNeedInspectionsItemdatas.ForEach(m =>
             {
-                var inspectionMode = GetJudgeInspectionMode("IQC", m.MaterialId, m.InspectionItem);
+                var inspectionMode = GetJudgeIQCInspectionMode("IQC", m.MaterialId);
                 ///得到检验方法数据
                 var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, orderMaterialInfo.ProduceNumber, inspectionMode);
                 ///得到已经检验的数据  
@@ -132,6 +133,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///明细表中查找
             var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId, materialId);
             if (iqcHaveInspectionData == null || iqcHaveInspectionData.Count == 0) return returnList;
+            var materialinfo = QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId).Find(e => e.ProductID == materialId);
+            if (materialinfo == null) return returnList;
             ///物料配置项中查找
             var iqcItemConfigdatas = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             if (iqcItemConfigdatas == null || iqcItemConfigdatas.Count == 0) return returnList;
@@ -143,6 +146,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                {
                    OrderId = orderId,
                    MaterialId = materialId,
+
+                   MaterialName = materialinfo.ProductName,
+                   MaterialSpec = materialinfo.ProductStandard,
+                   MaterialDrawId = materialinfo.ProductDrawID,
+                   MaterialSupplier = materialinfo.ProductSupplier,
+
+                   Department = string.Empty,
+                   ClassType = string.Empty,
+                   InspectionDataGatherType = string.Empty,
+                   InspectionDataTimeRegion = DateTime.Now.ToDateTimeStr(),
+                   InspectionItemSumCount = 0,
+                   InspectionNGCount = 0,
+                   InStorageOrderId = string.Empty,
+                   MachineId = string.Empty,
+                   MaterialCount = 0,
+                   OrderIdNumber = 0,
+                   ProductDepartment = string.Empty,
+                   SiteRootPath = string.Empty,
                    InspectionItem = m.InspecitonItem,
                    EquipmentId = m.EquipmentId,
                    MaterialInDate = m.MaterialInDate,
@@ -165,6 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    DocumentPath = m.DocumentPath,
                    Memo = m.Memo,
                    OpPerson = m.OpPerson,
+                   OpSign = m.OpSign,
                    InspectionMethod = string.Empty,
                    InspectionMode = m.InspectionMode,
                    Id_Key = m.Id_Key,
@@ -175,6 +197,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    iqcItemConfigdata = InspectionManagerCrudFactory.IqcItemConfigCrud.FindFirstOrDefaultDataBy(m.InspecitonItem);
                if (iqcItemConfigdata != null)
                {
+
                    model.SizeLSL = iqcItemConfigdata.SizeLSL;
                    model.SizeUSL = iqcItemConfigdata.SizeUSL;
                    model.SizeMemo = iqcItemConfigdata.SizeMemo;
@@ -185,11 +208,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                        model.EquipmentId = iqcItemConfigdata.EquipmentId;
                    //数据采集类型
                    model.InspectionDataGatherType = iqcItemConfigdata.InspectionDataGatherType;
-                   if (model.InspectionDataGatherType == "D" && model.InspectionItemResult == "OK")
+                   if ((model.InspectionDataGatherType == "D" || model.InspectionDataGatherType == "E" || model.InspectionDataGatherType == "F") && model.InspectionItemResult == "OK")
                    { model.HaveFinishDataNumber = model.NeedFinishDataNumber; }
                    //如果没有检验方式 再去按规则去生成
                    if (model.InspectionMode == string.Empty)
-                       model.InspectionMode = GetJudgeInspectionMode("IQC", m.MaterialId, m.InspecitonItem);
+                       model.InspectionMode = GetJudgeIQCInspectionMode("IQC", m.MaterialId);
                    var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(model.InspectionLevel, model.InspectionAQL, m.MaterialCount, model.InspectionMode);
                    if (inspectionModeConfigModelData != null)
                    {
@@ -306,7 +329,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private string GetJudgeInspectionMode(string InspectionClass, string materialId, string InspecitonItem)
+        private string GetJudgeIQCInspectionMode(string InspectionClass, string materialId)
         {
             try
             {
@@ -373,23 +396,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (masterdatas == null || masterdatas.Count == 0) return retrunListdatas;
             masterdatas.ForEach(e =>
             {
-                iqcMasterDatas = MasterDatasGather.GetIqcMasterModel(e.OrderID, e.ProductID);
-                if (iqcMasterDatas == null)
+                iqcMasterDatas = new InspectionIqcMasterModel()
                 {
-                    iqcMasterDatas = new InspectionIqcMasterModel()
-                    {
-                        OrderId = e.OrderID,
-                        MaterialId = e.ProductID,
-                        MaterialName = e.ProductName,
-                        MaterialSpec = e.ProductStandard,
-                        MaterialSupplier = e.ProductSupplier,
-                        MaterialDrawId = e.ProductDrawID,
-                        MaterialInDate = e.ProduceInDate,
-                        MaterialCount = e.ProduceNumber,
-                        InspectionStatus = "未抽检",
-                    };
-                }
-                if (!retrunListdatas.Contains(iqcMasterDatas) && iqcMasterDatas != null)
+                    OrderId = e.OrderID,
+                    MaterialId = e.ProductID,
+                    MaterialName = e.ProductName,
+                    MaterialSpec = e.ProductStandard,
+                    MaterialSupplier = e.ProductSupplier,
+                    MaterialDrawId = e.ProductDrawID,
+                    MaterialInDate = e.ProduceInDate,
+                    MaterialCount = e.ProduceNumber,
+                };
+                var masterInfo = MasterDatasGather.GetIqcMasterModel(e.OrderID, e.ProductID);
+                iqcMasterDatas.InspectionStatus = (masterInfo == null ? "未抽检" : masterInfo.InspectionStatus);
+                if (!retrunListdatas.Contains(iqcMasterDatas))
                     retrunListdatas.Add(iqcMasterDatas);
             });
             return retrunListdatas;

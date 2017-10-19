@@ -6,6 +6,20 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.HwCollaboration.Model
 {
+
+    /// <summary>
+    /// 物料组合Dto
+    /// </summary>
+    public class MaterialComposeDto
+    {
+        public FactoryInventoryDto InvertoryDto { get; set; }
+
+        public MaterialMakingDto MakingDto { get; set; }
+
+        public MaterialShipmentDto ShippmentDto { get; set; }
+
+        public PurchaseOnWayDto PurchaseDto { get; set; }
+    }
     /// <summary>
     /// 库存明细数据传输Dto
     /// </summary>
@@ -26,7 +40,7 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// </summary>
         public string vendorFactoryCode { get; set; }
         /// <summary>
-        /// 供应商物料编码
+        /// 供应商物料编码 厂内料号
         /// 非空
         /// </summary>
         public string vendorItemCode { get; set; }

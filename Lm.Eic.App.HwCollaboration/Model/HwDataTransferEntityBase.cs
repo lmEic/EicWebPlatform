@@ -42,5 +42,9 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// 操作模块
         /// </summary>
         public string OpModule { get; set; }
+        /// <summary>
+        /// 数据状态：0和1  0表示已废弃，1表示使用中
+        /// </summary>
+        public int DataStatus { get; set; }
     }
 }

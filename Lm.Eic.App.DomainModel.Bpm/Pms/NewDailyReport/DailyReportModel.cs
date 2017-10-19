@@ -25,7 +25,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _productid;
         /// <summary>
-        ///物料品号
+        ///品号
         /// </summary>
         public string ProductId
         {
@@ -43,16 +43,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private int _processesindex;
         /// <summary>
-        ///序号
+        ///序列号
         /// </summary>
         public int ProcessesIndex
         {
             set { _processesindex = value; }
             get { return _processesindex; }
         }
+        private int _productcoefficient;
+        /// <summary>
+        ///生产系数
+        /// </summary>
+        public int ProductCoefficient
+        {
+            set { _productcoefficient = value; }
+            get { return _productcoefficient; }
+        }
         private string _processessign;
         /// <summary>
-        ///标志
+        ///标识
         /// </summary>
         public string ProcessesSign
         {
@@ -77,8 +86,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _processestype = value; }
             get { return _processestype; }
         }
-
-
         private string _standardproductiontimetype;
         /// <summary>
         ///标准工时类型
@@ -87,24 +94,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _standardproductiontimetype = value; }
             get { return _standardproductiontimetype; }
-        }
-        private double _standardproductiontime;
-        /// <summary>
-        ///标准工时
-        /// </summary>
-        public double StandardProductionTime
-        {
-            set { _standardproductiontime = value; }
-            get { return _standardproductiontime; }
-        }
-        private double _uph;
-        /// <summary>
-        ///UPH
-        /// </summary>
-        public double UPH
-        {
-            set { _uph = value; }
-            get { return _uph; }
         }
         private double _ups;
         /// <summary>
@@ -115,6 +104,33 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _ups = value; }
             get { return _ups; }
         }
+        private double _standardproductiontime;
+        /// <summary>
+        ///标准工时
+        /// </summary>
+        public double StandardProductionTime
+        {
+            set { _standardproductiontime = value; }
+            get { return _standardproductiontime; }
+        }
+        private string _isvalid;
+        /// <summary>
+        ///是否可见
+        /// </summary>
+        public string IsValid
+        {
+            set { _isvalid = value; }
+            get { return _isvalid; }
+        }
+        private string _isvisualization;
+        /// <summary>
+        ///是否可视化
+        /// </summary>
+        public string IsVisualization
+        {
+            set { _isvisualization = value; }
+            get { return _isvisualization; }
+        }
         private double _machinepersonratio;
         /// <summary>
         ///人机配比
@@ -123,6 +139,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _machinepersonratio = value; }
             get { return _machinepersonratio; }
+        }
+        private double _uph;
+        /// <summary>
+        ///UPH
+        /// </summary>
+        public double UPH
+        {
+            set { _uph = value; }
+            get { return _uph; }
+        }
+        private string _inputtype;
+        /// <summary>
+        ///输入类型
+        /// </summary>
+        public string InputType
+        {
+            set { _inputtype = value; }
+            get { return _inputtype; }
         }
         private string _mouldid;
         /// <summary>
@@ -142,20 +176,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _mouldname = value; }
             get { return _mouldname; }
         }
-
-        //ParameterKey
-        private string _parameterkey;
-        /// <summary>
-        ///关键字
-        /// </summary>
-        public string ParameterKey
-        {
-            set { _parameterkey = value; }
-            get { return _parameterkey; }
-        }
         private int _mouldholecount;
         /// <summary>
-        ///模穴数量
+        ///模穴数
         /// </summary>
         public int MouldHoleCount
         {
@@ -171,36 +194,45 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _remark = value; }
             get { return _remark; }
         }
+        private string _parameterkey;
+        /// <summary>
+        ///关键字段
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
+        }
         private string _opperson;
         /// <summary>
-        ///操作人
+        ///
         /// </summary>
         public string OpPerson
         {
             set { _opperson = value; }
             get { return _opperson; }
         }
-        private string _opsign;
-        /// <summary>
-        ///操作标识
-        /// </summary>
-        public string OpSign
-        {
-            set { _opsign = value; }
-            get { return _opsign; }
-        }
         private DateTime _opdate;
         /// <summary>
-        ///操作日期
+        ///
         /// </summary>
         public DateTime OpDate
         {
             set { _opdate = value; }
             get { return _opdate; }
         }
+        private string _opsign;
+        /// <summary>
+        ///
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
         private DateTime _optime;
         /// <summary>
-        ///操作时间
+        ///
         /// </summary>
         public DateTime OpTime
         {
@@ -209,7 +241,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private decimal _id_key;
         /// <summary>
-        ///自增键
+        ///
         /// </summary>
         public decimal Id_Key
         {
@@ -272,20 +304,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _productspec = value; }
             get { return _productspec; }
         }
-        private int _putinstorenumber;
+        private double _putinstorenumber;
         /// <summary>
         ///ERP入库数
         /// </summary>
-        public int PutInStoreNumber
+        public double PutInStoreNumber
         {
             set { _putinstorenumber = value; }
             get { return _putinstorenumber; }
         }
-        private int _producenumber;
+        private double _producenumber;
         /// <summary>
         ///预产量
         /// </summary>
-        public int ProduceNumber
+        public double ProduceNumber
         {
             set { _producenumber = value; }
             get { return _producenumber; }
@@ -453,6 +485,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _orderquantity = value; }
             get { return _orderquantity; }
+        }
+        private int _processesIndex;
+        /// <summary>
+        ///工序名称
+        /// </summary>
+        public int ProcessesIndex
+        {
+            set { _processesIndex = value; }
+            get { return _processesIndex; }
         }
         private string _processesname;
         /// <summary>
@@ -799,6 +840,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         /// </summary>
         public string ProductName { get; set; }
         /// <summary>
+        /// 品号
+        /// </summary>
+        public string ProductId { get; set; }
+        /// <summary>
         /// 工序总数
         /// </summary>
         public int ProductFlowCount { get; set; }
@@ -807,6 +852,45 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         /// 总工时
         /// </summary>
         public double StandardHoursCount { get; set; }
+    }
+    /// <summary>
+    /// 日报工序表统计数据
+    /// </summary>
+    public class ProductFlowCountDatasVm
+    {
+        /// <summary>
+        /// 产品品名
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// 产品品名
+        /// </summary>
+        public string OrderId { get; set; }
+        /// <summary>
+        /// 工序序号
+        /// </summary>
+        public int ProcessesIndex { get; set; }
+        /// <summary>
+        /// 工艺名称
+        /// </summary>
+        public string ProcessesName { get; set; }
+        /// <summary>
+        /// 输入类型 
+        /// </summary>
+        public string InputType { get; set; }
+        /// <summary>
+        ///工单生产数量
+        /// </summary>
+        public double OrderProductNumber { get; set; }
+        /// <summary>
+        ///工序已录入数量
+        /// </summary>
+        public double OrderHavePutInNumber { get; set; }
+        /// <summary>
+        ///工序需录入数量
+        /// </summary>
+        public double OrderNeedPutInNumber { get; set; }
+
     }
     #endregion
 }

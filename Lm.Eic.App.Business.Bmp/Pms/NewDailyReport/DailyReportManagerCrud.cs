@@ -73,22 +73,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             try
             {
-                SetFixFieldValue(modelList, OpMode.Add);
+                OpResult result = OpResult.SetSuccessResult("数据初始操作!", true);
+                // SetFixFieldValue(modelList, OpMode.Add);
                 //处理内部内容 UPS　UPS处理
                 modelList.ForEach((m) =>
                 {
-                    if (m.StandardProductionTimeType == "UPH")
-                    {
-                        m.UPH = m.StandardProductionTime;
-                        m.UPS = Math.Round(3600 / m.StandardProductionTime, 4);
-                    }
-                    else
-                    {
-                        m.UPH = Math.Round(3600 / m.StandardProductionTime, 4);
-                        m.UPS = m.StandardProductionTime;
-                    }
+                    if (result.Result)
+                        result = Store(m);
                 });
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -120,11 +114,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             if (model.StandardProductionTimeType == "UPH")
             {
                 model.UPH = model.StandardProductionTime;
-                model.UPS = 3600 / model.StandardProductionTime;
+                model.UPS = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
             }
             else
             {
-                model.UPH = 3600 / model.StandardProductionTime;
+                model.UPH = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
                 model.UPS = model.StandardProductionTime;
             }
             //此工艺是否已经存在
@@ -133,7 +127,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
             return irep.Insert(model).ToOpResult(OpContext);
         }
-
         /// <summary>
         /// 编辑
         /// </summary>
@@ -155,6 +148,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
                 : OpResult.SetErrorResult("未执行任何操作");
         }
+
+
+
         #endregion
         /// <summary>
         /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名 工艺名称查询 
@@ -206,6 +202,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string productName)
         {
             return irep.GetProductFlowSummaryDataBy(productName);
+        }
+
+
+
+
+        /// 删除产品工序列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <param name="productName">产品品名</param>
+        /// <returns></returns>
+        public OpResult DeleteSingleProductFlow(string productName, string processesName)
+        {
+            try
+            {
+                return irep.Delete(m => m.ProcessesName == processesName && m.ProductName == productName).ToOpResult_Delete(OpContext);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
     }
 
@@ -273,12 +290,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).OrderBy(e => e.OrderId).ToList();
         }
         internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department).OrderBy(e => e.OrderId).ToList();
+        }
+        internal ProductOrderDispatchModel GetOrderInfoBy(string orderid)
+        {
+            /// 1.要有效
+            return irep.Entities.FirstOrDefault(e => e.OrderId == orderid);
         }
     }
 
@@ -303,6 +325,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(DailyProductionReportModel model)
         {
+            model.InPutDate = model.InPutDate.ToDate();
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
         }
@@ -334,6 +357,30 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         internal bool IsExisOrderid(string orderId)
         {
             return irep.IsExist(e => e.OrderId == orderId);
+        }
+        /// <summary>
+        /// 入库数量
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="orderId"></param>
+        /// <param name="processesName"></param>
+        /// <returns></returns>
+        internal double GetDailyProductionCountBy(string orderId, string processesName)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList().Sum(f => f.TodayProductionCount);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        internal List<DailyProductionReportModel> GetDailyDatasBy(DateTime date, string orderId, string processesName)
+        {
+            DateTime dateShort = date.ToDate();
+            return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList();
+        }
+        internal List<DailyProductionReportModel> GetWorkerDailyDatasBy(string workerId)
+        {
+            return irep.Entities.Where(e => e.WorkerId == workerId).OrderByDescending(e => e.Id_Key).ToList();
         }
         #endregion
     }
