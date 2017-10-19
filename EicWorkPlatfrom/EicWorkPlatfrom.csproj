@@ -1466,7 +1466,7 @@
     <Content Include="Views\Equipment\AstScrapInput.cshtml" />
     <Content Include="Views\ProBoard\JumperWireBoard.cshtml" />
     <Content Include="Views\ProBoard\AuditMaterailBoardTpl.cshtml" />
-    <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportFlowSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportInput.cshtml" />
     <Content Include="Views\ProDailyReport\EditRemarkViewTpl.cshtml" />
     <Content Include="Views\Equipment\AstInputRepairRecord.cshtml" />
@@ -1528,6 +1528,7 @@
     <Content Include="Views\TolCooperateWithHw\HwInventoryDetail.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwMaterialBaseInfo.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwMaterialBomInfo.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

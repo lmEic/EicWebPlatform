@@ -14,10 +14,14 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
 
     //--------------生产日报-------------------------
+    $stateProvider.state('dReportFlowSet', {
+        //生产工艺设定
+        templateUrl: reportUrlPrefix + 'DReportFlowSet'
+    });
     $stateProvider.state('dReportHoursSet', {
         //标准工时设定
         templateUrl: reportUrlPrefix + 'DReportHoursSet'
-    })
+    });
     $stateProvider.state('dRProductOrderDispatching', {
         //生产工单分派管理
         templateUrl: reportUrlPrefix + 'DRProductOrderDispatching'
