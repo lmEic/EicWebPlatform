@@ -31,11 +31,12 @@
         <div class="row">
             <div class="pull-left" style="width:55%;">
                 <div class="bs-callout bs-callout-success">
-                    <div class="table-responsive" style="padding:5px;overflow-y:auto;height:550px">
+                    <div id="editWindow" class="table-responsive" style="padding:5px;overflow-y:auto;height:550px">
                         <div class="row ">
                             <div class="col-md-4 ">
                                 <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="输入品名快速定位" ng-model="filterErpOrder" />
+                                    <input class="form-control" type="text" placeholder="输入品名快速定位" ng-model="filterErpOrder"
+                                           bs-options="item.ProductName as item.ProductName for item in vmManager.erpOrderInfoDatasSet" limit="30" bs-typeahead />
                                     <div class="input-group-addon">
                                         <i class="fa fa-search" ng-click="vmManager.confirmSearch(filterErpOrder)"></i>
                                     </div>
@@ -45,7 +46,7 @@
                         <div class="row ">
                             <div class="h-split"></div>
                         </div>
-                        <div id="editWindow" style="height:540px;overflow-y:auto;">
+                        <div style="height:540px;overflow-y:auto;">
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -81,6 +82,21 @@
             </div>
             @*录入界面*@
             <div pageslide ps-open="vmManager.putInDisplay" ps-side="left" ps-speed="0.25" ps-size="100%" ps-container='editWindow' ps-click-outside="false" ps-key-listener="true">
+                <div class="row ">
+                    <div class="col-md-4 ">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="输入品名快速定位" ng-model="filterErpOrder"
+                                   bs-options="item.ProductName as item.ProductName for item in vmManager.erpOrderInfoDatasSet" limit="30" bs-typeahead />
+                            <div class="input-group-addon">
+                                <i class="fa fa-search" ng-click="vmManager.confirmSearch(filterErpOrder)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="h-split"></div>
+                </div>
+
                 <div style="padding:5px;overflow-y:auto;height:100%">
                     <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <fieldset>
