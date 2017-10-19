@@ -284,7 +284,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                 $scope.vm.ProcessesIndex = 0;
             }
         },
-        //项次添加 
+        //项次添加
         addProductionFlow: function (item) {
             console.log(item);
             vmManager.init();
@@ -345,7 +345,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         vmManager.editWindowDisplay = true;
         focusSetter.processesNameFocus = true;
     };
-    ///删除 
+    ///删除
     operate.deleteItem = function (item) {
         leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
             $scope.$apply(function () {
@@ -558,7 +558,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     //初始化视图
     var initVM = _.clone(uiVM);
     var vmManager = {
-        ///部门 
+        ///部门
         inspectionDataGatherType: 'A',
         department: leeLoginUser.department,
         queryActiveTab: 'qryFolwProcessTab',
@@ -674,7 +674,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
 
-            dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
+            $scope.searchPromise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
                 vmManager.productionFlowDatasSet = datas;
                 vmManager.isShowhavePutInData = false;
                 vmManager.productionFlowDatasSouce = vmManager.productionFlowDatasSet;
@@ -850,7 +850,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     $scope.focus = focusSetter;
 
 });
-/// 生产订单分派  
+/// 生产订单分派
 productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报分派录入视图模型
     var uiVm = {
@@ -876,7 +876,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
     var initVM = _.clone(uiVm);
     var dialog = $scope.dialog = leePopups.dialog();
     var vmManager = {
-        ///部门 
+        ///部门
         department: leeLoginUser.department,
         dispatchActiveTab: 'qryERPFormTab',
         departments: [
