@@ -165,20 +165,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据部门查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1").ToList();
                     case 2: //依据产品品名查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProcessesIndex).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProcessesIndex).ToList();
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.OpDate == inputDate).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.OpDate == inputDate).ToList();
                     case 4: //依据工艺名称查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName && m.ProcessesName == qryDto.ProcessesName).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName && m.ProcessesName == qryDto.ProcessesName).ToList();
                     case 5: //依据工单单号查询
                         {
                             var orderDetails = MocService.OrderManage.GetOrderDetails(qryDto.OrderId);
                             if (orderDetails != null)
                                 qryDto.ProductName = orderDetails.ProductName;
-                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).ToList();
+                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName).ToList();
                         }
                     default:
                         return new List<StandardProductionFlowModel>();
