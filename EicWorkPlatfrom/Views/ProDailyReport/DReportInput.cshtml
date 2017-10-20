@@ -12,7 +12,6 @@
                             data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
                         <span class="caret"></span>
                     </button>
-
                     <label>日期:</label>
                     <input name="queryDate" type="date" class="form-control" format-date ng-model="vmManager.putInDate"
                            focus-setter data-ensure-user-exist style="width:200px;"
@@ -75,10 +74,6 @@
                                      data-datasource="vmManager.erpOrderInfoDatasSource">
                                 </div>*@
                         </div>
-
-
-
-
                     </div>
 
                 </div>
@@ -113,7 +108,7 @@
                         </li>
                     </ul>
                     <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade in active" id="onlyProcessTab" style="background:#FFFFCC; color:#000000">
+                        <div class="tab-pane fade in active" id="onlyProcessTab" style="background:#696969; color:#000000">
                             <div style="padding:5px;">
                                 <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                     <fieldset>
