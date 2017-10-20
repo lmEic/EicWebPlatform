@@ -566,6 +566,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         department: leeLoginUser.department,
         queryActiveTab: 'qryFolwProcessTab',
         putInDisplay: false,
+        inPutMultiermUserInfoTable: false,
         classType: '白班',
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: '晚班' }],
         putInDate: new Date(),
