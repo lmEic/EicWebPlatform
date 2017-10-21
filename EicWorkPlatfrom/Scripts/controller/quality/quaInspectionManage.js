@@ -493,7 +493,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         InspectionMode: null,
         InspectionLevel: null,
         InspectionAQL: null,
-        InspectionDataGatherType: null,
+        InspectionDataGatherType: 'A',
         OpPerson: null,
         OpDate: null,
         OpTime: null,
