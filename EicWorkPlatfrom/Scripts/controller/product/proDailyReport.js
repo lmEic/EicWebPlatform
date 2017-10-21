@@ -765,9 +765,17 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             $scope.vm = uiVM;
         },
         inputMultitermSelect: false,
-        inputMultiterm: function () {
-            console.log(vmManager.inputMultitermSelect);
+        multiermUserInPutInfoTable: false,
+        showMultiermUserInPutInfoTable: function () {
+
+            if (vmManager.multiermUserInPutInfoTable) {
+                vmManager.multiermUserInPutInfoTable = false;
+            }
+            else vmManager.multiermUserInPutInfoTable = true;
+            console.log(88888);
         },
+
+        //快速查询确认
         confirmSearch: function ($event, item) {
             if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
                 if (vmManager.erpOrderInfoDatasSet.length > 0) {
