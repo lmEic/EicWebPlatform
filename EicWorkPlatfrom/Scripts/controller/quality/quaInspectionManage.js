@@ -152,10 +152,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     //iqc检验单管理模块    发送审核数据
-    quality.postInspectionFormManageCheckedOfIqcData = function (model) {
+    quality.postInspectionFormManageCheckedOfIqcData = function (model, isCheck) {
         var url = quaInspectionManageUrl + "PostInspectionFormManageCheckedOfIqcData";
         return ajaxService.postData(url, {
-            model: model
+            model: model,
+            isCheck: isCheck
         })
     }
 
@@ -957,9 +958,11 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
                     leeHelper.setUserData(vmManager.currentItem);
-                    vmManager.currentItem.InspectionStatus = "已审核";
+                    if (vmManager.isCheck)
+                    { vmManager.currentItem.InspectionStatus = "已审核"; }
+                    else { vmManager.currentItem.InspectionStatus = "待审核"; }
                     vmManager.currentItem.OpSign = "edit";
-                    qualityInspectionDataOpService.postInspectionFormManageCheckedOfIqcData(vmManager.currentItem).then(function (opresult) {
+                    qualityInspectionDataOpService.postInspectionFormManageCheckedOfIqcData(vmManager.currentItem, vmManager.isCheck).then(function (opresult) {
                         if (opresult.Result) {
                             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                                 vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
@@ -1003,9 +1006,9 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             vmManager.getMasterDatasBy(vmManager.selecteInspectionItem, 3);
         },
         //审核
-        showCheckModal: function (item) {
-            console.log(item);
+        showCheckModal: function (item, isCheck) {
             if (item) vmManager.currentItem = item;
+            vmManager.isCheck = isCheck;
             vmManager.checkModal.$promise.then(vmManager.checkModal.show);
         },
         inspectionStatus: null,
