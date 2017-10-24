@@ -38,6 +38,8 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             }
             return OpResult.SetSuccessResult("向华为系统平台发送配置数据成功！");
         }
+
+
     }
 
     /// <summary>

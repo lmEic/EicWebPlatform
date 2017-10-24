@@ -21,6 +21,19 @@ namespace Lm.Eic.App.HwCollaboration.Model
         public PurchaseOnWayDto PurchaseDto { get; set; }
     }
     /// <summary>
+    /// 物料存储组合实体
+    /// </summary>
+    public class MaterialComposeEntity
+    {
+        public HwCollaborationDataTransferModel InvertoryEntity { get; set; }
+
+        public HwCollaborationDataTransferModel MakingEntity { get; set; }
+
+        public HwCollaborationDataTransferModel ShippmentEntity { get; set; }
+
+        public HwCollaborationDataTransferModel PurchaseEntity { get; set; }
+    }
+    /// <summary>
     /// 库存明细数据传输Dto
     /// </summary>
     public class FactoryInventoryDto

@@ -38,7 +38,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// 是否是测试环境，如果是测试环境
         /// 则不像华为平台发送数据
         /// </summary>
-        protected bool isTestMode = true;
+        protected bool isTestMode = false;
         #endregion
 
         public HwCollaborationBase(string modulename, string apiUrl)
