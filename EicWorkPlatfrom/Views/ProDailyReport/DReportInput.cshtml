@@ -367,12 +367,13 @@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">生产人员:</span>
-                                                        <input name="workerId" class="form-control"
-                                                               ng-model="vmUser.WorkerId" ng-change="vmManagerMultiermUser.multiermGetWorkerInfo()"
-                                                               focus-if="focus.workerIdFocus" focus-setter
+                                                        <input name="workerIds" class="form-control"
+                                                               ng-model="vmUser.WorkerId"
+                                                               ng-change="vmManagerMultiermUser.multiermGetWorkerInfo()"
+                                                               focus-if="focus.workerIdsFocus" focus-setter
                                                                placeholder="输工号或姓名"
                                                                data-ensure-user-exist required />
-                                                        <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerId.$error" ng-show="operate.showValidation">
+                                                        <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerIds.$error" ng-show="operate.showValidation">
                                                             <small ng-message="required">工号不能为空</small>
                                                         </div>
                                                         <div class="input-group-addon" ng-show="vmManagerMultiermUser.isSingle">

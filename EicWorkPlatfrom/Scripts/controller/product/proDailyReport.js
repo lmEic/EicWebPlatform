@@ -820,23 +820,12 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             var strLen = leeHelper.checkIsChineseValue(uiVmUser.WorkerId) ? 2 : 6;
             if (uiVmUser.WorkerId.length >= strLen) {
                 vmManagerMultiermUser.searchedWorkers = [];
-                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVmUser.WorkerId).then(function (datas) {
-                    if (datas.length > 0) {
-                        vmManagerMultiermUser.searchedWorkers = datas;
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVmUser.WorkerId).then(function (workersdatas) {
+                    if (workersdatas.length > 0) {
+                        vmManagerMultiermUser.searchedWorkers = workersdatas;
                         if (vmManagerMultiermUser.searchedWorkers.length === 1) {
                             vmManagerMultiermUser.isSingle = true;
                             vmManagerMultiermUser.selectWorker(vmManagerMultiermUser.searchedWorkers[0]);
-                            if (uiVM.ProcessesIndex == 0 || uiVM.ProcessesIndex == null) {
-                                focusSetter.processesIndexFocus = true;
-                            }
-                            else {
-                                if (vmManager.isMultiermUserInPut) {
-                                    focusSetter.workerProductionTimeFocus = true;
-                                }
-                                else {
-                                    focusSetter.todayProductionCountFocus = true;
-                                }
-                            }
                         }
                         else {
                             vmManagerMultiermUser.isSingle = false;
@@ -852,6 +841,21 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             if (worker !== null) {
                 uiVmUser.WorkerId = worker.WorkerId;
                 uiVmUser.WorkerName = worker.Name;
+                uiVM.Department = worker.Department;
+                //if (uiVM.ProcessesIndex == 0 || uiVM.ProcessesIndex == null) {
+                //    focusSetter.processesIndexFocus = true;
+                //}
+                //else {
+                //    if (uiVmUser.WorkerName == null || uiVmUser.WorkerName == '') {
+                //        focusSetter.workerIdsFocus = true;
+                //    }
+                //    else {
+                //        focusSetter.workerProductionTimeFocus = true;
+                //    }
+                //};
+            }
+            else {
+                uiVM.Department = null;
             }
         },
         ///初始化
@@ -955,6 +959,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     //焦点设置器
     var focusSetter = {
         workerIdFocus: false,
+        workerIdsFocus: false,
         orderIdFocus: false,
         //生产工时
         workerProductionTimeFocus: false,
