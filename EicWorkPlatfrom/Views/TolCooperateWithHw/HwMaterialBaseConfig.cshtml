@@ -2,7 +2,9 @@
     <div class="col-md-3">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h6 class="panel-title"><i class="glyphicon glyphicon-apple"></i>物料基础信息(含BOM)</h6>
+                <h6 class="panel-title">
+                    <i class="glyphicon glyphicon-apple"></i>物料基础信息(含BOM)
+                </h6>
             </div>
             <div class="panel-body" style="max-height:515px;overflow:auto">
                 <ul data-yl-tree cg-busy="{promise:promise}"
@@ -37,6 +39,7 @@
                             <button type="button" class="btn btn-sm btn-danger" ng-click="vmManager.opHandler.delete()">
                                 <i class="glyphicon glyphicon-remove-circle"></i>删除物料
                             </button>
+                            <span yl-refresh-frequency data-time="月"></span>
                         </div>
                     </div>
                     <div class="bs-callout bs-callout-default">
@@ -76,10 +79,10 @@
                             <div class="form-group">
                                 <label for="vendorProductModel" class="col-md-2 control-label">供应商产品型号</label>
                                 <div class="col-md-4">
-                                    <input name="vendorProductModel" class="form-control" ng-model="vm.VendorProductModel" ng-readonly="vmManager.opHandler.editable" required />
-                                    <div class="error-messages" ng-messages="materialBaseForm.vendorProductModel.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">供应商产品型号不能为空</small>
-                                    </div>
+                                    <input name="vendorProductModel" class="form-control" ng-model="vm.VendorProductModel" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.vendorProductModel.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">供应商产品型号不能为空</small>
+                                        </div>*@
                                 </div>
                                 <label for="vendorItemDesc" class="col-md-2 control-label">供应商物料描述</label>
                                 <div class="col-md-4">
@@ -99,19 +102,19 @@
                                 </div>
                                 <label for="customerItemCode" class="col-md-2 control-label">客户物料编码</label>
                                 <div class="col-md-4">
-                                    <input name="customerItemCode" class="form-control" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" ng-model="vm.CustomerItemCode" required />
-                                    <div class="error-messages" ng-messages="materialBaseForm.customerItemCode.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">客户物料编码不能为空</small>
-                                    </div>
+                                    <input name="customerItemCode" class="form-control" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" ng-model="vm.CustomerItemCode" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.customerItemCode.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">客户物料编码不能为空</small>
+                                        </div>*@
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="customerProductModel" class="col-md-2 control-label">客户产品型号</label>
                                 <div class="col-md-4">
-                                    <input name="customerProductModel" class="form-control" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" ng-model="vm.CustomerProductModel" required />
-                                    <div class="error-messages" ng-messages="materialBaseForm.customerProductModel.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">客户产品型号不能为空</small>
-                                    </div>
+                                    <input name="customerProductModel" class="form-control" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" ng-model="vm.CustomerProductModel" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.customerProductModel.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">客户产品型号不能为空</small>
+                                        </div>*@
                                 </div>
                             </div>
                             <div class="form-group">
@@ -150,10 +153,10 @@
                                 </div>
                                 <label for="goodPercent" class="col-md-2 control-label">良率</label>
                                 <div class="col-md-4">
-                                    <input name="goodPercent" class="form-control" type="number" ng-model="vm.GoodPercent" ng-readonly="vmManager.opHandler.editable" required />
-                                    <div class="error-messages" ng-messages="materialBaseForm.goodPercent.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">良率不能为空</small>
-                                    </div>
+                                    <input name="goodPercent" class="form-control" type="number" ng-model="vm.GoodPercent" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.goodPercent.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">良率不能为空</small>
+                                        </div>*@
                                 </div>
                             </div>
                             <div class="form-group">
@@ -184,17 +187,14 @@
                             <div class="form-group">
                                 <label for="quantity" class="col-md-2 control-label">用量</label>
                                 <div class="col-md-4">
-                                    <input name="quantity" class="form-control" ng-model="vm.Quantity" type="number" ng-readonly="vmManager.opHandler.editable" required />
+                                    <input name="quantity" class="form-control" ng-model="vm.Quantity" placeholder="允许为空" type="number" ng-readonly="vmManager.opHandler.editable" required />
                                     <div class="error-messages" ng-messages="materialBaseForm.quantity.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">用量不能为空</small>
                                     </div>
                                 </div>
                                 <label for="substituteGroup" class="col-md-2 control-label">替代组</label>
                                 <div class="col-md-4">
-                                    <input name="substituteGroup" class="form-control" ng-model="vm.SubstituteGroup" ng-readonly="vmManager.opHandler.editable" required />
-                                    <div class="error-messages" ng-messages="materialBaseForm.substituteGroup.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">替代组不能为空</small>
-                                    </div>
+                                    <input name="substituteGroup" class="form-control" ng-model="vm.SubstituteGroup" ng-readonly="vmManager.opHandler.editable" />
                                 </div>
                             </div>
                         </fieldset>

@@ -12,8 +12,9 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 namespace Lm.Eic.App.HwCollaboration.Business
 {
     /// <summary>
-    /// 华为协同业务基类
+    /// 华为协同基类
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class HwCollaborationBase<T> where T : class, new()
     {
         #region property
@@ -27,11 +28,6 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 return new HwRestfulApiManager(key, secury, url);
             }
         }
-        /// <summary>
-        /// 数据访问助手
-        /// </summary>
-        protected HwDatasTransferDb dbAccess = null;
-
         protected string moduleName = null;
         protected string apiUrl = null;
         /// <summary>
@@ -43,13 +39,9 @@ namespace Lm.Eic.App.HwCollaboration.Business
 
         public HwCollaborationBase(string modulename, string apiUrl)
         {
-            dbAccess = new HwDatasTransferDb();
-
             this.moduleName = modulename;
             this.apiUrl = apiUrl;
         }
-
-        #region method
         /// <summary>
         /// 访问华为Api
         /// </summary>
@@ -64,6 +56,25 @@ namespace Lm.Eic.App.HwCollaboration.Business
             else
                 return ObjectSerializer.SerializeObject(new HwAccessApiResult() { errorCode = "", errorMessage = "", success = true });
         }
+    }
+    /// <summary>
+    /// 华为协同业务数据操作基类
+    /// </summary>
+    public abstract class HwCollaborationDataBase<T> : HwCollaborationBase<T> where T : class, new()
+    {
+        #region property
+        /// <summary>
+        /// 数据访问助手
+        /// </summary>
+        protected HwDatasTransferDb dbAccess = null;
+        #endregion
+
+        public HwCollaborationDataBase(string modulename, string apiUrl) : base(modulename, apiUrl)
+        {
+            dbAccess = new HwDatasTransferDb();
+        }
+
+        #region method
         /// <summary>
         /// 通过访问华为API将数据同步到华为系统中
         /// </summary>
@@ -225,6 +236,26 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 { "y","指定完工"}
             };
             return statusDic[orderStatus.Trim()];
+        }
+
+        public static HwAccessApiResult AsHwAccessApiResult(this string accessApiResultMessage)
+        {
+            HwAccessApiResult apiResult = ObjectSerializer.DeserializeObject<HwAccessApiResult>(accessApiResultMessage);
+            return apiResult;
+        }
+
+        public static OpResult AsOpResult(this HwAccessApiResult accessApiResult)
+        {
+            bool isSuccess = accessApiResult != null && accessApiResult.success;
+            if (isSuccess)
+            {
+                return OpResult.SetSuccessResult("向华为平台发送信息成功");
+            }
+            else
+            {
+                string msg = accessApiResult.errorMessage;
+                return OpResult.SetErrorResult(string.Format("向华为平台发送信息出现错误：{0}", msg));
+            }
         }
     }
 }

@@ -22,39 +22,6 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
-        #region HwMaterialBaseInfo
-        public ActionResult HwMaterialBaseInfo()
-        {
-            return View();
-        }
-        [NoAuthenCheck]
-        public ContentResult GetMaterialBaseInfo(string materialId)
-        {
-            var entity = HwCollaborationService.MaterialManager.BaseInfoSettor.GetConfigData(materialId);
-            return DateJsonResult(entity);
-        }
-        [NoAuthenCheck]
-        public JsonResult SaveMaterialBase(List<HwCollaborationDataConfigModel> entities)
-        {
-            var result = HwCollaborationService.MaterialManager.BaseInfoSettor.SynchronizeDatas(entities);
-            return Json(result);
-        }
-        #endregion
-
-        #region HwMaterialBomInfo
-        public ActionResult HwMaterialBomInfo()
-        {
-            return View();
-        }
-
-        [NoAuthenCheck]
-        public JsonResult SaveMaterialBom(HwCollaborationDataConfigModel entity)
-        {
-            var result = HwCollaborationService.MaterialManager.KeyBomManager.SynchronizeDatas(entity);
-            return Json(result);
-        }
-        #endregion
-
         #region HwMaterialBaseConfig method
         public ActionResult HwMaterialBaseConfig()
         {
@@ -63,14 +30,14 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetMaterialBaseConfigDatas()
         {
-            var datas = HwCollaborationService.MaterialManager.BaseInfoSettor.MaterialBaseDictionary;
+            var datas = HwCollaborationService.MaterialManager.BaseBomManager.MaterialBaseDictionary;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         [HttpPost]
         public JsonResult SaveMaterialBaseConfigDatas(HwCollaborationMaterialBaseConfigModel entity)
         {
-            var opResult = 1; //HwCollaborationService.MaterialManager.BaseInfoSettor.Store(entity);
+            var opResult = HwCollaborationService.MaterialManager.BaseBomManager.Store(entity);
             return Json(opResult);
         }
         #endregion

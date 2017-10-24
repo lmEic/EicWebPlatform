@@ -12,7 +12,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.ManPower
     /// <summary>
     /// 人力管理器
     /// </summary>
-    public class ManPowerManager : HwCollaborationBase<ManPowerDto>
+    public class ManPowerManager : HwCollaborationDataBase<ManPowerDto>
     {
         public ManPowerManager() : base(HwModuleName.ManPower, HwAccessApiUrl.ManPowerApiUrl)
         { }
