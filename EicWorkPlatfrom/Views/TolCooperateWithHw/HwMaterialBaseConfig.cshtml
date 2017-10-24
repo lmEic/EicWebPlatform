@@ -150,7 +150,7 @@
                                 </div>
                                 <label for="goodPercent" class="col-md-2 control-label">良率</label>
                                 <div class="col-md-4">
-                                    <input name="goodPercent" class="form-control" ng-model="vm.GoodPercent" ng-readonly="vmManager.opHandler.editable" required />
+                                    <input name="goodPercent" class="form-control" type="number" ng-model="vm.GoodPercent" ng-readonly="vmManager.opHandler.editable" required />
                                     <div class="error-messages" ng-messages="materialBaseForm.goodPercent.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">良率不能为空</small>
                                     </div>
@@ -159,7 +159,7 @@
                             <div class="form-group">
                                 <label for="leadTime" class="col-md-2 control-label">货期(天）</label>
                                 <div class="col-md-4">
-                                    <input name="leadTime" class="form-control" ng-model="vm.LeadTime" ng-readonly="vmManager.opHandler.editable" required />
+                                    <input name="leadTime" class="form-control" ng-model="vm.LeadTime" type="number" ng-readonly="vmManager.opHandler.editable" required />
                                     <div class="error-messages" ng-messages="materialBaseForm.leadTime.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">货期(天）不能为空</small>
                                     </div>
@@ -184,7 +184,7 @@
                             <div class="form-group">
                                 <label for="quantity" class="col-md-2 control-label">用量</label>
                                 <div class="col-md-4">
-                                    <input name="quantity" class="form-control" ng-model="vm.Quantity" ng-readonly="vmManager.opHandler.editable" required />
+                                    <input name="quantity" class="form-control" ng-model="vm.Quantity" type="number" ng-readonly="vmManager.opHandler.editable" required />
                                     <div class="error-messages" ng-messages="materialBaseForm.quantity.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">用量不能为空</small>
                                     </div>

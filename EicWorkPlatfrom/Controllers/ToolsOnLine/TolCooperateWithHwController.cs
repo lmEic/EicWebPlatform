@@ -70,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult SaveMaterialBaseConfigDatas(HwCollaborationMaterialBaseConfigModel entity)
         {
-            var opResult = HwCollaborationService.MaterialManager.BaseInfoSettor.Store(entity);
+            var opResult = 1; //HwCollaborationService.MaterialManager.BaseInfoSettor.Store(entity);
             return Json(opResult);
         }
         #endregion
