@@ -375,7 +375,7 @@
                                                         <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerId.$error" ng-show="operate.showValidation">
                                                             <small ng-message="required">工号不能为空</small>
                                                         </div>
-                                                        <div class="input-group-addon" ng-show="vmManager.isSingle">
+                                                        <div class="input-group-addon" ng-show="vmManagerMultiermUser.isSingle">
                                                             <i class="fa fa-user">{{vmUser.WorkerName}}</i>
                                                         </div>
                                                         <div class="input-group-btn">
@@ -386,8 +386,8 @@
                                                             </button>
                                                             <div class="dropdown-menu" role="menu">
                                                                 <ul class="list-group">
-                                                                    <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
-                                                                        ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                                    <li class="list-group-item" style="cursor:pointer" ng-click="vmManagerMultiermUser.selectWorker(worker)"
+                                                                        ng-repeat="worker in vmManagerMultiermUser.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
                                                                         <i class="fa fa-user"></i>
                                                                         <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
                                                                         <span>姓名：{{worker.Name}}</span>|
@@ -460,7 +460,6 @@
                                             <div class="col-md-12 pull-right">
                                                 <button class="btn btn-primary" ng-click="vmManagerMultiermUser.showInPutInfoTable()">确888认</button>
                                             </div>
-
                                         </div>
                                         @*已经录入人员工时信息列表*@
                                         <div pageslide ps-open="vmManagerMultiermUser.multiermUserInPutInfoTable" style="padding:10px;overflow-y:auto;" ps-side="bottom" ps-speed="0.25" ps-size="100%" ps-container='inPutMultiermUserInfo' ps-click-outside="false" ps-key-listener="true">

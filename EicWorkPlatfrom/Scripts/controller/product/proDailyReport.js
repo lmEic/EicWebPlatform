@@ -800,29 +800,64 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         WorkerTodayProductionCount: 0,
         WorkerTodayBadProductionCount: 0,
     };
-    var initVMUser = _.clone(uiVmUser);
+    var initVmUser = _.clone(uiVmUser);
     $scope.vmUser = uiVmUser;
     var vmManagerMultiermUser = {
         clearMultiermUsersInfo: function () {
-            if (UiVmUser.WorkerProductionTime + UiVmUser.WorkerNoProductionTime >= 13) {
+            if (uiVmUser.WorkerProductionTime + uiVmUser.WorkerNoProductionTime >= 13) {
                 leePopups.alert("生产时数超出");
                 return;
             }
-            if (mmm.WorkerId != null) {
-                vmManagerMultiermUser.multiermUserInPutInfos.push(mmm);
+            if (uiVmUser.WorkerId != null) {
+                vmManagerMultiermUser.multiermUserInPutInfos.push(uiVmUser);
                 vmManagerMultiermUser.init();
             };
         },
+        searchedWorkers: [],
+        isSingle: false,
         multiermGetWorkerInfo: function () {
-            console.log(8888888);
-            uiVM.WorkerId = uiVmUser.WorkerId;
-            uiVM.WorkerName = uiVmUser.WorkerName;
-            vmManager.getWorkerInfo();
+            if (uiVmUser.WorkerId === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(uiVmUser.WorkerId) ? 2 : 6;
+            if (uiVmUser.WorkerId.length >= strLen) {
+                vmManagerMultiermUser.searchedWorkers = [];
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVmUser.WorkerId).then(function (datas) {
+                    if (datas.length > 0) {
+                        vmManagerMultiermUser.searchedWorkers = datas;
+                        if (vmManagerMultiermUser.searchedWorkers.length === 1) {
+                            vmManagerMultiermUser.isSingle = true;
+                            vmManagerMultiermUser.selectWorker(vmManagerMultiermUser.searchedWorkers[0]);
+                            if (uiVM.ProcessesIndex == 0 || uiVM.ProcessesIndex == null) {
+                                focusSetter.processesIndexFocus = true;
+                            }
+                            else {
+                                if (vmManager.isMultiermUserInPut) {
+                                    focusSetter.workerProductionTimeFocus = true;
+                                }
+                                else {
+                                    focusSetter.todayProductionCountFocus = true;
+                                }
+                            }
+                        }
+                        else {
+                            vmManagerMultiermUser.isSingle = false;
+                        }
+                    }
+                    else {
+                        vmManagerMultiermUser.selectWorker(null);
+                    }
+                });
+            }
+        },
+        selectWorker: function (worker) {
+            if (worker !== null) {
+                uiVmUser.WorkerId = worker.WorkerId;
+                uiVmUser.WorkerName = worker.Name;
+            }
         },
         ///初始化
         init: function () {
-            vmUser = _.clone(initVMUser);
-            $scope.vm = vmUser;
+            vmUser = _.clone(initVmUser);
+            $scope.vmUser = vmUser;
         },
         //选择多人方式
         selectMultiermUserInput: function () {
@@ -838,6 +873,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //是否人员显示列表
         multiermUserInPutInfoTable: false,
+
         //输入显示信息
         inPutShowlab: [],
         //输入存储信息
@@ -855,7 +891,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //多项输入最后一项
         changeInPutNoProductionTime: function () {
-            if (uiVM.WorkerNoProductionTime != 0 && uiVM.WorkerNoProductionTime != null) {
+            if (uiVmUser.WorkerNoProductionTime != 0 && uiVmUser.WorkerNoProductionTime != null) {
                 focusSetter.workerNoProductionReasonFocus = true;
             }
             else {
