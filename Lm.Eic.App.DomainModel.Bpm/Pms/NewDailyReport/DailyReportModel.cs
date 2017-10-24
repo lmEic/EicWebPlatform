@@ -504,14 +504,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _orderquantity = value; }
             get { return _orderquantity; }
         }
-        private int _processesIndex;
+        private string _processestype;
         /// <summary>
-        ///工序名称
+        ///工序类别（人工/机台）
+        /// </summary>
+        public string ProcessesType
+        {
+            set { _processestype = value; }
+            get { return _processestype; }
+        }
+        private int _processesindex;
+        /// <summary>
+        ///生产工序号
         /// </summary>
         public int ProcessesIndex
         {
-            set { _processesIndex = value; }
-            get { return _processesIndex; }
+            set { _processesindex = value; }
+            get { return _processesindex; }
         }
         private string _processesname;
         /// <summary>
@@ -522,15 +531,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _processesname = value; }
             get { return _processesname; }
         }
-        private string _processestype;
-        /// <summary>
-        ///工序类别（人工/机台）
-        /// </summary>
-        public string ProcessesType
-        {
-            set { _processestype = value; }
-            get { return _processestype; }
-        }
         private double _standardproductiontime;
         /// <summary>
         ///标准工时
@@ -539,87 +539,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _standardproductiontime = value; }
             get { return _standardproductiontime; }
-        }
-        private double _machinepersonratio;
-        /// <summary>
-        ///人机配比
-        /// </summary>
-        public double MachinePersonRatio
-        {
-            set { _machinepersonratio = value; }
-            get { return _machinepersonratio; }
-        }
-        private string _machineid;
-        /// <summary>
-        ///机械编号
-        /// </summary>
-        public string MachineId
-        {
-            set { _machineid = value; }
-            get { return _machineid; }
-        }
-        private string _mouldid;
-        /// <summary>
-        ///模具编号
-        /// </summary>
-        public string MouldId
-        {
-            set { _mouldid = value; }
-            get { return _mouldid; }
-        }
-        private int _mouldholecount;
-        /// <summary>
-        ///模穴数
-        /// </summary>
-        public int MouldHoleCount
-        {
-            set { _mouldholecount = value; }
-            get { return _mouldholecount; }
-        }
-        private double _machineproductiontime;
-        /// <summary>
-        ///机台工时
-        /// </summary>
-        public double MachineProductionTime
-        {
-            set { _machineproductiontime = value; }
-            get { return _machineproductiontime; }
-        }
-        private double _machineunproductivetime;
-        /// <summary>
-        ///机台非生产工时
-        /// </summary>
-        public double MachineUnproductiveTime
-        {
-            set { _machineunproductivetime = value; }
-            get { return _machineunproductivetime; }
-        }
-        private string _machineunproductivereason;
-        /// <summary>
-        ///机台非生产原因
-        /// </summary>
-        public string MachineUnproductiveReason
-        {
-            set { _machineunproductivereason = value; }
-            get { return _machineunproductivereason; }
-        }
-        private string _masterworkerid;
-        /// <summary>
-        ///师傅工号
-        /// </summary>
-        public string MasterWorkerId
-        {
-            set { _masterworkerid = value; }
-            get { return _masterworkerid; }
-        }
-        private string _mastername;
-        /// <summary>
-        ///师傅名
-        /// </summary>
-        public string MasterName
-        {
-            set { _mastername = value; }
-            get { return _mastername; }
         }
         private string _workerid;
         /// <summary>
@@ -666,6 +585,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _workerproductiontime = value; }
             get { return _workerproductiontime; }
         }
+        private double _getprodutiontime;
+        /// <summary>
+        ///得到工时
+        /// </summary>
+        public double GetProdutionTime
+        {
+            set { _getprodutiontime = value; }
+            get { return _getprodutiontime; }
+        }
         private double _workernoproductiontime;
         /// <summary>
         ///作业员非生产工时
@@ -684,9 +612,90 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _workernoproductionreason = value; }
             get { return _workernoproductionreason; }
         }
+        private string _masterworkerid;
+        /// <summary>
+        ///师傅工号
+        /// </summary>
+        public string MasterWorkerId
+        {
+            set { _masterworkerid = value; }
+            get { return _masterworkerid; }
+        }
+        private string _mastername;
+        /// <summary>
+        ///师傅名
+        /// </summary>
+        public string MasterName
+        {
+            set { _mastername = value; }
+            get { return _mastername; }
+        }
+        private string _machineid;
+        /// <summary>
+        ///机械编号
+        /// </summary>
+        public string MachineId
+        {
+            set { _machineid = value; }
+            get { return _machineid; }
+        }
+        private string _mouldid;
+        /// <summary>
+        ///模具编号
+        /// </summary>
+        public string MouldId
+        {
+            set { _mouldid = value; }
+            get { return _mouldid; }
+        }
+        private int _mouldholecount;
+        /// <summary>
+        ///模穴数
+        /// </summary>
+        public int MouldHoleCount
+        {
+            set { _mouldholecount = value; }
+            get { return _mouldholecount; }
+        }
+        private double _machinepersonratio;
+        /// <summary>
+        ///人机配比
+        /// </summary>
+        public double MachinePersonRatio
+        {
+            set { _machinepersonratio = value; }
+            get { return _machinepersonratio; }
+        }
+        private double _machineproductiontime;
+        /// <summary>
+        ///机台工时
+        /// </summary>
+        public double MachineProductionTime
+        {
+            set { _machineproductiontime = value; }
+            get { return _machineproductiontime; }
+        }
+        private double _machineunproductivetime;
+        /// <summary>
+        ///机台非生产工时
+        /// </summary>
+        public double MachineUnproductiveTime
+        {
+            set { _machineunproductivetime = value; }
+            get { return _machineunproductivetime; }
+        }
+        private string _machineunproductivereason;
+        /// <summary>
+        ///机台非生产原因
+        /// </summary>
+        public string MachineUnproductiveReason
+        {
+            set { _machineunproductivereason = value; }
+            get { return _machineunproductivereason; }
+        }
         private string _field1;
         /// <summary>
-        ///
+        ///备用字1
         /// </summary>
         public string Field1
         {
@@ -695,7 +704,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _field2;
         /// <summary>
-        ///
+        ///备用字2
         /// </summary>
         public string Field2
         {
@@ -704,7 +713,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _field3;
         /// <summary>
-        ///
+        ///备用字3
         /// </summary>
         public string Field3
         {
@@ -713,7 +722,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _field4;
         /// <summary>
-        ///
+        ///备用字4
         /// </summary>
         public string Field4
         {
@@ -722,7 +731,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _field5;
         /// <summary>
-        ///
+        ///备用字5
         /// </summary>
         public string Field5
         {
@@ -731,7 +740,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _opperson;
         /// <summary>
-        ///
+        ///操作人
         /// </summary>
         public string OpPerson
         {
@@ -740,7 +749,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _opsign;
         /// <summary>
-        ///
+        ///操作标识
         /// </summary>
         public string OpSign
         {
@@ -749,7 +758,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private DateTime _opdate;
         /// <summary>
-        ///
+        ///操作日期
         /// </summary>
         public DateTime OpDate
         {
@@ -758,7 +767,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private DateTime _optime;
         /// <summary>
-        ///
+        ///操作时间
         /// </summary>
         public DateTime OpTime
         {
@@ -767,7 +776,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private decimal _id_key;
         /// <summary>
-        ///
+        ///自增键
         /// </summary>
         public decimal Id_Key
         {

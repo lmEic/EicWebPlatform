@@ -191,7 +191,7 @@
                                 <input name="formId" type="text" class="form-control" ng-model="vmManager.formId" onfocus="this.select()" required />
                                 <span class="btn btn-primary" ng-click="vmManager.getEquipmentRepairDatas(vmManager.assetNumber,vmManager.formId)"><i class="fa fa-search"></i>查询</span>
                             </div>
-                      </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -202,7 +202,7 @@
                             <tr class="info">
                                 <th>财产编号</th>
                                 <th>表单编号</th>
-                                <th>报修日期</th>  
+                                <th>报修日期</th>
                                 <th>完成日期</th>
                                 <th>维修结果</th>
                                 <th>维修人</th>
@@ -211,7 +211,7 @@
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
-                        <tbody>                            
+                        <tbody>
                             <tr ng-repeat="item in vmManager.editDatas track by $index">
                                 <td>{{item.AssetNumber}}</td>
                                 <td>{{item.FormId}}</td>

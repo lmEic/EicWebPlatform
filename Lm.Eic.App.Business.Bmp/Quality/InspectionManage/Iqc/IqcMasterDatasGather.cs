@@ -58,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var detailDatas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(masterModel.OrderId, masterModel.MaterialId);
             if (detailDatas != null && detailDatas.Count > 0)
             {
-                if (detailDatas.Count() == haveFinishData.Count)
+                if (detailDatas.Count() <= haveFinishData.Count)
                 {
                     haveStoreMasterModel.InspectionStatus = "待审核";
                     haveStoreMasterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");

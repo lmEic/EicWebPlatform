@@ -506,16 +506,18 @@ namespace EicWorkPlatfrom.Controllers
             return this.DownLoadFile(dlfm);
         }
         /// <summary>
-        /// IQC审核
+        /// IQC审核/ 撤消IQC审核
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
+        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model, bool isCheck)
         {
-            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model);
+            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model, isCheck);
             return Json(opResult);
         }
+        
+        
         #endregion
 
         #region fqc检验单管理

@@ -144,7 +144,8 @@
                                     <td>
                                         <label ng-show="item.InspectionStatus === '已审核'">审核人:{{item.OpPerson}}</label>
                                         <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未抽检'">明细</button>
-                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'">审核</button>
+                                        <button type="button" class="btn btn-danger btn-xs" ng-click="vmManager.showCheckModal(item,false)" ng-show="item.InspectionStatus ===  '已审核'">撤审</button>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item,true)" ng-show="item.InspectionStatus === '待审核'">审核</button>
                                     </td>
                                 </tr>
 

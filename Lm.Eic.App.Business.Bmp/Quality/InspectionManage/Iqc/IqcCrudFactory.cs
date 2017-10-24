@@ -317,9 +317,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="newModel"></param>
         /// <returns></returns>
-        internal OpResult UpAuditInspectionDetailData(string orderId, string materialId)
+        internal OpResult UpAuditInspectionDetailData(string orderId, string materialId, bool isCheck)
         {
-            return irep.Update(e => e.OrderId == orderId && e.MaterialId == materialId, u => new InspectionIqcDetailModel { InspectionItemStatus = "Done" }).ToOpResult_Eidt(OpContext);
+            string inspectionItemStatus = isCheck ? "Done" : "doing";
+            return irep.Update(e => e.OrderId == orderId && e.MaterialId == materialId, u => new InspectionIqcDetailModel { InspectionItemStatus = inspectionItemStatus }).ToOpResult_Eidt(OpContext);
 
         }
         private InspectionIqcDetailModel GetIqcOldDetailModelBy(InspectionIqcDetailModel newModel)
