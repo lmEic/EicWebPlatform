@@ -19,6 +19,22 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     };
     //----------物料信息模块：基础信息设置,库存、在制、发料--------------------
     //获取物料基础设置信息
+
+    //获取物料配置数据
+    hwDataOp.getMaterialBaseConfigDatas = function () {
+        var url = hwUrlPrefix + 'GetMaterialBaseConfigDatas';
+        return ajaxService.getData(url, {
+        });
+    };
+    //保存物料配置数据
+    hwDataOp.saveMaterialBaseConfigDatas = function (entity) {
+        var url = hwUrlPrefix + 'SaveMaterialBaseConfigDatas';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
+
+
     hwDataOp.getMaterialBaseInfo = function (materialId) {
         var url = hwUrlPrefix + 'GetMaterialBaseInfo';
         return ajaxService.getData(url, {
@@ -44,15 +60,43 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
         var url = hwUrlPrefix + 'GetMaterialDetails';
         return ajaxService.getData(url);
     };
-    //保存库存信息数据
-    hwDataOp.saveMaterialInventory = function (entity) {
-        var url = hwUrlPrefix + 'SaveMaterialInventory';
+    //保存物料明细信息数据
+    hwDataOp.saveMaterialDetailData = function (entity) {
+        var url = hwUrlPrefix + 'SaveMaterialDetailData';
         return ajaxService.postData(url, {
             entity: entity
         });
     };
     return hwDataOp;
 });
+officeAssistantModule.factory('hwTreeSetService', function () {
+    var createTreeDataset = function (datas, root) {
+        var treeNodes = [];
+        var childrenNodes = _.where(datas, { ParentMaterialId: root });
+        if (childrenNodes !== undefined && childrenNodes.length > 0) {
+            angular.forEach(childrenNodes, function (node) {
+                var trnode = {
+                    name: node.MaterialName,
+                    children: createTreeDataset(datas, node.MaterialId),
+                    vm: node
+                };
+                treeNodes.push(trnode);
+            });
+        }
+        return treeNodes;
+    };
+    var zTreeSet = {
+        treeId: 'materialBaseConfigTree',
+        navMenus: [],
+        startLoad: false,
+        setTreeDataset: function (datas) {
+            zTreeSet.navMenus = createTreeDataset(datas, 'Root');
+            zTreeSet.startLoad = true;
+        },
+        treeNode: null,
+    };
+    return zTreeSet;
+})
 ///华为数据API数据操作助手
 var hwApiHelper = (function () {
     ///华为数据实体
@@ -385,6 +429,152 @@ officeAssistantModule.controller('hwMaterialBomInfoCtrl', function (hwDataOpServ
         })
     };
 });
+//物料基础信息配置(含BOM)控制器
+officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpService, hwTreeSetService, $scope) {
+    ///物料基础信息配置视图模型
+    var materialBaseConfigVm = $scope.vm = {
+        MaterialId: null,
+        MaterialName: null,
+        ParentMaterialId: null,
+        DisplayOrder: 0,
+        VendorProductModel: null,
+        VendorItemDesc: null,
+        ItemCategory: null,
+        CustomerVendorCode: null,
+        CustomerItemCode: null,
+        CustomerProductModel: null,
+        UnitOfMeasure: null,
+        InventoryType: null,
+        GoodPercent: null,
+        LeadTime: null,
+        LifeCycleStatus: null,
+        Quantity: null,
+        SubstituteGroup: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        Id_Key: null,
+    };
+    var initVm = _.clone(materialBaseConfigVm);
+    //视图管理器
+    var vmManager = $scope.vmManager = {
+        oldVM: _.clone(initVm),
+        lifeCycleStatuses: [{ id: 'NPI', text: '量产前' }, { id: 'MP', text: '量产' }, { id: 'EOL', text: '停产' }],
+        inventoryTypes: [{ id: 'FG', text: '成品' }, { id: 'FGSEMI-FG', text: '半成品' }, { id: 'RM', text: '原材料' }],
+        isSelectedTreeNode: function () {
+            if (angular.isUndefined(zTreeSet.treeNode) || zTreeSet.treeNode === null) {
+                leePopups.alert("请先选择节点!", 2);
+                return false;
+            }
+            return true;
+        },
+        opHandler: {
+            setOpStatus: function (editable, opSign, actionName) {
+                vmManager.opHandler.editable = editable;
+                materialBaseConfigVm.OpSign = opSign;
+                vmManager.opHandler.actionName = actionName;
+                if (actionName === 'add' || actionName === 'addChildren') {
+                    vmManager.opHandler.parentNodeEditable = !editable;
+                }
+                else {
+                    vmManager.opHandler.parentNodeEditable = editable;
+                }
+            },
+            //是否可编辑
+            editable: true,
+            parentNodeEditable: true,
+            actionName: 'add',
+            add: function () {
+                if (!vmManager.isSelectedTreeNode()) return;
+                vmManager.opHandler.setOpStatus(false, leeDataHandler.dataOpMode.add, 'add');
+            },
+            addChildren: function () {
+                if (!vmManager.isSelectedTreeNode()) return;
+                var parentNode = _.clone(vmManager.oldVM);
+                materialBaseConfigVm = $scope.vm = _.clone(initVm);
+                materialBaseConfigVm.ParentMaterialId = parentNode.MaterialId;
+                vmManager.opHandler.setOpStatus(false, leeDataHandler.dataOpMode.add, 'addChildren');
+            },
+            edit: function () {
+                if (!vmManager.isSelectedTreeNode()) return;
+
+                vmManager.opHandler.setOpStatus(false, leeDataHandler.dataOpMode.edit, 'edit');
+            },
+            delete: function () {
+                if (!vmManager.isSelectedTreeNode()) return;
+                if (zTreeSet.treeNode.vm.ParentMaterialId == "Root") {
+                    leePopups.alert("您选择的是根节点，系统禁止删除根节点！", 1);
+                    return;
+                }
+                leePopups.inquire("删除提示", "您确认要删除数据吗?", function () {
+                    $scope.$apply(function () {
+                        vmManager.opHandler.setOpStatus(true, leeDataHandler.dataOpMode.delete);
+                    });
+                });
+            },
+        },
+    };
+
+
+    //数据操作器
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+    operate.cancel = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            leeHelper.clearVM(materialBaseConfigVm);
+            vmManager.opHandler.editable = true;
+        });
+    };
+    operate.save = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            leeHelper.setUserData(materialBaseConfigVm);
+            hwDataOpService.saveMaterialBaseConfigDatas(materialBaseConfigVm).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        var opNodeType = vmManager.opHandler.actionName;
+                        var vm = _.clone($scope.vm);
+                        if (opType === 'add') {
+                            //vm.Id_Key = opresult.Id_Key;
+                            var newNode = {
+                                name: vm.MaterialName,
+                                children: [],
+                                vm: vm
+                            };
+                            if (opNodeType === "addChildren")
+                                leeTreeHelper.addChildrenNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
+                            else if (opNodeType === "add")
+                                leeTreeHelper.addNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
+                        }
+                            //修改节点
+                        else if (opType === 'edit') {
+                            if (opNodeType === "edit") {
+                                zTreeSet.treeNode.name = vm.MaterialName;
+                                zTreeSet.treeNode.vm = vm;
+                                var childrens = zTreeSet.treeNode.children;
+                                angular.forEach(childrens, function (childrenNode) {
+                                    childrenNode.vm.ParentMaterialId = vm.MaterialId;
+                                })
+                                leeTreeHelper.updateNode(zTreeSet.treeId, zTreeSet.treeNode);
+                            }
+                        }
+                        leeHelper.clearVM(materialBaseConfigVm);
+                    }
+
+                });
+            }, function (errResult) {
+                leePopups.alert(errResult);
+            });
+        });
+    };
+    //树结构
+    var zTreeSet = hwTreeSetService;
+    zTreeSet.bindNodeToVm = function () {
+        vmManager.oldVM = _.clone(zTreeSet.treeNode.vm);
+        $scope.vm = materialBaseConfigVm = _.clone(zTreeSet.treeNode.vm);
+    };
+    $scope.ztree = zTreeSet;
+
+    $scope.promise = hwDataOpService.getMaterialBaseConfigDatas().then(function (datas) {
+        zTreeSet.setTreeDataset(datas);
+    });
+});
 //人力信息控制器
 officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, dataDicConfigTreeSet, $scope) {
     ///数据实体模型
@@ -498,7 +688,14 @@ officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, da
 //物料信息控制器
 officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpService, $scope) {
     ///数据实体模型
-    var dataInventoryVM = hwApiHelper.crateDataEntity();
+    var datavm = hwApiHelper.crateDataEntity();
+    //数据传输对象
+    var dto = {
+        InvertoryEntity: _.clone(datavm),
+        MakingEntity: _.clone(datavm),
+        ShippmentEntity: _.clone(datavm),
+        PurchaseEntity: _.clone(datavm)
+    };
 
     var vmManager = $scope.vmManager = {
         activeTab: 'HwInventoryDetailTab',
@@ -514,13 +711,19 @@ officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpServi
                 vmManager.purchaseOnwayDataEntity = data.purchaseEntity;
             });
         },
+        setMaterailDtoOpContent: function () {
+            dto.InvertoryEntity.OpContent = JSON.stringify(vmManager.inventoryDataEntity);
+            dto.MakingEntity.OpContent = JSON.stringify(vmManager.makingDataEntity);
+            dto.PurchaseEntity.OpContent = JSON.stringify(vmManager.purchaseOnwayDataEntity);
+            dto.ShippmentEntity.OpContent = JSON.stringify(vmManager.shipmentDataEntity);
+        }
     };
 
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
-    operate.saveInventoryData = function () {
+    $scope.OpPermise = operate.saveInventoryData = function () {
         leeDataHandler.dataOperate.add(operate, true, function () {
-            dataInventoryVM.OpContent = JSON.stringify(vmManager.inventoryDataEntity);
-            $scope.opPromise = hwDataOpService.saveMaterialInventory(dataInventoryVM).then(function (opresult) {
+            vmManager.setMaterailDtoOpContent();
+            $scope.opPromise = hwDataOpService.saveMaterialDetailData(dto).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () { })
             });
         })

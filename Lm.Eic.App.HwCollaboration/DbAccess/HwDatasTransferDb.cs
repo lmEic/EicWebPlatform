@@ -9,6 +9,37 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 
 namespace Lm.Eic.App.HwCollaboration.DbAccess
 {
+    public static class HwDbExtension
+    {
+        public static OpResult ToOpResult(this int record)
+        {
+            if (record > 0)
+                return OpResult.SetSuccessResult("向华为协同平台发送配置数据成功！");
+            else
+                return OpResult.SetErrorResult("向华为协同平台发送配置数据失败!");
+        }
+    }
+
+    public abstract class HwDbBase
+    {
+        protected string _tableName;
+        public HwDbBase(string tableName)
+        {
+            this._tableName = tableName;
+        }
+
+        protected OpResult Insert<TEntity>(TEntity entity)
+        {
+            return DbHelper.Bpm.Insert(entity, this._tableName).ToOpResult();
+        }
+
+        protected OpResult UpDate<TEntity>(TEntity entity)
+        {
+            return DbHelper.Bpm.Update(entity, this._tableName).ToOpResult();
+        }
+    }
+
+
     /// <summary>
     /// 华为数据传输数据操作助手
     /// </summary>
@@ -184,5 +215,64 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
             return DbHelper.Bpm.IsExist(string.Format("select MaterialId from HwCollaboration_DataConfig where MaterialId='{0}'", materialId));
         }
         #endregion
+    }
+
+
+    public class HwMaterialBaseConfigDb : HwDbBase
+    {
+        public HwMaterialBaseConfigDb() : base("HwCollaboration_MaterialBaseConfig")
+        {
+        }
+        /// <summary>
+        /// 存储数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public OpResult Store(HwCollaborationMaterialBaseConfigModel entity)
+        {
+            var existEntity = GetSingle(entity);
+            if (entity.OpSign != OpMode.Delete)
+            {
+                if (existEntity == null)
+                    return this.Insert(entity);
+                else
+                {
+                    entity.Id_Key = existEntity.Id_Key;
+                    return this.UpDate(entity);
+                }
+            }
+            else
+            {
+                return Delete(entity);
+            }
+        }
+
+        private string GetSelectFields()
+        {
+            StringBuilder s = new StringBuilder();
+            s.Append("MaterialId, MaterialName, ParentMaterialId, DisplayOrder, VendorProductModel,")
+             .Append("VendorItemDesc, ItemCategory,CustomerVendorCode, CustomerItemCode, CustomerProductModel,")
+             .Append("UnitOfMeasure, InventoryType, GoodPercent, LeadTime, LifeCycleStatus, Quantity,")
+             .Append("SubstituteGroup, OpSign, OpPerson, OpDate, OpTime");
+            return s.ToString();
+        }
+
+        private HwCollaborationMaterialBaseConfigModel GetSingle(HwCollaborationMaterialBaseConfigModel entity)
+        {
+            string sql = string.Format("Select {0} from {1} where MaterialId='{2}' And ParentMaterialId='{3}'", GetSelectFields(), this._tableName, entity.MaterialId, entity.ParentMaterialId);
+            return DbHelper.Bpm.LoadEntity<HwCollaborationMaterialBaseConfigModel>(sql);
+        }
+
+        public List<HwCollaborationMaterialBaseConfigModel> GetAll()
+        {
+            string sqlSelect = string.Format("Select {0} from {1}", GetSelectFields(), this._tableName);
+            return DbHelper.Bpm.LoadEntities<HwCollaborationMaterialBaseConfigModel>(sqlSelect);
+        }
+
+        private OpResult Delete(HwCollaborationMaterialBaseConfigModel entity)
+        {
+            string sqlDelete = string.Format("Delete from  {0} Where MaterialId='{1}' And ParentMaterialId='{2}'", this._tableName, entity.MaterialId, entity.ParentMaterialId);
+            return DbHelper.Bpm.ExecuteNonQuery(sqlDelete).ToOpResult();
+        }
     }
 }

@@ -55,6 +55,26 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
+        #region HwMaterialBaseConfig method
+        public ActionResult HwMaterialBaseConfig()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetMaterialBaseConfigDatas()
+        {
+            var datas = HwCollaborationService.MaterialManager.BaseInfoSettor.MaterialBaseDictionary;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        [HttpPost]
+        public JsonResult SaveMaterialBaseConfigDatas(HwCollaborationMaterialBaseConfigModel entity)
+        {
+            var opResult = HwCollaborationService.MaterialManager.BaseInfoSettor.Store(entity);
+            return Json(opResult);
+        }
+        #endregion
+
         #region HwManpowerInput
         public ActionResult HwManpowerInput()
         {
@@ -103,10 +123,11 @@ namespace EicWorkPlatfrom.Controllers
             };
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
         [NoAuthenCheck]
-        public JsonResult SaveMaterialInventory(HwCollaborationDataTransferModel entity)
+        public JsonResult SaveMaterialDetailData(MaterialComposeEntity entity)
         {
-            var result = HwCollaborationService.MaterialManager.InventoryManager.SynchronizeDatas(entity);
+            var result = HwCollaborationService.MaterialManager.SaveMaterialDetail(entity);
             return Json(result);
         }
         #endregion

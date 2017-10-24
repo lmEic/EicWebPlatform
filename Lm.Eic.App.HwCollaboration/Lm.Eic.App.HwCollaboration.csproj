@@ -63,6 +63,7 @@
     <Compile Include="DbAccess\HwDatasTransferDb.cs" />
     <Compile Include="DbAccess\LmErpDb.cs" />
     <Compile Include="Model\HwCollaborationDatasTransferModel.cs" />
+    <Compile Include="Model\HwCollaborationMaterialBaseConfigModel.cs" />
     <Compile Include="Model\HwDataTransferEntityBase.cs" />
     <Compile Include="Model\LmErp\ErpMaterialInventoryModel.cs" />
     <Compile Include="Model\LmErp\ErpPurchaseOnWayModel.cs" />

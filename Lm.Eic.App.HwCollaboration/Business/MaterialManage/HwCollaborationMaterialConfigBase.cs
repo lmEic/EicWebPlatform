@@ -22,10 +22,27 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         /// </summary>
         protected HwDatasConfigDb configDbAccess = null;
 
+        protected HwMaterialBaseConfigDb materialBaseConfigDb = null;
+
         public HwCollaborationMaterialConfigBase(string modulename, string apiUrl) : base(modulename, apiUrl)
         {
             this.configDbAccess = new HwDatasConfigDb();
+
+            this.materialBaseConfigDb = new HwMaterialBaseConfigDb();
         }
+
+
+        /// <summary>
+        /// 物料基础数据字典
+        /// </summary>
+        public List<HwCollaborationMaterialBaseConfigModel> MaterialBaseDictionary
+        {
+            get { return this.materialBaseConfigDb.GetAll(); }
+        }
+
+
+
+
 
         #region Material Config handle method
         /// <summary>
@@ -110,6 +127,16 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             {
                 return ex.ExOpResult();
             }
+        }
+
+
+
+
+        public OpResult Store(HwCollaborationMaterialBaseConfigModel entity)
+        {
+            entity.OpDate = DateTime.Now.ToDate();
+            entity.OpTime = DateTime.Now.ToDateTime();
+            return this.materialBaseConfigDb.Store(entity);
         }
         #endregion
     }
