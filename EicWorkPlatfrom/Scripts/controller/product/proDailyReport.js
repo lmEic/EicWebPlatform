@@ -367,12 +367,15 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                             leeHelper.delWithId(vmManager.editDataSet, item);//从表中移除
                             leeHelper.delWithId(vmManager.editDatasSource, item);
+                            leeHelper.delWithId(vmManager.editDatasList, item);
+
                         }
                     });
                 }
                 else {
                     leeHelper.delWithId(vmManager.editDataSet, item);
                     leeHelper.delWithId(vmManager.editDatasSource, item);
+                    leeHelper.delWithId(vmManager.editDatasList, item);
                 }
                 vmManager.changeDepartment();
                 //移除临时数据
@@ -808,6 +811,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     };
     var initVmUser = _.clone(uiVmUser);
     $scope.vmUser = uiVmUser;
+    var dialog = $scope.dialog = leePopups.dialog();
     var vmManagerMultiermUser = {
         clearMultiermUsersInfo: function () {
             if (uiVmUser.WorkerProductionTime + uiVmUser.WorkerNoProductionTime >= 13) {
@@ -815,6 +819,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 return;
             }
             if (uiVmUser.WorkerId != null) {
+                uiVmUser.Id = leeHelper.newGuid();
                 vmManagerMultiermUser.multiermUserInPutInfos.push(uiVmUser);
                 vmManagerMultiermUser.init();
             };
@@ -888,15 +893,28 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //是否人员显示列表
         multiermUserInPutInfoTable: false,
-
         //输入显示信息
         inPutShowlab: [],
         //输入存储信息
         multiermUserInPutInfos: [],
         //修改
-        changeMultiermUserInfo: function (item) { },
+        changeMultiermUserInfo: function (item) {
+            uiVmUser = _.clone(item);
+            $scope.vmUser = uiVmUser;
+            dialog.show();
+        },
+        userInfoChange: function () {
+            vmManagerMultiermUser.multiermUserInPutInfoTable = true;
+            dialog.close();
+        },
         //删除
-        deleteMultiermUserInfo: function (item) { },
+        deleteMultiermUserInfo: function (item) {
+            leePopups.confirm("删除提示", "您确定要删除此数据吗？", function () {
+                $scope.$apply(function () {
+                    leeHelper.delWithId(vmManagerMultiermUser.multiermUserInPutInfos, item);;//移除临时数据
+                });
+            });
+        },
         //显示列表
         showInPutInfoTable: function () {
             if (vmManagerMultiermUser.multiermUserInPutInfoTable) {
@@ -943,16 +961,23 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     };
     /// 团队合作录入信息
     operate.saveMulitelData = function (isValid) {
-        var countUsers = vmManagerMultiermUser.multiermUserInPutInfos.length;
-        if (countUsers > 0) {
+        if (vmManagerMultiermUser.multiermUserInPutInfos.length > 0) {
             leeHelper.setUserData(uiVM);
             uiVM.Department = vmManager.department;
-            $scope.searchPromise = dReportDataOpService.saveGroupDailyReportData(uiVM, vmManagerMultiermUser.multiermUserInPutInfos).then(function (opResult) {
-                if (opResult.Result) {
-                    leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
-                }
+            $scope.searchPromise = dReportDataOpService.saveGroupDailyReportData(uiVM, vmManagerMultiermUser.multiermUserInPutInfos).then(function (datasResult) {
+                console.log(datasResult);
+                if (datasResult.opResult.Result) {
+                    console.log(datasResult.dataslist);
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.opResult);
+                    angular.forEach(datasResult.dataslist, function (m) {
+                        if (m.OpSign == leeDataHandler.dataOpMode.add) {
+                            vmManager.havePutInData.push(m);
+                        }
+                    });
+                    vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
+                    vmManagerMultiermUser.multiermUserInPutInfos = [];
+                };
             });
-
         };
     };
     /// 单个录入信息

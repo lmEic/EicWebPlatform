@@ -197,41 +197,41 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
-        public List<OpResult> StoreDailyReport(DailyProductionReportModel model, List<UserInfoVm> groupUserInfos)
+        public OpResult StoreDailyReport(DailyProductionReportModel model, List<UserInfoVm> groupUserInfos, out List<DailyProductionReportModel> storeListDatas)
         {
-            List<OpResult> OpResultList = new List<OpResult>();
+            List<DailyProductionReportModel> DailyReportList = new List<DailyProductionReportModel>();
             if (model != null)
             {
+                DailyProductionReportModel newModel = null;
                 double sumProductCount = model.TodayProductionCount;
                 double sumProductBadCount = model.TodayBadProductCount;
                 if (groupUserInfos == null || groupUserInfos.Count == 0)
                 {
-                    OpResult result = OpResult.SetErrorResult("人员数据为空，操作失败!");
-                    OpResultList.Add(result);
-                    return OpResultList;
+                    storeListDatas = null;
+                    return OpResult.SetErrorResult("人员数据为空，操作失败!");
                 }
                 int sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
                 int sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
                 if (sumWorkerProductionTime == 0)
                 {
-                    OpResult result = OpResult.SetErrorResult("人员统计的工时为空，操作失败!");
-                    OpResultList.Add(result);
-                    return OpResultList;
+                    storeListDatas = null;
+                    return OpResult.SetErrorResult("人员统计的工时为空，操作失败!");
                 }
                 groupUserInfos.ForEach(m =>
                 {
-                    var mmm = new DailyProductionReportModel();
-                    mmm = model;
-                    mmm.WorkerId = m.WorkerId;
-                    mmm.WorkerName = m.WorkerName;
-                    mmm.WorkerNoProductionReason = m.WorkerNoProductionReason;
-                    mmm.TodayProductionCount = (sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime;
+                    newModel = new DailyProductionReportModel();
+                    OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(model, newModel);
+                    OOMaper.Mapper<UserInfoVm, DailyProductionReportModel>(m, newModel);
+                    newModel.TodayProductionCount = (sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime;
                     if (sumNoProductionTime != 0)
-                    { mmm.TodayBadProductCount = (sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime; }
-                    OpResultList.Add(DailyReportCrudFactory.DailyProductionReport.Store(mmm, true));
+                    { newModel.TodayBadProductCount = (sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime; }
+                    if (!DailyReportList.Contains(newModel))
+                        DailyReportList.Add(newModel);
                 });
             }
-            return OpResultList;
+            OpResult mm = DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
+            storeListDatas = DailyReportList;
+            return mm;
         }
         public List<ProductFlowCountDatasVm> GetProductionFlowCountDatas(string department, string orderId, string productName)
         {
