@@ -226,6 +226,33 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.ConfigManager.FqcItemConfigManager.GetMaterialORTConfigBy(materialId);
             return Json(datas);
         }
+        /// <summary>
+        /// 导入Excel  ImportFqcInspectionItemConfigDatas
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult ImportFqcInspectionItemConfigDatas(HttpPostedFileBase file)
+        {
+            List<InspectionFqcItemConfigModel> datas = null;
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+                    file.SaveAs(fileName);
+                    datas = InspectionService.ConfigManager.FqcItemConfigManager.ImportInspectionFqcItemConfigBy(fileName);
+                    if (datas != null && datas.Count > 0)
+                    //批量保存数据
+                    { var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(datas); }
+                    System.IO.File.Delete(fileName);
+                }
+            }
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
+
+        }
 
         #endregion
 
@@ -516,8 +543,8 @@ namespace EicWorkPlatfrom.Controllers
             var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model, isCheck);
             return Json(opResult);
         }
-        
-        
+
+
         #endregion
 
         #region fqc检验单管理

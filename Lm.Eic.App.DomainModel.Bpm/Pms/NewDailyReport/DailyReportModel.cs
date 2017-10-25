@@ -856,7 +856,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
     }
 
-
+    public class UserInfoVm
+    {
+        public string WorkerId { set; get; }
+        public string WorkerName { set; get; }
+        public int WorkerProductionTime { set; get; }
+        public int WorkerNoProductionTime { set; get; }
+        public string WorkerNoProductionReason { set; get; }
+    }
     /// <summary>
     /// 产品工艺概述模型
     /// </summary>

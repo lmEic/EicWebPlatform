@@ -63,12 +63,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return InspectionManagerCrudFactory.FqcItemConfigCrud.StoreFqcItemConfigList(modelList);
 
         }
+
+        /// <summary>
+        /// 批量存储FQC配置
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult StoreFqcInspectionItemConfig(List<InspectionFqcItemConfigModel> modelList)
+        {
+            
+            return InspectionManagerCrudFactory.FqcItemConfigCrud.StoreFqcItemConfigList(modelList);
+
+        }
         /// <summary>
         /// 导入FQC 检验配置文件
         /// </summary>
         /// <param name="documentPatch">Excel文档路径</param>
         /// <returns></returns>
-        public List<InspectionFqcItemConfigModel> ImportProductFlowListBy(string documentPatch)
+        public List<InspectionFqcItemConfigModel> ImportInspectionFqcItemConfigBy(string documentPatch)
         {
             return documentPatch.GetEntitiesFromExcel<InspectionFqcItemConfigModel>();
         }
