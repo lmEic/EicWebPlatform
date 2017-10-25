@@ -42,19 +42,10 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         /// <summary>
         /// 基础信息设置
         /// </summary>
-        public MaterialBaseInfoSettor BaseInfoSettor
+        public MaterialBaseBomManager BaseBomManager
         {
-            get { return OBulider.BuildInstance<MaterialBaseInfoSettor>(); }
+            get { return OBulider.BuildInstance<MaterialBaseBomManager>(); }
         }
-
-        /// <summary>
-        /// 关键物料BOM管理
-        /// </summary>
-        public MaterialKeyBomManager KeyBomManager
-        {
-            get { return OBulider.BuildInstance<MaterialKeyBomManager>(); }
-        }
-
         public PurchaseManager PurchaseManager
         {
             get { return OBulider.BuildInstance<PurchaseManager>(); }
@@ -66,7 +57,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         public MaterialComposeDto AutoLoadDataFromErp()
         {
             MaterialComposeDto dto = new MaterialComposeDto();
-            var bomConfigDatas = new ErpMaterialQueryCell(this.InventoryManager.GetAllBomConfigDatas());
+            var bomConfigDatas = new ErpMaterialQueryCell(this.BaseBomManager.GetAllBomConfigDatas());
             dto.InvertoryDto = this.InventoryManager.AutoGetDatasFromErp(bomConfigDatas);
             dto.MakingDto = this.MakingManager.AutoGetDatasFromErp(bomConfigDatas);
             dto.ShippmentDto = this.ShipmentManager.AutoGetDatasFromErp(bomConfigDatas);
