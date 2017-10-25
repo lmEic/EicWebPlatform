@@ -874,6 +874,11 @@ var leeTreeHelper = (function () {
             var treeObj = $.fn.zTree.getZTreeObj(treeId);
             return treeObj.getNodes();
         },
+        //根据 zTree 的唯一标识 tId 快速获取节点 JSON 数据对象
+        getNodesByParam: function (treeId, propertyName, propertyValue) {
+            var treeObj = $.fn.zTree.getZTreeObj(treeId);
+            return treeObj.getNodesByParam(propertyName, propertyValue);
+        },
         //checkTypeFlag = true 表示按照 setting.check.chkboxType 属性进行父子节点的勾选联动操作
         //checkTypeFlag = false 表示只修改此节点勾选状态，无任何勾选联动操作
         //callbackFlag = true 表示执行此方法时触发 beforeCheck & onCheck 事件回调函数
