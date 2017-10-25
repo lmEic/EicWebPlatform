@@ -96,13 +96,21 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             date: date,
         });
     };
-
+    /// 但个保存
     reportDataOp.saveDailyReportData = function (entity) {
         var url = urlPrefix + 'SaveDailyReportData';
         return ajaxService.postData(url, {
             entity: entity,
         });
-    }
+    };
+    ///批量保存
+    reportDataOp.saveGroupDailyReportData = function (entity, groupUserInfos) {
+        var url = urlPrefix + 'SaveGroupDailyReportData';
+        return ajaxService.postData(url, {
+            entity: entity,
+            groupUserInfos: groupUserInfos,
+        });
+    };
     //----------------------------------------------------------//
     return reportDataOp;
 });
@@ -796,9 +804,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         WorkerName: null,
         WorkerProductionTime: 0,
         WorkerNoProductionTime: 0,
-        WorkerNoProductionReason: null,
-        WorkerTodayProductionCount: 0,
-        WorkerTodayBadProductionCount: 0,
+        WorkerNoProductionReason: 0,
     };
     var initVmUser = _.clone(uiVmUser);
     $scope.vmUser = uiVmUser;
@@ -842,17 +848,17 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVmUser.WorkerId = worker.WorkerId;
                 uiVmUser.WorkerName = worker.Name;
                 uiVM.Department = worker.Department;
-                //if (uiVM.ProcessesIndex == 0 || uiVM.ProcessesIndex == null) {
-                //    focusSetter.processesIndexFocus = true;
-                //}
-                //else {
-                //    if (uiVmUser.WorkerName == null || uiVmUser.WorkerName == '') {
-                //        focusSetter.workerIdsFocus = true;
-                //    }
-                //    else {
-                //        focusSetter.workerProductionTimeFocus = true;
-                //    }
-                //};
+                if (uiVM.ProcessesIndex === 0 || uiVM.ProcessesIndex === null) {
+                    focusSetter.processesIndexFocus = true;
+                }
+                else {
+                    if (uiVmUser.WorkerName === null || uiVmUser.WorkerName === undefined) {
+                        focusSetter.workerIdsFocus = true;
+                    }
+                    else {
+                        focusSetter.workerProductionTimeFocus = true;
+                    }
+                };
             }
             else {
                 uiVM.Department = null;
@@ -860,9 +866,14 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         ///初始化
         init: function () {
-            vmUser = _.clone(initVmUser);
-            $scope.vmUser = vmUser;
+            uiVmUser = _.clone(initVmUser);
+            $scope.vmUser = uiVmUser;
         },
+        //团长总产量
+        groupTodayProductionCount: 0,
+        //团长总产量
+        groupTodayBadProductCount: 0,
+
         //选择多人方式
         selectMultiermUserInput: function () {
             if (!vmManager.isMultiermUserInPut) {
@@ -894,19 +905,24 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             else vmManagerMultiermUser.multiermUserInPutInfoTable = true;
         },
         //多项输入最后一项
-        changeInPutNoProductionTime: function () {
-            if (uiVmUser.WorkerNoProductionTime != 0 && uiVmUser.WorkerNoProductionTime != null) {
-                focusSetter.workerNoProductionReasonFocus = true;
+        changeInPutNoProductionTime: function ($event) {
+            if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
+                if (uiVmUser.WorkerNoProductionTime != 0) {
+                    focusSetter.workerNoProductionReasonFocus = true;
+                }
+                else {
+                    focusSetter.workerIdsFocus = true;
+                    vmManagerMultiermUser.clearMultiermUsersInfo();
+                }
             }
-            else {
-                focusSetter.workerIdFocus = true;
-                vmManagerMultiermUser.clearMultiermUsersInfo();
-            }
-
         },
-        changeInPutNoProductionReason: function () {
-            vmManagerMultiermUser.clearMultiermUsersInfo();
-            focusSetter.workerIdFocus = true;
+        changeInPutNoProductionReason: function ($event) {
+            if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
+                if (uiVmUser.WorkerNoProductionReason !== null) {
+                    vmManagerMultiermUser.clearMultiermUsersInfo();
+                    focusSetter.workerIdsFocus = true;
+                }
+            }
         },
 
     };
@@ -927,7 +943,17 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     };
     /// 团队合作录入信息
     operate.saveMulitelData = function (isValid) {
+        var countUsers = vmManagerMultiermUser.multiermUserInPutInfos.length;
+        if (countUsers > 0) {
+            leeHelper.setUserData(uiVM);
+            uiVM.Department = vmManager.department;
+            $scope.searchPromise = dReportDataOpService.saveGroupDailyReportData(uiVM, vmManagerMultiermUser.multiermUserInPutInfos).then(function (opResult) {
+                if (opResult.Result) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
+                }
+            });
 
+        };
     };
     /// 单个录入信息
     operate.saveSingleData = function (isValid) {

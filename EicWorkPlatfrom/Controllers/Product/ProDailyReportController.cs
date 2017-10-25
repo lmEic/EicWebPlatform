@@ -268,6 +268,15 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datasResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entity);
             return Json(datasResult);
         }
+        [NoAuthenCheck]
+        public JsonResult SaveGroupDailyReportData(DailyProductionReportModel entity, List<UserInfoVm> groupUserInfos)
+        {
+            var datasResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entity, groupUserInfos);
+
+            return Json(datasResult);
+        }
+
+
         #endregion
     }
 }

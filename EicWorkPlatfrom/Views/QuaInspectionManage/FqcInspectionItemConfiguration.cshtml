@@ -11,7 +11,9 @@
                 <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" class="form-control" />
                 <button class="btn-sm btn btn-success" ng-click="vmManager.getConfigDatas()" type="button">查询</button>
                 <div href="javascript:void(0);" role="button" class="btn btn-info file" title="从Excel中导入数据">
-                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file"
+                                                               onchange="angular.element(this).scope().selectFile(this)"
+                                                               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
                 </div>
                 @* 批量复制 *@
                 <span class="pull-right" ng-show="vmManager.copyLotWindowDisplay">

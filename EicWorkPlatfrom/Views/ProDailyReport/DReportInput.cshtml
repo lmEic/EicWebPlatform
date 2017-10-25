@@ -355,7 +355,7 @@
                                                 <span class="input-group-addon">不良:</span>
                                                 <input type="number" class="form-control" ng-model="vm.TodayBadProductCount"
                                                        focus-if="focus.todayBadProductCountFocus" focus-setter
-                                                       ng-keydown="focus.changeEnter($event,'workerNoProductionTimeFocus','workerIdFocus')" />
+                                                       ng-keydown="focus.changeEnter($event,'workerNoProductionTimeFocus','workerIdsFocus')" />
                                             </div>
                                         </div>
                                     </div>
@@ -422,7 +422,7 @@
                                                         <span class="input-group-addon">非生产时:</span>
                                                         <input name="workerNoProductionTime" type="number" class="form-control"
                                                                focus-if="focus.workerNoProductionTimeFocus" focus-setter
-                                                               ng-keydown="vmManagerMultiermUser.changeInPutNoProductionTime()"
+                                                               ng-keydown="vmManagerMultiermUser.changeInPutNoProductionTime($event)"
                                                                ng-model="vmUser.WorkerNoProductionTime" />
                                                     </div>
                                                 </div>
@@ -432,7 +432,7 @@
                                                         <span class="input-group-addon">非生产原因:</span>
                                                         <textarea name="workerNoProductionReason"
                                                                   focus-if="focus.workerNoProductionReasonFocus" focus-setter
-                                                                  ng-keydown="vmManagerMultiermUser.changeInPutNoProductionReason()"
+                                                                  ng-keydown="vmManagerMultiermUser.changeInPutNoProductionReason($event)"
                                                                   rows="2" class="form-control" ng-model="vmUser.WorkerNoProductionReason" required />
                                                         <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerNoProductionReason.$error" ng-show="operate.showValidation">
                                                             <small ng-message="required">非生产原因不能为空</small>

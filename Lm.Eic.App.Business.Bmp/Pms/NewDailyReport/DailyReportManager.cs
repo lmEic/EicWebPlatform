@@ -197,6 +197,42 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
+        public List<OpResult> StoreDailyReport(DailyProductionReportModel model, List<UserInfoVm> groupUserInfos)
+        {
+            List<OpResult> OpResultList = new List<OpResult>();
+            if (model != null)
+            {
+                double sumProductCount = model.TodayProductionCount;
+                double sumProductBadCount = model.TodayBadProductCount;
+                if (groupUserInfos == null || groupUserInfos.Count == 0)
+                {
+                    OpResult result = OpResult.SetErrorResult("人员数据为空，操作失败!");
+                    OpResultList.Add(result);
+                    return OpResultList;
+                }
+                int sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
+                int sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
+                if (sumWorkerProductionTime == 0)
+                {
+                    OpResult result = OpResult.SetErrorResult("人员统计的工时为空，操作失败!");
+                    OpResultList.Add(result);
+                    return OpResultList;
+                }
+                groupUserInfos.ForEach(m =>
+                {
+                    var mmm = new DailyProductionReportModel();
+                    mmm = model;
+                    mmm.WorkerId = m.WorkerId;
+                    mmm.WorkerName = m.WorkerName;
+                    mmm.WorkerNoProductionReason = m.WorkerNoProductionReason;
+                    mmm.TodayProductionCount = (sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime;
+                    if (sumNoProductionTime != 0)
+                    { mmm.TodayBadProductCount = (sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime; }
+                    OpResultList.Add(DailyReportCrudFactory.DailyProductionReport.Store(mmm, true));
+                });
+            }
+            return OpResultList;
+        }
         public List<ProductFlowCountDatasVm> GetProductionFlowCountDatas(string department, string orderId, string productName)
         {
             List<ProductFlowCountDatasVm> retrundatas = new List<ProductFlowCountDatasVm>();

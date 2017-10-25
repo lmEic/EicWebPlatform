@@ -220,9 +220,9 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     };
     //fqc检验项目配置模块   导入Excel
-    quality.importfqcInspectionItemConfigDatas = function (file, para) {
+    quality.importfqcInspectionItemConfigDatas = function (file) {
         var url = quaInspectionManageUrl + 'ImportFqcInspectionItemConfigDatas';
-        return ajaxService.uploadFile(url, { file: file, para: para });
+        return ajaxService.uploadFile(url, file);
     }
 
     //fqc检验项目配置模块  保存
@@ -1209,8 +1209,10 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
     }
     //导入excel
     $scope.selectFile = function (el) {
+        console.log(8888888);
         var files = el.files;
         if (files.length > 0) {
+            console.log(el);
             var file = files[0];
             var fd = new FormData();
             fd.append('file', file);
