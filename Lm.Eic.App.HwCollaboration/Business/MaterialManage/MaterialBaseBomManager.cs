@@ -61,9 +61,13 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             var baseDto = CreateMaterialBaseDto(entity);
             var opResult = this.baseDtoSender.SendDto(baseDto);
             if (!opResult.Result) return opResult;
-            var bomDto = CreateMaterialBomDto(entity);
-            opResult = this.bomDtoSender.SendDto(bomDto);
-            if (!opResult.Result) return opResult;
+            if (entity.ParentMaterialId.Trim() != "MaterialBaseBomInfo")
+            {
+                var bomDto = CreateMaterialBomDto(entity);
+                opResult = this.bomDtoSender.SendDto(bomDto);
+                if (!opResult.Result) return opResult;
+            }
+
             return this.materialBaseConfigDb.Store(entity);
         }
         private VendorItemRelationDto CreateMaterialBaseDto(HwCollaborationMaterialBaseConfigModel entity)
@@ -104,6 +108,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         #endregion
 
 
+        #region query method
         private List<HwCollaborationMaterialBaseConfigModel> CreateBomCellList()
         {
             List<HwCollaborationMaterialBaseConfigModel> configDatas = new List<HwCollaborationMaterialBaseConfigModel>();
@@ -140,5 +145,6 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             }
             return rtnDatas;
         }
+        #endregion
     }
 }

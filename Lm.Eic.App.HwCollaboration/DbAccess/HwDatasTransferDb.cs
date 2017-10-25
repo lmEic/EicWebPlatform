@@ -126,7 +126,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
             s.Append("MaterialId, MaterialName, ParentMaterialId, DisplayOrder, VendorProductModel,")
              .Append("VendorItemDesc, ItemCategory,CustomerVendorCode, CustomerItemCode, CustomerProductModel,")
              .Append("UnitOfMeasure, InventoryType, GoodPercent, LeadTime, LifeCycleStatus, Quantity,")
-             .Append("SubstituteGroup, OpSign, OpPerson, OpDate, OpTime");
+             .Append("SubstituteGroup, OpSign, OpPerson, OpDate, OpTime,Id_Key");
             return s.ToString();
         }
 

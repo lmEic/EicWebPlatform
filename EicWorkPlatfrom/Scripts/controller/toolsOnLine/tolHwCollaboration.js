@@ -202,7 +202,7 @@ officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
 
                 vmManager.opHandler.setOpStatus(false, leeDataHandler.dataOpMode.edit, 'edit');
             },
-            delete: function () {
+            del: function () {
                 if (!vmManager.isSelectedTreeNode()) return;
                 if (zTreeSet.treeNode.vm.ParentMaterialId == "Root") {
                     leePopups.alert("您选择的是根节点，系统禁止删除根节点！", 1);
@@ -237,14 +237,14 @@ officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
     operate.save = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             leeHelper.setUserData(materialBaseConfigVm);
-            hwDataOpService.saveMaterialBaseConfigDatas(materialBaseConfigVm).then(function (opresult) {
+            $scope.opPromise = hwDataOpService.saveMaterialBaseConfigDatas(materialBaseConfigVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var opNodeType = vmManager.opHandler.actionName;
                         var opType = materialBaseConfigVm.OpSign;
                         var vm = _.clone($scope.vm);
                         if (opType === 'add') {
-                            vm.Id_Key = opresult.Id_Key;
+                            //vm.Id_Key = opresult.Id_Key;
                             var newNode = {
                                 name: vm.MaterialId,
                                 children: [],
@@ -252,24 +252,24 @@ officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
                             };
                             if (opNodeType === "addChildren")
                                 leeTreeHelper.addChildrenNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
-                            else if (opNodeType === "add")
-                                leeTreeHelper.addNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
                         }
-                            //修改节点
-                        else if (opType === 'edit') {
-                            if (opNodeType === "edit") {
-                                zTreeSet.treeNode.name = vm.MaterialId;
-                                zTreeSet.treeNode.vm = vm;
-                                var childrens = zTreeSet.treeNode.children;
-                                angular.forEach(childrens, function (childrenNode) {
-                                    childrenNode.vm.ParentMaterialId = vm.MaterialId;
-                                })
-                                leeTreeHelper.updateNode(zTreeSet.treeId, zTreeSet.treeNode);
-                            }
+                        else if (opNodeType === "add")
+                            leeTreeHelper.addNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
+                    }
+                        //修改节点
+                    else if (opType === 'edit') {
+                        if (opNodeType === "edit") {
+                            zTreeSet.treeNode.name = vm.MaterialId;
+                            zTreeSet.treeNode.vm = vm;
+                            var childrens = zTreeSet.treeNode.children;
+                            angular.forEach(childrens, function (childrenNode) {
+                                childrenNode.vm.ParentMaterialId = vm.MaterialId;
+                            })
+                            leeTreeHelper.updateNode(zTreeSet.treeId, zTreeSet.treeNode);
                         }
-                        vmManager.opHandler.init();
                     }
 
+                    vmManager.opHandler.init();
                 });
             }, function (errResult) {
                 leePopups.alert(errResult);
