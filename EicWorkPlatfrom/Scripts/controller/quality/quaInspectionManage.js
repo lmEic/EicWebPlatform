@@ -953,7 +953,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         // 审核对话框 模态框
         checkModal: $modal({
             title: "审核提示",
-            content: "亲~您确定要审核吗",
+            content: "亲~您确定要此操作吗？",
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
