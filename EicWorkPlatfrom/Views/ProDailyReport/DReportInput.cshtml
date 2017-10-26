@@ -13,7 +13,7 @@
                         <span class="caret"></span>
                     </button>
                     <label>日期:</label>
-                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vmManager.putInDate"
+                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.putInDate"
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <label>白晚班:</label>
@@ -295,7 +295,19 @@
                                         </div>
                                     </div>
                                 </fieldset>
-
+                                @*保存取消*@
+                                <div class="row">
+                                    <div class="col-md-6 pull-right">
+                                        <button class="btn btn-primary"
+                                                type="button"
+                                                focus-if="focus.saveAlldataFocus" focus-setter
+                                                ng-keypress="operate.saveData(formDailyProductionReport.$valid)"
+                                                ng-click="operate.saveData(formDailyProductionReport.$valid)">
+                                            <i class="fa fa-save"></i>保存
+                                        </button>
+                                        <button class="btn btn-info" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取    消</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         @*多项录入*@
@@ -339,7 +351,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="input-group ">
+                                            <div class="input-group">
                                                 <span class="input-group-addon">产量:</span>
                                                 <input type="number" name="todayProductionCount" class="form-control"
                                                        focus-if="focus.todayProductionCountFocus" focus-setter
@@ -363,7 +375,7 @@
                                         @*录入人员工时信息*@
                                         <div class="table-responsive" id="inPutMultiermUserInfo" style="padding:10px;overflow-y:auto;">
                                             <div class="col-md-8">
-                                                @*工号人员信息  vm.WorkerId  vm.WorkerName*@
+                                                @*工号人员信息 *@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">生产人员:</span>
@@ -399,7 +411,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @*生产工时  vm.WorkerProductionTime *@
+                                                @*生产工时  *@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">生产工时:</span>
@@ -416,7 +428,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @*非生产工时 vm.WorkerNoProductionTime*@
+                                                @*非生产工时*@
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">非生产时:</span>
@@ -426,7 +438,7 @@
                                                                ng-model="vmUser.WorkerNoProductionTime" />
                                                     </div>
                                                 </div>
-                                                @*非产工时原因 vm.FaultDescription*@
+                                                @*非产工时原因 *@
                                                 <div class="form-group" ng-if="vmUser.WorkerNoProductionTime>0">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">非生产原因:</span>
@@ -441,7 +453,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <div style="height:100px;overflow-y:auto;">
+                                                <div style="height:200px;overflow-y:auto;">
                                                     <table class="table table-condensed table-bordered table-hover">
                                                         <thead>
                                                             <tr class="info">
@@ -458,9 +470,8 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 pull-right">
-                                                <button class="btn btn-primary" ng-click="vmManagerMultiermUser.showInPutInfoTable()">确888认</button>
-                                            </div>
+                                            <button class="btn btn-primary col-md-12" ng-click="vmManagerMultiermUser.showInPutInfoTable()">确认</button>
+
                                         </div>
                                         @*已经录入人员工时信息列表*@
                                         <div pageslide ps-open="vmManagerMultiermUser.multiermUserInPutInfoTable" style="padding:10px;overflow-y:auto;" ps-side="bottom" ps-speed="0.25" ps-size="100%" ps-container='inPutMultiermUserInfo' ps-click-outside="false" ps-key-listener="true">
@@ -492,12 +503,21 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <button class="btn bbtn-success" ng-click="vmManagerMultiermUser.showInPutInfoTable()">返回</button>
+                                                <div class="form-group pull-right">
+                                                    @*保存取消*@
+                                                    <div class="col-md-12">
+                                                        <button class="btn btn-primary"
+                                                                type="button"
+                                                                focus-if="focus.saveAlldataFocus" focus-setter
+                                                                ng-keypress="operate.saveData(formDailyProductionReport.$valid)"
+                                                                ng-click="operate.saveData(formDailyProductionReport.$valid)">
+                                                            <i class="fa fa-save"></i>批量保存
+                                                        </button>
+                                                        <button class="btn btn-info" ng-click="vmManagerMultiermUser.showInPutInfoTable()"><i class="fa fa-undo"></i>取    消</button>
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -597,20 +617,6 @@
                         </content>
                     </dialog>
                 </div>
-                @*保存取消*@
-                <div class="row">
-                    <div class="col-md-6 pull-right">
-                        <button class="btn btn-primary"
-                                type="button"
-                                focus-if="focus.saveAlldataFocus" focus-setter
-                                ng-keypress="operate.saveData(formDailyProductionReport.$valid)"
-                                ng-click="operate.saveData(formDailyProductionReport.$valid)">
-                            <i class="fa fa-save"></i>保存
-                        </button>
-                        <button class="btn btn-info" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取    消</button>
-                    </div>
-                </div>
-
             </div>
             <div class="pull-right" style="width:45%;">
                 <div class="bs-callout bs-callout-info" style="height:580px;overflow-y:auto;">
@@ -673,7 +679,7 @@
                                         <td>{{putInData.WorkerNoProductionTime}}</td>
                                         <td>{{putInData.InPutDate}}</td>
                                         <td>
-                                            <button class="btn btn-primary" ng-click="vmManager.showUserInputInfo(putInData)"><i class="fa fa-pencil-square-o"></i>修改</button>
+                                            <button class="btn btn-xs btn-primary" ng-click="vmManager.showUserInputInfo(putInData)"><i class="fa fa-pencil-square-o"></i>修改</button>
                                         </td>
                                     </tr>
                                 </tbody>

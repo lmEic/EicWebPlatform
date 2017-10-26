@@ -222,9 +222,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     newModel = new DailyProductionReportModel();
                     OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(model, newModel);
                     OOMaper.Mapper<UserInfoVm, DailyProductionReportModel>(m, newModel);
-                    newModel.TodayProductionCount = (sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime;
+                    newModel.TodayProductionCount = Math.Round((sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
                     if (sumNoProductionTime != 0)
-                    { newModel.TodayBadProductCount = (sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime; }
+                        newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime, 2, MidpointRounding.AwayFromZero);
                     if (!DailyReportList.Contains(newModel))
                         DailyReportList.Add(newModel);
                 });

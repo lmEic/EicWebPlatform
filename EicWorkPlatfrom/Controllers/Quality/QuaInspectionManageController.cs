@@ -568,8 +568,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetInspectionMasterFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
         {
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
-            return DateJsonResult(datas);
+            var Fqcdatas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
+            TempData["QuaDatas"] = Fqcdatas;
+            return DateJsonResult(Fqcdatas);
         }
         /// <summary>
         /// 查询FQC中Erp订单检验信息
@@ -581,6 +582,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult QueryFqcERPOrderInspectionInfos(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
         {
+            //12131231313
             var datas = InspectionService.InspectionFormManager.FqcFromManager.GetERPOrderAndMaterialBy(selectedDepartment, dateFrom, dateTo);
 
             return DateJsonResult(datas);
@@ -635,7 +637,18 @@ namespace EicWorkPlatfrom.Controllers
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
 
-
+        /// <summary>
+        /// 导出EXCEl表清册
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult ExportFqcDateToExcel()
+        {
+            var datas = TempData["QuaDatas"] as List<InspectionFqcMasterModel>;
+            //Excel
+            var dlfm = InspectionService.InspectionFormManager.FqcFromManager.BuildDownLoadFileModel(datas);
+            return this.DownLoadFile(dlfm);
+        }
         #endregion
         #endregion
 
