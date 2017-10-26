@@ -112,6 +112,14 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
             department: department
         });
     };
+
+    hr.getWorkOverHoursData = function (workDate, mode) {
+        var url = attendUrl + 'GetWorkOverHoursData';
+        return ajaxService.getData(url, {
+            workDate: workDate,
+            mode: mode
+        });
+    };
     return hr;
 });
 //-----------考勤业务管理-----------------------
@@ -522,126 +530,232 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
 });
 //加班管理
 hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
-    var qryDto = {
-        Department: null,
-        DepartmentText: null,
-        DateFrom: null,
-        DateTo: null,
-        ClassType: '白班'
-    };
-    $scope.vm = qryDto;
-
+    
+  
     ///ui视图模型
     var uiVM = {
-        WorkerId: null,//
-        WorkerName: null,//
-        DepartmentText: null,
-        WorkoverType: null,//
-        WorkClassType: null,//
-        WorkDate: null,//
-        WorkOverHours: 0.0,//
-        IsAlwaysDay: null,
-        DateFrom: null,
-        DateTo: null,
-        OpDate: null,
-        OpPerson: null,
-        OpSign: null,
-        Id_Key: null,
-        isSelect: false,
-        selectedCls: ''
+         WorkerId: null,//
+         WorkerName: null,//    
+         WorkoverType: null,//
+         WorkClassType: null,//
+         WorkDate: null,//
+         WorkOverHours: null,//
+         Remark:null,
+         DepartmentText:null,
+        //OpDate: null,
+        //OpPerson: null,
+        //OpSign: null,
+         Id_Key: null,
+      
        
     };
     $scope.vm = uiVM;
+    var qryDto = {
+        workDate: null,
+
+    };
+    $scope.query = qryDto;
     var originalVM = _.clone(uiVM);
-    var vmManager = {
-        classTypes: [{ id: '日班', text: '日班' }, { id: '夜班', text: '夜班' }],
-        workoverTypes: [{ name: '平时加班', text: '平时加班' }, { name: '假日加班', text: '假日加班' }, { name: '节假日加班', text: '节假日加班' }],
-        workOverHourss: [{ id:0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0}, { id: 2.5, text:2.5 } ],
+    $scope.tempVm = tempVm = {
+        WorkerId: null,
+    };
+    var vmManager = { 
+        classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: "晚班" }],
+        overTypes: [{ id: '平时加班', text: '平时加班' }, { id: '假日加班', text: '假日加班' }, { id: '节假日加班', text: '节假日加班' }],
         dataSets: [],
         dataSource: [],               
         selectedWorkers: [],
+        edittingRowIndex: 0,//编辑中的行索引
+        edittingRow: null,
+        searchedWorkers: [],
+        isSingle: true,//是否搜寻人员或部门
         init: function () {
             vmManager.dataSets = [];
             vmManager.selectedWorkers = [];
             vmManager.dataSource = [];
-            vmManager.isSelectAll = false;
+           
+        }, 
+        createRowItem: function () {
+            var vm = _.clone(originalVM);
+            uiVM = _.clone(vm);
+            $scope.vm = uiVM;
+            vm.WorkDate = qryDto.workDate;
+            vm.rowindex = vmManager.edittingRowIndex;
+            vm.editting = true;
+            vmManager.edittingRow = vm;
+            return vm;
+            
+        },
+        createNewRow: function () {
+            vmManager.addRow();
+        },
+        addRow: function () {
+            vmManager.edittingRowIndex = vmManager.dataSource.length > 0 ? vmManager.dataSource.length + 1 : 1;
+            var vm = vmManager.createRowItem();
+            vmManager.dataSource.push(vm);
+        },
+        //删除行
+        removeRow: function (item) {
+            leeHelper.remove(vmManager.dataSource, item);
+        },
+        //复制粘贴行
+        copyAndPaste: function (item) {
+            item.editting = false;
+            var vm = _.clone(item);
+            vm.rowindex = item.rowindex + 1;
+            vmManager.edittingRow = vm;
+            vmManager.dataSource.push(vm);
+        },
+        //取消编辑
+        cancelEdit: function (item) {
+            item.pheditting = false;
+        },
+        //获取行
+        getCurrentRow: function (item) {
+            vmManager.edittingRowIndex = item.rowindex;
+            vmManager.edittingRow = item;
+        },
+        //结束编辑
+        editOver: function (rowItem) {
+            if (!angular.isUndefined(rowItem)) {
+                leeHelper.copyVm(uiVM, rowItem);
+                uiVM = _.clone(initVM);
+                $scope.vm = uiVM;
+                rowItem.editting = false;
+            }
+        },
+        //编辑加班类型 
+        editOverType: function (item) {
+            item.isEdittingOverType = true;
+            vmManager.getCurrentRow(item);
+            $scope.vm.WorkoverType = item.WorkoverType;
+        },
+        //选择加班类型
+        selectOverType: function () {
+            vmManager.edittingRow.WorkoverType = $scope.vm.WorkoverType;
+            vmManager.edittingRow.isEdittingOverType = false;
+        },
+        //编辑班别
+        editClassType: function (item)
+        {
+            item.isEdittingClassType = true;
+            vmManager.getCurrentRow(item);
+            $scope.vm.WorkClassType = item.WorkClassType;
+        },
+        //选择班别
+        selectClassType: function () {
+            vmManager.edittingRow.WorkClassType = $scope.vm.WorkClassType;
+            vmManager.edittingRow.isEdittingClassType = false;
+
+        },
+        //设置单元格编辑状态
+        setEditCellStatus: function (item, cellField, status) {
+            var editCellSign = 'editting' + cellField + 'Mode';
+            item[editCellSign] = status;
+        
+        },   
+        editItem: null,
+        //加班人员（工号，姓名，部门）
+        editWorkerId: function (item)
+        {
+            item.isEdittingWorkerId = true;         
+            vmManager.getCurrentRow(item);
+            vmManager.editItem = item;
+        },
+        caneleditWorkerId: function (item)
+        {
+            item.isEdittingWorkerId = false;    
+        },
+        getWorkerInfo: function () {
+            if (uiVM.WorkerId === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
+            if (uiVM.WorkerId.length >= strLen) {
+                vmManager.searchedWorkers = [];
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {
+                    if (datas.length > 0) {
+                        vmManager.searchedWorkers = datas;
+                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.isSingle = true;
+                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                        }
+                        else {
+                            vmManager.isSingle = false;
+                        }
+                    }
+                    else {
+                        vmManager.selectWorker(null);
+                    }
+                });
+            }
+        },
+        selectWorker: function (worker) {
+            if (worker !== null) {
+                uiVM.Name = worker.Name;
+                uiVM.WorkerId = worker.WorkerId;
+                uiVM.Department = worker.Department;
+            }
+            else {
+                uiVM.Department = null;
+            }
         },
        
-        isSelectAll: false,
-        selectAll: function () {        
-            angular.forEach(vmManager.dataSets, function (item) {
-                item.isSelect = !vmManager.isSelectAll;
-                operate.addWorkerToList(item);
-                
-            });
+        hello: function ()
+        {
+            alert("hello");
         },
-        loadClassTypeDatas: function (department, workerId, classtype) {
-            vmManager.dataSource = [];
-            $scope.classTypePromise = hrDataOpService.getClassTypeDatas(qryDto.Department, workerId, classtype).then(function (datas) {
-                angular.forEach(datas, function (item) {
-                    var dataItem = _.clone(uiVM);
-                    leeHelper.copyVm(item, dataItem);
-                    vmManager.dataSource.push(dataItem);
-                });
-                vmManager.dataSets = _.clone(vmManager.dataSource);
-            });
+
+        //插入某一行
+        insertRow: function (item) {
+            var rowindex = item.rowindex;
+            vmManager.edittingRowIndex = rowindex + 1;
+            var vm = vmManager.createRowItem();
+            leeHelper.insert(vmManager.dataSource, rowindex, vm);
+            var index = 1;
+            //重新更改行的索引
+            angular.forEach(vmManager.dataSource, function (row) {
+                row.rowindex = index;
+                index += 1;
+            })
+        },
+       
+        //载入模板
+        getWorkOverHoursByDatas: function (mode)
+        {        
+            hrDataOpService.getWorkOverHoursData(qryDto.workDate, mode).then(function (datas) {
+                vmManager.dataSource = datas;
+            })
         }
     };
 
     $scope.vmManager = vmManager;
-    var operate = Object.create(leeDataHandler.operateStatus);
-    operate.loadData = function () {
-        vmManager.init();
-        vmManager.loadClassTypeDatas(qryDto.Department, null, null);
-    };
-
-  
-    operate.addWorkerToList = function (item) {
-        var worker = _.find(vmManager.selectedWorkers, { WorkerId: item.WorkerId });
-        if (worker === undefined) {
-            if (item.isSelect) {
-                item.selectedCls = "text-primary";
-                vmManager.selectedWorkers.push(item);
-            }
-            else {
-                item.selectedCls = "";
-            }
-        }
-        else {
-            if (!item.isSelect) {
-                item.selectedCls = "";
-                leeHelper.remove(vmManager.selectedWorkers, item);
-               
-
-
-            }
-
-        }
-    };
-   
     $scope.operate = operate;
-    operate.vm = qryDto;
-
-    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-
-    departmentTreeSet.bindNodeToVm = function () {
-        if (uiVM.WorkoverType == null || uiVM.WorkDate == null || uiVM.WorkClassType==null)
-        {
-            alert("加班信息填写不完整！");
-            return false;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    //鼠标焦点
+    var focusSetter = {
+        workerIdFocus: false,
+        moveFocusTo: function ($event, elPreName, elNextName) {
+            if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
+                focusSetter[elNextName] = true;
+            }
+            else if ($event.keyCode === 37) {
+                focusSetter[elPreName] = true;
+            };
+        },
+        doWhenKeyDown: function ($event, fn) {
+            if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) { fn(); }
+        },
+        
+        changeEnter: function ($event, elPreName, elNextName) {
+            focusSetter.moveFocusTo($event, elPreName, elNextName)
         }
-        qryDto.Department = departmentTreeSet.treeNode.vm.DataNodeName;
-        qryDto.DepartmentText = departmentTreeSet.treeNode.vm.DataNodeText;
-        uiVM.DepartmentText = departmentTreeSet.treeNode.vm.DataNodeText;
 
-        vmManager.loadClassTypeDatas(qryDto.Department, null, null);
 
-    };
-    $scope.ztree = departmentTreeSet;
+    }
+   
+ 
+   
 
-    $scope.promise = connDataOpService.getDepartments().then(function (datas) {
-        departmentTreeSet.setTreeDataset(datas);
-    });
+ 
 
    
 });
@@ -865,7 +979,6 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
         }
     });
 });
-
 //厂服管理
 hrModule.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {
     ///厂服管理模型

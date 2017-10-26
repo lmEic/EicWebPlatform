@@ -5,6 +5,8 @@ using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
+using Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -123,6 +125,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         [NoAuthenCheck]
         public ContentResult GetAskLeaveDataAbout(string workerId, string yearMonth)
+
+        {
+            var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDatas(workerId, yearMonth);
+            return DateJsonResult(datas);
+        }
+
+        [NoAuthenCheck]
+        public ContentResult GetAskLeaveDataAbout1(string workerId, string yearMonth)
         {
             var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDatas(workerId, yearMonth);
             return DateJsonResult(datas);
@@ -177,6 +187,33 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        [NoAuthenCheck]
+        public ContentResult GetWorkOverHoursData(DateTime workDate,int mode)
+        {
+            WorkOverHoursDto dto = new WorkOverHoursDto()
+            {
+                WorkDate = workDate,
+                SearchMode = mode
+
+            };
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBy(dto);
+            return DateJsonResult(datas);
+        }
+
+
         #endregion
+
+
+
+
+
+       
     }
+
+
+
+
+
+
+
 }

@@ -1,172 +1,143 @@
-﻿<div class="row" ng-controller="workOverHoursManageCtrl">
-   
-    <div class="col-md-3">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h6 class="panel-title"><i class="glyphicon glyphicon-home"></i>部门信息</h6>
-            </div>
-            <div class="panel-body" style="max-height:515px;overflow:auto">
-                <ul data-yl-tree cg-busy="{promise:promise}"
-                    data-tree-dataset="ztree.configDataNodes"
-                    data-start-load="ztree.startLoad"
-                    ng-model="ztree.treeNode"
-                    data-binding-nodevm="ztree.bindNodeToVm()"
-                    id="{{ztree.treeId}}" class="ztree"></ul>
-            </div>
-
-        </div>
-    </div>
-
-     
-     <div class="col-md-9">
-        <div class="panel panel-success">
+﻿<div class="row" ng-controller="workOverHoursManageCtrl">   
+     <div class="col-md-12">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h6 class="panel-title"><i class="fa fa-hand-peace-o">加班管理</i></h6>
             </div>
-
             <div class="panel-body">
                 <div bs-tabs bs-active-pane="vmManager.activeTab"cg-busy="promise:searchPromise">
-                    <div bs-pane data-title="登记加班单" data-name="initTab">
+                    <div bs-pane data-title="加班单操作" data-name="initTab">
                        <div class="col-md-12">
-                            <div class="bs-callout bs-callout-success">                                                              
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <form role="form" name="formWorkover" novalidate class="form-horizontal" >
+                           <div class="bs-callout bs-callout-info">
+                               <div class="row">
+                                   <div class="col-md-6">
+                                       <form for="form" class="form-inline">
+                                           <div class="form-group">
+                                               <label for="workDate">日期:</label>
+                                               <input type="date" ng-model="query.workDate" class="form-control" placeholder="请选日期" ng-keydown="vmManager.getWorkOverHoursByDatas(1)" format-date />
+                                               <button type="button" title="载入模板" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursByDatas(1)">
+                                                   <i class="fa fa-download"></i>载入模板
+                                               </button>
+                                           </div>
+                                       </form>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <button class="btn btn-sm btn-primary" title="新增行" ng-click="vmManager.createNewRow()"><i class="fa fa-pencil"></i>新增行</button>
+                                       <button class="btn btn-sm btn-success" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
+                                   </div>
+                               </div>
+                               <div class="h-split"></div>
+                               <div class="table-responsive">
+                                   <div class="well" cg-busy="{promise:searchPromise}" style="padding:10px;overflow-y:scroll;min-height:280px;max-height:680px;">
+                                       <table class="table table-striped table-hover" style="table-layout:fixed;">
+                                           <colgroup>
+                                               <col width="50" />
+                                               <col width="80" />
+                                               <col width="70" />
+                                               <col width="100" />
+                                               <col width="60" />
+                                               <col width="60" />
+                                               <col width="60" />
+                                               <col width="60" />
+                                               <col width="60" />
+                                           </colgroup>
+                                           <thead>
+                                               <tr class="info">
+                                                   <th class="text-center danger"><i class="fa fa-flag"></i>操作</th>
+                                                   <th>加班类型</th>
+                                                   <th>部门</th>
+                                                   <th>日期</th>
+                                                   <th>班别</th>
+                                                   <th>工号</th>
+                                                   <th>姓名</th>
+                                                   <th>加班时数</th>
+                                                   <th>备注</th>
+                                               </tr>
+                                           </thead>
+                                           <tbody>
+                                               <tr ng-repeat="item in vmManager.dataSource track by $index">
+                                                   @*工具按钮*@
+                                                   <td class="text-center">
+                                                       <button type="button" class="btn btn-xs btn-primary" ng-show="item.editting"
+                                                               data-animation="am-flip-x" data-placement="right"
+                                                               bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                           <span class="fa fa-pencil-square"></span>
+                                                       </button>
+                                                       <div class="dropdown-menu" role="menu">
+                                                           <ul class="nav nav-pills" role="tablist">
+                                                               <li role="presentation">
+                                                                   <a href="#" ng-click="vmManager.editOver(item)" title="结束编辑"><i class="fa fa-check-square"></i>结束</a>
+                                                               </li>
+                                                               <li role="presentation">
+                                                                   <a href="#" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
+                                                               </li>
+                                                           </ul>
+                                                       </div>
 
-                                                <div class="form-group">
-                                                    <label for="workoverType" class="col-md-2 control-label">加班类型</label>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group">
-                                                            <input name="workoverType" class="form-control" ng-model="vm.WorkoverType" required />
-                                                            <div class="error-messages" ng-messages="formWorkover.workoverType.$error" ng-show="operate.showValidation">
-                                                                <small ng-message="required">加班类型不能为空</small>
-                                                            </div>
-                                                            <span class="input-group-btn">
-                                                                <button type="button" class="btn btn-success" ng-model="vm.WorkoverType"
-                                                                        data-html="1" data-multiple="0" data-placeholder="选择加班类型" data-animation="am-flip-x"
-                                                                        data-bs-options="worktype.name as worktype.text for worktype in vmManager.workoverTypes" data-bs-select></button>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                        <label for="workClassType" class="col-md-2 control-label">班别</label>
-                                                        <div class="col-md-4">
-                                                            <div class="input-group">
-                                                                <input name="workClassType" class="form-control" ng-model="vm.WorkClassType" required />
-                                                                <div class="error-messages" ng-messages="formWorkover.workClassType.$error" ng-show="operate.showValidation">
-                                                                    <small ng-message="required">班别不能为空</small>
-                                                                </div>
-                                                                <span class="input-group-btn">
-                                                                    <button type="button" class="btn btn-success" ng-model="vm.WorkClassType"
-                                                                            data-html="1" data-multiple="0" data-placeholder="选择班别" data-animation="am-flip-x"
-                                                                            data-bs-options="classtype.id as classtype.text for classtype in vmManager.classTypes" data-bs-select></button>
-                                                                </span>
-                                                            </div>
-                                                        </div>                       
-                                                    </div>
+                                                       <button type="button" class="btn btn-xs btn-primary" ng-hide="item.editting"
+                                                               data-animation="am-flip-x" data-placement="right"
+                                                               bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                           <span class="fa fa-indent"></span>
+                                                       </button>
+                                                       <div class="dropdown-menu" role="menu">
+                                                           <ul class="nav nav-pills" role="tablist">
+                                                               <li role="presentation">
+                                                                   <a href="#" ng-click="vmManager.editWorkerId(item)" title="编辑信息"><i class="fa fa-pencil"></i>编辑</a>
+                                                               </li>
+                                                               <li role="presentation">
+                                                                   <a href="#" ng-click="vmManager.insertRow(item)" title="插入行"><i class="fa fa-pencil"></i>插入</a>
+                                                               </li>
+                                                               <li role="presentation">
+                                                                   <a href="#" ng-click="vmManager.copyAndPaste(item)" title="复制行"><i class="fa fa-clipboard"></i>复制</a>
+                                                               </li>
 
-                                                <div class="form-group">
-                                                    <label for="workDate" class="col-md-2 control-label">日期</label>
-                                                    <div class="col-md-4">
-                                                        <input type="date" name="workDate" class="form-control" ng-model="vm.WorkDate" placeholder="加班日期" format-date required />
-                                                        <div class="error-messages" ng-messages="fromWorkover.workDate.$error" ng-show="operate.showValidation">
-                                                            <small ng-message="required">日期不能为空</small>
-                                                        </div>
-                                                    </div>
-                                                    <label for="department" class="col-md-2 control-label">部门</label>
-                                                    <div class="col-md-4">
-                                                       
-                                                            <input type="text" name="workDate" class="form-control" ng-model="vm.DepartmentText" placeholder="部门" readonly required />
-                                                            <div class="error-messages" ng-messages="fromWorkover.department.$error" ng-show="operate.showValidation">
-                                                                <small ng-message="required">部门不能为空</small>
-                                                            </div>
-                                                            
-                                                       
-                                                    </div>
-                                                </div>
+                                                               <li role="presentation">
+                                                                   <a href="#" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
+                                                               </li>
+                                                               <li role="presentation">
+                                                                   <a href="#" ng-click="vmManager.caneleditWorkerId(item)" title="取消"><i class="fa fa-undo"></i>取消</a>
+                                                               </li>
+                                                           </ul>
+                                                       </div>
+                                                   </td>
 
-                                                <div class="form-group">
-                                                    <label for="workOverHour" class="col-md-2 control-label">加班时数</label>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group">
-                                                            <input type="number" name="workOverHour" class="form-control" ng-model="vm.WorkOverHours" placeholder="加班时数"  required />
-                                                            <div class="error-messages" ng-messages="fromWorkover.workOverHour.$error" ng-show="operate.showValidation">
-                                                                <small ng-message="required">加班时数不能为空</small>
-                                                            </div>
-                                                            <span class="input-group-btn">
-                                                                <button type="button"class="btn btn-success" ng-model="vm.WorkOverHours"
-                                                                        data-html="1" data-multiple="0"data-placeholder="选择时数"data-animation="am-flip-x"
-                                                                        data-bs-options="overHours.id as overHours.text for overHours in vmManager.workOverHourss" data-bs-select>
-                                                                </button>
-                                                            </span>
-                                                        </div>                                                    
-                                                    </div>                                                
-                                                </div>
-                                               </form>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" ng-class="vmManager.isSelectAll===false?'btn btn-md btn-success':'btn btn-md btn-primary'"
-                                                    ng-model="vmManager.isSelectAll" ng-click="vmManager.selectAll()" bs-checkbox>
-                                                <i ng-class="vmManager.isSelectAll===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
-                                                <span ng-show="vmManager.isSelectAll===false">全选</span>
-                                                <span ng-show="vmManager.isSelectAll">全不选</span>
-                                            </button>
-                                        </div>                                  
-                                    </div>
-                                    <div class="h-split"></div>
-                                    <ul class="nav nav-pills">
-                                        <li ng-repeat="item in vmManager.dataSets">
-                                            <div style="width:100px;">
-                                                <input type="checkbox" ng-model="item.isSelect" ng-click="operate.addWorkerToList(item)" />
-                                                {{item.WorkerId}}
-                                                <br />
-                                                <span ng-class="item.selectedCls">
-                                                    <i class="fa fa-user"></i>
-                                                    {{item.WorkerName}}
-                                                    <br />
-                                                    <i class="fa fa-adjust"></i>                                             
-                                                        {{item.ClassType}}
-                                                    </span>
-                                                
-                                            </div>
-                                        </li>
-                                    </ul>  
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-hover" style="table-layout:fixed;">
-                                        <colgroup>
-                                            <col width="80" />
-                                            <col width="70" />
-                                            <col width="100" />
-                                            <col width="60" />
-                                            <col width="60" />
-                                            <col width="60" />
-                                            <col width="60" />
-                                        </colgroup>
-                                        <thead>
-                                            <tr class="success">
-                                                <th>加班类型</th>
-                                                <th>部门</th>
-                                                <th>日期</th>
-                                                <th>班别</th>
-                                                <th>工号</th>
-                                                <th>姓名</th>
-                                                <th>加班时数</th>
-                                                
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="item in vmManager.selectedWorkers track by $index">
-                                                <td>{{item.WorkoverType}}</td>
-                                                <td>{{item.DepartmentText}}</td>
-                                                <td>{{item.WorkDate}}</td>
-                                                <td>{{item.WorkClassType}}</td>
-                                                <td>{{item.WorkerId}}</td>
-                                                <td>{{item.WorkerName}}</td>
-                                                <td>{{item.WorkOverHours}}</td>                                     
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                                   <td title="双击可修改" ng-dblclick="vmManager.editOverType(item)">
+                                                   <span ng-hide="item.isEdittingOverType">{{item.WorkoverType}}</span>
+                                                       <button type="button" class="btn btn-xs btn-primary" ng-model="vm.WorkoverType" data-html="1" data-placeholder="加班类型"
+                                                               ng-show="item.isEdittingOverType" ng-change="vmManager.selectOverType()"
+                                                               data-multiple="0" data-animation="am-flip-x" bs-options="ct.id as ct.text for ct in vmManager.overTypes" bs-select>
+                                                           平时加班 <span class="caret"></span>
+                                                       </button>
+                                                   </td>
+                                                   <td>{{item.DepartmentText}}</td>
+                                                   <td>{{item.WorkDate}}</td>
+                                                   <td title="双击可修改" ng-dblclick="vmManager.editClassType(item)">
+                                                   <span ng-hide="item.isEdittingClassType">{{item.WorkClassType}}</span>
+                                                       <button type="button"class="btn btn-xs btn-primary"ng-model="vm.WorkClassType"data-html="1" data-placeholder="班别"
+                                                               ng-show="item.isEdittingClassType"ng-change="vmManager.selectClassType()"
+                                                               data-multiple="0"data-animation="am-flip-x"bs-options="am.id as am.text for am in vmManager.classTypes" bs-select>
+                                                           晚班<span class="caret"></span>
+                                                       </button>
+                                                   </td>
+                                                  <td  ng-dblclick="editWorkerId(item)">
+                                                      <div ng-if="!item.isEdittingWorkerId">
+                                                          <span >{{item.WorkerId}}</span>
+                                                      </div>
+                                                      <div ng-if="item.isEdittingWorkerId">
+                                                          <input type="text"  ng-model="item.WorkerId" ng-keydown="vmManager.hello()"/>
+                                                      </div>
+                                                    
+                                                                                                                                                                 
+                                                  </td>
+                                                   <td>{{item.WorkerName}}</td>
+                                                   <td>{{item.WorkOverHours}}</td>
+                                                   <td>{{item.Remark}}</td>
+                                               </tr>
+                                           </tbody>
+                                       </table>
+                                   </div>
+                               </div>
+                           </div>
                         </div>
                     </div>
                     <div bs-pane data-title="加班单汇总"data-name="editTab">

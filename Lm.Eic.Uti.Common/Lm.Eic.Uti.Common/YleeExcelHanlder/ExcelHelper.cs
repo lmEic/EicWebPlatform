@@ -81,7 +81,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
                 else if (Regex.IsMatch(filePath, ".xlsx$")) // 2007
                 {
                     //return FailureResultMsg("请选择Excel文件"); // 未设计
-                    // enlist = Excel2007ToEntityList<T>(filePath, sheetColumn, out errorMsg);
+                    //enlist = Excel2007ToEntityList<T>(filePath, sheetColumn, out errorMsg);
                 }
                 errMsg = errorMsg.ToString();
             }
