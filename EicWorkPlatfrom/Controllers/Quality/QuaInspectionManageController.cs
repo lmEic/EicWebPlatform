@@ -10,13 +10,16 @@ using System.IO;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
+using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 
 namespace EicWorkPlatfrom.Controllers
 {
     /********************************************************************
     	created:	2017/03/27
     	file ext:	cs
-    	author:		YLee
+    	author:		YLxx
     	purpose:
     *********************************************************************/
     public class QuaInspectionManageController : EicBaseController
@@ -173,8 +176,8 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult CheckFqcInspectionItemConfigMaterialId(string materialId)
         {
 
-            var result = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var dataResult = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 删除进料检验配置数据 deleteIqlInspectionConfigItem
@@ -222,6 +225,33 @@ namespace EicWorkPlatfrom.Controllers
         {
             var datas = InspectionService.ConfigManager.FqcItemConfigManager.GetMaterialORTConfigBy(materialId);
             return Json(datas);
+        }
+        /// <summary>
+        /// 导入Excel  ImportFqcInspectionItemConfigDatas
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult ImportFqcInspectionItemConfigDatas(HttpPostedFileBase file)
+        {
+            List<InspectionFqcItemConfigModel> datas = null;
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+                    file.SaveAs(fileName);
+                    datas = InspectionService.ConfigManager.FqcItemConfigManager.ImportInspectionFqcItemConfigBy(fileName);
+                    if (datas != null && datas.Count > 0)
+                    //批量保存数据
+                    { var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(datas); }
+                    System.IO.File.Delete(fileName);
+                }
+            }
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
+
         }
 
         #endregion
@@ -314,7 +344,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetIqcMaterialInfoDatas(string orderId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetPuroductSupplierInfo(orderId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionMastersDatasBy(orderId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -324,26 +354,43 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         /// </summary>
         [NoAuthenCheck]
-        [HttpGet]
-        public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId, string materialId)
+        public JsonResult GetIqcInspectionItemDataSummaryDatas(string orderId, string materialId)
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.BuildingIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 上传FQC检验采集数据附件
+        /// 删除抽检项目
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspecitonItem"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DeleteIqcInspectionItemData(string orderid, string materialId, string inspectionItem)
+        {
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.DetailDatasGather.DeleteInspectionItems(orderid, materialId, inspectionItem);
+            return Json(opResult);
+        }
+        /// <summary>
+        /// 上传IQC/FQC检验采集数据附件
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
+        public JsonResult UploadGatherDataAttachFile(HttpPostedFileBase file)
         {
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath, addchangeFileName);
-            return Json("OK");
+            FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.InspectionGatherDataFile, dto.ModuleName);
+            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+            }
+            return Json(result);
         }
-
         /// <summary>
         /// 存储采集的数据
         /// </summary>
@@ -356,8 +403,8 @@ namespace EicWorkPlatfrom.Controllers
             if (gatherData == null) return Json(new OpResult("数据为空", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)
             {
-                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
-                gatherData.SiteRootPath = this.SiteRootPath;
+                gatherData.DocumentPath = Path.Combine(gatherData.DocumentPath, gatherData.FileName);
+                gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
             var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcGatherDatas(gatherData);
             return Json(opResult);
@@ -382,6 +429,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             var orderInfo = InspectionService.DataGatherManager.FqcDataGather.GetFqcInspectionFqcOrderIdInfoBy(orderId);
             var sampledDatas = InspectionService.DataGatherManager.FqcDataGather.MasterDatasGather.GetFqcMasterOrderIdDatasBy(orderId);
+
             var datas = new { orderInfo = orderInfo, sampledDatas = sampledDatas };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -411,20 +459,6 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 上传FQC检验采集数据附件
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
-        {
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath, addchangeFileName);
-            return Json("OK");
-        }
-
-        /// <summary>
         /// 保存FQC检验采集数据
         /// </summary>
         /// <returns></returns>
@@ -434,8 +468,9 @@ namespace EicWorkPlatfrom.Controllers
             if (gatherData == null) return Json(new OpResult("数据为空，保存失败", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)//上传文件
             {
-                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
-                gatherData.SiteRootPath = this.SiteRootPath;
+                gatherData.DocumentPath = Path.Combine(gatherData.DocumentPath, gatherData.FileName);
+                ///除掉根目录
+                gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
@@ -459,8 +494,27 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult GetInspectionFormManageOfIqcDatas(string formQueryString, int queryOpModel, DateTime dateFrom, DateTime dateTo)
         {
             var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerDatas(formQueryString, queryOpModel, dateFrom, dateTo);
+            TempData["QuaDatas"] = datas;
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 导出EXCEl表清册
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult ExportDateToExcel()
+        {
+            var datas = TempData["QuaDatas"] as List<InspectionIqcMasterModel>;
+            //Excel
+            var dlfm = InspectionService.InspectionFormManager.IqcFromManager.BuildDownLoadFileModel(datas);
+            return this.DownLoadFile(dlfm);
+        }
+        /// <summary>
+        /// 查找已经有生成项目
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetInspectionFormDetailOfIqcDatas(string orderId, string materialId)
         {
@@ -479,16 +533,18 @@ namespace EicWorkPlatfrom.Controllers
             return this.DownLoadFile(dlfm);
         }
         /// <summary>
-        /// IQC审核
+        /// IQC审核/ 撤消IQC审核
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
+        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model, bool isCheck)
         {
-            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model);
+            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model, isCheck);
             return Json(opResult);
         }
+
+
         #endregion
 
         #region fqc检验单管理
@@ -496,20 +552,59 @@ namespace EicWorkPlatfrom.Controllers
         /// Fqc检验单管理
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ActionResult InspectionFormManageOfFqc()
         {
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据
-        /// </summary>  selectedFormStatus,dateFrom,dateTo
+        /// FQC 查询 抽抽验状态
+        /// </summary>
+        /// <param name="selectedDepartment"></param>
+        /// <param name="formStatus"></param>
+        /// <param name="fqcDateFrom"></param>
+        /// <param name="fqcDateTo"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetInspectionFormManageOfFqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
+        public ContentResult GetInspectionMasterFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
         {
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 查询FQC中Erp订单检验信息
+        /// </summary>
+        /// <param name="selectedDepartment">部门</param>
+        /// <param name="dateFrom">起始日期</param>
+        /// <param name="dateTo">结束日期</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult QueryFqcERPOrderInspectionInfos(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
+        {
+            //12131231313
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetERPOrderAndMaterialBy(selectedDepartment, dateFrom, dateTo);
+
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 得到Master抽检验信息 GetInspectionFormMasterOfFqcDatas
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetInspectionFormMasterOfFqcDatas(string orderId)
+        {
+
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.FqcMasterDatasBy(orderId);
+
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 通订单号和序列号得测试详细数据
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="orderIdNumber"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, int orderIdNumber)
         {
@@ -526,9 +621,22 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionFqcMasterModel model)
         {
-            var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionMasterModel(model);
+            var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionModel(model);
             return Json(opResult);
         }
+        /// <summary>
+        /// 载入部门信息
+        /// </summary>
+        /// <param name="treeModuleKey"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetConfigDicData(string treeModuleKey)
+        {
+            var modules = PmConfigService.DataDicManager.FindConfigDatasBy(treeModuleKey);
+            return Json(modules, JsonRequestBehavior.AllowGet);
+        }
+
+
         #endregion
         #endregion
 

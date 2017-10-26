@@ -15,9 +15,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <summary>
         /// 邮箱配置管理
         /// </summary>
-        public static ItilEmailManager EmailManager
+        public static EmailManager EmailManager
         {
-            get { return OBulider.BuildInstance<ItilEmailManager>(); }
+            get { return OBulider.BuildInstance<EmailManager>(); }
         }
 
 

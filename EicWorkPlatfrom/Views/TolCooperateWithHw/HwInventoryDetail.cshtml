@@ -1,0 +1,208 @@
+﻿<div class="panel panel-primary" ng-controller="hwMaterialManageCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>物料信息管理</h6>
+    </div>
+    <div class="panel-body" cg-busy="{promise:searchPromise}">
+        <div class="bs-callout bs-callout-success">
+            <div class="row">
+                <div class="col-md-6" cg-busy="{promise:opPromise}">
+                    <button class="btn btn-success pull-left" ng-click="operate.saveInventoryData()">
+                        <i class="fa fa-save"></i>
+                        同步数据
+                    </button>
+                    <span yl-refresh-frequency data-time="天"></span>
+                </div>
+            </div>
+        </div>
+        <div bs-tabs bs-active-pane="vmManager.activeTab">
+            <div bs-pane data-title="库存明细" data-name="HwInventoryDetailTab">
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">库存明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>物料编码</th>
+                                <th>客户代码</th>
+                                <th>子库</th>
+                                <th>货位</th>
+                                <th>入库时间</th>
+                                <th>物料编码版本</th>
+                                <th>库存</th>
+                                <th>待检库存</th>
+                                <th>隔离品数量</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.inventoryDataEntity.factoryInventoryList">
+                                <td>{{item.vendorFactoryCode}}</td>
+                                <td>{{item.vendorItemCode}}</td>
+                                <td>{{item.customerCode}}</td>
+                                <td>{{item.vendorStock}}</td>
+                                <td>{{item.vendorLocation}}</td>
+                                <td>{{item.stockTime}}</td>
+                                <td>{{item.vendorItemRevision}}</td>
+                                <td>{{item.goodQuantity}}</td>
+                                <td>{{item.inspectQty}}</td>
+                                <td>{{item.faultQty}}</td>
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div bs-pane data-title="在制明细" data-name="HwMakingVoDetailTab">
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">在制明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>订单号</th>
+                                <th>客户代码</th>
+                                <th>订单下达时间</th>
+                                <th>生产组件编码</th>
+                                <th>物料小类</th>
+                                <th>订单数量</th>
+                                <th>完工数量</th>
+                                <th>订单状态</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.makingDataEntity.materialMakingList">
+                                <td>{{item.vendorFactoryCode}}</td>
+                                <td>{{item.orderNumber}}</td>
+                                <td>{{item.customerVendorCode}}</td>
+                                <td>{{item.orderPublishDateStr}}</td>
+                                <td>{{item.componentCode}}</td>
+                                <td>{{item.componentDescription}}</td>
+                                <td>{{item.orderQuantity}}</td>
+                                <td>{{item.orderCompletedQuantity}}</td>
+                                <td>{{item.orderStatus}}</td>
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div bs-pane data-title="发料明细" data-name="HwShipmentVoDetailTab">
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">发料明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>客户代码</th>
+                                <th>订单号</th>
+                                <th>生产待发物料编码</th>
+                                <th>生产应发数量</th>
+                                <th>生产已发数量</th>
+                                <th>BOM用量</th>
+                                <th>替代组</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.shipmentDataEntity.materialShipmentList">
+                                <td>{{item.vendorFactoryCode}}</td>
+                                <td>{{item.customerVendorCode}}</td>
+                                <td>{{item.orderNumber}}</td>
+
+                                <td>{{item.itemCode}}</td>
+                                <td>{{item.shouldShipQuantity}}</td>
+                                <td>{{item.shippedQuantity}}</td>
+                                <td>{{item.bomUsage}}</td>
+                                <td>{{item.substituteGroup}}</td>
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div bs-pane data-title="采购在途" data-name="HwPurchaseOnWayTab">
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">采购在途明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>客户代码</th>
+                                <th>物料编码</th>
+                                <th>采购模式</th>
+                                <th>PO号</th>
+                                <th>下单时间</th>
+                                <th>到料时间</th>
+                                <th>PO数量</th>
+                                <th>承诺交货时间</th>
+                                <th>华为指定供应商</th>
+                                <th>下级供应商名称</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.purchaseOnwayDataEntity.sccOpenPOList">
+                                <td>{{item.vdFactoryCode}}</td>
+                                <td>{{item.customerVendorCode}}</td>
+                                <td>{{item.itemCode}}</td>
+
+                                <td>{{item.businessMode}}</td>
+                                <td>{{item.poNumber}}</td>
+                                <td>{{item.poPublishDateStr}}</td>
+                                <td>{{item.demandArrivalDateStr}}</td>
+                                <td>{{item.openPoQuantity}}</td>
+
+                                <td>{{item.promisedDeliveryDateStr}}</td>
+                                <td>{{item.componentVendorCode}}</td>
+                                <td>{{item.componentVendorName}}</td>
+
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

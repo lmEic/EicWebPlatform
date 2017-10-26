@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
@@ -27,9 +28,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult IsExistFqcConfigMaterailId(string materailId)
         {
-            bool isexixt = InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(materailId);
-            OpResult opResult = OpResult.SetSuccessResult("存在", false);
-            if (isexixt) opResult = OpResult.SetSuccessResult("此物料料号已经存在", true);
+            OpResult opResult = OpResult.SetSuccessResult("成功", true);
+            if (InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(materailId))
+            {
+                opResult = OpResult.SetSuccessResult("此物料已经存在", false);
+            }
+            var productMaterailModels = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materailId);
+            if (productMaterailModels != null && productMaterailModels.Count > 0)
+                opResult.Entity = productMaterailModels.FirstOrDefault();
+            else return OpResult.SetSuccessResult("料号不正确定", false);
             return opResult;
         }
         /// <summary>
@@ -56,12 +63,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return InspectionManagerCrudFactory.FqcItemConfigCrud.StoreFqcItemConfigList(modelList);
 
         }
+
+        /// <summary>
+        /// 批量存储FQC配置
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult StoreFqcInspectionItemConfig(List<InspectionFqcItemConfigModel> modelList)
+        {
+            
+            return InspectionManagerCrudFactory.FqcItemConfigCrud.StoreFqcItemConfigList(modelList);
+
+        }
         /// <summary>
         /// 导入FQC 检验配置文件
         /// </summary>
         /// <param name="documentPatch">Excel文档路径</param>
         /// <returns></returns>
-        public List<InspectionFqcItemConfigModel> ImportProductFlowListBy(string documentPatch)
+        public List<InspectionFqcItemConfigModel> ImportInspectionFqcItemConfigBy(string documentPatch)
         {
             return documentPatch.GetEntitiesFromExcel<InspectionFqcItemConfigModel>();
         }

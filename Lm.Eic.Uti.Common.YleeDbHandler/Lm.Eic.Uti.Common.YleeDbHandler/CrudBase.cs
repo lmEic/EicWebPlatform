@@ -99,6 +99,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 if (opSignPi != null) opSignPi.SetValue(m, opMode, null);
             });
         }
+        /// <summary>
         /// 设置固定字段的值
         /// </summary>
         /// <param name="entityList">列表</param>

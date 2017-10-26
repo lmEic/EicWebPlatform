@@ -304,6 +304,17 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             }
             return photo_byte;
         }
+        /// <summary>
+        /// 获取图像转化为字符串
+        /// </summary>
+        /// <param name="imgBytes"></param>
+        /// <returns></returns>
+        public static string ToBase64Url(this byte[] imgBytes)
+        {
+            if (imgBytes == null) return "default.jpg";
+            return "data:image/jpg;base64," + Convert.ToBase64String(imgBytes);
+        }
+
         #endregion Image
 
         #region Byte[]

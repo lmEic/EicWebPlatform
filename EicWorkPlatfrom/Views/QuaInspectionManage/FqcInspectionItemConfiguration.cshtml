@@ -11,11 +11,13 @@
                 <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" class="form-control" />
                 <button class="btn-sm btn btn-success" ng-click="vmManager.getConfigDatas()" type="button">查询</button>
                 <div href="javascript:void(0);" role="button" class="btn btn-info file" title="从Excel中导入数据">
-                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file"
+                                                               onchange="angular.element(this).scope().selectFile(this)"
+                                                               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
                 </div>
                 @* 批量复制 *@
                 <span class="pull-right" ng-show="vmManager.copyLotWindowDisplay">
-                    <input readonly placeholder="原始产品品号" ng-model="vm.copyMaterialId" />
+                    <input readonly placeholder="原始产品品号" ng-model="vmManager.copyMaterialId" />
                     <i class="fa fa-arrows-h"></i>
                     <input placeholder="新的产品品号" ng-model="vmManager.targetMaterialId" />
                     <span class="btn-sm btn  btn-primary" ng-click="vmManager.copyAll()"><i class="fa fa-copy"></i>复制</span>
@@ -44,7 +46,7 @@
             </div>
             <div class="col-md-2">
                 <label>是否ORT:</label>
-                <button type="button" class="btn  btn-default" ng-model="vmManager.isNeedORt" ng-change="vmManager.changeIsNeedORT()"
+                <button type="button" class="btn  btn-default" ng-model="vmORT.IsValid" ng-change="vmManager.changeIsNeedORT()"
                         data-html="1" data-multiple="0"
                         data-animation="am-flip-x" data-placeholder="False"
                         bs-options="item.id as item.text for item in vmManager.isNeedORTs" bs-select></button>
@@ -303,7 +305,7 @@
                                         <span class="input-group-btn">
                                             <button type="button" class="btn  btn-primary" ng-model="vmORT.IsValid"
                                                     data-html="1" data-multiple="0"
-                                                    data-animation="am-flip-x" data-placeholder="False"
+                                                    data-animation="am-flip-x" data-placeholder="True"
                                                     bs-options="item.id as item.text for item in vmManager.isNeedORTs" bs-select></button>
                                         </span>
                                     </div>

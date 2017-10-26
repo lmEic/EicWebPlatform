@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow
         /// <summary>
         /// 表单模块名称
         /// </summary>
-        protected string FormModuleName { get; set; }
+        protected string FormModuleName { get; private set; }
         public ElectronicFormBase(string formModuleName)
         {
             this.FormModuleName = formModuleName;
@@ -81,7 +81,7 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow
         /// <returns></returns>
         public OpResult StoreOnlyOneTime(FormAttachFileManageModel dto)
         {
-            return CommonService.FormAttachFileManager.UploadSingleAttachFile(dto);
+            return CommonService.FormAttachFileManager.StoreOnlyOneTime(dto);
         }
     }
 }

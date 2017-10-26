@@ -461,7 +461,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _materialname;
         /// <summary>
-        ///品名
+        ///品名   MaterialName
         /// </summary>
         public string MaterialName
         {
@@ -632,14 +632,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private string _inspecitonitem;
+        private string _inspectionitem;
         /// <summary>
-        ///检验项目
+        ///检验项目 inspectionItem  InspecitonItem
         /// </summary>
         public string InspecitonItem
         {
-            set { _inspecitonitem = value; }
-            get { return _inspecitonitem; }
+            set { _inspectionitem = value; }
+            get { return _inspectionitem; }
         }
         private double _materialcount;
         /// <summary>
@@ -1187,14 +1187,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _orderidnumber = value; }
             get { return _orderidnumber; }
         }
-        private string _department;
+        private string _productdepartment;
         /// <summary>
         ///部门
         /// </summary>
-        public string Department
+        public string ProductDepartment
         {
-            set { _department = value; }
-            get { return _department; }
+            set { _productdepartment = value; }
+            get { return _productdepartment; }
         }
         private string _classtype;
         /// <summary>
@@ -1477,14 +1477,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _orderidnumber = value; }
             get { return _orderidnumber; }
         }
-        private string _department;
+        private string _productdepartment;
         /// <summary>
         ///部门
         /// </summary>
-        public string Department
+        public string ProductDepartment
         {
-            set { _department = value; }
-            get { return _department; }
+            set { _productdepartment = value; }
+            get { return _productdepartment; }
         }
         private string _materialid;
         /// <summary>
@@ -1544,7 +1544,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///订单数量
         /// </summary>
-        public double MaterialCount
+        public double MaterialInCount
         {
             set { _materialcount = value; }
             get { return _materialcount; }
@@ -1672,9 +1672,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// FQC工单信息模块
     /// </summary>
-    public class InspectionFqcOrderIdModel
+    public class InspectionFqcOrderIdVm
     {
-        public InspectionFqcOrderIdModel()
+        public InspectionFqcOrderIdVm()
         {
 
         }
@@ -1724,6 +1724,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 
         /// </summary>
         public Dictionary<int, string> orderIdNumberStatus { set; get; }
+        /// <summary>
+        /// 是否有项目配置
+        /// </summary>
+        public bool IsHaveItemConfig { set; get; }
 
         #endregion Model
     }
@@ -1733,6 +1737,73 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
 
     #region  数据展示
+
+    /// <summary>
+    /// Fqc数据查询信息表
+    /// </summary>
+    public class ProductFqcMaterailInfoVm
+    {
+        /// <summary>
+        /// ERP导出的物料模块
+        /// </summary>
+        public ProductFqcMaterailInfoVm()
+        {
+        }
+        #region model
+        /// <summary>
+        /// 工单单号  
+        /// </summary>
+        public string OrderID { get; set; }
+        /// <summary>
+        /// 进料日期 
+        /// </summary>
+        public DateTime ProduceInDate { get; set; }
+        /// <summary>
+        ///  产品品号 
+        /// </summary>
+        public string ProductID { get; set; }
+        /// <summary>
+        /// 产品品名  
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// 产品规格
+        /// </summary>
+        public string ProductStandard { get; set; }
+        /// <summary>
+        /// 供应商 
+        /// </summary>
+        public string ProductSupplier { get; set; }
+        /// <summary>
+        /// 产品图号
+        /// </summary>
+        public string ProductDrawID { get; set; }
+        /// <summary>
+        /// 进料数量 
+        /// </summary>
+        public double ProduceNumber { get; set; }
+        /// <summary>
+        /// 已抽检数
+        /// </summary>
+        public double HaveInspectionCount
+        {
+            set; get;
+        }
+        /// <summary>
+        /// 未抽检数
+        /// </summary>
+        public double NoInspectionCount
+        {
+            set; get;
+        }
+
+        /// <summary>
+        /// 检验的项数
+        /// </summary>
+        public double InspectionNumber { set; get; }
+
+    }
+
     /// <summary>
     /// 检验物料信息
     /// </summary>
@@ -1792,6 +1863,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///料号
         /// </summary>
         public string MaterialId { get; set; }
+        /// <summary>
+        /// MaterialName
+        /// </summary>
         public string MaterialName { set; get; }
         public string MaterialSpec { set; get; }
         public string MaterialDrawId { set; get; }
@@ -1817,6 +1891,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 班别
         /// </summary>
         public string ClassType { set; get; }
+        /// <summary>
+        /// 抽检验部门
+        /// </summary>
+        public string ProductDepartment { set; get; }
         /// <summary>
         /// 部门
         /// </summary>
@@ -1947,7 +2025,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public decimal Id_Key { set; get; }
 
         #endregion Model
+
     }
     #endregion
-
+    #endregion
 }

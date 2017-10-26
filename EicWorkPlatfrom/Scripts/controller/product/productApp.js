@@ -1,7 +1,7 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿/// <reference path="../shippingApp.js" />
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-
-angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive"])
+angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive", 'angular-popups'])
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -14,9 +14,17 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
 
     //--------------生产日报-------------------------
+    $stateProvider.state('dReportFlowSet', {
+        //生产工艺设定
+        templateUrl: reportUrlPrefix + 'DReportFlowSet'
+    });
     $stateProvider.state('dReportHoursSet', {
         //标准工时设定
         templateUrl: reportUrlPrefix + 'DReportHoursSet'
+    });
+    $stateProvider.state('dRProductOrderDispatching', {
+        //生产工单分派管理
+        templateUrl: reportUrlPrefix + 'DRProductOrderDispatching'
     })
     .state('dReportInput', {
         //日报录入

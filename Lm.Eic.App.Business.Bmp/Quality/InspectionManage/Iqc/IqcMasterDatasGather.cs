@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return InspectionManagerCrudFactory.IqcMasterCrud.Store(masterModel, true); ;
         }
 
-               
+
         /// <summary>
         ///更新Master结果和状态
         /// </summary>
@@ -58,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var detailDatas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(masterModel.OrderId, masterModel.MaterialId);
             if (detailDatas != null && detailDatas.Count > 0)
             {
-                if (detailDatas.Count() == haveFinishData.Count)
+                if (detailDatas.Count() <= haveFinishData.Count)
                 {
                     haveStoreMasterModel.InspectionStatus = "待审核";
                     haveStoreMasterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
@@ -79,7 +79,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
+        public bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
             return InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(orderId, materialId);
         }
@@ -92,6 +92,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public InspectionIqcMasterModel GetIqcMasterModel(string orderId, string materialId)
         {
             return GetIqcMasterContainDatasBy(orderId).FirstOrDefault(e => e.MaterialId == materialId);
+        }
+        public List<InspectionIqcMasterModel> GetIqcMasterDatasBy(DateTime startTime, DateTime endTime)
+        {
+            var datas = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcMasterDatasBy(startTime, endTime);
+            return datas == null ? new List<InspectionIqcMasterModel>() : datas;
         }
         /// <summary>
         /// 得到主表数据

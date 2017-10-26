@@ -1,1 +1,294 @@
-﻿<h1>8D报告结案填写</h1>
+﻿<div class="panel panel-primary" ng-controller="Colse8DFormCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">8D结案查询管理</h6>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-10">
+                <form class="form-inline" cg-busy="{promise:searchPromise}">
+                    <div class="form-group">
+                        <label>起始：</label>
+                        <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchFromYear"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>结束：</label>
+                        <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchToYear"></span>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" ng-click="vmManager.get8DDatas()" type="button">查询</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div class="well" cg-busy="{promise:searchPromise}" style="padding:10px;overflow-y:scroll;min-height:280px;max-height:680px;">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="info">
+                            <th>单号</th>
+                            <th>类别</th>
+                            <th>责任单位</th>
+                            <th>品名</th>
+                            <th>规格</th>
+                            <th>总数量</th>
+                            <th>抽验数量</th>
+                            <th>不良数</th>
+                            <th>不良类别</th>
+                            <th>创建日期</th>
+                            <th>单号状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vmManager.dataSets track by $index">
+                            <td>{{item. ReportId}}</td>
+                            <td>{{item.DiscoverPosition}}</td>
+                            <td>{{item.AccountabilityDepartment}}</td>
+                            <td>{{item.MaterialName}}</td>
+                            <td>{{item.MaterialSpec}}</td>
+                            <td>{{item.MaterialCount}}({{item.MaterialCountUnit}})</td>
+                            <td>{{item.InspectCount}}({{item.InspectCountUnit}})</td>
+                            <td>{{item.FailQty}}({{item. FailQtyUnit}})</td>
+                            <td>{{item. FailClass}}</td>
+                            <td>{{item.CreateReportDate}}</td>
+                            <td>{{item.Status}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.get8DDetailDatas(item)">明细</button>\
+                                <button type="button" class="btn btn-success btn-xs" ng-click="vmManager.showBringToFiles(item)">归档结案</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                @* 分页处理 *@
+                <div yl-pagination
+                     data-dataset="vmManager.dataSets"
+                     data-datasource="vmManager.dataSource">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <dialog ng-if="detailDialog.open" modal data-close="detailDialog.close()" style="width:85%">
+            <content dialog-title class="fa fa-bell">
+                <i class="fa fa-pencil-square">8D数据详表</i>
+            </content>
+            <content dialog-content>
+                <div class="modal-header bg-info">
+                    <div class="col-md-12 text-success">
+                        <div class="row">
+                            @*日期/来源:*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>日期:</label>
+                                    {{vmManager.dataHead.CreateReportDate}}
+                                    <label>来源:</label>
+                                    {{vmManager.dataHead.DiscoverPosition}}
+                                </p>
+                            </div>
+
+                            @*责任单位/不良类别*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>责任单位:</label>
+                                    {{vmManager.dataHead.AccountabilityDepartment}}
+                                    <label>不良类别: </label>
+                                    {{vmManager.dataHead.FailClass}}
+                                </p>
+                            </div>
+
+                            @*不良数/不良率 批量/检验数*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>不良数:</label>
+                                    {{vmManager.dataHead.FailQty}}
+                                    <label>不良率:</label>
+                                    {{ vmManager.dataHead.FailRatio }}
+                                    <label>批量:</label>
+                                    {{vmManager.dataHead.MaterialCount}}
+                                    <label>检验数:</label>
+                                    {{vmManager.dataHead.InspectCount }}
+
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            @*品名*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>品名:</label>
+                                    {{vmManager.dataHead.MaterialName}}
+                                </p>
+                            </div>
+                            @*规格*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>规格:</label>
+                                    {{vmManager.dataHead.MaterialSpec}}
+                                </p>
+                            </div>
+                            @*交货单/入库单号*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>交货单/入库单号:</label>
+                                    {{vmManager.dataHead.OrderId}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body ">
+                    <div class="row pre-scrollable">
+                        <div class="table-responsive ">
+                            <table class="table table-bordered  table-striped table-hover">
+                                <colgroup>
+                                    <col style="width:10%">
+                                    <col style="width:60%">
+                                    <col style="width:20%">
+                                    <col style="width:10%">
+                                </colgroup>
+                                <thead>
+                                    <tr class="info">
+                                        <th>处理步骤</th>
+                                        <th>内容</th>
+                                        <th>附件</th>
+                                        <th>签核人</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*提报单位*@
+                                    <tr ng-repeat="item in vmManager.detailDataSets track by $index">
+                                        <td class="col-md-1">
+                                            ({{item.StepId}}){{item.StepTitle}}
+                                        </td>
+                                        <td class="col-md-6">
+
+                                            <input type="text" class="col-md-10" readonly ng-model="item.StepDescription" />
+                                            <textarea rows="4" name="description" class="form-control" readonly ng-model="item.StepHandleContent" />
+                                        </td>
+                                        <td class="col-md-1">
+                                            <a href="#" class="thumbnail">
+                                                <img ng-src="{{item.ImgUrl}}" class="idCardBack" enlarge-pic />
+                                                <div class="mask" close-Pic>
+                                                    <div class="mask-box"></div>
+                                                    <div class="big-pic-wrap">
+                                                        <img src="" alt="" class="bigPic" />
+                                                        <span class="close-pic"><i class="fa fa-close"></i></span>
+                                                    </div>
+                                                </div>
+
+                                            </a>
+                                        <td class="col-md-4"> {{item.SignaturePersons}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="vmManager.detailCancel()">取消</button>
+                    <button type="button" class="btn btn-success" ng-click="vmManager.showBringToFiles(item)">归档结案</button>
+                </div>
+            </content>
+
+        </dialog>
+        <dialog ng-if="bringToFilesdialog.open" modal data-close="bringToFilesdialog.close()" style="width:65%">
+            <content dialog-title class="fa fa-bell">
+                <i class="fa fa-pencil-square">归档文件</i>
+            </content>
+            <content dialog-content>
+                <div class="modal-header bg-info">
+                    <div class="col-md-12 text-success">
+                        <div class="row">
+                            @*日期/来源:*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>日期:</label>
+                                    {{vmManager.dataHead.CreateReportDate}}
+                                    <label>来源:</label>
+                                    {{vmManager.dataHead.DiscoverPosition}}
+                                </p>
+                            </div>
+
+                            @*责任单位/不良类别*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>责任单位:</label>
+                                    {{vmManager.dataHead.AccountabilityDepartment}}
+                                    <label>不良类别: </label>
+                                    {{vmManager.dataHead.FailClass}}
+                                </p>
+                            </div>
+
+                            @*不良数/不良率 批量/检验数*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>不良数:</label>
+                                    {{vmManager.dataHead.FailQty}}
+                                    <label>不良率:</label>
+                                    {{ vmManager.dataHead.FailRatio }}
+                                    <label>批量:</label>
+                                    {{vmManager.dataHead.MaterialCount}}
+                                    <label>检验数:</label>
+                                    {{vmManager.dataHead.InspectCount }}
+
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            @*品名*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>品名:</label>
+                                    {{vmManager.dataHead.MaterialName}}
+                                </p>
+                            </div>
+                            @*规格*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>规格:</label>
+                                    {{vmManager.dataHead.MaterialSpec}}
+                                </p>
+                            </div>
+                            @*交货单/入库单号*@
+                            <div class="col-md-4">
+                                <p>
+                                    <label>交货单/入库单号:</label>
+                                    {{vmManager.dataHead.OrderId}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body ">
+                    <label>导入归档文件</label>
+                    @* 上传附件   (需要输入一个标识符) *@
+                    <div class="col-md-10 pull-right">
+                        <div yl-upload-file></div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapseOne">{{vmManager.dataHead.FileName}}</a>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <img class="img-rounded" ng-src="{{vmManager.imgUrl}}" style="width:100%;height:100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="vmManager.bringToFilescancel()">取消</button>
+                    <button type="button" class="btn btn-success" ng-click="vmManager.bringToFiles(vmManager.dataHead)">归档</button>
+                </div>
+            </content>
+
+        </dialog>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

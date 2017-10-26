@@ -441,6 +441,7 @@ smModule.controller('moduleNavManageCtrl', function ($scope, $modal, vmService, 
             });
         });
     };
+
     operate.cancel = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             leeHelper.clearVM(moduleNavVm);

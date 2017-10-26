@@ -77,7 +77,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        public InspectionIqcItemConfigModel FindFirstOrDefaultDataBy(string inspectionItem)
+        {
+            return irep.Entities.FirstOrDefault(e => e.InspectionItem == inspectionItem);
+        }
+        /// <summary>
+        /// 特殊条件
+        /// </summary>
+        /// <param name="sizeMemo"></param>
+        /// <returns></returns>
+        public List<InspectionIqcItemConfigModel> FindIqcSpecialItemConfigDatasBy(string sizeMemo)
+        {
+            return irep.Entities.Where(e => e.SizeMemo == sizeMemo).OrderBy(e => e.InspectionItemIndex).ToList();
+        }
 
         /// <summary>
         /// 批量保存 IQC检验项目数据
@@ -164,7 +181,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-
+        internal List<InspectionIqcMasterModel> GetIqcMasterDatasBy(DateTime startTime, DateTime endTime)
+        {
+            return irep.Entities.Where(e => e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -293,11 +313,26 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);// 同时修改文件模型记录
         }
         /// <summary>
-        /// 得到旧的
+        /// 更新审核（Done）
         /// </summary>
         /// <param name="newModel"></param>
         /// <returns></returns>
+        internal OpResult UpAuditInspectionDetailData(string orderId, string materialId, bool isCheck)
+        {
+            
+            int i = 0;
+            string inspectionItemStatus = isCheck ? "Done" : "doing";
+            var modellist = irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
+            if (modellist != null && modellist.Count > 0)
+                modellist.ForEach(m =>
+                 {
+                     m.InspectionItemStatus = inspectionItemStatus;
+                     var sigleOpResult = irep.Update(e => e.Id_Key == m.Id_Key, m).ToOpResult_Eidt(OpContext);
+                     if (sigleOpResult.Result) i++;
+                 });
+            return modellist.Count == i ? i.ToOpResult_Eidt(OpContext) : OpResult.SetResult(OpContext + "操作失败", false);
 
+        }
         private InspectionIqcDetailModel GetIqcOldDetailModelBy(InspectionIqcDetailModel newModel)
         {
             try
@@ -366,7 +401,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().OrderBy(f => f.MaterialInDate).ToList();
         }
-
+        /// <summary>
+        /// 删除抽检项目
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        internal OpResult DeleteInspectionItems(string orderid, string materialId, string inspectionItem)
+        {
+            return irep.Delete(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToOpResult_Delete(OpContext);
+        }
         ///// <summary>
         /////  判定些物料在二年内是否有录入记录 
         ///// </summary>

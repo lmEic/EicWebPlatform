@@ -9,6 +9,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
     {
        
       public DateTime WorkDate { set; get; }
+      public string DepartmentText { get; set; }
         private int _searchMode = 0;
         /// <summary>
         /// 搜索模式

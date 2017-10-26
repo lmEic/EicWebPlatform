@@ -31,6 +31,7 @@
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -177,6 +178,7 @@
     <Compile Include="Controllers\Purchase\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
     <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
+    <Compile Include="Controllers\ToolsOnLine\TolCooperateWithHwController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolWorkFlowController.cs" />
     <Compile Include="Controllers\ToolsOnLine\ToolsOnLineController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolOfficeAssistantController.cs" />
@@ -476,6 +478,7 @@
     <Content Include="Content\ueditor\ueditor.config.js" />
     <Content Include="Content\underscore\underscore-min.js" />
     <Content Include="Content\underscore\underscore.js" />
+    <Content Include="Content\CSS\workoverhours.css" />
     <Content Include="Content\WorkTask\WorkTask.css" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\1_close.png" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\1_open.png" />
@@ -559,6 +562,7 @@
     <Content Include="Scripts\controller\shippingApp.js" />
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
+    <Content Include="Scripts\controller\toolsOnLine\tolHwCollaboration.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
@@ -1462,7 +1466,7 @@
     <Content Include="Views\Equipment\AstScrapInput.cshtml" />
     <Content Include="Views\ProBoard\JumperWireBoard.cshtml" />
     <Content Include="Views\ProBoard\AuditMaterailBoardTpl.cshtml" />
-    <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportFlowSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportInput.cshtml" />
     <Content Include="Views\ProDailyReport\EditRemarkViewTpl.cshtml" />
     <Content Include="Views\Equipment\AstInputRepairRecord.cshtml" />
@@ -1518,6 +1522,12 @@
     <Content Include="Views\TolWorkFlow\WFInternalContactForm.cshtml" />
     <Content Include="Views\HrAttendanceManage\HrWorkOverHoursManage.cshtml" />
     <Content Include="Views\SysConfig\QualityCommonDataSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DRProductOrderDispatching.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwManpowerInput.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwLogisticDeliveryInput.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwInventoryDetail.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwMaterialBaseConfig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1556,6 +1566,10 @@
       <Project>{58ccb98b-0cb7-4554-8f66-f4a9db8189e5}</Project>
       <Name>Lm.Eic.App.Erp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lm.Eic.App.HwCollaboration\Lm.Eic.App.HwCollaboration.csproj">
+      <Project>{fe8a9ab2-356f-4ad6-bfc8-0e6814228126}</Project>
+      <Name>Lm.Eic.App.HwCollaboration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lm.Eic.App.Model.Mes\Lm.Eic.App.DomainModel.Mes.csproj">
       <Project>{117fe893-5fb5-4c88-ba0f-794ca715e8e6}</Project>
       <Name>Lm.Eic.App.DomainModel.Mes</Name>
@@ -1572,6 +1586,26 @@
       <Project>{35fa689a-9ef7-4944-8a6e-0cf9f2cacdde}</Project>
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="LCC11">
+      <Guid>{EDCD5812-6A06-43C3-AFAC-46EF5D14E22C}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>4</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

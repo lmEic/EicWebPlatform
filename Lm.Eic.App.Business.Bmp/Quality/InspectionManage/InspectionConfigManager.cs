@@ -65,19 +65,32 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         public List<InspectionModeConfigModel> GetInInspectionModeConfigModelList(string inspectionMode, string inspectionLevel, string inspectionAQL)
         {
-            return InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode,  inspectionLevel,  inspectionAQL);
+            return InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode, inspectionLevel, inspectionAQL);
         }
+
+        /// <summary>
+        /// 导入配置列表
+        /// </summary>
+        /// <param name="documentPatch">Excel文档路径</param>
+        /// <returns></returns>
+        public List<InspectionModeConfigModel> ImportInspectionModeConfigBy(string documentPatch)
+        {
+            return documentPatch.GetEntitiesFromExcel<InspectionModeConfigModel>();
+        }
+
+
+
         public List<string> GetInspectionModeConfigStrList(string inspectionMode, string inspectionLevel)
         {
             var listDatas = InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode, inspectionLevel);
-      
 
-            return listDatas.Select(e => e.InspectionAQL).Distinct().ToList(); 
+
+            return listDatas.Select(e => e.InspectionAQL).Distinct().ToList();
         }
         public List<string> GetInspectionModeConfigStrList(string inspectionMode)
         {
             var listDatas = InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode);
-            return listDatas.Select(e => e.InspectionLevel).Distinct().ToList(); 
+            return listDatas.Select(e => e.InspectionLevel).Distinct().ToList();
         }
     }
 
@@ -89,7 +102,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult StroeInspectionModeSwithConfig(string inspectionModeType,List<InspectionModeSwitchConfigModel> modelList)
+        public OpResult StroeInspectionModeSwithConfig(string inspectionModeType, List<InspectionModeSwitchConfigModel> modelList)
         {
             return InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(inspectionModeType, modelList);
         }

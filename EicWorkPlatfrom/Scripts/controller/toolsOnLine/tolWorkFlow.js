@@ -34,8 +34,8 @@ officeAssistantModule.factory('wfDataOpService', function (ajaxService) {
     return wfDataOp;
 });
 ///内部联络单
-officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, wfDataOpService) {
-    var ue = leeUeditor.getEditor('formContent');
+officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, ajaxService, dataDicConfigTreeSet, connDataOpService, wfDataOpService) {
+    var editor = leeUeditor.createEditor('formContent');
     //流程参与者人员信息
     var participantInfo = $scope.participantInfo = {
         Applicant: null,//申请人,
@@ -77,23 +77,28 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
         FileName: null,
         DocumentFilePath: null,
         OpSign: leeDataHandler.dataOpMode.uploadFile,
+        Department: null,
         OpPerson: null,
     }
 
     var dialog = $scope.dialog = leePopups.dialog();
     var vmManager = $scope.vmManager = {
+        isCreatedFormId: false,
         createFormId: function () {
             leePopups.inquire("创建表单编号", "系统自动为您创建表单编号号，您确定要继续作业吗？", function () {
                 wfDataOpService.getInternalContactFormId('EIC').then(function (id) {
                     uiVM.FormId = id;
+                    vmManager.isCreatedFormId = true;
                 });
             });
         },
         init: function () {
             $scope.vm = uiVM = _.clone(initVM);
-            ue.reset();
             vmManager.participants = [];
             leeHelper.clearVM(participantInfo, ["Applicant"]);
+            $scope.uploadFileName = null;
+            vmManager.isCreatedFormId = false;
+            editor.clearContent();
         },
         participants: [],
         currentParticipantRole: null,
@@ -117,10 +122,18 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.save = function (isValid) {
+        if (!vmManager.isCreatedFormId) {
+            leePopups.alert("对不起，请先创建表单单号！", 3);
+            return;
+        }
+        if (!editor.hasContent()) {
+            leePopups.alert("对不起，表单主题不能为空！", 3);
+            return;
+        }
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             uiVM.ParticipantInfo = JSON.stringify(vmManager.participants);
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
-            uiVM.FormContent = ue.getContent();
+            uiVM.FormContent = editor.getContent();
             leeHelper.setUserData(uiVM);
             $scope.opPromise = wfDataOpService.createInternalForm(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
@@ -165,5 +178,18 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
                 }
             });
         });
+    };
+
+
+
+
+
+    var hw = $scope.hw = {
+        postData: function () {
+            // leePopups.alert("华为API数据对接", 1);
+            $scope.opPromise = ajaxService.getData("/TolCooperateWithHw/GetManPower").then(function (rtndata) {
+                leePopups.alert(JSON.stringify(rtndata));
+            });
+        },
     };
 });

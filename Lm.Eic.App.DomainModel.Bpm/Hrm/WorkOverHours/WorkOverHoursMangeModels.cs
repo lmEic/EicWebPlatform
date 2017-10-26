@@ -82,7 +82,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _remark = value; }
             get { return _remark; }
         }
-
         //private DateTime _opdate;
         /// <summary>
         ///操作日期
@@ -92,25 +91,33 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
         //    set { _opdate = value; }
         //    get { return _opdate; }
         //}
-
-        //private string _opperson;
+        //private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        //public DateTime OpTime
+        //{
+        //    set { _optime = value; }
+        //    get { return _optime; }
+        //}
+        private string _opsign;
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private string _opperson;
         /// <summary>
         ///操作人
         /// </summary>
-        //public string OpPerson
-        //{
-        //    set { _opperson = value; }
-        //    get { return _opperson; }
-        //}
-        //private string _opsign;
-        /// <summary>
-        ///操作标识
-        /// </summary>
-        //public string OpSign
-        //{
-        //    set { _opsign = value; }
-        //    get { return _opsign; }
-        //}
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
         private decimal _id_key;
         /// <summary>
         ///自增键
@@ -120,5 +127,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _id_key = value; }
             get { return _id_key; }
         }
+
+       
     }
 }

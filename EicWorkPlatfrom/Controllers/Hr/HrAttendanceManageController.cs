@@ -7,6 +7,17 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
 using Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours;
+using System.Web;
+using System.IO;
+
+using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
+using Lm.Eic.App.Business.Bmp.Pms.NewDailyReport;
+using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
+
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+
+using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -188,32 +199,96 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return View();
         }
         [NoAuthenCheck]
-        public ContentResult GetWorkOverHoursData(DateTime workDate,int mode)
+       
+        public ContentResult GetWorkOverHoursData(DateTime workDate,string departmentText,int mode)
         {
             WorkOverHoursDto dto = new WorkOverHoursDto()
             {
                 WorkDate = workDate,
+                DepartmentText=departmentText,
                 SearchMode = mode
 
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBy(dto);
             return DateJsonResult(datas);
         }
+        [NoAuthenCheck]
+        /// <summary>
+        /// 载入模板
+        /// </summary>
+        /// <param name="workDate"></param>
+        /// <param name="departmentText"></param>
+        /// <returns></returns>
+        public ContentResult GetWorkOverHoursMode(string departmentText,DateTime workDate)
+        {
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,workDate);
+            TempData["WorkOverHoursDatas"] = datas;
+            return DateJsonResult(datas);
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        
+        public JsonResult HandlWorkOverHoursDt(List<WorkOverHoursMangeModels> workOverHours)
+        {
+            var result = WorkOverHoursService.WorkOverHoursManager.HandleWorkOverHoursDatas(workOverHours);
+            return Json(result);
 
+        }
+        /// <summary>
+        /// 导入EXCEL数据到DataSets
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult ImportWorkOverHoursDatas(HttpPostedFileBase file)
+        {
+            List<WorkOverHoursMangeModels> datas = null;
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp);
+            SaveFileToServer(file, filePath, () =>
+            {
+                string fileName = Path.Combine(filePath, file.FileName);
+                datas = WorkOverHoursService.WorkOverHoursManager.ImportWorkOverHoursListBy(fileName);
+                //System.IO.File.Delete(fileName);
+            });
+            return DateJsonResult(datas);
+        }
+        [NoAuthenCheck]
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        /// <returns></returns>
+        public FileResult WorkOverHoursDatasToExcel()
+        {
 
+            string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
+            string fileName = "加班数据模板.xls";
+            var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
+            var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
+            return this.DownLoadFile(dlfm);
+        }
+        /// <summary>
+        /// 后台修改保存
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+
+        [HttpPost]
+        [NoAuthenCheck]
+        
+        public JsonResult StoreWorkOverHoursRecordSingle(WorkOverHoursMangeModels model)
+        {
+            try
+            {
+                var opresult = WorkOverHoursService.WorkOverHoursManager.StoreWorkOverHours(model);
+                return Json(opresult);
+            }
+            catch (Exception ex)
+            {
+
+                throw new System.Exception(ex.Message);
+            }
+
+        }
         #endregion
-
-
-
-
-
-       
     }
-
-
-
-
-
-
-
 }
