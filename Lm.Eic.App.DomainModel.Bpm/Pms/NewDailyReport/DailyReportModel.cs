@@ -585,14 +585,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _workerproductiontime = value; }
             get { return _workerproductiontime; }
         }
-        private double _getprodutiontime;
+        private double _getprodutiontime = 0;
         /// <summary>
         ///得到工时
         /// </summary>
         public double GetProdutionTime
         {
             set { _getprodutiontime = value; }
-            get { return _getprodutiontime; }
+            get
+            {
+                if (StandardProductionTime != 0)
+                    return TodayProductionCount / StandardProductionTime;
+                else return _getprodutiontime;
+            }
         }
         private double _workernoproductiontime;
         /// <summary>
@@ -892,26 +897,209 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     /// </summary>
     public class ProductFlowCountDatasVm
     {
+
+        private string _department;
         /// <summary>
-        /// 产品品名
+        ///部门
         /// </summary>
-        public string ProductName { get; set; }
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _productid;
         /// <summary>
-        /// 产品品名
+        ///品号
+        /// </summary>
+        public string ProductId
+        {
+            set { _productid = value; }
+            get { return _productid; }
+        }
+        private string _productname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string ProductName
+        {
+            set { _productname = value; }
+            get { return _productname; }
+        }
+        private int _processesindex;
+        /// <summary>
+        ///序列号
+        /// </summary>
+        public int ProcessesIndex
+        {
+            set { _processesindex = value; }
+            get { return _processesindex; }
+        }
+        private string _processessign;
+        /// <summary>
+        ///标识
+        /// </summary>
+        public string ProcessesSign
+        {
+            set { _processessign = value; }
+            get { return _processessign; }
+        }
+        private string _processesname;
+        /// <summary>
+        ///工艺名称
+        /// </summary>
+        public string ProcessesName
+        {
+            set { _processesname = value; }
+            get { return _processesname; }
+        }
+        private string _processestype;
+        /// <summary>
+        ///工艺类型
+        /// </summary>
+        public string ProcessesType
+        {
+            set { _processestype = value; }
+            get { return _processestype; }
+        }
+        private string _inputtype;
+        /// <summary>
+        ///输入类型
+        /// </summary>
+        public string InputType
+        {
+            set { _inputtype = value; }
+            get { return _inputtype; }
+        }
+        private string _issum;
+        /// <summary>
+        ///是否算合计
+        /// </summary>
+        public string IsSum
+        {
+            set { _issum = value; }
+            get { return _issum; }
+        }
+        private string _isvisualization;
+        /// <summary>
+        ///是否可视化
+        /// </summary>
+        public string IsVisualization
+        {
+            set { _isvisualization = value; }
+            get { return _isvisualization; }
+        }
+        private string _isvalid;
+        /// <summary>
+        ///是否可见
+        /// </summary>
+        public string IsValid
+        {
+            set { _isvalid = value; }
+            get { return _isvalid; }
+        }
+        private string _standardproductiontimetype;
+        /// <summary>
+        ///标准工时类型
+        /// </summary>
+        public string StandardProductionTimeType
+        {
+            set { _standardproductiontimetype = value; }
+            get { return _standardproductiontimetype; }
+        }
+        private double _standardproductiontime;
+        /// <summary>
+        ///标准工时
+        /// </summary>
+        public double StandardProductionTime
+        {
+            set { _standardproductiontime = value; }
+            get { return _standardproductiontime; }
+        }
+        private int _productcoefficient;
+        /// <summary>
+        ///生产系数
+        /// </summary>
+        public int ProductCoefficient
+        {
+            set { _productcoefficient = value; }
+            get { return _productcoefficient; }
+        }
+        private double _uph;
+        /// <summary>
+        ///UPH
+        /// </summary>
+        public double UPH
+        {
+            set { _uph = value; }
+            get { return _uph; }
+        }
+        private double _ups;
+        /// <summary>
+        ///UPS
+        /// </summary>
+        public double UPS
+        {
+            set { _ups = value; }
+            get { return _ups; }
+        }
+        private int _productiontimeversionid;
+        /// <summary>
+        ///标准工时版本号
+        /// </summary>
+        public int ProductionTimeVersionID
+        {
+            set { _productiontimeversionid = value; }
+            get { return _productiontimeversionid; }
+        }
+        private double _machinepersonratio;
+        /// <summary>
+        ///人机配比
+        /// </summary>
+        public double MachinePersonRatio
+        {
+            set { _machinepersonratio = value; }
+            get { return _machinepersonratio; }
+        }
+        private string _mouldid;
+        /// <summary>
+        ///模具编号
+        /// </summary>
+        public string MouldId
+        {
+            set { _mouldid = value; }
+            get { return _mouldid; }
+        }
+        private string _mouldname;
+        /// <summary>
+        ///模具名称
+        /// </summary>
+        public string MouldName
+        {
+            set { _mouldname = value; }
+            get { return _mouldname; }
+        }
+        private int _mouldholecount;
+        /// <summary>
+        ///模穴数
+        /// </summary>
+        public int MouldHoleCount
+        {
+            set { _mouldholecount = value; }
+            get { return _mouldholecount; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///关键字段
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
+        }
+        /// <summary>
+        /// 单号
         /// </summary>
         public string OrderId { get; set; }
-        /// <summary>
-        /// 工序序号
-        /// </summary>
-        public int ProcessesIndex { get; set; }
-        /// <summary>
-        /// 工艺名称
-        /// </summary>
-        public string ProcessesName { get; set; }
-        /// <summary>
-        /// 输入类型 
-        /// </summary>
-        public string InputType { get; set; }
         /// <summary>
         ///工单生产数量
         /// </summary>

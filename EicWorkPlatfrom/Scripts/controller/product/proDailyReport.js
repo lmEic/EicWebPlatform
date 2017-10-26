@@ -530,7 +530,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     var uiVM = {
         Department: null,
         ClassType: '白班',
-        InPutDate: null,
+        InPutDate: new Date(),
         OrderId: null,
         ProductId: null,
         ProductName: null,
