@@ -291,7 +291,7 @@ namespace EicWorkPlatfrom.Controllers
                 assetNum = f[1];
                 string sourceFileName = CombinedFilePath("FileLibrary", "PreviewFiles") + "\\" + fileName;
                 var imgBytes = sourceFileName.ToPhotoByte();
-                imgUrl = GetBase64Url(imgBytes);
+                imgUrl = imgBytes.ToBase64Url();
                 string destFileName = CombinedFilePath("FileLibrary", moduleName, dateFile) + "\\" + assetNum + ".jpg";
                 if (System.IO.File.Exists(destFileName)) System.IO.File.Delete(destFileName);
                 System.IO.File.Move(sourceFileName, destFileName);

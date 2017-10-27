@@ -94,11 +94,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             if (caseId == null) return new List<ReportImproveProblemModels>();
             try
             {
-              
-                    
-                        return irep.Entities.Where(m => m.CaseId == caseId).ToList();
-                   
-
+                             
+              return irep.Entities.Where(m => m.CaseId == caseId).ToList();
+                  
             }
             catch (Exception)
             {

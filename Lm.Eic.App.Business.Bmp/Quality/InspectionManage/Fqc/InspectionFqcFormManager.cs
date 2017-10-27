@@ -11,30 +11,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class InspectionFqcFormManager
     {
-        public List<InspectionFqcMasterModel> GetInspectionFormManagerListBy(string formStatus, DateTime dateFrom, DateTime dateTo)
+        public List<InspectionFqcMasterModel> GetInspectionFormManagerListBy(string selectedDepartment, string formStatus, DateTime dateFrom, DateTime dateTo)
         {
             //查询ERP中所有物料和单号 
-            var list = InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(formStatus, dateFrom, dateTo);
-
-            switch (formStatus)
-            {
-                case "待检测":
-                    return GetErpNotStoreToSqlOrderAndMaterialBy(dateFrom, dateTo);
-                case "未完成":
-                    return list.Where(e => e.InspectionResult == "未完成").ToList();
-                case "全部":
-                    return GetERPOrderAndMaterialBy(dateFrom, dateTo);
-                case "待审核":
-                    return list.Where(e => e.InspectionStatus == "待审核").ToList();
-                case "已审核":
-                    return list.Where(e => e.InspectionStatus == "已审核").ToList();
-                default:
-                    return new List<InspectionFqcMasterModel>();
-            }
-
-
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(dateFrom, dateTo, selectedDepartment, formStatus);
         }
-
+        
         public List<InspectionFqcDetailModel> GetInspectionDatailListBy(string orderId, int orderIdNumber)
         {
             return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
@@ -43,7 +25,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         ///审核主表数据
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditFqcInspectionMasterModel(InspectionFqcMasterModel model)
+        public OpResult AuditFqcInspectionModel(InspectionFqcMasterModel model)
         {
             try
             {
@@ -63,52 +45,44 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-
-        List<InspectionFqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
+        /// <summary>
+        /// 查询ERP中FQC检验状态
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public List<ProductFqcMaterailInfoVm> GetERPOrderAndMaterialBy(string department, DateTime startTime, DateTime endTime)
         {
-            List<InspectionFqcMasterModel> retrunList = new List<InspectionFqcMasterModel>();
-            var OrderIdList = GetOrderIdList(startTime, endTime);
+
+            List<ProductFqcMaterailInfoVm> retrunList = new List<ProductFqcMaterailInfoVm>();
+            ProductFqcMaterailInfoVm FqcMaterailInfoVm = null;
+            var OrderIdList = GetOrderIdList(startTime, endTime, department);
             if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
             OrderIdList.ForEach(e =>
             {
-                retrunList.Add(MaterialModelToInspectionFqcMasterModel(e));
+                FqcMaterailInfoVm = new ProductFqcMaterailInfoVm();
+                var FqcMasterDatas = FqcMasterDatasBy(e.OrderID);
+                OOMaper.Mapper<MaterialModel, ProductFqcMaterailInfoVm>(e, FqcMaterailInfoVm);
+                if (FqcMasterDatas != null && FqcMasterDatas.Count > 0)
+                {
+                    FqcMaterailInfoVm.HaveInspectionCount = FqcMasterDatas.Sum(m => m.InspectionCount);
+                    FqcMaterailInfoVm.InspectionNumber = FqcMasterDatas.Count;
+                }
+                FqcMaterailInfoVm.NoInspectionCount = FqcMaterailInfoVm.ProduceNumber - FqcMaterailInfoVm.HaveInspectionCount;
+                retrunList.Add(FqcMaterailInfoVm);
             });
-            return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
+            return retrunList.OrderBy(e => e.OrderID).ToList();
         }
 
-        List<InspectionFqcMasterModel> GetErpNotStoreToSqlOrderAndMaterialBy(DateTime startTime, DateTime endTime)
+        public List<InspectionFqcMasterModel> FqcMasterDatasBy(string orderId)
         {
-            List<InspectionFqcMasterModel> retrunList = new List<InspectionFqcMasterModel>();
-            var OrderIdList = GetOrderIdList(startTime, endTime);
-            if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
-            OrderIdList.ForEach(e =>
-            {
-                retrunList.Add(MaterialModelToInspectionFqcMasterModel(e));
-            });
-            return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(orderId);
+        }
+        List<MaterialModel> GetOrderIdList(DateTime starDate, DateTime endDate, string department)
+        {
+            return QualityDBManager.OrderIdInpectionDb.FindErpAllMasterilBy(starDate, endDate, department);
         }
 
-        InspectionFqcMasterModel MaterialModelToInspectionFqcMasterModel(MaterialModel model)
-        {
-            return model != null ? (new InspectionFqcMasterModel()
-            {
-                OrderId = model.OrderID,
-                MaterialName = model.ProductName,
-                MaterialSpec = model.ProductStandard,
-                MaterialSupplier = model.ProductSupplier,
-                MaterialDrawId = model.ProductDrawID,
-                MaterialId = model.ProductID,
-                InspectionStatus = "未完成",
-                MaterialCount = model.ProduceNumber,
-                MaterialInDate = model.ProduceInDate,
-                InspectionResult = string.Empty,
-                InspectionItems = "还没有抽检",
-                InspectionMode = "正常"
-            }) : new InspectionFqcMasterModel();
-        }
-        List<MaterialModel> GetOrderIdList(DateTime starDate, DateTime endDate)
-        {
-            return QualityDBManager.OrderIdInpectionDb.FindErpAllMasterilBy(starDate, endDate);
-        }
     }
 }

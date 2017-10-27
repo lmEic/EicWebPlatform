@@ -39,14 +39,13 @@
                         <div class="form-group">
                             <label for="leaveReason" class="col-md-2 control-label">客户简称</label>
                             <div class="col-md-4">
-                                <input name="inspectionLevel" class="form-control" ng-model="vm.CustomerShortName" required ng-focus="vmManager.getInspectionLevelValues()"
+                                <input name="customerShortName" class="form-control" ng-model="vm.CustomerShortName" required ng-focus="vmManager.getInspectionLevelValues()"
                                        bs-options="CustomerShortName.text as CustomerShortName.text for CustomerShortName in vmManager.customerShortNames" limit="30" placeholder="Enter value" bs-typeahead />
                                 @*<button type="button" class="btn btn-primary" ng-model="vm.CustomerShortName"
                                             data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择客户简称"
                                             data-bs-options="CustomerShortName.name as CustomerShortName.text for CustomerShortName in vmManager.customerShortNames" data-bs-select>
                                         <span class="caret"></span>
                                     </button>*@
-                                <input name="customerShortName" class="form-control" ng-model="vm.CustomerShortName" ng-show="false" required />
                                 <div class="error-messages" ng-messages="formRma.customerShortName.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">客户简称不能为空</small>
                                 </div>

@@ -76,6 +76,9 @@
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
     <Compile Include="Hrm\Attendance\AttendAskLeaveManager.cs" />
     <Compile Include="Hrm\Attendance\AttendCrudFactory.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursFactory.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursManager.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursService.cs" />
     <Compile Include="Pms\BoardManagment\BoardBase.cs" />
     <Compile Include="Pms\BoardManagment\BoardService.cs" />
     <Compile Include="Pms\BoardManagment\BoardCrud.cs" />
@@ -103,6 +106,9 @@
     <Compile Include="Pms\DailyReport\InputManager.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportCrud.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportManager.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportManager.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportManagerCrud.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\PurchaseManager.cs" />
     <Compile Include="Purchase\PurchaseService.cs" />

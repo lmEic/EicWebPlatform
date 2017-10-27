@@ -49,7 +49,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionFqcItemConfigModel> FindFqcInspectionItemConfigDatasBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
+            var datas = irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+            if (datas != null && datas.Count > 0) return datas.OrderBy(e => e.InspectionItemIndex).ToList();
+            return datas;
         }
         public bool IsExistFqcConfigmaterailId(string materailId)
         {
@@ -253,16 +255,38 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderId).ToList();
         }
-
-        internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string formStatus, DateTime dateFrom, DateTime dateTo)
+        /// <summary>
+        /// 查询Fqc Master抽检数据
+        /// </summary>
+        /// <param name="dateFrom">开始日期</param>
+        /// <param name="dateTo">结束日期</param>
+        /// <param name="selectedDepartment">部门</param>
+        /// <param name="formStatus">状态</param>
+        /// <returns></returns>
+        internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(DateTime dateFrom, DateTime dateTo, string selectedDepartment, string formStatus = null)
         {
-            return irep.Entities.Where(e => e.InspectionStatus == formStatus && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
+            if (formStatus == null || formStatus == "全部")
+                return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
+            return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.InspectionStatus == formStatus && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         internal List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
-
+        /// <summary>
+        /// 更新状主要状态
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="orderIdNumber"></param>
+        /// <param name="updateInspectionItems"></param>
+        /// <param name="updateInspectionStatus"></param>
+        /// <param name="updateInspectionResult"></param>
+        /// <returns></returns>
         internal OpResult UpdateMasterData(string orderId, int orderIdNumber,
             string updateInspectionItems,
             string updateInspectionStatus,
@@ -275,7 +299,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionResult = updateInspectionResult
             }).ToOpResult_Eidt(OpContext);
         }
-
+        /// <summary>
+        /// 更新 详细表状态
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="orderIdNumber"></param>
+        /// <param name="Updatestring"></param>
+        /// <returns></returns>
         internal OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
         {
             return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);

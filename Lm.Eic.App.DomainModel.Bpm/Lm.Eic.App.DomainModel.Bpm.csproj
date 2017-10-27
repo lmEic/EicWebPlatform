@@ -44,6 +44,8 @@
     <Compile Include="Ast\QueryEquipmentDto.cs" />
     <Compile Include="Hrm\Archives\CalendarModel.cs" />
     <Compile Include="Hrm\Archives\QueryWorkerArchivesDto.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursDto.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursMangeModels.cs" />
     <Compile Include="Pms\BoardManagment\MaterialSpecBoardModel.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeModel.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="Pms\DailyReport\DailyReportModel.cs" />
     <Compile Include="Pms\DailyReport\Ms589DaiyReportModel.cs" />
     <Compile Include="Pms\DailyReport\QueryDailyReportDto.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\SupplierModel.cs" />
     <Compile Include="Quanity\Qua8DReportModel.cs" />

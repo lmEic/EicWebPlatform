@@ -202,6 +202,13 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
             this.InitDefault();
         }
 
+        public MailMsg(MailAddress addressFrom, MailAddressCollection addressToList)
+        {
+            this.AddressFrom = addressFrom;
+            this.AddressTo = addressToList;
+            this.InitDefault();
+        }
+
         private void InitDefault()
         {
             this.IsBodyHtml = true;

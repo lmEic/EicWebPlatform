@@ -27,7 +27,20 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
             {
                 return irep.Insert(entity).ToOpResult_Add(OpContext);
             }
-            return OpResult.SetSuccessResult("上传文件成功！");
+            else
+            {
+                return Edit(entity);
+            }
+        }
+
+        public OpResult Edit(FormAttachFileManageModel entity)
+        {
+            entity.OpSign = OpMode.Edit;
+            return irep.Update(e => e.ModuleName == entity.ModuleName && e.FormId == entity.FormId, u => new FormAttachFileManageModel
+            {
+                DocumentFilePath = entity.DocumentFilePath,
+                SubId = entity.SubId,
+            }).ToOpResult_Eidt(OpContext);
         }
     }
 }

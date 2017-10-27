@@ -712,7 +712,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 int pos = limitedDate.LastIndexOf("--", StringComparison.CurrentCulture);
                 if (pos > 0)
                 {
-                    identityExpirationDate = limitedDate.Substring(pos + 2, limitedDate.Length - pos - 2).ToDate();
+                    string subWord = limitedDate.Substring(pos + 2, limitedDate.Length - pos - 2);
+                    if (subWord == "长期")
+                        identityExpirationDate = identityExpirationDate.AddDays(5);
+                    else
+                        identityExpirationDate = subWord.ToDate();
                 }
             }
             return identityExpirationDate;

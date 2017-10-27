@@ -15,7 +15,6 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
         {
             Database.SetInitializer<LmProMasterDbContext>(null);
         }
-
         public DbSet<ConfigDataDictionaryModel> ConfigDataDictionary { get; set; }
 
         public DbSet<ConfigFilePathModel> ConfigFilePathInfo { get; set; }

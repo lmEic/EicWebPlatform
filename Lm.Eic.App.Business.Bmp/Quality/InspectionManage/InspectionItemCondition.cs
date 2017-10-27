@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             List<InspectionIqcItemConfigModel> needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             /// 针对所有需测试的项
-            var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy("JudgeROHSTest").FirstOrDefault();
+            var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcSpecialItemConfigDatasBy("符合ROHS检验").FirstOrDefault();
             if (item != null) item.MaterialId = materialId;
             bool IsAddAllMaterialId = true;
 

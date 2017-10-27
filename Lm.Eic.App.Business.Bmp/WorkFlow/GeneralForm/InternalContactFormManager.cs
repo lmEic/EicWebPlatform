@@ -43,8 +43,5 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
         {
             return GeneralFormCrudFactory.IContctFormCrud.Store(entity);
         }
-
-
-
     }
 }

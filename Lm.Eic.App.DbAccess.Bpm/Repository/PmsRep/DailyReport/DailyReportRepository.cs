@@ -67,12 +67,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         {
             try
             {
-
                 StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
-                .Append("FROM   Pms_DReportsProductFlow ")
-                .Append("WHERE   (Department = '" + department + "')")
-                .Append("GROUP BY ProductName");
+                sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
+                sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'PUS' THEN StandardProductionTime / 60 WHEN 'PUH' THEN 60 / StandardProductionTime ");
+                sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
+                sb.Append("FROM  Pms_StandardProductionFlow ");
+                sb.Append("WHERE(Department = '" + department + "') ");
+                sb.Append("GROUP BY ProductName ");
+
+
+
+                //StringBuilder sb = new StringBuilder();
+                //sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
+                //.Append("FROM   Pms_DReportsProductFlow ")
+                //.Append("WHERE   (Department = '" + department + "')")
+                //.Append("GROUP BY ProductName");
                 string sqltext = sb.ToString();
                 var productFlowList = DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList();
                 if (productFlowList.Count >= 30)

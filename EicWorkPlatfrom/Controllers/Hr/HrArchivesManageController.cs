@@ -323,9 +323,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var imgBytes = bmp.toByte();
             g.Dispose();
             bmp.Dispose();
-
-            var data = GetBase64Url(imgBytes);
-
+            var data = imgBytes.ToBase64Url();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 

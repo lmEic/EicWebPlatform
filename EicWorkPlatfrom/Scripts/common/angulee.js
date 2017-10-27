@@ -34,6 +34,15 @@ var leeDataHandler = (function () {
                     addfn();
             }
         },
+        ///取消编辑某项数据，oldItem:编辑前的对象，editItemArr编辑项数组
+        cancelEditItem: function (oldItem, editItemArr) {
+            if (_.isObject(oldItem) && _.isArray(editItemArr)) {
+                var item = _.find(editItemArr, { Id: oldItem.Id });
+                if (item != undefined) {
+                    leeHelper.copyVm(oldItem, item);
+                }
+            }
+        },
         ///处理操作结果,opstatus:操作器，opresult:操作结果,successFn:成功回调函数
         handleSuccessResult: function (opstatus, opresult, successFn) {
             opstatus.showValidation = false;
@@ -248,7 +257,9 @@ var leeHelper = (function () {
         //工作流电子签核控制器
         TolWorkFlow: 'TolWorkFlow',
         ///在线工具
-        ToolsOnLine: 'ToolsOnLine'
+        ToolsOnLine: 'ToolsOnLine',
+        //华为协同
+        TolCooperateWithHw: 'TolCooperateWithHw'
 
     };
     return {
@@ -585,6 +596,14 @@ var leeHelper = (function () {
             }
             obj.Id = leeHelper.newGuid();
         },
+        ///给集合中的每个对象设置唯一键值Id
+        setObjectsGuid: function (objectArr) {
+            if (_.isArray(objectArr)) {
+                _.forEach(objectArr, function (obj) {
+                    leeHelper.setObjectGuid(obj);
+                });
+            }
+        },
         //给对象设置服务器标志，标志该对象是从服务器端传来的数据
         setObjectServerSign: function (obj) {
             if (_.isUndefined(obj.isServer)) {
@@ -820,7 +839,7 @@ var leeWorkFlow = (function () {
         createFormFileAttachDto: function (vm, formId, moduleName) {
             var dto = _.clone(vm);
             leeHelper.setUserData(dto);
-            dto.FormId = uiVM.FormId;
+            dto.FormId = formId;
             dto.ModuleName = moduleName;
             return dto;
         }
@@ -985,14 +1004,41 @@ var leeUeditor = (function () {
         elementPathEnabled: false,
     };
 
-    return {
+    var myEditor = {
         ///公共默认配置
         commonConfig: commonConfig,
-        ///获得Html 编辑器
-        getEditor: function (id) {
-            return UE.getEditor(id, commonConfig);
+        //编辑器
+        createEditor: function (id) {
+            var editor = new ueEditor(id);
+            editor.createInstance();
+            return editor;
         },
     };
+    function ueEditor(id) {
+        //控件Id
+        this.id = id;
+        //控件实例
+        this.instance = null;
+        //创建实例
+        this.createInstance = function () {
+            var editor = UE.getEditor(id, commonConfig);
+            this.instance = editor;
+            return editor;
+        };
+        //获取内容
+        this.getContent = function () {
+            return this.instance.getContent();
+        };
+        //清空内容
+        this.clearContent = function () {
+            this.instance.setContent("");
+        };
+        //判断是否有内容
+        this.hasContent = function () {
+            return this.instance.hasContents();
+        };
+    };
+    return myEditor;
 })();
 ///日期格式化扩展
 Date.prototype.pattern = function (fmt) {

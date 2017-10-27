@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,69 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public Qua8DReportMasterModel()
         { }
         #region Model
+        private double _materialcount;
+        /// <summary>
+        ///
+        /// </summary>
+        public double MaterialCount
+        {
+            set { _materialcount = value; }
+            get { return _materialcount; }
+        }
+        private string _materialcountunit;
+        /// <summary>
+        ///
+        /// </summary>
+        public string MaterialCountUnit
+        {
+            set { _materialcountunit = value; }
+            get { return _materialcountunit; }
+        }
+        private int _inspectcount;
+        /// <summary>
+        ///
+        /// </summary>
+        public int InspectCount
+        {
+            set { _inspectcount = value; }
+            get { return _inspectcount; }
+        }
+        private string _inspectcountunit;
+        /// <summary>
+        ///
+        /// </summary>
+        public string InspectCountUnit
+        {
+            set { _inspectcountunit = value; }
+            get { return _inspectcountunit; }
+        }
+        private string _yearmonth;
+        /// <summary>
+        ///
+        /// </summary>
+        public string YearMonth
+        {
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
+        }
+        private string _filepath;
+        /// <summary>
+        ///
+        /// </summary>
+        public string FilePath
+        {
+            set { _filepath = value; }
+            get { return _filepath; }
+        }
+        private string _filename;
+        /// <summary>
+        ///
+        /// </summary>
+        public string FileName
+        {
+            set { _filename = value; }
+            get { return _filename; }
+        }
         private string _reportid;
         /// <summary>
         ///编号
@@ -71,42 +135,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _materialspec = value; }
             get { return _materialspec; }
-        }
-        private double _materialcount;
-        /// <summary>
-        ///数量
-        /// </summary>
-        public double MaterialCount
-        {
-            set { _materialcount = value; }
-            get { return _materialcount; }
-        }
-        private string _materialCountunit;
-        /// <summary>
-        ///物料数量单位
-        /// </summary>
-        public string MaterialCountUnit
-        {
-            set { _materialCountunit = value; }
-            get { return _materialCountunit; }
-        }
-        private int _inspectcount;
-        /// <summary>
-        ///抽验数量
-        /// </summary>
-        public int InspectCount
-        {
-            set { _inspectcount = value; }
-            get { return _inspectcount; }
-        }
-        private string _inspectcountuint;
-        /// <summary>
-        ///抽样数量单位
-        /// </summary>
-        public string InspectCountUint
-        {
-            set { _inspectcountuint = value; }
-            get { return _inspectcountuint; }
         }
         private int _failqty;
         /// <summary>
@@ -211,6 +239,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public Qua8DReportDetailModel()
         { }
         #region Model
+
+        public string ImgUrl
+        {
+            get
+            {
+
+                var imgUrl = string.Empty;
+                if (FilePath != null)
+                {
+                    string imgFilePath = (FilePath + "\\" + FileName);
+                    var imgBytes = imgFilePath.ToPhotoByte();
+                    imgUrl = imgBytes.ToBase64Url();
+                }
+                return imgUrl;
+            }
+        }
+
+
+
         private string _steptitle;
         /// <summary>
         ///标题
@@ -229,14 +276,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _stephandlecontent = value; }
             get { return _stephandlecontent; }
         }
-        private string _handledepartment;
+        private string _department;
         /// <summary>
         ///处理部门
         /// </summary>
-        public string HandleDepartment
+        public string Department
         {
-            set { _handledepartment = value; }
-            get { return _handledepartment; }
+            set { _department = value; }
+            get { return _department; }
         }
         private string _signaturepersons;
         /// <summary>
@@ -265,15 +312,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _stepid = value; }
             get { return _stepid; }
         }
-        private string _stepdescription;
-        /// <summary>
-        ///步骤描述
-        /// </summary>
-        public string StepDescription
-        {
-            set { _stepdescription = value; }
-            get { return _stepdescription; }
-        }
+
         private string _filepath;
         /// <summary>
         ///路径
@@ -291,6 +330,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _filename = value; }
             get { return _filename; }
+        }
+        private string _stepdescription;
+        /// <summary>
+        ///步骤描述
+        /// </summary>
+        public string StepDescription
+        {
+            set { _stepdescription = value; }
+            get { return _stepdescription; }
+        }
+        private string _status;
+        /// <summary>
+        ///处理状态
+        /// </summary>
+        public string Status
+        {
+            set { _status = value; }
+            get { return _status; }
         }
         private string _opperson;
         /// <summary>
@@ -347,7 +404,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     {
         public ShowStepViewModel()
         {
-            HandelQua8DStepDatas = new Qua8DReportDetailModel();
+
         }
         bool _ischeck = true;
         public bool IsCheck
@@ -355,23 +412,28 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { value = _ischeck; }
             get { return _ischeck; }
         }
-        public string StepId
+
+        public string StepName
         {
-            get { return HandelQua8DStepDatas == null ? "空" : "第" + HandelQua8DStepDatas.StepId.ToString() + "歩"; }
+            set;
+            get;
         }
 
         public string StepTitle
         {
-            get { return HandelQua8DStepDatas == null ? "空" : HandelQua8DStepDatas.StepTitle; }
+            set;
+            get;
         }
-        public int StepLevel
+        public string StepTitleConnect
         {
-            get { return HandelQua8DStepDatas == null ? 0 : HandelQua8DStepDatas.StepId; }
+            get; set;
         }
-        public Qua8DReportDetailModel HandelQua8DStepDatas
+        public int StepId
         {
-            set; get;
+            set;
+            get;
         }
+
     }
 
 

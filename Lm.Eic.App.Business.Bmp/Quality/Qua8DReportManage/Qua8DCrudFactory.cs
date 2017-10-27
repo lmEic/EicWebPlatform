@@ -39,6 +39,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             if (!IsExist(model.ReportId))
             {
+                model.YearMonth = DateTime.Now.ToString("yyyyMM");
+                if (model.MaterialCountUnit == null) model.MaterialCountUnit = "个";
+                if (model.InspectCountUnit == null) model.InspectCountUnit = "个";
+                if (model.FailQtyUnit == null) model.FailQtyUnit = "个";
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             return irep.Update(e => e.ReportId == model.ReportId, u => new Qua8DReportMasterModel
@@ -46,7 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
                 AccountabilityDepartment = model.AccountabilityDepartment,
                 MaterialCountUnit = model.MaterialCountUnit,
                 InspectCount = model.InspectCount,
-                InspectCountUint = model.InspectCountUint,
+                InspectCountUnit = model.InspectCountUnit,
                 FailQty = model.FailQty,
                 FailQtyUnit = model.FailQtyUnit,
                 FailClass = model.FailClass
@@ -68,6 +72,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             return irep.Entities.FirstOrDefault(e => e.ReportId == reportId);
         }
+        internal List<Qua8DReportMasterModel> getDReportMasterDatas(string searchFrom, string searchTo)
+        {
+            return irep.getReportMasterDatas(searchFrom, searchTo);
+        }
+        internal int Get8DMasterCountNumber(string headSign, string yearMonth)
+        {
+            return irep.Entities.Count(e => e.ReportId.Contains(headSign) && e.YearMonth == yearMonth);
+            // return irep.getReportMasterDatas(yearMonth, yearMonth).Count(e => e.ReportId.Contains(headSign));
+        }
+        internal OpResult ChangeMasterStatus(string reportId, string status, string fileName, string filePath)
+        {
+            return irep.Update(e => e.ReportId == reportId, u => new Qua8DReportMasterModel
+            {
+                Status = status,
+                FileName = fileName,
+                FilePath = filePath
+            }).ToOpResult_Eidt(OpContext);
+        }
+
     }
 
     internal class Qua8DReportDetailsCrud : CrudBase<Qua8DReportDetailModel, IQua8DReportDetailsRepository>
@@ -78,7 +101,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
 
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Eidt);
+        }
+        OpResult Add(Qua8DReportDetailModel model)
+        {
+            if (IsExist(model.ReportId, model.StepId) && model.Id_Key > 0)
+                return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        OpResult Eidt(Qua8DReportDetailModel model)
+        {
+            if (!IsExist(model.ReportId, model.StepId) || model.Id_Key == 0)
+                return OpResult.SetErrorResult("该单号记录不存在，修改失败");
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        public bool IsExist(string reportId, int stepId)
+        {
+            return irep.IsExist(e => e.ReportId == reportId && e.StepId == stepId);
         }
         /// <summary>
         /// 
@@ -88,6 +128,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         public List<Qua8DReportDetailModel> GetQua8DDetailDatasBy(string reportId)
         {
             return irep.Entities.Where(e => e.ReportId == reportId).ToList();
+        }
+        internal OpResult ChangeDetailStatus(string reportId, int stepId, string status)
+        {
+            return irep.Update(e => e.ReportId == reportId && e.StepId == stepId, u => new Qua8DReportDetailModel { FileName = status }).ToOpResult_Eidt(OpContext);
         }
     }
 }
