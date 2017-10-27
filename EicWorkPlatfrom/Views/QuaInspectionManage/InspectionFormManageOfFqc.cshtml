@@ -205,7 +205,7 @@
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus==='未审核'"><i class="fa  fa-eyedropper"></i>审核</button>
-                            <button class="btn btn-success" type="button" href="@Url.Action("ExportFqcDateToExcel", "QuaInspectionManage")"><i class="fa fa-file-text"></i>导出</button>
+                            <a class="btn btn-success" type="button" href="@Url.Action("ExportFqcDateToExcel", "QuaInspectionManage")"><i class="fa fa-file-text"></i>导出</a>
                             <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
                         </div>
                     </div>

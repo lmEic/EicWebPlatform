@@ -51,6 +51,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         #endregion
+
+
         #region LoadClass 
         public FqcDetailDatasGather DetailDatasGather
         {
@@ -193,7 +195,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 returnOpResult = MasterDatasGather.storeInspectionMasterial(masterModel);
             return returnOpResult;
         }
+
+        public OpResult DeletFqcDetailDatasAndMasterDatasBy(string orderId, int orderIdNumber)
+        {
+            OpResult opResult = InspectionManagerCrudFactory.FqcMasterCrud.DeleteFqcInspectionMasterBy(orderId, orderIdNumber);
+            if (opResult.Result)
+                return InspectionManagerCrudFactory.FqcDetailCrud.DeleteFqcInspectionDetailDatasBy(orderId, orderIdNumber);
+            return opResult;
+        }
         #endregion
+
+
 
         #region  对内处理 Private
 

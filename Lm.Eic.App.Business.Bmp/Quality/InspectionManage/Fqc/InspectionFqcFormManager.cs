@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<InspectionFqcMasterModel>();
-                return dataGroupping.ExportToExcelMultiSheets<InspectionFqcMasterModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("IQC检验数据");
+                return dataGroupping.ExportToExcelMultiSheets<InspectionFqcMasterModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("FQC检验数据");
             }
             catch (Exception ex)
             {
@@ -111,19 +111,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //    InspectionItemCount, InspectionItems, FinishDate, Memo, OpPerson, OpDate, OpTime, OpSign, Id_Key
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                 new FileFieldMapping ("OrderId","单号") ,
+                new FileFieldMapping ("OrderIdNumber","序号") ,
                 new FileFieldMapping ("MaterialId","料号") ,
                 new FileFieldMapping ("MaterialName","品名") ,
                 new FileFieldMapping ("MaterialSpec","规格") ,
                 new FileFieldMapping ("MaterialSupplier","供应商") ,
                 new FileFieldMapping ("MaterialInDate","进货日期") ,
-                new FileFieldMapping ("OpSign","图号") ,
-                new FileFieldMapping ("MaterialCount","进货数量") ,
-                new FileFieldMapping ("OpSign","抽样数量") ,
-                new FileFieldMapping ("OpSign","不合格数") ,
-                new FileFieldMapping ("OpSign","不良率") ,
+                new FileFieldMapping ("MaterialInCount","进货数量") ,
+                new FileFieldMapping ("MaterialDrawId","图号") ,
+                new FileFieldMapping ("InspectionCount","抽样数量") ,
+                new FileFieldMapping ("InspectionStatus","状态"),
                 new FileFieldMapping ("InspectionResult","检测结果") ,
-                new FileFieldMapping ("OpSign","不合格原因") ,
-                new FileFieldMapping ("OpPerson","抽检人")
+                new FileFieldMapping ("FinishDate","完成时间") ,
+                new FileFieldMapping ("OpPerson","抽检人"),
             };
             return fieldmappping;
         }

@@ -476,6 +476,12 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas);
         }
 
+        public JsonResult DeleleFqcInspectionAllGatherDatas(string orderId, int orderNumber)
+        {
+            var opResult = InspectionService.DataGatherManager.FqcDataGather.DeletFqcDetailDatasAndMasterDatasBy(orderId, orderNumber);
+            return Json(opResult);
+        }
+
         #endregion
         #endregion
 
@@ -502,7 +508,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public FileResult ExportDateToExcel()
+        public FileResult ExportIqcDateToExcel()
         {
             var datas = TempData["QuaDatas"] as List<InspectionIqcMasterModel>;
             //Excel
@@ -569,7 +575,7 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult GetInspectionMasterFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
         {
             var Fqcdatas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
-            TempData["QuaDatas"] = Fqcdatas;
+            TempData["QuaFqcDatas"] = Fqcdatas;
             return DateJsonResult(Fqcdatas);
         }
         /// <summary>
@@ -638,13 +644,13 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         /// <summary>
-        /// 导出EXCEl表清册
+        /// 导出EXCEl表清册 FileResult
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
         public FileResult ExportFqcDateToExcel()
         {
-            var datas = TempData["QuaDatas"] as List<InspectionFqcMasterModel>;
+            var datas = TempData["QuaFqcDatas"] as List<InspectionFqcMasterModel>;
             //Excel
             var dlfm = InspectionService.InspectionFormManager.FqcFromManager.BuildDownLoadFileModel(datas);
             return this.DownLoadFile(dlfm);
