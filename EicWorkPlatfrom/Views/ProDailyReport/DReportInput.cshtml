@@ -13,7 +13,7 @@
                         <span class="caret"></span>
                     </button>
                     <label>日期:</label>
-                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.putInDate"
+                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vmManager.putInDate"
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <label>白晚班:</label>
@@ -162,6 +162,7 @@
                                                 <input name="processesIndex" type="text" class="form-control"
                                                        focus-if="focus.processesIndexFocus" focus-setter
                                                        ng-keydown="vmManager.findProcessesInfo($event)"
+                                                       ng-onblur="vmManager.findProcessesInfo($event)"
                                                        ng-model="vm.ProcessesIndex"
                                                        required />
                                                 <div class="error-messages" ng-messages="formDailyProductionReport.processesIndex.$error" ng-show="operate.showValidation">
@@ -177,9 +178,9 @@
                                                         <span class="fa fa-chevron-circle-down"></span>
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
-                                                        <ul class="list-group">
-                                                            <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.showPutInForm(item)"
-                                                                ng-repeat="item in vmManager.productionFlowDatasSet track by $index" data-title="序名：{{item.ProcessesIndex}}" data-bs-tooltip>
+                                                        <ul class="list-group" style="overflow-y:auto; max-height:150px;">
+                                                            <li class="list-group-item" style="cursor:pointer;" ng-click="vmManager.showPutInForm(item)"
+                                                                ng-repeat="item in vmManager.productionFlowDatasSouce track by $index" data-title="序名：{{item.ProcessesIndex}}" data-bs-tooltip>
                                                                 <i class="fa fa-user"></i>
                                                                 <span class="label label-primary">工序号：{{item.ProcessesIndex}}</span>|
                                                                 <span>工序名：{{item.ProcessesName}}</span>|
@@ -255,23 +256,12 @@
                                         <div class="well" style="overflow:hidden;background:#C0C0C0; color:#000000">
                                             @*所得工时、生产工时*@
                                             <div class="form-group">
-                                                @*所得工时*@
-                                                <label for="todayProductionCount" class="col-md-2 control-label">所得工时</label>
-                                                <div class="col-md-4">
-                                                    <input type="number" name="todayProductionCount" class="form-control"
-                                                           focus-if="focus.todayProductionCountFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'processesIndexFocus','workerProductionTimeFocus')"
-                                                           ng-model="vm.TodayProductionCount" required />
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">录入工序不能为空</small>
-                                                    </div>
-                                                </div>
                                                 @*生产工时*@
                                                 <label for="workerProductionTime" class="col-md-2 control-label">生产工时</label>
                                                 <div class="col-md-4">
                                                     <input name="workerProductionTime" type="number" class="form-control"
                                                            focus-if="focus.workerProductionTimeFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'todayProductionCountFocus','saveAlldataFocus')"
+                                                           ng-keydown="focus.changeEnter($event,'processesIndexFocus','getProdutionTimeFocus')"
                                                            ng-minlength="0"
                                                            ng-maxlength="24"
                                                            ng-model="vm.WorkerProductionTime" required />
@@ -280,6 +270,17 @@
                                                     <div class="error-messages" ng-messages="formDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
 
                                                         <small ng-message="required">录入生产工时不能为空</small>
+                                                    </div>
+                                                </div>
+                                                @*所得工时*@
+                                                <label for="getProdutionTime" class="col-md-2 control-label">所得工时</label>
+                                                <div class="col-md-4">
+                                                    <input type="number" name="todayProductionCount" class="form-control"
+                                                           focus-if="focus.getProdutionTimeFocus" focus-setter
+                                                           ng-keydown="focus.changeEnter($event,'workerProductionTimeFocus','saveAlldataFocus')"
+                                                           ng-model="vm.GetProdutionTime" required />
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.getProdutionTime.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">录入工序不能为空</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -337,9 +338,9 @@
                                                         <span class="fa fa-chevron-circle-down"></span>
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
-                                                        <ul class="list-group">
+                                                        <ul class="list-group" style="overflow-y:auto; max-height:150px;">
                                                             <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.showPutInForm(item)"
-                                                                ng-repeat="item in vmManager.productionFlowDatasSet track by $index" data-title="序名：{{item.ProcessesIndex}}" data-bs-tooltip>
+                                                                ng-repeat="item in vmManager.productionFlowDatasSouce track by $index" data-title="序名：{{item.ProcessesIndex}}" data-bs-tooltip>
                                                                 <i class="fa fa-user"></i>
                                                                 <span class="label label-primary">工序号：{{item.ProcessesIndex}}</span>|
                                                                 <span>工序名：{{item.ProcessesName}}</span>|
@@ -470,8 +471,10 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-primary col-md-12" ng-click="vmManagerMultiermUser.showInPutInfoTable()">确认</button>
-
+                                            <div class="col-md-6 pull-right">
+                                                <button class="btn btn-primary " ng-click="vmManagerMultiermUser.showInPutInfoTable()">确认</button>
+                                                <button class="btn btn-info " ng-click="operate.refresh()">取消</button>
+                                            </div>
                                         </div>
                                         @*已经录入人员工时信息列表*@
                                         <div pageslide ps-open="vmManagerMultiermUser.multiermUserInPutInfoTable" style="padding:10px;overflow-y:auto;" ps-side="bottom" ps-speed="0.25" ps-size="100%" ps-container='inPutMultiermUserInfo' ps-click-outside="false" ps-key-listener="true">
@@ -513,7 +516,7 @@
                                                                 ng-click="operate.saveData(formDailyProductionReport.$valid)">
                                                             <i class="fa fa-save"></i>批量保存
                                                         </button>
-                                                        <button class="btn btn-info" ng-click="vmManagerMultiermUser.showInPutInfoTable()"><i class="fa fa-undo"></i>取    消</button>
+                                                        <button class="btn btn-info" ng-click="vmManagerMultiermUser.showInPutInfoTable()"><i class="fa fa-undo"></i>返回</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -641,10 +644,10 @@
                                         <td>{{item.OrderNeedPutInNumber}}</td>
                                         <td>
                                             {{item.OrderHavePutInNumber}}
-                                            <a href="javascript:;" ng-click="vmManager.showPutInDetail(item)" ng-if="item.OrderHavePutInNumber>0"> <i class="fa fa-th-list label-info"></i></a>
+                                            <a href="javascript:;" ng-click="vmManager.showPutInDetail(item)" ng-if="item.OrderHavePutInNumber>0 ||(item.InputType=='E')"> <i class="fa fa-th-list label-info"></i></a>
                                         </td>
                                         <td>
-                                            <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber<=0" style="color:#FF0000">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
+                                            <span ng-if="(item.OrderNeedPutInNumber - item.OrderHavePutInNumber<=0)" style="color:#FF0000">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
                                             <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber>0" style="color:#049816">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
                                         </td>
                                     </tr>
@@ -680,6 +683,7 @@
                                         <td>{{putInData.InPutDate}}</td>
                                         <td>
                                             <button class="btn btn-xs btn-primary" ng-click="vmManager.showUserInputInfo(putInData)"><i class="fa fa-pencil-square-o"></i>修改</button>
+                                            <button class="btn btn-xs btn-danger" ng-click="vmManager.deleteUserInputInfo(putInData)"><i class="fa fa-pencil-square-o"></i>删除</button>
                                         </td>
                                     </tr>
                                 </tbody>

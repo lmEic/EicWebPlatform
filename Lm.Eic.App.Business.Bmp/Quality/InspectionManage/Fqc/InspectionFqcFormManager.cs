@@ -109,7 +109,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //OrderId, OrderIdNumber, ProductDepartment, MaterialId, MaterialName, MaterialSpec, MaterialSupplier, 
             //    MaterialInDate, MaterialDrawId, MaterialInCount, InspectionMode, InspectionResult, InspectionCount, InspectionStatus, 
             //    InspectionItemCount, InspectionItems, FinishDate, Memo, OpPerson, OpDate, OpTime, OpSign, Id_Key
-
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                 new FileFieldMapping ("OrderId","单号") ,
                 new FileFieldMapping ("MaterialId","料号") ,
