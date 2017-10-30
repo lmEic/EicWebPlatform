@@ -1,17 +1,62 @@
 ﻿@{
     Layout = null;
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>研发管理</title>
 </head>
 <body>
+
+
     <div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">客资类型：</label>
+            <div class="col-sm-4">
+                <select id="usertype" name="usertype" class="selectpicker show-tick form-control" multiple data-live-search="false">
+                    <option value="0">苹果</option>
+                    <option value="1">菠萝</option>
+                    <option value="2">香蕉</option>
+                    <option value="3">火龙果</option>
+                    <option value="4">梨子</option>
+                    <option value="5">草莓</option>
+                    <option value="6">哈密瓜</option>
+                    <option value="7">椰子</option>
+                    <option value="8">猕猴桃</option>
+                    <option value="9">桃子</option>
+                </select>
+            </div>
+
+            <select id="test" multiple="">
+                <option value="option-A">option-A</option>
+                <option value="option-B">option-B</option>
+                <option value="option-C">option-C</option>
+                <option value="option-D">option-D</option>
+            </select>
+            <input type="button" value="确定" onclick="fun()" />
+        </div>
         <h1>研发管理模块正在开发中，敬请期待...</h1>
     </div>
 </body>
+
+
 </html>
+
+<td>性别:</td>
+<td>
+    <c:choose>
+        <c:when test="${'男' eq pd.SEX}">
+            <input type="radio" name="sex" value="男" checked="checked">男
+            <input type="radio" name="sex" value="女">女
+        </c:when>
+        <c:when test="${'女' eq pd.SEX}">
+            <input type="radio" name="sex" value="男">男
+            <input type="radio" name="sex" value="女" checked="checked">女
+        </c:when>
+        <c:otherwise>
+            <input type="radio" name="sex" value="男" checked="checked">男
+            <input type="radio" name="sex" value="女">女
+        </c:otherwise>
+    </c:choose>
+</td>     
