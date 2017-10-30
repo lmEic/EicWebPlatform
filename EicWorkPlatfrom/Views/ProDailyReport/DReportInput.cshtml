@@ -13,7 +13,7 @@
                         <span class="caret"></span>
                     </button>
                     <label>日期:</label>
-                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vmManager.putInDate"
+                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.InPutDate"
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <label>白晚班:</label>
@@ -153,6 +153,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <label for="inputDate" class="col-md-4 control-label">日期:{{vm.InPutDate}}</label>
                                     </div>
                                     @*录入工序信息*@
                                     <div class="form-group ">
@@ -411,6 +412,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                                 @*生产工时  *@
                                                 <div class="form-group">
