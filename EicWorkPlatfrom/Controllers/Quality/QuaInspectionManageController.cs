@@ -226,6 +226,33 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.ConfigManager.FqcItemConfigManager.GetMaterialORTConfigBy(materialId);
             return Json(datas);
         }
+        /// <summary>
+        /// 导入Excel  ImportFqcInspectionItemConfigDatas
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult ImportFqcInspectionItemConfigDatas(HttpPostedFileBase file)
+        {
+            List<InspectionFqcItemConfigModel> datas = null;
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+                    file.SaveAs(fileName);
+                    datas = InspectionService.ConfigManager.FqcItemConfigManager.ImportInspectionFqcItemConfigBy(fileName);
+                    if (datas != null && datas.Count > 0)
+                    //批量保存数据
+                    { var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(datas); }
+                    System.IO.File.Delete(fileName);
+                }
+            }
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
+
+        }
 
         #endregion
 
@@ -327,8 +354,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         /// </summary>
         [NoAuthenCheck]
-        [HttpGet]
-        public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId, string materialId)
+        public JsonResult GetIqcInspectionItemDataSummaryDatas(string orderId, string materialId)
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.BuildingIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
@@ -507,16 +533,18 @@ namespace EicWorkPlatfrom.Controllers
             return this.DownLoadFile(dlfm);
         }
         /// <summary>
-        /// IQC审核
+        /// IQC审核/ 撤消IQC审核
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
+        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model, bool isCheck)
         {
-            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model);
+            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model, isCheck);
             return Json(opResult);
         }
+
+
         #endregion
 
         #region fqc检验单管理
@@ -553,6 +581,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult QueryFqcERPOrderInspectionInfos(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
         {
+            //12131231313
             var datas = InspectionService.InspectionFormManager.FqcFromManager.GetERPOrderAndMaterialBy(selectedDepartment, dateFrom, dateTo);
 
             return DateJsonResult(datas);

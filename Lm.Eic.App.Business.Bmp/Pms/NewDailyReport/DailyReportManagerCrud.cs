@@ -3,6 +3,7 @@ using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
@@ -165,20 +166,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据部门查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1").ToList();
                     case 2: //依据产品品名查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProcessesIndex).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProcessesIndex).ToList();
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.OpDate == inputDate).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.OpDate == inputDate).ToList();
                     case 4: //依据工艺名称查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName && m.ProcessesName == qryDto.ProcessesName).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName && m.ProcessesName == qryDto.ProcessesName).ToList();
                     case 5: //依据工单单号查询
                         {
                             var orderDetails = MocService.OrderManage.GetOrderDetails(qryDto.OrderId);
                             if (orderDetails != null)
                                 qryDto.ProductName = orderDetails.ProductName;
-                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).ToList();
+                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName).ToList();
                         }
                     default:
                         return new List<StandardProductionFlowModel>();
@@ -325,7 +326,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(DailyProductionReportModel model)
         {
-            model.InPutDate = model.InPutDate.ToDate();
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
         }
@@ -381,6 +381,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         internal List<DailyProductionReportModel> GetWorkerDailyDatasBy(string workerId)
         {
             return irep.Entities.Where(e => e.WorkerId == workerId).OrderByDescending(e => e.Id_Key).ToList();
+        }
+
+        internal OpResult SavaDailyReportList(List<DailyProductionReportModel> modelList)
+        {
+            try
+            {
+                SetFixFieldValue(modelList, OpMode.Add);
+                if (!modelList.IsNullOrEmpty())
+                    return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
         #endregion
     }

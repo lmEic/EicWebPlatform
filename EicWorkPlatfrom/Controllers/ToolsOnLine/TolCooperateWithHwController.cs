@@ -22,36 +22,23 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
-        #region HwMaterialBaseInfo
-        public ActionResult HwMaterialBaseInfo()
+        #region HwMaterialBaseConfig method
+        public ActionResult HwMaterialBaseConfig()
         {
             return View();
         }
         [NoAuthenCheck]
-        public ContentResult GetMaterialBaseInfo(string materialId)
+        public JsonResult GetMaterialBaseConfigDatas()
         {
-            var entity = HwCollaborationService.MaterialManager.BaseInfoSettor.GetConfigData(materialId);
-            return DateJsonResult(entity);
+            var datas = HwCollaborationService.MaterialManager.BaseBomManager.MaterialBaseDictionary;
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult SaveMaterialBase(List<HwCollaborationDataConfigModel> entities)
+        [HttpPost]
+        public JsonResult SaveMaterialBaseConfigDatas(HwCollaborationMaterialBaseConfigModel entity)
         {
-            var result = HwCollaborationService.MaterialManager.BaseInfoSettor.SynchronizeDatas(entities);
-            return Json(result);
-        }
-        #endregion
-
-        #region HwMaterialBomInfo
-        public ActionResult HwMaterialBomInfo()
-        {
-            return View();
-        }
-
-        [NoAuthenCheck]
-        public JsonResult SaveMaterialBom(HwCollaborationDataConfigModel entity)
-        {
-            var result = HwCollaborationService.MaterialManager.KeyBomManager.SynchronizeDatas(entity);
-            return Json(result);
+            var opResult = HwCollaborationService.MaterialManager.BaseBomManager.Store(entity);
+            return Json(opResult);
         }
         #endregion
 
@@ -103,10 +90,11 @@ namespace EicWorkPlatfrom.Controllers
             };
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
         [NoAuthenCheck]
-        public JsonResult SaveMaterialInventory(HwCollaborationDataTransferModel entity)
+        public JsonResult SaveMaterialDetailData(MaterialComposeEntity entity)
         {
-            var result = HwCollaborationService.MaterialManager.InventoryManager.SynchronizeDatas(entity);
+            var result = HwCollaborationService.MaterialManager.SaveMaterialDetail(entity);
             return Json(result);
         }
         #endregion

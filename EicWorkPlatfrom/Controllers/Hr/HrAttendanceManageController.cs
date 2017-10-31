@@ -254,19 +254,16 @@ namespace EicWorkPlatfrom.Controllers.Hr
         }
         [NoAuthenCheck]
         /// <summary>
-        /// 导出Excel模板中
+        /// 导出Excel
         /// </summary>
         /// <returns></returns>
         public FileResult WorkOverHoursDatasToExcel()
         {
-            //自定义
-
             string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
             string fileName = "加班数据模板.xls";
             var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
             var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
             return this.DownLoadFile(dlfm);
-
         }
         /// <summary>
         /// 后台修改保存
@@ -281,6 +278,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             try
             {
+                //sdfsdfsdf
                 var opresult = WorkOverHoursService.WorkOverHoursManager.StoreWorkOverHours(model);
                 return Json(opresult);
             }

@@ -54,7 +54,7 @@
     <Compile Include="Business\HwMockDatas.cs" />
     <Compile Include="Business\ManPower\ManPowerManager.cs" />
     <Compile Include="Business\MaterialManage\HwCollaborationMaterialConfigBase.cs" />
-    <Compile Include="Business\MaterialManage\MaterialBaseInfoSettor.cs" />
+    <Compile Include="Business\MaterialManage\MaterialBaseBomManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialInventoryManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialMakingManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialManager.cs" />
@@ -63,6 +63,7 @@
     <Compile Include="DbAccess\HwDatasTransferDb.cs" />
     <Compile Include="DbAccess\LmErpDb.cs" />
     <Compile Include="Model\HwCollaborationDatasTransferModel.cs" />
+    <Compile Include="Model\HwCollaborationMaterialBaseConfigModel.cs" />
     <Compile Include="Model\HwDataTransferEntityBase.cs" />
     <Compile Include="Model\LmErp\ErpMaterialInventoryModel.cs" />
     <Compile Include="Model\LmErp\ErpPurchaseOnWayModel.cs" />

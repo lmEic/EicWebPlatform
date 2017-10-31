@@ -317,9 +317,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="newModel"></param>
         /// <returns></returns>
-        internal OpResult UpAuditInspectionDetailData(string orderId, string materialId)
+        internal OpResult UpAuditInspectionDetailData(string orderId, string materialId, bool isCheck)
         {
-            return irep.Update(e => e.OrderId == orderId && e.MaterialId == materialId, u => new InspectionIqcDetailModel { InspectionItemStatus = "Done" }).ToOpResult_Eidt(OpContext);
+            
+            int i = 0;
+            string inspectionItemStatus = isCheck ? "Done" : "doing";
+            var modellist = irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
+            if (modellist != null && modellist.Count > 0)
+                modellist.ForEach(m =>
+                 {
+                     m.InspectionItemStatus = inspectionItemStatus;
+                     var sigleOpResult = irep.Update(e => e.Id_Key == m.Id_Key, m).ToOpResult_Eidt(OpContext);
+                     if (sigleOpResult.Result) i++;
+                 });
+            return modellist.Count == i ? i.ToOpResult_Eidt(OpContext) : OpResult.SetResult(OpContext + "操作失败", false);
 
         }
         private InspectionIqcDetailModel GetIqcOldDetailModelBy(InspectionIqcDetailModel newModel)

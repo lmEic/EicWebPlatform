@@ -188,12 +188,12 @@
                                 </div>
                                 @*标准工时 工时类别*@
                                 <div class="form-group">
-                                    <label for="standardProductionTime" class="col-md-3 control-label">有效性</label>
+                                    <label for="isSum" class="col-md-3 control-label">记入总工时</label>
                                     <div class="col-md-3">
-                                        <button type="button" name="iIsValid" class="btn btn-primary" ng-model="vm.IsValid"
+                                        <button type="button" name="isSum" class="btn btn-primary" ng-model="vm.IsSum"
                                                 data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="是"
                                                 data-bs-options="item.id as item.text for item in vmManager.IsOrNotDatas" data-bs-select></button>
-                                        <div class="error-messages" ng-messages="formProductionFlow.isValid.$error" ng-show="operate.showValidation">
+                                        <div class="error-messages" ng-messages="formProductionFlow.isSum.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">有效性不能为空</small>
                                         </div>
                                     </div>

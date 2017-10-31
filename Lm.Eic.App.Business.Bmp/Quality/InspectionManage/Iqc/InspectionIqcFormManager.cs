@@ -89,12 +89,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         ///审核主表数据
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditIqcInspectionMasterModel(InspectionIqcMasterModel model)
+        public OpResult AuditIqcInspectionMasterModel(InspectionIqcMasterModel model, bool isCheck)
         {
             if (model == null) return null;
             var retrunResult = InspectionManagerCrudFactory.IqcMasterCrud.Store(model, true);
             if (retrunResult.Result)
-                return InspectionManagerCrudFactory.IqcDetailCrud.UpAuditInspectionDetailData(model.OrderId, model.MaterialId);
+                return InspectionManagerCrudFactory.IqcDetailCrud.UpAuditInspectionDetailData(model.OrderId, model.MaterialId, isCheck);
             else return retrunResult;
         }
 

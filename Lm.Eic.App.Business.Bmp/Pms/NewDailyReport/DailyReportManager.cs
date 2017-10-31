@@ -197,6 +197,42 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
+        public OpResult StoreDailyReport(DailyProductionReportModel model, List<UserInfoVm> groupUserInfos, out List<DailyProductionReportModel> storeListDatas)
+        {
+            List<DailyProductionReportModel> DailyReportList = new List<DailyProductionReportModel>();
+            if (model != null)
+            {
+                DailyProductionReportModel newModel = null;
+                double sumProductCount = model.TodayProductionCount;
+                double sumProductBadCount = model.TodayBadProductCount;
+                if (groupUserInfos == null || groupUserInfos.Count == 0)
+                {
+                    storeListDatas = null;
+                    return OpResult.SetErrorResult("人员数据为空，操作失败!");
+                }
+                int sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
+                int sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
+                if (sumWorkerProductionTime == 0)
+                {
+                    storeListDatas = null;
+                    return OpResult.SetErrorResult("人员统计的工时为空，操作失败!");
+                }
+                groupUserInfos.ForEach(m =>
+                {
+                    newModel = new DailyProductionReportModel();
+                    OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(model, newModel);
+                    OOMaper.Mapper<UserInfoVm, DailyProductionReportModel>(m, newModel);
+                    newModel.TodayProductionCount = Math.Round((sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
+                    if (sumNoProductionTime != 0)
+                        newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime, 2, MidpointRounding.AwayFromZero);
+                    if (!DailyReportList.Contains(newModel))
+                        DailyReportList.Add(newModel);
+                });
+            }
+            OpResult mm = DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
+            storeListDatas = DailyReportList;
+            return mm;
+        }
         public List<ProductFlowCountDatasVm> GetProductionFlowCountDatas(string department, string orderId, string productName)
         {
             List<ProductFlowCountDatasVm> retrundatas = new List<ProductFlowCountDatasVm>();
