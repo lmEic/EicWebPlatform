@@ -54,10 +54,8 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         }
 
         #region store method
-        public OpResult Store(HwCollaborationMaterialBaseConfigModel entity)
+        private OpResult SendDtoToHw(HwCollaborationMaterialBaseConfigModel entity)
         {
-            entity.OpDate = DateTime.Now.ToDate();
-            entity.OpTime = DateTime.Now.ToDateTime();
             var baseDto = CreateMaterialBaseDto(entity);
             var opResult = this.baseDtoSender.SendDto(baseDto);
             if (!opResult.Result) return opResult;
@@ -67,8 +65,16 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
                 opResult = this.bomDtoSender.SendDto(bomDto);
                 if (!opResult.Result) return opResult;
             }
-
-            return this.materialBaseConfigDb.Store(entity);
+            return OpResult.SetSuccessResult("OK");
+        }
+        public OpResult Store(HwCollaborationMaterialBaseConfigModel entity)
+        {
+            entity.OpDate = DateTime.Now.ToDate();
+            entity.OpTime = DateTime.Now.ToDateTime();
+            var opresult = SendDtoToHw(entity);
+            if (opresult.Result)
+                opresult = this.materialBaseConfigDb.Store(entity);
+            return opresult;
         }
         private VendorItemRelationDto CreateMaterialBaseDto(HwCollaborationMaterialBaseConfigModel entity)
         {
@@ -104,6 +110,27 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             };
             dto.keyMaterialList.Add(vo);
             return dto;
+        }
+
+
+        /// <summary>
+        /// 一键同步数据
+        /// </summary>
+        /// <returns></returns>
+        public OpResult AutoSynchironizeData()
+        {
+            var datas = CreateBomCellList();
+            bool success = true;
+            if (datas == null || datas.Count == 0)
+                return OpResult.SetErrorResult("没有要同步的数据");
+            datas.ForEach(d =>
+            {
+                success = SendDtoToHw(d).Result && success;
+            });
+            if (success)
+                return OpResult.SetSuccessResult("向华为平台发送数据成功！");
+            else
+                return OpResult.SetSuccessResult("向华为平台发送数据失败！");
         }
         #endregion
 

@@ -33,27 +33,12 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
             entity: entity,
         });
     };
-
-
-    hwDataOp.getMaterialBaseInfo = function (materialId) {
-        var url = hwUrlPrefix + 'GetMaterialBaseInfo';
-        return ajaxService.getData(url, {
-            materialId: materialId
-        });
-    };
-    hwDataOp.saveMaterialBase = function (entities) {
-        var url = hwUrlPrefix + 'SaveMaterialBase';
-        return ajaxService.postData(url, {
-            entities: entities
-        });
+    hwDataOp.autoSynchironizeData = function () {
+        var url = hwUrlPrefix + 'AutoSynchironizeData';
+        return ajaxService.getData(url);
     };
 
-    hwDataOp.saveMaterialBom = function (entity) {
-        var url = hwUrlPrefix + 'SaveMaterialBom';
-        return ajaxService.postData(url, {
-            entity: entity
-        });
-    };
+
 
     //获取物料信息信息
     hwDataOp.getMaterialDetails = function () {
@@ -273,6 +258,13 @@ officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
                 });
             }, function (errResult) {
                 leePopups.alert(errResult);
+            });
+        });
+    };
+    operate.autoSynchironizeData = function () {
+        leeDataHandler.dataOperate.add(operate, true, function () {
+            $scope.opPromise = hwDataOpService.autoSynchironizeData().then(function (opResult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function (opResult) { });
             });
         });
     };
