@@ -22,9 +22,9 @@ namespace Lm.Eic.App.HwCollaboration.Business
         {
             get
             {
-                string url = "https://api-beta.huawei.com:443/oauth2/token";
-                string key = "e24YjcnCCEW1TVG_oEKpxaQXWPca";
-                string secury = "1fDV5DZWcpGh0MtjkuPH3YsYODIa";
+                string url = "https://openapi.huawei.com:443/oauth2/token";
+                string key = "E0v2QffhIb2FKS1QpfHOiWffh_wa";
+                string secury = "ZNpu5EZfuxfsB6L10f4sL8cstOAa";
                 return new HwRestfulApiManager(key, secury, url);
             }
         }
@@ -171,12 +171,12 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <summary>
         /// 物料基础信息
         /// </summary>
-        public const string MaterialBaseInfoApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importVendorItems/1.0.0";
+        public const string MaterialBaseInfoApiUrl = "https://openapi.huawei.com:443/service/esupplier/importVendorItems/1.0.0";
 
         /// <summary>
         /// 关键物料BOM信息
         /// </summary>
-        public const string MaterialKeyBomApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importKeyMaterials/1.0.0";
+        public const string MaterialKeyBomApiUrl = "https://openapi.huawei.com:443/service/esupplier/importKeyMaterials/1.0.0";
 
         /// <summary>
         /// 人力
@@ -185,19 +185,19 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <summary>
         /// 库存明细
         /// </summary>
-        public const string FactoryInventoryApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importInventory/1.0.0";
+        public const string FactoryInventoryApiUrl = "https://openapi.huawei.com:443/service/esupplier/importInventory/1.0.0";
         /// <summary>
         /// 在制明细
         /// </summary>
-        public const string MaterialMakingApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialMaking/1.0.0";
+        public const string MaterialMakingApiUrl = "https://openapi.huawei.com:443/service/esupplier/importMaterialMaking/1.0.0";
         /// <summary>
         /// 发料明细
         /// </summary>
-        public const string MaterialShipmentApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
+        public const string MaterialShipmentApiUrl = "https://openapi.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
         /// <summary>
         /// 在途明细
         /// </summary>
-        public const string PurchaseOnWayApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importOpenPoData/1.0.0";
+        public const string PurchaseOnWayApiUrl = "https://openapi.huawei.com:443/service/esupplier/importOpenPoData/1.0.0";
     }
 
     internal class HwModuleName
