@@ -108,7 +108,7 @@
                         <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderSubIdItem(item)">
                             <a bs-collapse-toggle style="cursor:pointer;color:#FF0000" title="{{item.productId}}">
                                 <span class="panel-title">
-                                    <i class="fa fa-trash" style="cursor:pointer;color:#ff0000" ng-show="inspectionItem.InspectionItemStatus==='doing'" ng-click="vmManager.selectDeleteInspectionItems(inspectionItem)"></i>
+                                    <i class="fa fa-trash" style="cursor:pointer;color:#ff0000" ng-if="item.inspectionStatus!='已审核'" ng-click="vmManager.selectDeleteInspectionItems(item)"></i>
                                 </span>
                                 {{item.orderId}}-{{item.orderIdNumber}}
                                 <span class="pull-right">

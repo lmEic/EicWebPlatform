@@ -475,10 +475,16 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
-
-        public JsonResult DeleleFqcInspectionAllGatherDatas(string orderId, int orderNumber)
+        /// <summary>
+        ///  orderId, orderIdNumber
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="orderNumber"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DeleleFqcInspectionAllGatherDatas(string orderId, int orderIdNumber)
         {
-            var opResult = InspectionService.DataGatherManager.FqcDataGather.DeletFqcDetailDatasAndMasterDatasBy(orderId, orderNumber);
+            var opResult = InspectionService.DataGatherManager.FqcDataGather.DeletFqcDetailDatasAndMasterDatasBy(orderId, orderIdNumber);
             return Json(opResult);
         }
 
