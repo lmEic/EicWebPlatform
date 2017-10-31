@@ -530,7 +530,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     var uiVM = {
         Department: null,
         ClassType: '白班',
-        InPutDate: new Date(),
+        InPutDate: new Date(new Date().setDate(new Date().getDate() - 1)),
         OrderId: null,
         ProductId: null,
         ProductName: null,
@@ -580,7 +580,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         inPutMultiermUserInfoTable: false,
         classType: '白班',
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: '晚班' }],
-        putInDate: new Date(),
+        putInDate: new Date(new Date().setDate(new Date().getDate() - 1)),
         productionFlowShow: true,
         putInDataProcessesName: null,
         ///初始化
@@ -733,7 +733,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.ProcessesType = item.ProcessesType;
                 uiVM.StandardProductionTime = item.StandardProductionTime;
                 uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
-                uiVM.InPutDate = vmManager.putInDate;
                 vmManager.havePutInData = [];
                 if (uiVM.WorkerId === '' || uiVM.WorkerId === null)
                 { focusSetter.workerIdFocus = true; }
@@ -807,9 +806,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         }
                     });
                     if (!_.isUndefined(data)) {
-
                         vmManager.putInshowPutInForm(data);
-
                     }
                 }
                 console.log(item);
