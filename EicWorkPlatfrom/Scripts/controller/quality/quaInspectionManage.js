@@ -204,6 +204,15 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         var url = quaInspectionManageUrl + 'UploadGatherDataAttachFile';
         return ajaxService.uploadFile(url, file);
     };
+    // Fqc 删除所有生成数据
+    quality.deleteFqcInspectionItemData = function (orderId, orderIdNumber) {
+        var url = quaInspectionManageUrl + 'DeleleFqcInspectionAllGatherDatas';
+        return ajaxService.postData(url, {
+            orderId: orderId,
+            orderIdNumber: orderIdNumber,
+        });
+    };
+
 
     ////////////////////////////////////////////fqc检验项目配置模块////////////////////////////////////////////////////////////////////////////////
     quality.getfqcInspectionItemConfigDatas = function (materialId) {
@@ -1481,6 +1490,19 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 }
             }
         },
+        selectDeleteInspectionItems: function (item) {
+            leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
+                $scope.$apply(function () {
+                    $scope.opPromise = qualityInspectionDataOpService.deleteFqcInspectionItemData(item.OrderId, item.orderIdNumber).then(function (opResult) {
+                        if (opResult.Result) {
+                            // leeHelper.delWithId(dataItems.inspectionItemDatas, item);//从表中移除
+                            //刷新界面
+                            vmManager.updateInspectionItemList(dataItems);
+                        }
+                    });
+                });
+            });
+        },
     }
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -1686,7 +1708,6 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
                     item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
                 })
                 vmManager.detailDatas = datas;
-                console.log(89898898989);
                 console.log(vmManager.detailDatas);
                 vmManager.isShowDetailWindow = true;
             })
