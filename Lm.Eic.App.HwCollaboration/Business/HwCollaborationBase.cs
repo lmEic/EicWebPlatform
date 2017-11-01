@@ -88,7 +88,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 return OpResult.SetErrorResult("数据实体模型不能为null！");
             }
             var dto = ObjectSerializer.DeserializeObject<T>(entity.OpContent);
-
+            dto = HandleDto(dto);
             try
             {
                 string returnMsg = this.AccessApi(accessApiUrl, dto);
@@ -159,6 +159,15 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 OpContent = ObjectSerializer.SerializeObject(dto),
                 OpLog = ObjectSerializer.SerializeObject(opLog)
             };
+        }
+        /// <summary>
+        /// 检测DTO的属性值是否满足规格
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        protected virtual T HandleDto(T dto)
+        {
+            return dto;
         }
         #endregion
     }

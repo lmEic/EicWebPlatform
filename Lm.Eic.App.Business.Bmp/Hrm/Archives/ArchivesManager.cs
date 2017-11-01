@@ -129,7 +129,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion constructure
 
         #region change data method
-
         /// <summary>
         /// 存储员工档案信息
         /// </summary>

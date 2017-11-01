@@ -67,14 +67,13 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
 
         public OpResult SaveMaterialDetail(MaterialComposeEntity entity)
         {
-            OpResult defaultResult = OpResult.SetErrorResult("上传华为数据失败！");
             OpResult opResult = null;
             //opResult = this.InventoryManager.SynchronizeDatas(entity.InvertoryEntity);
             ////if (!opResult.Result) return defaultResult;
-            opResult = this.MakingManager.SynchronizeDatas(entity.MakingEntity);
-            if (!opResult.Result) return defaultResult;
-            //opResult = this.ShipmentManager.SynchronizeDatas(entity.ShippmentEntity);
+            //opResult = this.MakingManager.SynchronizeDatas(entity.MakingEntity);
             //if (!opResult.Result) return defaultResult;
+            opResult = this.ShipmentManager.SynchronizeDatas(entity.ShippmentEntity);
+            if (!opResult.Result) return opResult;
             //opResult = this.PurchaseManager.SynchronizeDatas(entity.PurchaseEntity);
             //if (!opResult.Result) return defaultResult;
             return opResult;
