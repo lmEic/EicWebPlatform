@@ -21,6 +21,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         public OpResult SendDto(VendorItemRelationDto dto)
         {
             return this.AccessApi(this.apiUrl, dto).AsHwAccessApiResult().AsOpResult();
+            //return OpResult.SetSuccessResult("OK");
         }
     }
     public class MaterialBomDtoSender : HwCollaborationBase<KeyMaterialDto>
@@ -39,12 +40,19 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         private HwMaterialBaseConfigDb materialBaseConfigDb = null;
         private MaterialBaseDtoSender baseDtoSender = null;
         private MaterialBomDtoSender bomDtoSender = null;
+
+        private List<HwCollaborationMaterialBaseConfigModel> materialBaseDictionary = null;
         /// <summary>
         /// 物料基础数据字典
         /// </summary>
         public List<HwCollaborationMaterialBaseConfigModel> MaterialBaseDictionary
         {
-            get { return this.materialBaseConfigDb.GetAll(); }
+            get
+            {
+                if (materialBaseDictionary == null)
+                    materialBaseDictionary = this.materialBaseConfigDb.GetAll();
+                return materialBaseDictionary;
+            }
         }
         public MaterialBaseBomManager()
         {
@@ -141,6 +149,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             List<HwCollaborationMaterialBaseConfigModel> configDatas = new List<HwCollaborationMaterialBaseConfigModel>();
             var dftDatas = this.MaterialBaseDictionary.FindAll(e => e.ParentMaterialId == "MaterialBaseBomInfo");
             if (dftDatas == null || dftDatas.Count == 0) return configDatas;
+            configDatas.AddRange(dftDatas);
             dftDatas.ForEach(f =>
             {
                 var dataList = this.MaterialBaseDictionary.FindAll(e => e.ParentMaterialId == f.MaterialId);

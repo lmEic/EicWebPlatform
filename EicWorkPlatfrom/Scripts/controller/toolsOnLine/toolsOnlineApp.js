@@ -41,6 +41,10 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     $stateProvider.state('hwInventoryDetail', {//库存明细
         templateUrl: hwUrlPrefix + 'HwInventoryDetail'
     });
+    //--------------智能隧道---------------------
+    $stateProvider.state('tolManpowerDisk', {//人力磁盘
+        templateUrl: hwUrlPrefix + 'TolManpowerDisk'
+    });
 })
 
 .directive('ylRefreshFrequency', function ($modal) {

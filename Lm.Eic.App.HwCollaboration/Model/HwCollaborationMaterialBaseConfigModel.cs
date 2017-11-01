@@ -215,6 +215,4 @@ namespace Lm.Eic.App.HwCollaboration.Model
         }
         #endregion Model
     }
-
-
 }
