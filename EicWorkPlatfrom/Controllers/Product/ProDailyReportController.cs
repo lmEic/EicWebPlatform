@@ -29,6 +29,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
+        #region DReportBadReasonSet 不良原因配置
+        public ActionResult DReportBadReasonSet()
+        {
+            return View();
+        }
+        #endregion
+
+        #region DReportUnproductionSet 非生产原因配置
+        public ActionResult DReportUnproductionSet()
+        {
+            return View();
+        }
+        #endregion
 
         #region report Flow Set set method  生产工艺录入
         public ActionResult DReportFlowSet()
@@ -167,7 +180,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         #endregion
 
 
-
         #region DRProductDispatching method 生产订单分派
         /// <summary>
         /// 生产工单管理
@@ -199,7 +211,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             return Json(opDatasResult);
         }
         #endregion
-
 
 
         #region daily report  input method 日报录入

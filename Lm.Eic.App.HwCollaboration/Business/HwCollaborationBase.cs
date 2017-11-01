@@ -217,6 +217,16 @@ namespace Lm.Eic.App.HwCollaboration.Business
         public const string PurchaseOnWay = "采购在途明细";
     }
     /// <summary>
+    /// 上传成功物料数据传输对象
+    /// </summary>
+    public class UploadSuccessMaterialDto
+    {
+        /// <summary>
+        /// 物料编号
+        /// </summary>
+        public string MaterialId { get; set; }
+    }
+    /// <summary>
     /// 扩展类
     /// </summary>
     public static class HwCollaborationExtension
