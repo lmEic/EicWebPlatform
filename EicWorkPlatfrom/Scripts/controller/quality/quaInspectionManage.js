@@ -1491,6 +1491,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         },
         selectDeleteInspectionItems: function (item) {
+            console.log(item);
             leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
                 $scope.$apply(function () {
                     $scope.opPromise = qualityInspectionDataOpService.deleteFqcInspectionItemData(item.OrderId, item.orderIdNumber).then(function (opResult) {

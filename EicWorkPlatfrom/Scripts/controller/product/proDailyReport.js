@@ -700,9 +700,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             var processesInfo = _.find(vmManager.productionFlowDatasSouce, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
             if (!_.isUndefined(processesInfo)) {
                 //leePopups.alert("没有此工序号");
-                focusSetter.processesIndexFocus = true;
+                focusSetter.workerIdFocus = true;
                 vmManager.selectProcesses(processesInfo);
-
                 if (uiVM.TodayProductionCount != 0 && uiVM.TodayProductionCount != null && uiVM.TodayProductionCount != '' && vmManager.inputMultitermSelect)
                 { focusSetter.saveAlldataFocus = true }
                 else
@@ -716,6 +715,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //在数据查找相应的信息
         selectProcesses: function (info) {
+            console.log(info);
             uiVM.ProcessesIndex = info.ProcessesIndex;
             uiVM.ProcessesName = info.ProcessesName;
             uiVM.ProcessesType = info.ProcessesType;
@@ -734,6 +734,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.StandardProductionTime = item.StandardProductionTime;
                 uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
                 vmManager.havePutInData = [];
+                console.log(uiVM.WorkerId);
                 if (uiVM.WorkerId === '' || uiVM.WorkerId === null)
                 { focusSetter.workerIdFocus = true; }
                 vmManager.findProcesses();
