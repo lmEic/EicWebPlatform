@@ -165,10 +165,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected virtual T HandleDto(T dto)
-        {
-            return dto;
-        }
+        protected abstract T HandleDto(T dto);
         #endregion
     }
 
