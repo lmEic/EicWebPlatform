@@ -183,7 +183,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             try
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT  DISTINCT TC004 ")
+                sb.Append("SELECT   DISTINCT TC004 ")
                   .Append("FROM   PURTC ")
                   .Append("WHERE   (TC001 = '331' OR TC001 = '333') AND (TC003 >= '{0}%') AND  (TC003 < '{1}%')");
                 DataTable dt = DbHelper.Erp.LoadTable(string.Format(sb.ToString(), startYearMonth, endYearMonth));
