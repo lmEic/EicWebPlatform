@@ -58,13 +58,13 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
                     SccMaterialShipmentVO vo = new SccMaterialShipmentVO()
                     {
                         bomUsage = m.bomUsage,
-                        customerVendorCode = m.customerVendorCode,
-                        itemCode = m.itemCode,
-                        orderNumber = m.orderNumber,
+                        customerVendorCode = m.customerVendorCode.Trim(),
+                        itemCode = m.itemCode.Trim(),
+                        orderNumber = m.orderNumber.Trim(),
                         shippedQuantity = m.shippedQuantity,
                         shouldShipQuantity = m.shouldShipQuantity,
                         substituteGroup = m.substituteGroup,
-                        vendorFactoryCode = m.vendorFactoryCode
+                        vendorFactoryCode = m.vendorFactoryCode.Trim()
                     };
                     dataList.Add(vo);
                 });

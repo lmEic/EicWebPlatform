@@ -61,15 +61,15 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
                     {
                         SccMaterialMakingVO vo = new SccMaterialMakingVO()
                         {
-                            componentCode = d.componentCode,
+                            componentCode = d.componentCode.Trim(),
                             orderQuantity = d.orderQuantity,
                             orderCompletedQuantity = d.orderCompletedQuantity,
-                            componentDescription = d.componentDescription,
-                            customerVendorCode = d.customerVendorCode,
-                            orderNumber = d.orderNumber,
+                            componentDescription = d.componentDescription.Trim(),
+                            customerVendorCode = d.customerVendorCode.Trim(),
+                            orderNumber = d.orderNumber.Trim(),
                             orderPublishDateStr = d.orderPublishDateStr,
                             orderStatus = d.orderStatus,
-                            vendorFactoryCode = d.vendorFactoryCode
+                            vendorFactoryCode = d.vendorFactoryCode.Trim()
                         };
                         dataList.Add(vo);
                     }

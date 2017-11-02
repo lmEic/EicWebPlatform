@@ -16,5 +16,9 @@ namespace Lm.Eic.App.HwCollaboration.Business.ManPower
     {
         public ManPowerManager() : base(HwModuleName.ManPower, HwAccessApiUrl.ManPowerApiUrl)
         { }
+        protected override ManPowerDto HandleDto(ManPowerDto dto)
+        {
+            return dto;
+        }
     }
 }
