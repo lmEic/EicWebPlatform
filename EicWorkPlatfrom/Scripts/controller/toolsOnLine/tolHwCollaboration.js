@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-var officeAssistantModule = angular.module('bpm.toolsOnlineApp');
-officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
+var hwCollaborationModule = angular.module('bpm.toolsOnlineApp');
+hwCollaborationModule.factory('hwDataOpService', function (ajaxService) {
     var hwDataOp = {};
     var hwUrlPrefix = '/' + leeHelper.controllers.TolCooperateWithHw + '/';
     //----------人力信息----------------
@@ -54,7 +54,7 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     };
     return hwDataOp;
 });
-officeAssistantModule.factory('hwTreeSetService', function () {
+hwCollaborationModule.factory('hwTreeSetService', function () {
     var createTreeDataset = function (datas, root) {
         var treeNodes = [];
         var childrenNodes = _.where(datas, { ParentMaterialId: root });
@@ -81,6 +81,19 @@ officeAssistantModule.factory('hwTreeSetService', function () {
         treeNode: null,
     };
     return zTreeSet;
+})
+hwCollaborationModule.directive('ylRefreshFrequency', function () {
+    return {
+        restrict: 'EA',
+        template: '<span class="text-danger">【更新频率：每{{time}}】</span>',
+        replace: true,
+        scope: {
+            time: '@',
+        },
+        link: function (scope, element, attrs) {
+
+        }
+    };
 })
 ///华为数据API数据操作助手
 var hwApiHelper = (function () {
@@ -111,7 +124,7 @@ var hwApiHelper = (function () {
     };
 })();
 //物料基础信息配置(含BOM)控制器
-officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpService, hwTreeSetService, $scope) {
+hwCollaborationModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpService, hwTreeSetService, $scope) {
     ///物料基础信息配置视图模型
     var materialBaseConfigVm = $scope.vm = {
         MaterialId: null,
@@ -285,7 +298,7 @@ officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
     });
 });
 //人力信息控制器
-officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, dataDicConfigTreeSet, $scope) {
+hwCollaborationModule.controller('hwManPowerCtrl', function (hwDataOpService, dataDicConfigTreeSet, $scope) {
     ///数据实体模型
     var dataVM = hwApiHelper.crateDataEntity();
     $scope.manPowerVM = {
@@ -395,7 +408,7 @@ officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, da
     vmManager.getManPower();
 });
 //物料信息控制器
-officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpService, $scope) {
+hwCollaborationModule.controller('hwMaterialManageCtrl', function (hwDataOpService, $scope) {
     ///数据实体模型
     var datavm = hwApiHelper.crateDataEntity();
     //数据传输对象
@@ -408,6 +421,8 @@ officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpServi
 
     var vmManager = $scope.vmManager = {
         activeTab: 'HwInventoryDetailTab',
+        opresults: null,
+        opResultsViewDisplay: false,
         inventoryDataEntity: null,
         makingDataEntity: null,
         shipmentDataEntity: null,
@@ -430,12 +445,12 @@ officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpServi
 
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
     $scope.OpPermise = operate.saveInventoryData = function () {
-        leeDataHandler.dataOperate.add(operate, true, function () {
-            vmManager.setMaterailDtoOpContent();
-            $scope.opPromise = hwDataOpService.saveMaterialDetailData(dto).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () { })
-            });
-        })
+        vmManager.setMaterailDtoOpContent();
+        $scope.opPromise = hwDataOpService.saveMaterialDetailData(dto).then(function (opResults) {
+            vmManager.opresults = opResults;
+            vmManager.opResultsViewDisplay = true;
+            console.log(opResults);
+        });
     };
     vmManager.getMaterialDatas();
 });

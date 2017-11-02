@@ -48,6 +48,11 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             return dto;
         }
 
+        protected override bool CanSendDto(MaterialShipmentDto dto)
+        {
+            return dto.materialShipmentList != null && dto.materialShipmentList.Count > 0;
+        }
+
         protected override MaterialShipmentDto HandleDto(MaterialShipmentDto dto)
         {
             List<SccMaterialShipmentVO> dataList = new List<SccMaterialShipmentVO>();

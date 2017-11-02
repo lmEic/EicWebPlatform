@@ -51,6 +51,11 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             return dto;
         }
 
+        protected override bool CanSendDto(PurchaseOnWayDto dto)
+        {
+            return dto.sccOpenPOList != null && dto.sccOpenPOList.Count > 0;
+        }
+
         protected override PurchaseOnWayDto HandleDto(PurchaseOnWayDto dto)
         {
             List<SccOpenPOVO> dataList = new List<SccOpenPOVO>();

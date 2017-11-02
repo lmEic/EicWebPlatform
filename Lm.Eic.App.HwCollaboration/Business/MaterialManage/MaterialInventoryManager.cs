@@ -50,6 +50,11 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             return dto;
         }
 
+        protected override bool CanSendDto(FactoryInventoryDto dto)
+        {
+            return dto.factoryInventoryList != null && dto.factoryInventoryList.Count > 0;
+        }
+
         protected override FactoryInventoryDto HandleDto(FactoryInventoryDto dto)
         {
             List<SccFactoryInventory> dataList = new List<SccFactoryInventory>();

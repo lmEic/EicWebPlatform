@@ -21,7 +21,6 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         public OpResult SendDto(VendorItemRelationDto dto)
         {
             return this.AccessApi(this.apiUrl, dto).AsHwAccessApiResult().AsOpResult();
-            //return OpResult.SetSuccessResult("OK");
         }
     }
     public class MaterialBomDtoSender : HwCollaborationBase<KeyMaterialDto>
@@ -62,61 +61,71 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         }
 
         #region store method
-        private OpResult SendDtoToHw(HwCollaborationMaterialBaseConfigModel entity)
+        private OpResult SendDtoToHw(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
-            var baseDto = CreateMaterialBaseDto(entity);
-            var opResult = this.baseDtoSender.SendDto(baseDto);
+            OpResult opResult = null;
+            var baseDto = CreateMaterialBaseDto(entities);
+            opResult = this.baseDtoSender.SendDto(baseDto);
             if (!opResult.Result) return opResult;
-            if (entity.ParentMaterialId.Trim() != "MaterialBaseBomInfo")
-            {
-                var bomDto = CreateMaterialBomDto(entity);
-                opResult = this.bomDtoSender.SendDto(bomDto);
-                if (!opResult.Result) return opResult;
-            }
-            return OpResult.SetSuccessResult("OK");
+
+            var bomDto = CreateMaterialBomDto(entities);
+            opResult = this.bomDtoSender.SendDto(bomDto);
+            if (!opResult.Result) return opResult;
+            return opResult;
+
         }
         public OpResult Store(HwCollaborationMaterialBaseConfigModel entity)
         {
             entity.OpDate = DateTime.Now.ToDate();
             entity.OpTime = DateTime.Now.ToDateTime();
-            var opresult = SendDtoToHw(entity);
+            var opresult = SendDtoToHw(new List<HwCollaborationMaterialBaseConfigModel>() { entity });
             if (opresult.Result)
                 opresult = this.materialBaseConfigDb.Store(entity);
             return opresult;
         }
-        private VendorItemRelationDto CreateMaterialBaseDto(HwCollaborationMaterialBaseConfigModel entity)
+        private VendorItemRelationDto CreateMaterialBaseDto(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
             VendorItemRelationDto dto = new VendorItemRelationDto() { vendorItemList = new List<SccVendorItemRelationVO>() };
-            SccVendorItemRelationVO vo = new SccVendorItemRelationVO()
+            entities.ForEach(entity =>
             {
-                customerItemCode = entity.CustomerItemCode,
-                customerProductModel = entity.CustomerProductModel,
-                customerVendorCode = entity.CustomerVendorCode,
-                goodPercent = entity.GoodPercent,
-                inventoryType = entity.InventoryType,
-                itemCategory = entity.ItemCategory,
-                leadTime = entity.LeadTime,
-                lifeCycleStatus = entity.LifeCycleStatus,
-                unitOfMeasure = entity.UnitOfMeasure,
-                vendorItemCode = entity.MaterialId,
-                vendorItemDesc = entity.VendorItemDesc,
-                vendorProductModel = entity.VendorProductModel
-            };
-            dto.vendorItemList.Add(vo);
+                SccVendorItemRelationVO vo = new SccVendorItemRelationVO()
+                {
+                    customerItemCode = entity.CustomerItemCode.Trim(),
+                    customerProductModel = entity.CustomerProductModel,
+                    customerVendorCode = entity.CustomerVendorCode.Trim(),
+                    goodPercent = entity.GoodPercent,
+                    inventoryType = entity.InventoryType,
+                    itemCategory = entity.ItemCategory,
+                    leadTime = entity.LeadTime,
+                    lifeCycleStatus = entity.LifeCycleStatus,
+                    unitOfMeasure = entity.UnitOfMeasure,
+                    vendorItemCode = entity.MaterialId.Trim(),
+                    vendorItemDesc = entity.VendorItemDesc.Trim(),
+                    vendorProductModel = entity.VendorProductModel
+                };
+                if (dto.vendorItemList.FirstOrDefault(e => e.vendorItemCode == entity.MaterialId.Trim()) == null)
+                    dto.vendorItemList.Add(vo);
+            });
             return dto;
         }
-        private KeyMaterialDto CreateMaterialBomDto(HwCollaborationMaterialBaseConfigModel entity)
+        private KeyMaterialDto CreateMaterialBomDto(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
             KeyMaterialDto dto = new KeyMaterialDto() { keyMaterialList = new List<SccKeyMaterialVO>() };
-            SccKeyMaterialVO vo = new SccKeyMaterialVO()
+            entities.ForEach(entity =>
             {
-                baseUsedQuantity = entity.Quantity.ToString().ToInt(),
-                standardQuantity = entity.Quantity.ToString().ToInt(),
-                subItemCode = entity.MaterialId,
-                vendorItemCode = entity.ParentMaterialId,
-                substituteGroup = entity.SubstituteGroup
-            };
-            dto.keyMaterialList.Add(vo);
+                SccKeyMaterialVO vo = new SccKeyMaterialVO()
+                {
+                    baseUsedQuantity = entity.Quantity.ToString().ToInt(),
+                    standardQuantity = entity.Quantity.ToString().ToInt(),
+                    subItemCode = entity.MaterialId,
+                    vendorItemCode = entity.ParentMaterialId,
+                    substituteGroup = entity.SubstituteGroup
+                };
+                if (entity.ParentMaterialId.Trim() != "MaterialBaseBomInfo")
+                {
+                    dto.keyMaterialList.Add(vo);
+                }
+            });
             return dto;
         }
 
@@ -128,17 +137,9 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         public OpResult AutoSynchironizeData()
         {
             var datas = CreateBomCellList();
-            bool success = true;
             if (datas == null || datas.Count == 0)
                 return OpResult.SetErrorResult("没有要同步的数据");
-            datas.ForEach(d =>
-            {
-                success = SendDtoToHw(d).Result && success;
-            });
-            if (success)
-                return OpResult.SetSuccessResult("向华为平台发送数据成功！");
-            else
-                return OpResult.SetSuccessResult("向华为平台发送数据失败！");
+            return SendDtoToHw(datas);
         }
         #endregion
 
