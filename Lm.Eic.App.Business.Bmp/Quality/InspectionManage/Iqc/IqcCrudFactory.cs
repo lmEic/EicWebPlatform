@@ -319,7 +319,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal OpResult UpAuditInspectionDetailData(string orderId, string materialId, bool isCheck)
         {
-            
             int i = 0;
             string inspectionItemStatus = isCheck ? "Done" : "doing";
             var modellist = irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
