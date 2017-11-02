@@ -235,26 +235,30 @@ officeAssistantModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
                                 children: [],
                                 vm: vm
                             };
-                            if (opNodeType === "addChildren")
-                                leeTreeHelper.addChildrenNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
-                        }
-                        else if (opNodeType === "add")
-                            leeTreeHelper.addNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
-                    }
-                        //修改节点
-                    else if (opType === 'edit') {
-                        if (opNodeType === "edit") {
-                            zTreeSet.treeNode.name = vm.MaterialId;
-                            zTreeSet.treeNode.vm = vm;
-                            var childrens = zTreeSet.treeNode.children;
-                            angular.forEach(childrens, function (childrenNode) {
-                                childrenNode.vm.ParentMaterialId = vm.MaterialId;
-                            })
-                            leeTreeHelper.updateNode(zTreeSet.treeId, zTreeSet.treeNode);
-                        }
-                    }
 
-                    vmManager.opHandler.init();
+                            if (opNodeType === "addChildren") {
+                                leeTreeHelper.addChildrenNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
+                            }
+                            else if (opNodeType === "add") {
+                                leeTreeHelper.addNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
+                            }
+                        }
+                        else if (opType === 'edit') {//修改节点
+                            if (opNodeType === "edit") {
+                                zTreeSet.treeNode.name = vm.MaterialId;
+                                zTreeSet.treeNode.vm = vm;
+                                var childrens = zTreeSet.treeNode.children;
+
+                                angular.forEach(childrens, function (childrenNode) {
+                                    childrenNode.vm.ParentMaterialId = vm.MaterialId;
+                                })
+
+                                leeTreeHelper.updateNode(zTreeSet.treeId, zTreeSet.treeNode);
+                            }
+                        }
+
+                        vmManager.opHandler.init();
+                    }
                 });
             }, function (errResult) {
                 leePopups.alert(errResult);

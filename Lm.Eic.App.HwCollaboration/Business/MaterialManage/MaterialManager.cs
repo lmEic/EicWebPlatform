@@ -68,14 +68,14 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         public OpResult SaveMaterialDetail(MaterialComposeEntity entity)
         {
             OpResult opResult = null;
-            //opResult = this.InventoryManager.SynchronizeDatas(entity.InvertoryEntity);
-            ////if (!opResult.Result) return defaultResult;
-            //opResult = this.MakingManager.SynchronizeDatas(entity.MakingEntity);
-            //if (!opResult.Result) return defaultResult;
+            opResult = this.InventoryManager.SynchronizeDatas(entity.InvertoryEntity);
+            if (!opResult.Result) return opResult;
+            opResult = this.MakingManager.SynchronizeDatas(entity.MakingEntity);
+            if (!opResult.Result) return opResult;
             opResult = this.ShipmentManager.SynchronizeDatas(entity.ShippmentEntity);
             if (!opResult.Result) return opResult;
-            //opResult = this.PurchaseManager.SynchronizeDatas(entity.PurchaseEntity);
-            //if (!opResult.Result) return defaultResult;
+            opResult = this.PurchaseManager.SynchronizeDatas(entity.PurchaseEntity);
+            if (!opResult.Result) return opResult;
             return opResult;
         }
         #endregion
