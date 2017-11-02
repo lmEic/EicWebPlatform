@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'angular-popups'])
+angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive", 'angular-popups'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -47,16 +47,4 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     });
 })
 
-.directive('ylRefreshFrequency', function ($modal) {
-    return {
-        restrict: 'EA',
-        template: '<span class="text-danger">【更新频率：每{{time}}】</span>',
-        replace: true,
-        scope: {
-            time: '@',
-        },
-        link: function (scope, element, attrs) {
 
-        }
-    };
-})

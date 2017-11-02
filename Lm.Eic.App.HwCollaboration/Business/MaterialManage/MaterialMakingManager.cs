@@ -50,6 +50,11 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             return dto;
         }
 
+        protected override bool CanSendDto(MaterialMakingDto dto)
+        {
+            return dto.materialMakingList != null && dto.materialMakingList.Count > 0;
+        }
+
         protected override MaterialMakingDto HandleDto(MaterialMakingDto dto)
         {
             List<SccMaterialMakingVO> dataList = new List<SccMaterialMakingVO>();

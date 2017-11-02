@@ -65,18 +65,15 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             return dto;
         }
 
-        public OpResult SaveMaterialDetail(MaterialComposeEntity entity)
+        public List<HwAccessOpResult> SaveMaterialDetail(MaterialComposeEntity entity)
         {
-            OpResult opResult = null;
-            opResult = this.InventoryManager.SynchronizeDatas(entity.InvertoryEntity);
-            if (!opResult.Result) return opResult;
-            opResult = this.MakingManager.SynchronizeDatas(entity.MakingEntity);
-            if (!opResult.Result) return opResult;
-            opResult = this.ShipmentManager.SynchronizeDatas(entity.ShippmentEntity);
-            if (!opResult.Result) return opResult;
-            opResult = this.PurchaseManager.SynchronizeDatas(entity.PurchaseEntity);
-            if (!opResult.Result) return opResult;
-            return opResult;
+            List<HwAccessOpResult> opResultList = new List<Model.HwAccessOpResult>() {
+                this.InventoryManager.SynchronizeDatas(entity.InvertoryEntity),
+                this.MakingManager.SynchronizeDatas(entity.MakingEntity),
+                this.ShipmentManager.SynchronizeDatas(entity.ShippmentEntity),
+                this.PurchaseManager.SynchronizeDatas(entity.PurchaseEntity)
+            };
+            return opResultList;
         }
         #endregion
     }
