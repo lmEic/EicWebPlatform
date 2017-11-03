@@ -8,14 +8,29 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     /// <summary>
     /// 员工管理者
     /// </summary>
-    public class WorkerManager
+    public class WorkerQueryManager
     {
-        //public WorkerAnalogDto GetAnalogDto()
-        //{
-        //    var workers = ArchiveService.ArchivesManager.FindWorkers();
-        //    List<string> Departments = workers.Select(f => f.Department).Distinct().ToList();
-
-        //}
+        /// <summary>
+        /// 获取统计分析Dto
+        /// </summary>
+        /// <returns></returns>
+        public List<WorkerAnalogDto> GetWorkerAnalogDatas()
+        {
+            List<WorkerAnalogDto> dtoes = new List<WorkerAnalogDto>();
+            var workers = ArchiveService.ArchivesManager.FindWorkers();
+            if (workers == null) return dtoes;
+            List<string> Departments = workers.Select(f => f.Department).Distinct().ToList();
+            Departments.ForEach(d =>
+            {
+                WorkerAnalogDto dto = new WorkerAnalogDto()
+                {
+                    Department = d,
+                    Total = workers.Count(f => f.Department == d),
+                };
+                dtoes.Add(dto);
+            });
+            return dtoes;
+        }
 
     }
 
