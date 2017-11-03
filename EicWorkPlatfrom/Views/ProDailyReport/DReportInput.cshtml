@@ -219,7 +219,6 @@
                                                     <p ng-show="formDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
                                                     <p ng-show="formDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
                                                     <div class="error-messages" ng-messages="formDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
-
                                                         <small ng-message="required">录入工序不能为空</small>
                                                     </div>
                                                 </div>
@@ -232,7 +231,6 @@
                                                            focus-if="focus.workerNoProductionTimeFocus" focus-setter
                                                            ng-keydown="focus.changeEnter($event,'workerProductionTimeFocus','todayBadProductCountFocus')"
                                                            ng-model="vm.WorkerNoProductionTime" />
-
                                                 </div>
                                                 <label for="todayBadProductCount" class="col-md-2 control-label">不良数量</label>
                                                 <div class="col-md-4">
@@ -241,6 +239,17 @@
                                                            ng-keydown="focus.changeEnter($event,'workerNoProductionTimeFocus','saveAlldataFocus')" />
                                                 </div>
                                             </div>
+
+                                            @*备注*@
+                                            <div class="form-group">
+                                                <label for="remark" class="col-md-2 control-label">备注</label>
+                                                <div class="col-md-6">
+                                                    <textarea name="remark"
+                                                              focus-if="focus.remarkFocus" focus-setter
+                                                              rows="1" cols="4" class="form-control" ng-model="vm.Field1" />
+                                                </div>
+                                            </div>
+
                                             @*备注*@
                                             <div class="form-group">
                                                 <label for="remark" class="col-md-2 control-label">备注</label>

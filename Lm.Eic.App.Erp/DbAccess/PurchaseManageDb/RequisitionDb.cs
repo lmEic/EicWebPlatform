@@ -185,7 +185,14 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT   DISTINCT TC004 ")
                   .Append("FROM   PURTC ")
-                  .Append("WHERE   (TC001 = '331' OR TC001 = '333') AND (TC003 >= '{0}%') AND  (TC003 < '{1}%')");
+                  .Append("WHERE   ((TC001 = '331' OR TC001 = '333') AND (TC003 >= '{0}%') AND  (TC003 < '{1}%')) ")
+                .Append(" or  ((TC001 + TC002) IN")
+                   .Append("  (SELECT DISTINCT TD001 + TD002 AS Expr1 ")
+                   .Append(" FROM PURTD")
+                    .Append("  WHERE   (TD016 = 'N')  AND (TD001 = '331') OR ")
+                     .Append(" (TD016 = 'N')  AND (TD001 = '333')))")
+                   .Append(" ORDER BY TC004");
+
                 DataTable dt = DbHelper.Erp.LoadTable(string.Format(sb.ToString(), startYearMonth, endYearMonth));
                 List<string> SppuerIdList = new List<string>();
                 if (dt.Rows.Count > 0)
@@ -208,7 +215,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// </summary>
         /// <param name="startYearMonth">年份格式yyyy</param>
         /// <returns></returns>
-        public string  PurchaseUserBy(string sppuerId)
+        public string PurchaseUserBy(string sppuerId)
         {
             try
             {
@@ -231,7 +238,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             }
             catch (Exception ex)
             { throw new Exception(ex.Message); }
-            
+
         }
         /// <summary>
         /// 根据查询条件获取采购单单头数据信息
@@ -632,7 +639,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
                 case "02YH":
                     return "False";
                 default:
-                    return "False";
+                    return "True";
             }
         }
 
