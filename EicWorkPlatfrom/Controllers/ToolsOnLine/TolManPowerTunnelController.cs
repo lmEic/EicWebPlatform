@@ -24,11 +24,13 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        [NoAuthenCheck]
         public JsonResult GetWorkerAnalogDatas()
         {
-            var datas = ArchiveService.WorkerQueryManager.GetWorkerAnalogDatas();
-            return Json(datas);
+            var workerAnalogDatas = ArchiveService.WorkerQueryManager.GetWorkerAnalogDatas();
+            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            var dto = new { workerAnalogDatas, departments };
+            return Json(dto, JsonRequestBehavior.AllowGet);
         }
     }
 }
