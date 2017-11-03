@@ -241,15 +241,14 @@
                                             </div>
 
                                             @*备注*@
-                                            <div class="form-group">
-                                                <label for="remark" class="col-md-2 control-label">备注</label>
+                                            <div class="form-group" ng-if="vm.WorkerNoProductionTime>0">
+                                                <label for="workerNoProductionReason" class="col-md-2 control-label">非生产原因</label>
                                                 <div class="col-md-6">
                                                     <textarea name="remark"
-                                                              focus-if="focus.remarkFocus" focus-setter
-                                                              rows="1" cols="4" class="form-control" ng-model="vm.Field1" />
+                                                              focus-if="focus.workerNoProductionReason" focus-setter
+                                                              rows="1" cols="4" class="form-control" ng-model="vm.WorkerNoProductionReason" />
                                                 </div>
                                             </div>
-
                                             @*备注*@
                                             <div class="form-group">
                                                 <label for="remark" class="col-md-2 control-label">备注</label>

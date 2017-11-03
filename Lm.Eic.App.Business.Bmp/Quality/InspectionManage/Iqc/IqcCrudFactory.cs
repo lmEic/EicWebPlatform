@@ -249,7 +249,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// </summary>
     internal class InspectionIqcDetailCrud : CrudBase<InspectionIqcDetailModel, IIqcInspectionDetailRepository>
     {
-        public InspectionIqcDetailCrud() : base(new IqcInspectionDetailRepository(), "物料检验项次数据")
+        public InspectionIqcDetailCrud() : base(new IqcInspectionDetailRepository(), "物料检验项次")
         { }
         #region   Crud
         protected override void AddCrudOpItems()
@@ -321,6 +321,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             int i = 0;
             string inspectionItemStatus = isCheck ? "Done" : "doing";
+            string str = isCheck ? "【审核】" : "【撤审】";
             var modellist = irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
             if (modellist != null && modellist.Count > 0)
                 modellist.ForEach(m =>
@@ -329,7 +330,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                      var sigleOpResult = irep.Update(e => e.Id_Key == m.Id_Key, m).ToOpResult_Eidt(OpContext);
                      if (sigleOpResult.Result) i++;
                  });
-            return modellist.Count == i ? i.ToOpResult_Eidt(OpContext) : OpResult.SetResult(OpContext + "操作失败", false);
+            return modellist.Count == i ? i.ToOpResult_Eidt(OpContext + str) : OpResult.SetResult(OpContext + "操作失败", false);
 
         }
         private InspectionIqcDetailModel GetIqcOldDetailModelBy(InspectionIqcDetailModel newModel)

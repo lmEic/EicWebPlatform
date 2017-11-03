@@ -326,6 +326,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(DailyProductionReportModel model)
         {
+            ///日期格式 简化
+            model.InPutDate = model.InPutDate.ToDate();
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
         }

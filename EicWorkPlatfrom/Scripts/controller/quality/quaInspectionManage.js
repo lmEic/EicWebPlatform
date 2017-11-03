@@ -984,7 +984,6 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             show: false,
         }),
         changeCheckModal: function (inspectionStatus) {
-
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.InspectionStatus = inspectionStatus;
             vmManager.currentItem.OpSign = leeDataHandler.dataOpMode.edit;
@@ -1032,6 +1031,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         //审核
         showCheckModal: function (item, isCheck) {
             if (item) vmManager.currentItem = item;
+            vmManager.isCheck = isCheck;
             if (isCheck) vmManager.checkModal.$promise.then(vmManager.checkModal.show);
             else vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.show);
         },
