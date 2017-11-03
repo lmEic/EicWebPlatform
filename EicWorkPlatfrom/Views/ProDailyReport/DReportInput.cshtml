@@ -99,7 +99,7 @@
                         <label class="control-label">规格:<span class="label label-default">{{vm.ProductSpec}}</span></label>
                     </div>
                     @*选择（个人，团队）*@
-                    <ul id="myTab" ng-if="vm.ProcessesType==='机台'" class="nav nav-tabs">
+                    <ul id="myTab" ng-if="vm.ProcessesType!='机台'" class="nav nav-tabs">
                         <li class="active">
                             <a href="#onlyProcessTab" data-toggle="tab" ng-click="vmManagerMultiermUser.selectSingleUserInput()">
                                 <i class="fa fa-user text-info">单人录入</i>
