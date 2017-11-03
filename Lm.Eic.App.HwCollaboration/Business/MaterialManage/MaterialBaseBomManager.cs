@@ -78,9 +78,9 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         {
             entity.OpDate = DateTime.Now.ToDate();
             entity.OpTime = DateTime.Now.ToDateTime();
-            var opresult = SendDtoToHw(new List<HwCollaborationMaterialBaseConfigModel>() { entity });
+            var opresult = this.materialBaseConfigDb.Store(entity);
             if (opresult.Result)
-                opresult = this.materialBaseConfigDb.Store(entity);
+                opresult = this.AutoSynchironizeData();
             return opresult;
         }
         private VendorItemRelationDto CreateMaterialBaseDto(List<HwCollaborationMaterialBaseConfigModel> entities)
