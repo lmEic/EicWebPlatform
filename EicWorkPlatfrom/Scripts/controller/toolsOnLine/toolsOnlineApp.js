@@ -11,6 +11,8 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
 
     var hwUrlPrefix = leeHelper.controllers.TolCooperateWithHw + "/";
 
+    var itunnelPrefix = leeHelper.controllers.TolManPowerTunnel + "/";
+
     //--------------名片夹管理--------------------------
     $stateProvider.state('collaborateContactLib', {
         templateUrl: oAssistantUrlPrefix + 'CollaborateContactLib'
@@ -43,7 +45,7 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     });
     //--------------智能隧道---------------------
     $stateProvider.state('tolManpowerDisk', {//人力磁盘
-        templateUrl: hwUrlPrefix + 'TolManpowerDisk'
+        templateUrl: itunnelPrefix + 'TolManpowerDisk'
     });
 })
 

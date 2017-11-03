@@ -261,7 +261,7 @@ var leeHelper = (function () {
         //华为协同
         TolCooperateWithHw: 'TolCooperateWithHw',
         //智能隧道
-        TolIntelligenceTunnel: 'TolIntelligenceTunnel'
+        TolManPowerTunnel: 'TolManPowerTunnel'
     };
     return {
         ///控制器名称

@@ -22,8 +22,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return OBulider.BuildInstance<ProWorkerManager>();
             }
         }
-
-
         /// <summary>
         /// 生产行事历管理器
         /// </summary>
@@ -33,6 +31,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 return OBulider.BuildInstance<ArCalendarManger>();
             }
+        }
+        /// <summary>
+        /// 员工查询管理器
+        /// </summary>
+        public static WorkerQueryManager WorkerQueryManager
+        {
+            get { return OBulider.BuildInstance<WorkerQueryManager>(); }
         }
     }
 }
