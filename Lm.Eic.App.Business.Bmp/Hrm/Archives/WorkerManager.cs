@@ -18,6 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public CompanyWorkerAnalogDto GetWorkerAnalogDatas()
         {
             var workers = ArchiveService.ArchivesManager.FindWorkers();
+
             CompanyWorkerAnalogDto workerDto = new CompanyWorkerAnalogDto()
             {
                 Departments = new List<DepartmentAnalogDto>(),
@@ -26,9 +27,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             };
 
             ArDepartmentManager departmentManager = new ArDepartmentManager();
-
             if (workers == null) return workerDto;
             List<string> Departments = workers.Select(f => f.Department).Distinct().ToList();
+
             Departments.ForEach(d =>
             {
                 var workersOfDepartment = workers.FindAll(e => e.Department == d);
@@ -86,8 +87,4 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     {
         public List<DepartmentAnalogDto> Departments { get; set; }
     }
-
-
-
-
 }
