@@ -178,6 +178,7 @@
     <Compile Include="Controllers\Purchase\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
     <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
+    <Compile Include="Controllers\ToolsOnLine\TolManPowerTunnelController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolCooperateWithHwController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolWorkFlowController.cs" />
     <Compile Include="Controllers\ToolsOnLine\ToolsOnLineController.cs" />
@@ -563,6 +564,7 @@
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolHwCollaboration.js" />
+    <Content Include="Scripts\controller\toolsOnLine\tolIntelligenceTunnel.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
@@ -1528,6 +1530,9 @@
     <Content Include="Views\TolCooperateWithHw\HwInventoryDetail.cshtml" />
     <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwMaterialBaseConfig.cshtml" />
+    <Content Include="Views\TolManPowerTunnel\TolManpowerDisk.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportBadReasonSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportUnproductionSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

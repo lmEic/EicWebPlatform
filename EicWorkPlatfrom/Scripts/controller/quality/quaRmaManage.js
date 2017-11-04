@@ -321,6 +321,8 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         handleSalsesOrdersAndShipDate: function () {
             uiVm.SalesOrders = [];
             vmManager.productsShipDates = [];
+            console.log(vmManager.salesOrders);
+            vmManager.salesOrders = [];
             angular.forEach(vmManager.salersOrdersDatas, function (item) {
                 vmManager.salesOrders.push(item.SalesOrder);
                 vmManager.productsShipDates.push(item.ProductsShipDate);

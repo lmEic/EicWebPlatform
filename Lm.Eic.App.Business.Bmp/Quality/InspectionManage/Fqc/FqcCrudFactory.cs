@@ -128,16 +128,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         #region find method
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId)
-        {
-            return irep.Entities.Where(e => e.OrderId == orderId).ToList();
-        }
 
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
+        internal List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
         }
-        public bool IsExist(string orderId, int orderIdNumber, string inspecitonItem)
+        internal bool IsExist(string orderId, int orderIdNumber, string inspecitonItem)
         {
             try
             {
@@ -151,7 +147,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        public InspectionFqcDetailModel GetFqcOldDetailModelBy(InspectionFqcDetailModel newmodel)
+        internal InspectionFqcDetailModel GetFqcOldDetailModelBy(InspectionFqcDetailModel newmodel)
         {
             try
             {
@@ -166,21 +162,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        public InspectionFqcDetailModel GetFqcDetailModelBy(string orderId, int orderIdNumber, string inspecitonItem)
-        {
-            try
-            {
-                return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspecitonItem);
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw new Exception(ex.InnerException.Message);
-            }
 
-        }
 
-        public List<InspectionFqcDetailModel> GetFqcDetailDatasBy(string orderId, int orderIdNumber)
+        internal List<InspectionFqcDetailModel> GetFqcDetailDatasBy(string orderId, int orderIdNumber)
         {
             try
             {
@@ -193,18 +177,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-        public InspectionFqcDetailModel GetFqcDetailModelBy(decimal id_key)
-        {
-            try
-            {
-                return irep.Entities.FirstOrDefault(e => e.Id_Key == id_key);
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw new Exception(ex.InnerException.Message);
-            }
 
+        internal OpResult DeleteFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
+        {
+            return irep.Delete(e => e.OrderIdNumber == orderIdNumber && e.OrderId == orderId).ToOpResult_Delete(OpContext);
         }
         #endregion
     }
@@ -226,6 +202,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult DeleteFqcInspectionMaster(InspectionFqcMasterModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+        internal OpResult DeleteFqcInspectionMasterBy(string orderId, int orderNumber)
+        {
+            return irep.Delete(e => e.OrderId == orderId && e.OrderIdNumber == orderNumber).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)

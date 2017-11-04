@@ -49,5 +49,37 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             });
             return dto;
         }
+
+        protected override bool CanSendDto(FactoryInventoryDto dto)
+        {
+            return dto.factoryInventoryList != null && dto.factoryInventoryList.Count > 0;
+        }
+
+        protected override FactoryInventoryDto HandleDto(FactoryInventoryDto dto)
+        {
+            List<SccFactoryInventory> dataList = new List<SccFactoryInventory>();
+            if (dto != null && dto.factoryInventoryList != null && dto.factoryInventoryList.Count > 0)
+            {
+                dto.factoryInventoryList.ForEach(m =>
+                {
+                    SccFactoryInventory vo = new SccFactoryInventory()
+                    {
+                        customerCode = m.customerCode.Trim(),
+                        faultQty = m.faultQty,
+                        goodQuantity = m.goodQuantity,
+                        inspectQty = m.inspectQty,
+                        stockTime = m.stockTime,
+                        vendorFactoryCode = m.vendorFactoryCode.Trim(),
+                        vendorItemCode = m.vendorItemCode.Trim(),
+                        vendorItemRevision = m.vendorItemRevision,
+                        vendorLocation = m.vendorLocation,
+                        vendorStock = m.vendorStock
+                    };
+                    dataList.Add(vo);
+                });
+                dto.factoryInventoryList = dataList;
+            }
+            return dto;
+        }
     }
 }

@@ -49,5 +49,40 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             });
             return dto;
         }
+
+        protected override bool CanSendDto(MaterialMakingDto dto)
+        {
+            return dto.materialMakingList != null && dto.materialMakingList.Count > 0;
+        }
+
+        protected override MaterialMakingDto HandleDto(MaterialMakingDto dto)
+        {
+            List<SccMaterialMakingVO> dataList = new List<SccMaterialMakingVO>();
+            if (dto != null && dto.materialMakingList != null && dto.materialMakingList.Count > 0)
+            {
+                dto.materialMakingList.ForEach(d =>
+                {
+                    if (d.orderCompletedQuantity > 0 && d.orderQuantity > 0)
+                    {
+                        SccMaterialMakingVO vo = new SccMaterialMakingVO()
+                        {
+                            componentCode = d.componentCode.Trim(),
+                            orderQuantity = d.orderQuantity,
+                            orderCompletedQuantity = d.orderCompletedQuantity,
+                            componentDescription = d.componentDescription.Trim(),
+                            customerVendorCode = d.customerVendorCode.Trim(),
+                            orderNumber = d.orderNumber.Trim(),
+                            orderPublishDateStr = d.orderPublishDateStr,
+                            orderStatus = d.orderStatus,
+                            vendorFactoryCode = d.vendorFactoryCode.Trim()
+                        };
+                        dataList.Add(vo);
+                    }
+                });
+
+                dto.materialMakingList = dataList;
+            }
+            return dto;
+        }
     }
 }

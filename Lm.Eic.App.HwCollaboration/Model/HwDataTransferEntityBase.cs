@@ -10,6 +10,7 @@ namespace Lm.Eic.App.HwCollaboration.Model
     /// <summary>
     /// 华为API调用结果
     /// </summary>
+    [Serializable]
     public class HwAccessApiResult
     {
         /// <summary>
@@ -24,6 +25,48 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// 错误代码
         /// </summary>
         public string errorCode { get; set; }
+    }
+    /// <summary>
+    /// 华为访问操作结果
+    /// </summary>
+    [Serializable]
+    public class HwAccessOpResult
+    {
+        /// <summary>
+        /// 操作名称
+        /// </summary>
+        public string OperationName { get; set; }
+        public string OpResultMessage { get; set; }
+        /// <summary>
+        /// 操作结果变量
+        /// </summary>
+        public bool Result { get; set; }
+        /// <summary>
+        /// 操作数据列表
+        /// </summary>
+        public List<string> OpDataList { get; set; }
+
+        private HwAccessOpResult()
+        { }
+        /// <summary>
+        /// 设置结果
+        /// </summary>
+        /// <param name="operateName"></param>
+        /// <param name="opResultMessage"></param>
+        /// <param name="success"></param>
+        /// <param name="accessApiResult"></param>
+        /// <param name="dataList"></param>
+        /// <returns></returns>
+        public static HwAccessOpResult SetResult(string operateName, string opResultMessage, bool success = true, List<string> dataList = null)
+        {
+            return new HwAccessOpResult()
+            {
+                OpDataList = dataList,
+                OperationName = operateName,
+                OpResultMessage = opResultMessage,
+                Result = success
+            };
+        }
     }
     /// <summary>
     /// 华为数据传输日志

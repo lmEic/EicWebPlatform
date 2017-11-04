@@ -16,5 +16,15 @@ namespace Lm.Eic.App.HwCollaboration.Business.ManPower
     {
         public ManPowerManager() : base(HwModuleName.ManPower, HwAccessApiUrl.ManPowerApiUrl)
         { }
+
+        protected override bool CanSendDto(ManPowerDto dto)
+        {
+            return dto.manpowerMainList != null && dto.manpowerMainList.Count > 0;
+        }
+
+        protected override ManPowerDto HandleDto(ManPowerDto dto)
+        {
+            return dto;
+        }
     }
 }

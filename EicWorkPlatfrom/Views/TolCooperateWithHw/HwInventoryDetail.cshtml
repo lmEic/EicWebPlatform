@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div bs-tabs bs-active-pane="vmManager.activeTab">
+        <div bs-tabs bs-active-pane="vmManager.activeTab" id="mainDataWindow">
             <div bs-pane data-title="库存明细" data-name="HwInventoryDetailTab">
                 <div class="bs-callout bs-callout-info">
                     <div class="row">
@@ -194,6 +194,32 @@
                                             <i class="fa fa-pencil-square-o"></i>
                                         </span>
                                     </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div pageslide ps-open="vmManager.opResultsViewDisplay" style="padding:10px;overflow-y:auto;height:550px" ps-side="top" ps-speed="0.25" ps-size="100%" ps-container='mainDataWindow' ps-key-listener="true">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr class="success">
+                                <th>操作名称</th>
+                                <th>结果</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.opresults">
+                                <td>{{item.OperationName}}</td>
+                                <td>
+                                    <div ng-if="item.Result" class="bs-callout bs-callout-success">
+                                        <h2>{{item.OpResultMessage}}</h2>
+                                    </div>
+                                    <div ng-if="!item.Result" class="bs-callout bs-callout-danger">
+                                        <h2 class="text-danger">{{item.OpResultMessage}}</h2>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

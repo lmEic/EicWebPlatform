@@ -50,5 +50,38 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             });
             return dto;
         }
+
+        protected override bool CanSendDto(PurchaseOnWayDto dto)
+        {
+            return dto.sccOpenPOList != null && dto.sccOpenPOList.Count > 0;
+        }
+
+        protected override PurchaseOnWayDto HandleDto(PurchaseOnWayDto dto)
+        {
+            List<SccOpenPOVO> dataList = new List<SccOpenPOVO>();
+            if (dto != null && dto.sccOpenPOList != null && dto.sccOpenPOList.Count > 0)
+            {
+                dto.sccOpenPOList.ForEach(m =>
+                {
+                    SccOpenPOVO vo = new SccOpenPOVO()
+                    {
+                        businessMode = m.businessMode,
+                        componentVendorCode = m.componentVendorCode.Trim(),
+                        componentVendorName = m.componentVendorName.Trim(),
+                        customerVendorCode = m.customerVendorCode.Trim(),
+                        demandArrivalDateStr = m.demandArrivalDateStr,
+                        itemCode = m.itemCode.Trim(),
+                        openPoQuantity = m.openPoQuantity,
+                        poNumber = m.poNumber.Trim(),
+                        poPublishDateStr = m.poPublishDateStr,
+                        promisedDeliveryDateStr = m.promisedDeliveryDateStr,
+                        vdFactoryCode = m.vdFactoryCode.Trim()
+                    };
+                    dataList.Add(vo);
+                });
+                dto.sccOpenPOList = dataList;
+            }
+            return dto;
+        }
     }
 }

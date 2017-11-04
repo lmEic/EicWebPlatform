@@ -530,7 +530,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     var uiVM = {
         Department: null,
         ClassType: '白班',
-        InPutDate: new Date(),
+        InPutDate: new Date(new Date().setDate(new Date().getDate() - 1)),
         OrderId: null,
         ProductId: null,
         ProductName: null,
@@ -580,7 +580,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         inPutMultiermUserInfoTable: false,
         classType: '白班',
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: '晚班' }],
-        putInDate: new Date(),
+        putInDate: new Date(new Date().setDate(new Date().getDate() - 1)),
         productionFlowShow: true,
         putInDataProcessesName: null,
         ///初始化
@@ -590,20 +590,18 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         ///保存后继续
         continueSaveInit: function () {
-            if (vmManager.inputMultitermSelect) {
-                uiVM.WorkerId = null;
-                uiVM.ProcessesIndex = 0;
-                uiVM.ProcessesName = null;
-            }
-            else {
-                uiVM.TodayProductionCount = null;
-                uiVM.TodayBadProductCount = null;
-                uiVM.WorkerProductionTime = null;
-                uiVM.WorkerNoProductionTime = null;
-                uiVM.WorkerId = null;
-                focusSetter.workerIdFocus = true;
-                $scope.vm = uiVM;
-            }
+            uiVM.WorkerId = null;
+            uiVM.ProcessesIndex = 0;
+            uiVM.ProcessesName = null;
+            uiVM.TodayProductionCount = null;
+            uiVM.TodayBadProductCount = null;
+            uiVM.WorkerProductionTime = null;
+            uiVM.WorkerNoProductionTime = null;
+            uiVM.WorkerId = null;
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            focusSetter.workerIdFocus = true;
+            $scope.vm = uiVM;
+
         },
         ///选择部门
         departments: [
@@ -630,17 +628,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         if (vmManager.searchedWorkers.length === 1) {
                             vmManager.isSingle = true;
                             vmManager.selectWorker(vmManager.searchedWorkers[0]);
-                            if (uiVM.ProcessesIndex == 0 || uiVM.ProcessesIndex == null) {
-                                focusSetter.processesIndexFocus = true;
-                            }
-                            else {
-                                if (vmManager.isMultiermUserInPut) {
-                                    focusSetter.workerProductionTimeFocus = true;
-                                }
-                                else {
-                                    focusSetter.todayProductionCountFocus = true;
-                                }
-                            }
                         }
                         else {
                             vmManager.isSingle = false;
@@ -659,6 +646,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.WorkerId = worker.WorkerId;
                 uiVM.Department = worker.Department;
                 vmManager.WorkerId = worker.WorkerId;
+                focusSetter.processesIndexFocus = true;
             }
             else {
                 uiVM.Department = null;
@@ -670,6 +658,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         erpOrderInfoDatasSource: [],
         productionFlowDatasSet: [],//工序信息
         productionFlowDatasSouce: [],//工序信息
+
         //选择部门
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (erpDatas) {
@@ -702,28 +691,38 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         // 得到工序信息
         findProcessesInfo: function ($event) {
-            if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
-                if (uiVM.ProcessesIndex === null || vmManager.productionFlowDatasSet.length == 0) return;
-                var processesInfo = _.find(vmManager.productionFlowDatasSet, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
-                if (!_.isUndefined(processesInfo)) {
-                    //leePopups.alert("没有此工序号");
-                    focusSetter.processesIndexFocus = true;
-                    vmManager.selectProcesses(processesInfo);
-                    if (uiVM.TodayProductionCount != 0 && uiVM.TodayProductionCount != null && uiVM.TodayProductionCount != '' && vmManager.inputMultitermSelect)
-                    { focusSetter.saveAlldataFocus = true }
+            if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
+                vmManager.findProcesses();
+            };
+        },
+        findProcesses: function () {
+            if (uiVM.ProcessesIndex === null || vmManager.productionFlowDatasSouce.length == 0) return;
+            var processesInfo = _.find(vmManager.productionFlowDatasSouce, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
+            if (!_.isUndefined(processesInfo)) {
+                //leePopups.alert("没有此工序号");
+                focusSetter.workerIdFocus = true;
+                vmManager.selectProcesses(processesInfo);
+                if (uiVM.TodayProductionCount != 0 && uiVM.TodayProductionCount != null && uiVM.TodayProductionCount != '' && vmManager.inputMultitermSelect)
+                { focusSetter.saveAlldataFocus = true }
+                else
+                {
+                    if (processesInfo.InputType == 'E')
+                        focusSetter.workerProductionTimeFocus = true;
                     else focusSetter.todayProductionCountFocus = true;
-                    vmManager.isProcessesNameShow = true;
-                }
+                };
+                vmManager.isProcessesNameShow = true;
             };
         },
         //在数据查找相应的信息
         selectProcesses: function (info) {
+            console.log(info);
             uiVM.ProcessesIndex = info.ProcessesIndex;
             uiVM.ProcessesName = info.ProcessesName;
             uiVM.ProcessesType = info.ProcessesType;
             uiVM.StandardProductionTime = info.StandardProductionTime;
             vmManager.inspectionDataGatherType = info.InputType;
-            uiVM.StandardProductionTimeType = info.StandardProductionTimeType
+            uiVM.StandardProductionTimeType = info.StandardProductionTimeType;
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
             vmManager.isProcessesNameShow = true;
         },
         //选择工序
@@ -734,10 +733,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.ProcessesType = item.ProcessesType;
                 uiVM.StandardProductionTime = item.StandardProductionTime;
                 uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
-                uiVM.InPutDate = vmManager.putInDate;
                 vmManager.havePutInData = [];
+                console.log(uiVM.WorkerId);
                 if (uiVM.WorkerId === '' || uiVM.WorkerId === null)
                 { focusSetter.workerIdFocus = true; }
+                vmManager.findProcesses();
             }
             else {
                 uiVM.ProcessesIndex = 0;
@@ -779,6 +779,21 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             uiVM.OpSign = leeDataHandler.dataOpMode.edit;
             $scope.vm = uiVM;
         },
+        //删除录入个人日报表数据
+        deleteUserInputInfo: function (item) {
+            leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
+                $scope.$apply(function () {
+                    item.opSign = leeDataHandler.dataOpMode.delete;
+                    $scope.searchPromise = dReportDataOpService.saveDailyReportData(item).then(function (opresult) {
+                        if (opresult.Result) {
+                            leeHelper.delWithId(vmManager.havePutInData, item);
+                            vmManager.getProductionFlowDatas(item.ProductName, item.OrderId);
+                        }
+                    });
+                    //移除临时数据
+                });
+            });
+        },
         //是否团队合作输入
         isMultiermUserInPut: false,
 
@@ -792,9 +807,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         }
                     });
                     if (!_.isUndefined(data)) {
-
                         vmManager.putInshowPutInForm(data);
-
                     }
                 }
                 console.log(item);
@@ -838,36 +851,26 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                             vmManagerMultiermUser.isSingle = true;
                             vmManagerMultiermUser.selectWorker(vmManagerMultiermUser.searchedWorkers[0]);
                         }
-                        else {
-                            vmManagerMultiermUser.isSingle = false;
-                        }
+                        else vmManagerMultiermUser.isSingle = false;
                     }
-                    else {
-                        vmManagerMultiermUser.selectWorker(null);
-                    }
+                    else vmManagerMultiermUser.selectWorker(null);
                 });
-            }
+            };
         },
         selectWorker: function (worker) {
             if (worker !== null) {
                 uiVmUser.WorkerId = worker.WorkerId;
                 uiVmUser.WorkerName = worker.Name;
                 uiVM.Department = worker.Department;
-                if (uiVM.ProcessesIndex === 0 || uiVM.ProcessesIndex === null) {
+                if (uiVM.ProcessesIndex === 0 || uiVM.ProcessesIndex === null)
                     focusSetter.processesIndexFocus = true;
-                }
                 else {
-                    if (uiVmUser.WorkerName === null || uiVmUser.WorkerName === undefined) {
+                    if (uiVmUser.WorkerName === null || uiVmUser.WorkerName === undefined)
                         focusSetter.workerIdsFocus = true;
-                    }
-                    else {
-                        focusSetter.workerProductionTimeFocus = true;
-                    }
+                    else focusSetter.workerProductionTimeFocus = true;
                 };
             }
-            else {
-                uiVM.Department = null;
-            }
+            else uiVM.Department = null;
         },
         ///初始化
         init: function () {
@@ -899,8 +902,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         multiermUserInPutInfos: [],
         //修改
         changeMultiermUserInfo: function (item) {
-            uiVmUser = _.clone(item);
-            $scope.vmUser = uiVmUser;
+            $scope.vmUser = item;
             dialog.show();
         },
         userInfoChange: function () {
@@ -988,6 +990,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         }
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
+        console.log(uiVM);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             $scope.searchPromise = dReportDataOpService.saveDailyReportData(uiVM).then(function (opResult) {
                 if (opResult.Result) {
@@ -1014,7 +1017,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         orderIdFocus: false,
         //生产工时
         workerProductionTimeFocus: false,
-
+        getProdutionTimeFocus: false,
         standardProductionTimeFocus: false,
         machineUnproductiveTimeFocus: false,
         processesIndexFocus: false,
@@ -1141,7 +1144,9 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
     $scope.operate = operate;
     operate.saveDispatchData = function (isValid) {
         leeHelper.setUserData(uiVm);
-        if (uiVm.IsValid == true) uiVm.ProductStatus = "已分配";
+        if (uiVm.IsValid == true)
+        { uiVm.ProductStatus = "已分配"; }
+        else { uiVm.ProductStatus = "未分配"; }
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             $scope.promise = dReportDataOpService.saveOrderDispatch(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
@@ -1155,7 +1160,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
                             if (dataItem.opSign == leeDataHandler.dataOpMode.delete)
                                 leeHelper.delWithId(vmManager.todayHaveDispatchDatas, uiVm)
                         };
-                        //vmManager.dispatchActiveTab = "qryTodayHaveDispatchTab";
+                        vmManager.changeDepartment();
                         dialog.close();
                     }
                 });

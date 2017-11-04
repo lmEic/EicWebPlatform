@@ -39,12 +39,42 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
                             orderNumber = d.OrderNumber,
                             shippedQuantity = d.ShippedQuantity,
                             shouldShipQuantity = d.ShouldShipQuantity,
-                            substituteGroup = d.SubstituteGroup
+                            substituteGroup = ""
                         };
                         dto.materialShipmentList.Add(sms);
                     });
                 }
             });
+            return dto;
+        }
+
+        protected override bool CanSendDto(MaterialShipmentDto dto)
+        {
+            return dto.materialShipmentList != null && dto.materialShipmentList.Count > 0;
+        }
+
+        protected override MaterialShipmentDto HandleDto(MaterialShipmentDto dto)
+        {
+            List<SccMaterialShipmentVO> dataList = new List<SccMaterialShipmentVO>();
+            if (dto != null && dto.materialShipmentList != null && dto.materialShipmentList.Count > 0)
+            {
+                dto.materialShipmentList.ForEach(m =>
+                {
+                    SccMaterialShipmentVO vo = new SccMaterialShipmentVO()
+                    {
+                        bomUsage = m.bomUsage,
+                        customerVendorCode = m.customerVendorCode.Trim(),
+                        itemCode = m.itemCode.Trim(),
+                        orderNumber = m.orderNumber.Trim(),
+                        shippedQuantity = m.shippedQuantity,
+                        shouldShipQuantity = m.shouldShipQuantity,
+                        substituteGroup = m.substituteGroup,
+                        vendorFactoryCode = m.vendorFactoryCode.Trim()
+                    };
+                    dataList.Add(vo);
+                });
+                dto.materialShipmentList = dataList;
+            }
             return dto;
         }
     }

@@ -40,6 +40,13 @@ namespace EicWorkPlatfrom.Controllers
             var opResult = HwCollaborationService.MaterialManager.BaseBomManager.Store(entity);
             return Json(opResult);
         }
+        [NoAuthenCheck]
+        [HttpGet]
+        public JsonResult AutoSynchironizeData()
+        {
+            var opResult = HwCollaborationService.MaterialManager.BaseBomManager.AutoSynchironizeData();
+            return Json(opResult, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region HwManpowerInput

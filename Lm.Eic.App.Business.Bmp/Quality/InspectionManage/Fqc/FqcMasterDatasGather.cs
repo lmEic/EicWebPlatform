@@ -30,7 +30,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(orderId);
             }
             catch (Exception ex)
-            { return null; throw new Exception(ex.InnerException.Message); }
+            {
+                return null;
+                throw new Exception(ex.InnerException.Message);
+            }
         }
         /// <summary>
         /// 存储主表信息
