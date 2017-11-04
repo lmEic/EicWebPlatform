@@ -212,6 +212,21 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBy(dto);
             return DateJsonResult(datas);
         }
+
+        [NoAuthenCheck]
+        public ContentResult GetWorkOverHoursSum(string qrydate,string departmentText, int mode)
+        {
+            WorkOverHoursDto qryDto = new WorkOverHoursDto()
+            {
+                QryDate = qrydate,
+                DepartmentText = departmentText,
+                SearchMode = mode
+            };
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
+
+            return DateJsonResult(datas);
+
+        }
         [NoAuthenCheck]
         /// <summary>
         /// 载入模板
@@ -259,12 +274,24 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         public FileResult WorkOverHoursDatasToExcel()
         {
+            try
+            {
+                string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
+                string fileName = "加班数据模板.xls";
+                var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
 
-            string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
-            string fileName = "加班数据模板.xls";
-            var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
-            var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
-            return this.DownLoadFile(dlfm);
+                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
+                return this.DownLoadFile(dlfm);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+           
+
+           
         }
         /// <summary>
         /// 后台修改保存
