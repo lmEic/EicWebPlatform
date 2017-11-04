@@ -223,7 +223,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
-
             return DateJsonResult(datas);
 
         }
