@@ -132,6 +132,16 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
         });
     };
 
+    //按加班时数汇总查询
+    hr.getWorkOverHourSums = function (qrydate, departmentText, mode) {
+        var url = attendUrl + 'GetWorkOverHoursSum';
+        return ajaxService.getData(url, {
+            qrydate: qrydate,
+            departmentText: departmentText,
+            mode: mode
+        })
+    };
+
     //批量保存加班数据
     hr.storeHandlWorkOverHoursDt = function (workOverHours) {
         var url = attendUrl + 'HandlWorkOverHoursDt';
@@ -570,6 +580,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         WorkOverHours: null,//
         Remark: null,
         DepartmentText: null,
+        WorkStatus: '在职',
+        QryDate:null,
         //OpDate: null,
         OpPerson: leeLoginUser.userName,
         OpSign: leeDataHandler.dataOpMode.add,
@@ -593,12 +605,16 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
     };
 
     var vmManager = {
+        searchYear: new Date().getFullYear(),
+
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: "晚班" }],
         overTypes: [{ id: '平时加班', text: '平时加班' }, { id: '假日加班', text: '假日加班' }, { id: '节假日加班', text: '节假日加班' }],
         workOverHourss: [{ id: 0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0 }, { id: 2.5, text: 2.5 }],
+        workStatuss: [{ id: '在职', text: '在职' },{id:'离职',text:'离职'}],
         dataSets: [],
         dataSource: [],
-        searchDatas:[],
+        searchDatas: [],
+        dataSourceSum:[],
         selectedWorkers: [],
         edittingRowIndex: 0,//编辑中的行索引
         edittingRow: null,
@@ -607,6 +623,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         dataTable: null,
         boardViewSize: '100%',
         editWindowShow: false,
+        editWindowShow1: false,
         dataSet: [],
         selectedWorkers: [],
         dataSource:[],        
@@ -793,6 +810,14 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
                 vmManager.searchDatas = datas;
             })
         },
+        //加班汇总
+        getWorkOverHourSumss: function (mode)
+        {      
+            vmManager.dataSourceSum = [];
+            var datas = hrDataOpService.getWorkOverHourSums(vmManager.searchYear, qryDto.departmentText, 1).then(function (datas) {
+                vmManager.dataSourceSum = datas;
+            })
+        },
         //获取正在编辑的行
         getEdittingRow: function () {
             var rowItem = _.find(vmManager.dataSets, { rowindex: vmManager.edittingRowIndex });
@@ -869,11 +894,22 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         showWorkOverHoursDatas: function () {
             vmManager.editWindowShow = !vmManager.editWindowShow;
         },
+        //加班汇总显示
+        showWorkOverHoursSum: function () {
+            vmManager.editWindowShow1 = !vmManager.editWindowShow1;
+        },
         //返回操作界面
         returnWorkOverHoursDatas: function () {
            
             vmManager.editWindowShow = false;
         },
+        //返回操作界面
+        returnWorkOverHoursSum: function () {
+
+            vmManager.editWindowShow1 = false;
+        },
+       
+
         //后台删除
         delModalWindow: $modal({
             title: "删除提示", content: "您确定要删除此信息吗?",
