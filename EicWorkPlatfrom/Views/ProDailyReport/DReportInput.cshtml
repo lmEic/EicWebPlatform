@@ -75,7 +75,6 @@
                                 </div>*@
                         </div>
                     </div>
-
                 </div>
             </div>
             @*录入界面*@
@@ -116,7 +115,7 @@
                     <div id="myTabContent" class="tab-content">
                         @*单项录入*@
                         <div class="tab-pane fade in active" id="onlyProcessTab" style="padding:5px;background:#C0C0C0; color:#000000">
-                            <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <form role="form" ng-if="vm.ProcessesType ==='人工'" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                 <fieldset>
                                     @*工号人员信息*@
                                     <div class="form-group">
@@ -301,6 +300,222 @@
                                                               focus-if="focus.remarkFocus" focus-setter
                                                               rows="1" cols="4" class="form-control" ng-model="vm.Field1" />
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                @*保存取消*@
+                                <div class="row">
+                                    <div class="col-md-6 pull-right">
+                                        <button class="btn btn-primary"
+                                                type="button"
+                                                focus-if="focus.saveAlldataFocus" focus-setter
+                                                ng-keypress="operate.saveData(formDailyProductionReport.$valid)"
+                                                ng-click="operate.saveData(formDailyProductionReport.$valid)">
+                                            <i class="fa fa-save"></i>保存
+                                        </button>
+                                        <button class="btn btn-info" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取    消</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <form role="form" ng-if="vm.ProcessesType ==='机台'" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                                <fieldset>
+                                    <div class="table-responsive" id="inPutMultiermUserInfo" style="padding:10px;overflow-y:auto;">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                @*录入 工序信息*@
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">工序:</span>
+                                                    <input name="processesIndex" type="text" class="form-control"
+                                                           focus-if="focus.processesIndexFocus" focus-setter
+                                                           ng-keydown="vmManager.findProcessesInfo($event)"
+                                                           ng-model="vm.ProcessesIndex"
+                                                           required />
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.processesIndex.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">录入工序不能为空</small>
+                                                    </div>
+                                                    <div class="input-group-addon">
+                                                        <label class="label label-primary" style='max-width:100px;display:inline-block;overflow:hidden;'><i class="fa fa-cutlery"></i> {{vm.ProcessesName}}</label>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary"
+                                                                data-animation="am-flip-x"
+                                                                bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                            <span class="fa fa-chevron-circle-down"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                            <ul class="list-group" style="overflow-y:auto; max-height:150px;">
+                                                                <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.showPutInForm(item)"
+                                                                    ng-repeat="item in vmManager.productionFlowDatasSouce track by $index" data-title="序名：{{item.ProcessesIndex}}" data-bs-tooltip>
+                                                                    <i class="fa fa-user"></i>
+                                                                    <span class="label label-primary">工序号：{{item.ProcessesIndex}}</span>|
+                                                                    <span>工序名：{{item.ProcessesName}}</span>|
+                                                                    <span>工时：{{item.StandardProductionTime}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @*工号人员信息 *@
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">生产人员:</span>
+                                                    <input name="workerIds" class="form-control"
+                                                           ng-model="vmUser.WorkerId"
+                                                           ng-change="vmManagerMultiermUser.multiermGetWorkerInfo()"
+                                                           focus-if="focus.workerIdsFocus" focus-setter
+                                                           placeholder="输工号或姓名"
+                                                           data-ensure-user-exist required />
+                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerIds.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">工号不能为空</small>
+                                                    </div>
+                                                    <div class="input-group-addon" ng-show="vmManagerMultiermUser.isSingle">
+                                                        <i class="fa fa-user">{{vmUser.WorkerName}}</i>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary"
+                                                                data-animation="am-flip-x"
+                                                                bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                            <span class="fa fa-chevron-circle-down"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item" style="cursor:pointer" ng-click="vmManagerMultiermUser.selectWorker(worker)"
+                                                                    ng-repeat="worker in vmManagerMultiermUser.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                                    <i class="fa fa-user"></i>
+                                                                    <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                                    <span>姓名：{{worker.Name}}</span>|
+                                                                    <span>部门：{{worker.Department}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*人员 作业 工时*@
+                                            <div class="form-group">
+                                                @*人员作业工时  *@
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">生产工时:</span>
+                                                    <input name="workerProductionTime" type="number" class="form-control"
+                                                           focus-if="focus.workerProductionTimeFocus" focus-setter
+                                                           ng-keydown="focus.changeEnter($event,'workerIdFocus','workerNoProductionTimeFocus')"
+                                                           ng-minlength="0"
+                                                           ng-maxlength="24"
+                                                           ng-model="vmUser.WorkerProductionTime" required />
+                                                    <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
+                                                    <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
+                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">录入生产工时不能为空</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @*非生产作业工时  *@
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">非生产工时:</span>
+                                                    <input name="workerProductionTime" type="number" class="form-control"
+                                                           focus-if="focus.workerProductionTimeFocus" focus-setter
+                                                           ng-keydown="focus.changeEnter($event,'workerIdFocus','workerNoProductionTimeFocus')"
+                                                           ng-minlength="0"
+                                                           ng-maxlength="24"
+                                                           ng-model="vmUser.WorkerProductionTime" required />
+                                                    <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
+                                                    <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
+                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">录入生产工时不能为空</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div style="height:200px;overflow-y:auto;">
+                                                <table class="table table-condensed table-bordered table-hover">
+                                                    <thead>
+                                                        <tr class="info">
+                                                            <th>工号</th>
+                                                            <th>姓名</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="item in vmManagerMultiermUser.multiermUserInPutInfos  track by $index">
+                                                            <td>{{item.WorkerId}}</td>
+                                                            <td>{{item.WorkerName}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                @*非产工时原因 *@
+                                                <div class="form-group" ng-if="vmUser.WorkerProductionTime>0">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">非生产原因:</span>
+                                                        <textarea name="workerNoProductionReason"
+                                                                  focus-if="focus.workerNoProductionReasonFocus" focus-setter
+                                                                  ng-keydown="vmManagerMultiermUser.changeInPutNoProductionReason($event)"
+                                                                  rows="2" class="form-control" ng-model="vmUser.WorkerNoProductionReason" required />
+                                                        <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerNoProductionReason.$error" ng-show="operate.showValidation">
+                                                            <small ng-message="required">非生产原因不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*录入机台  【一人看多台机台】工时信息*@
+                                    <div class="well">
+                                        <div class="col-md-8">
+                                            @*机台生产工时*@
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">非生产时:</span>
+                                                    <input name="workerNoProductionTime" type="number" class="form-control"
+                                                           focus-if="focus.workerNoProductionTimeFocus" focus-setter
+                                                           ng-keydown="vmManagerMultiermUser.changeInPutNoProductionTime($event)"
+                                                           ng-model="vmUser.WorkerNoProductionTime" />
+                                                </div>
+                                            </div>
+                                            @*机台生产量*@
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">非生产时:</span>
+                                                    <input name="workerNoProductionTime" type="number" class="form-control"
+                                                           focus-if="focus.workerNoProductionTimeFocus" focus-setter
+                                                           ng-keydown="vmManagerMultiermUser.changeInPutNoProductionTime($event)"
+                                                           ng-model="vmUser.WorkerNoProductionTime" />
+                                                </div>
+                                            </div>
+                                            @*非产工时原因 *@
+                                            <div class="form-group" ng-if="vmUser.WorkerNoProductionTime>0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">非生产原因:</span>
+                                                    <textarea name="workerNoProductionReason"
+                                                              focus-if="focus.workerNoProductionReasonFocus" focus-setter
+                                                              ng-keydown="vmManagerMultiermUser.changeInPutNoProductionReason($event)"
+                                                              rows="2" class="form-control" ng-model="vmUser.WorkerNoProductionReason" required />
+                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerNoProductionReason.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">非生产原因不能为空</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">产量:</span>
+                                                <input type="number" name="todayProductionCount" class="form-control"
+                                                       focus-if="focus.todayProductionCountFocus" focus-setter
+                                                       ng-keydown="focus.changeEnter($event,'processesIndexFocus','todayBadProductCountFocus')"
+                                                       ng-model="vm.TodayProductionCount" required />
+                                                <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">生产数量不能为空</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">不良:</span>
+                                                <input type="number" class="form-control" ng-model="vm.TodayBadProductCount"
+                                                       focus-if="focus.todayBadProductCountFocus" focus-setter
+                                                       ng-keydown="focus.changeEnter($event,'workerNoProductionTimeFocus','workerIdsFocus')" />
                                             </div>
                                         </div>
                                     </div>
