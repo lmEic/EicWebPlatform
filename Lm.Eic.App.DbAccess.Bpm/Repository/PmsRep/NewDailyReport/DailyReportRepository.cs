@@ -40,7 +40,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
                 sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime* ProductCoefficient  WHEN 'UPH' THEN 3600* ProductCoefficient / StandardProductionTime ");
                 sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
                 sb.Append("FROM  Pms_StandardProductionFlow ");
-                sb.Append("WHERE(ProductName = '" + productName + "') AND (IsValid = 1) ");
+                sb.Append("WHERE(ProductName = '" + productName + "') AND (IsValid = 1) AND(IsSum = 1)");
                 sb.Append("GROUP BY ProductName ");
                 string sqltext = sb.ToString();
                 return DbHelper.Bpm.LoadEntities<ProductFlowSummaryVm>(sqltext).ToList().FirstOrDefault();

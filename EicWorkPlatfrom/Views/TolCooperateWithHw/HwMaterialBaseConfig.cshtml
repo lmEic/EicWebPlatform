@@ -1,0 +1,225 @@
+﻿<div class="row" ng-controller="hwMaterialBaseConfigCtrl">
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h6 class="panel-title">
+                    <i class="glyphicon glyphicon-apple"></i>物料基础信息(含BOM)
+                </h6>
+            </div>
+            <div class="panel-body" style="max-height:515px;overflow:auto">
+                <ul data-yl-tree cg-busy="{promise:promise}"
+                    data-tree-dataset="ztree.navMenus"
+                    data-start-load="ztree.startLoad"
+                    ng-model="ztree.treeNode"
+                    data-binding-nodevm="ztree.bindNodeToVm()"
+                    id="{{ztree.treeId}}" class="ztree"></ul>
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-pencil">物料基础编辑</i></h6>
+            </div>
+            <div class="panel-body">
+                <form role="form" name="materialBaseForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <div class="bs-callout bs-callout-info" cg-busy="{promise:opPromise}">
+                        <div class="btn-group" style="margin:5px;">
+                            <button type="button" class="btn btn-sm btn-default" ng-click="vmManager.opHandler.addChildren()">
+                                <i class="glyphicon glyphicon-plus-sign"></i> 新增子物料
+                            </button>
+                            <button type="button" class="btn btn-sm btn-info" ng-click="vmManager.opHandler.add()">
+                                <i class="glyphicon glyphicon-plus-sign"></i>新增物料
+                            </button>
+                            <button type="button" class="btn btn-sm btn-primary" ng-click="vmManager.opHandler.edit()">
+                                <i class="glyphicon glyphicon-edit"></i>修改物料
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" ng-click="vmManager.opHandler.del()">
+                                <i class="glyphicon glyphicon-remove-circle"></i>删除物料
+                            </button>
+                            <span yl-refresh-frequency data-time="月"></span>
+                        </div>
+                    </div>
+                    <div class="bs-callout bs-callout-default">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="materialId" class="col-md-2 control-label">物料编号</label>
+                                <div class="col-md-4">
+                                    <input name="materialId" class="form-control" ng-readonly="vmManager.opHandler.editable" ng-model="vm.MaterialId" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.materialId.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">物料编号不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="materialName" class="col-md-2 control-label">物料名称</label>
+                                <div class="col-md-4">
+                                    <input name="materialName" class="form-control" ng-model="vm.MaterialName" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.materialName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">物料名称不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="parentMaterialId" class="col-md-2 control-label">父阶物料编号</label>
+                                <div class="col-md-4">
+                                    <input name="parentMaterialId" class="form-control" ng-model="vm.ParentMaterialId" ng-readonly="vmManager.opHandler.parentNodeEditable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.parentMaterialId.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">父阶物料编号不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="displayOrder" class="col-md-2 control-label">显示顺序</label>
+                                <div class="col-md-4">
+                                    <input name="displayOrder" type="number" class="form-control" ng-model="vm.DisplayOrder" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.displayOrder.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">显示顺序不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="vendorProductModel" class="col-md-2 control-label">供应商产品型号</label>
+                                <div class="col-md-4">
+                                    <input name="vendorProductModel" class="form-control" ng-model="vm.VendorProductModel" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.vendorProductModel.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">供应商产品型号不能为空</small>
+                                        </div>*@
+                                </div>
+                                <label for="vendorItemDesc" class="col-md-2 control-label">供应商物料描述</label>
+                                <div class="col-md-4">
+                                    <input name="vendorItemDesc" class="form-control" ng-model="vm.VendorItemDesc" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.vendorItemDesc.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">供应商物料描述不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerVendorCode" class="col-md-2 control-label">客户代码</label>
+                                <div class="col-md-4">
+                                    <input name="customerVendorCode" class="form-control" ng-model="vm.CustomerVendorCode" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.customerVendorCode.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">客户代码不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="customerItemCode" class="col-md-2 control-label">客户物料编码</label>
+                                <div class="col-md-4">
+                                    <input name="customerItemCode" class="form-control" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" ng-model="vm.CustomerItemCode" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.customerItemCode.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">客户物料编码不能为空</small>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerProductModel" class="col-md-2 control-label">客户产品型号</label>
+                                <div class="col-md-4">
+                                    <input name="customerProductModel" class="form-control" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" ng-model="vm.CustomerProductModel" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.customerProductModel.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">客户产品型号不能为空</small>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="itemCategory" class="col-md-2 control-label">物料小类</label>
+                                <div class="col-md-4">
+                                    <input name="itemCategory" class="form-control" ng-model="vm.ItemCategory" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.itemCategory.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">物料小类不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="unitOfMeasure" class="col-md-2 control-label">单位</label>
+                                <div class="col-md-4">
+                                    <input name="unitOfMeasure" class="form-control" ng-model="vm.UnitOfMeasure" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.unitOfMeasure.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">单位不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inventoryType" class="col-md-2 control-label">供应商Item类别</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-model="vm.InventoryType" ng-disabled="vmManager.opHandler.editable"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择供应商Item类别"
+                                                    data-bs-options="item.id as item.text for item in vmManager.inventoryTypes" data-bs-select>
+                                                选择供应商Item类别 <span class="caret"></span>
+                                            </button>
+                                            <input type="text" name="inventoryType" class="form-control" ng-model="vm.InventoryType" ng-show="false" placeholder="供应商Item类别" required />
+                                            <div class="error-messages" ng-messages="materialBaseForm.inventoryType.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">供应商Item类别不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label for="goodPercent" class="col-md-2 control-label">良率</label>
+                                <div class="col-md-4">
+                                    <input name="goodPercent" class="form-control" type="number" ng-model="vm.GoodPercent" placeholder="允许为空" ng-readonly="vmManager.opHandler.editable" />
+                                    @*<div class="error-messages" ng-messages="materialBaseForm.goodPercent.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">良率不能为空</small>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="leadTime" class="col-md-2 control-label">货期(天）</label>
+                                <div class="col-md-4">
+                                    <input name="leadTime" class="form-control" ng-model="vm.LeadTime" type="number" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.leadTime.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">货期(天）不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="lifeCycleStatus" class="col-md-2 control-label">生命周期状态</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-model="vm.LifeCycleStatus" ng-disabled="vmManager.opHandler.editable"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择生命周期状态"
+                                                    data-bs-options="item.id as item.text for item in vmManager.lifeCycleStatuses" data-bs-select>
+                                                选择生命周期状态 <span class="caret"></span>
+                                            </button>
+                                            <input name="lifeCycleStatus" class="form-control" ng-model="vm.LifeCycleStatus" ng-readonly="vmManager.opHandler.editable" ng-show="false" required />
+                                            <div class="error-messages" ng-messages="materialBaseForm.lifeCycleStatus.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">生命周期状态不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity" class="col-md-2 control-label">用量</label>
+                                <div class="col-md-4">
+                                    <input name="quantity" class="form-control" ng-model="vm.Quantity" placeholder="允许为空" type="number" ng-readonly="vmManager.opHandler.editable" required />
+                                    <div class="error-messages" ng-messages="materialBaseForm.quantity.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">用量不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="substituteGroup" class="col-md-2 control-label">替代组</label>
+                                <div class="col-md-4">
+                                    <input name="substituteGroup" class="form-control" ng-model="vm.SubstituteGroup" ng-readonly="vmManager.opHandler.editable" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="bs-callout bs-callout-success">
+                        <fieldset>
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-success" ng-disabled="vmManager.opHandler.editable" ng-click="operate.save(materialBaseForm.$valid)">
+                                        <i class="glyphicon glyphicon-remove-circle"></i>保存数据
+                                    </button>
+                                    <button type="button" class="btn btn-default" ng-click="operate.cancel()">
+                                        <span class="fa fa-repeat">取消</span>
+                                    </button>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+</div>

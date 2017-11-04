@@ -22,8 +22,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         { }
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddFqcInspection);
-            this.AddOpItem(OpMode.Edit, EidtFqcInspection);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Eidt);
             this.AddOpItem(OpMode.Delete, DeleteFqcInspection);
         }
 
@@ -32,13 +32,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtFqcInspection(InspectionFqcItemConfigModel model)
+        private OpResult Eidt(InspectionFqcItemConfigModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddFqcInspection(InspectionFqcItemConfigModel model)
+        private OpResult Add(InspectionFqcItemConfigModel model)
         {
+            if (irep.IsExist(e => e.MaterialId == model.MaterialId && e.InspectionItem == model.InspectionItem))
+            {
+                model.Id_Key = irep.Entities.FirstOrDefault(e => e.MaterialId == model.MaterialId && e.InspectionItem == model.InspectionItem).Id_Key;
+                return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            }
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
