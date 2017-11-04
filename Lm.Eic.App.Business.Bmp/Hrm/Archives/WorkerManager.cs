@@ -38,7 +38,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     Name = d,
                     Department = departmentManager.GetDepartmentText(d),
                     Count = workersOfDepartment.Count(f => f.Department == d),
-                    CountOfPostList = GetPostAnalogData(workersOfDepartment)
+                    CountOfPostList = GetPostAnalogData(workersOfDepartment),
                 };
                 workerDto.Departments.Add(dto);
             });
