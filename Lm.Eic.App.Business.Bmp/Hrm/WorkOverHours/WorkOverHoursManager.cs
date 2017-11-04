@@ -24,6 +24,32 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             return WorkOverHoursFactory.WorkOverHoursCrud.FindBy(Dto);
         }
         /// <summary>
+        /// 查询汇总(1、按部门汇总查询，2、工号汇总)
+        /// </summary>
+        /// <param name="Dto"></param>
+        /// <returns></returns>
+        public List<WorkOverHoursMangeModels> FindRecordBySum(WorkOverHoursDto Dto)
+        {
+            var  modelList = new List<WorkOverHoursMangeModels>();
+            List<WorkOverHoursMangeModels> GetWorkOverHoursList = WorkOverHoursFactory.WorkOverHoursCrud.FindBySum(Dto); 
+         
+            foreach (var item in GetWorkOverHoursList)
+            {
+                if(modelList.FirstOrDefault(m=>m.WorkerId==item.WorkerId)==null)
+                {
+                    var temModel = new WorkOverHoursMangeModels();
+                    temModel.WorkerId = item.WorkerId;
+                    temModel.WorkerName = item.WorkerName;
+                    temModel.DepartmentText = item.DepartmentText;
+                    temModel.WorkOverHours = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
+
+                    modelList.Add(temModel);
+                }             
+            }
+            return modelList;
+        }
+
+        /// <summary>
         /// 载入模板
         /// </summary>
         /// <param name="workDate"></param>
@@ -79,7 +105,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             {
                 if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
-                // return dataGroupping.ExportToExcelMultiSheets<WorkOverHoursMangeModels>(CreateFieldMapping()).CreateDownLoadExcelFileModel("加班报表");
+              
                  return dataGroupping.WorkOverHoursListToExcel<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath).WorkOverExcelTemplae("加班报表"); 
             }
             catch (Exception ex)
