@@ -82,6 +82,27 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _remark = value; }
             get { return _remark; }
         }
+        private string _workstatus="在职";
+        /// <summary>
+        /// 员工状态
+        /// </summary>
+        public string WorkStatus
+        {
+            set { _workstatus = value; }
+            get { return _workstatus; }
+        }
+        private string _qryDate = DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM");
+        /// <summary>
+        /// 年月
+        /// </summary>
+        public string QryDate
+        {
+            set { _qryDate = value; }
+            get { return _qryDate; }
+        }
+
+    
+
         //private DateTime _opdate;
         /// <summary>
         ///操作日期

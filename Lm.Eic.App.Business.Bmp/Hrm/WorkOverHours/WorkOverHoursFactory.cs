@@ -67,9 +67,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 switch (Dto.SearchMode)
                 {
                     case 1:
-                        return irep.Entities.Where(m => m.WorkDate == (Dto.WorkDate)).ToList();
+                        return irep.Entities.Where(m => m.WorkDate == (Dto.WorkDate)&&m.WorkStatus=="在职").ToList();
                     case 2:
-                        return irep.Entities.Where(m => m.DepartmentText == (Dto.DepartmentText)).ToList();
+                        return irep.Entities.Where(m => m.DepartmentText == (Dto.DepartmentText) && m.WorkStatus == "在职").ToList();
                     default:
                         return new List<WorkOverHoursMangeModels>();
                 }
@@ -81,6 +81,29 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 throw new Exception(ex.InnerException.Message);
             }
         }
+        internal List<WorkOverHoursMangeModels>FindBySum(WorkOverHoursDto qryDto)
+        {
+            if (qryDto == null) return new List<WorkOverHoursMangeModels>();
+            try
+            {
+                switch (qryDto.SearchMode)
+                {
+                    case 1:
+                        return irep.Entities.OrderBy(m=>m.WorkerId).Where(m =>m.QryDate==qryDto.QryDate && m.DepartmentText==qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
+                   
+                    default:
+                        return new List<WorkOverHoursMangeModels>();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+
         /// <summary>
         /// 模板载入
         /// </summary>
@@ -91,7 +114,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         {
             try
             {
-                return irep.Entities.OrderBy(e=>e.WorkClassType).Where(e => e.DepartmentText == departmentText && e.WorkDate == workDate).ToList();
+                return irep.Entities.OrderBy(e=>e.WorkClassType).Where(e => e.DepartmentText == departmentText && e.WorkDate == workDate && e.WorkStatus == "在职").ToList();
+               
             }
             catch (Exception ex)
             {

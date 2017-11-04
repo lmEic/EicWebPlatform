@@ -19,5 +19,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             get { return _searchMode; }
             set { if (_searchMode != value) { _searchMode = value; } }
         }
+        public string QryDate { set; get; }
+
     }
 }
