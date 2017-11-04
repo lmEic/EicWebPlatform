@@ -153,7 +153,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
                     {
                         ErpMaterialShipmentModel mdl = new ErpMaterialShipmentModel()
                         {
-                            BomUsage = materialBom.standardQuantity,
+                            BomUsage = 1,
                             ItemCode = m.MaterialId,
                             OrderNumber = m.OrderId,
                             ShippedQuantity = m.ShippedQuantity,

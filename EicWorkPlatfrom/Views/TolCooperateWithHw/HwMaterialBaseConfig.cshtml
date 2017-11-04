@@ -25,24 +25,32 @@
             </div>
             <div class="panel-body">
                 <form role="form" name="materialBaseForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-                    <div class="bs-callout bs-callout-info" cg-busy="{promise:opPromise}">
-                        <div class="btn-group" style="margin:5px;">
-                            <button type="button" class="btn btn-sm btn-default" ng-click="vmManager.opHandler.addChildren()">
-                                <i class="glyphicon glyphicon-plus-sign"></i> 新增子物料
-                            </button>
-                            <button type="button" class="btn btn-sm btn-info" ng-click="vmManager.opHandler.add()">
-                                <i class="glyphicon glyphicon-plus-sign"></i>新增物料
-                            </button>
-                            <button type="button" class="btn btn-sm btn-primary" ng-click="vmManager.opHandler.edit()">
-                                <i class="glyphicon glyphicon-edit"></i>修改物料
-                            </button>
-                            <button type="button" class="btn btn-sm btn-danger" ng-click="vmManager.opHandler.del()">
-                                <i class="glyphicon glyphicon-remove-circle"></i>删除物料
-                            </button>
-                            <span yl-refresh-frequency data-time="月"></span>
+                    <div class="bs-callout bs-callout-info">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="btn-group" style="margin:5px;">
+                                    <button type="button" class="btn btn-sm btn-default" ng-click="vmManager.opHandler.addChildren()">
+                                        <i class="glyphicon glyphicon-plus-sign"></i> 新增子物料
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-info" ng-click="vmManager.opHandler.add()">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>新增物料
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="vmManager.opHandler.edit()">
+                                        <i class="glyphicon glyphicon-edit"></i>修改物料
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" ng-click="vmManager.opHandler.del()">
+                                        <i class="glyphicon glyphicon-remove-circle"></i>删除物料
+                                    </button>
+                                    <span yl-refresh-frequency data-time="月"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-warning pull-right" ng-click="operate.autoSynchironizeData()">一键同步</button>
+                            </div>
                         </div>
+
                     </div>
-                    <div class="bs-callout bs-callout-default">
+                    <div class="bs-callout bs-callout-default" cg-busy="{promise:opPromise}">
                         <fieldset>
                             <div class="form-group">
                                 <label for="materialId" class="col-md-2 control-label">物料编号</label>

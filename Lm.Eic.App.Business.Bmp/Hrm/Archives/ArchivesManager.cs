@@ -129,7 +129,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion constructure
 
         #region change data method
-
         /// <summary>
         /// 存储员工档案信息
         /// </summary>
@@ -450,7 +449,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             string sqlWhere = "";
             if (searchMode == 0)
             {
-                //sqlWhere = "WorkingStatus='在职'";
+                sqlWhere = "WorkingStatus='在职'";
             }
             else if (searchMode == 1)
             {

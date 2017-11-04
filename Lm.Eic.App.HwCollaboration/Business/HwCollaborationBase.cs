@@ -22,9 +22,9 @@ namespace Lm.Eic.App.HwCollaboration.Business
         {
             get
             {
-                string url = "https://api-beta.huawei.com:443/oauth2/token";
-                string key = "e24YjcnCCEW1TVG_oEKpxaQXWPca";
-                string secury = "1fDV5DZWcpGh0MtjkuPH3YsYODIa";
+                string url = "https://openapi.huawei.com:443/oauth2/token";
+                string key = "E0v2QffhIb2FKS1QpfHOiWffh_wa";
+                string secury = "ZNpu5EZfuxfsB6L10f4sL8cstOAa";
                 return new HwRestfulApiManager(key, secury, url);
             }
         }
@@ -75,41 +75,53 @@ namespace Lm.Eic.App.HwCollaboration.Business
         }
 
         #region method
+        protected HwAccessOpResult SetResult(string message, bool success = false, HwAccessApiResult accessApiResult = null)
+        {
+            if (accessApiResult != null && !accessApiResult.success)
+                message = accessApiResult.errorMessage;
+            return HwAccessOpResult.SetResult(moduleName, message, success);
+        }
         /// <summary>
         /// 通过访问华为API将数据同步到华为系统中
         /// </summary>
         /// <param name="accessApiUrl"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        protected OpResult SynchronizeDatas(string accessApiUrl, HwCollaborationDataTransferModel entity, Func<HwCollaborationDataTransferModel, OpResult> storeHandler = null)
+        protected HwAccessOpResult SynchronizeDatas(string accessApiUrl, HwCollaborationDataTransferModel entity, Func<HwCollaborationDataTransferModel, OpResult> storeHandler = null)
         {
             if (entity == null)
             {
-                return OpResult.SetErrorResult("数据实体模型不能为null！");
+                return this.SetResult("数据实体模型不能为null！");
             }
             var dto = ObjectSerializer.DeserializeObject<T>(entity.OpContent);
-
+            dto = HandleDto(dto);
             try
             {
+                if (!CanSendDto(dto))
+                    return this.SetResult("本次操作失败,没有要上传的数据！");
                 string returnMsg = this.AccessApi(accessApiUrl, dto);
                 HwAccessApiResult result = ObjectSerializer.DeserializeObject<HwAccessApiResult>(returnMsg);
                 if (result == null || !result.success)
                 {
-                    return OpResult.SetErrorResult("本次操作失败！失败原因：" + returnMsg);
+                    return this.SetResult("本次操作失败！失败原因：" + returnMsg, false, result);
                 }
+                OpResult opresult = null;
                 if (storeHandler == null)
                 {
                     var dataEntity = CreateOperateInstance(entity);
-                    return this.dbAccess.Store(dataEntity);
+                    opresult = this.dbAccess.Store(dataEntity);
+
                 }
                 else
                 {
-                    return storeHandler(entity);
+                    opresult = storeHandler(entity);
                 }
+                return this.SetResult(opresult.Message, opresult.Result, result);
             }
             catch (System.Exception ex)
             {
-                return ex.ExOpResult();
+                var result = ex.ExOpResult();
+                return this.SetResult(result.Message, result.Result);
             }
         }
         /// <summary>
@@ -117,7 +129,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
+        public virtual HwAccessOpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
         {
             return this.SynchronizeDatas(this.apiUrl, entity);
         }
@@ -160,6 +172,18 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 OpLog = ObjectSerializer.SerializeObject(opLog)
             };
         }
+        /// <summary>
+        /// 对Dto进行加工后再返回，访问者模式
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        protected abstract T HandleDto(T dto);
+        /// <summary>
+        /// 检测是否能够上传数据
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        protected abstract bool CanSendDto(T dto);
         #endregion
     }
 
@@ -171,12 +195,12 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <summary>
         /// 物料基础信息
         /// </summary>
-        public const string MaterialBaseInfoApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importVendorItems/1.0.0";
+        public const string MaterialBaseInfoApiUrl = "https://openapi.huawei.com:443/service/esupplier/refreshVendorItems/1.0.0";
 
         /// <summary>
         /// 关键物料BOM信息
         /// </summary>
-        public const string MaterialKeyBomApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importKeyMaterials/1.0.0";
+        public const string MaterialKeyBomApiUrl = "https://openapi.huawei.com:443/service/esupplier/importKeyMaterials/1.0.0";
 
         /// <summary>
         /// 人力
@@ -185,19 +209,19 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <summary>
         /// 库存明细
         /// </summary>
-        public const string FactoryInventoryApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importInventory/1.0.0";
+        public const string FactoryInventoryApiUrl = "https://openapi.huawei.com:443/service/esupplier/importInventory/1.0.0";
         /// <summary>
         /// 在制明细
         /// </summary>
-        public const string MaterialMakingApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialMaking/1.0.0";
+        public const string MaterialMakingApiUrl = "https://openapi.huawei.com:443/service/esupplier/importMaterialMaking/1.0.0";
         /// <summary>
         /// 发料明细
         /// </summary>
-        public const string MaterialShipmentApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
+        public const string MaterialShipmentApiUrl = "https://openapi.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
         /// <summary>
         /// 在途明细
         /// </summary>
-        public const string PurchaseOnWayApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importOpenPoData/1.0.0";
+        public const string PurchaseOnWayApiUrl = "https://openapi.huawei.com:443/service/esupplier/importOpenPoData/1.0.0";
     }
 
     internal class HwModuleName
@@ -215,6 +239,16 @@ namespace Lm.Eic.App.HwCollaboration.Business
         public const string MaterialKeyBom = "关键物料BOM信息";
 
         public const string PurchaseOnWay = "采购在途明细";
+    }
+    /// <summary>
+    /// 上传成功物料数据传输对象
+    /// </summary>
+    public class UploadSuccessMaterialDto
+    {
+        /// <summary>
+        /// 物料编号
+        /// </summary>
+        public string MaterialId { get; set; }
     }
     /// <summary>
     /// 扩展类

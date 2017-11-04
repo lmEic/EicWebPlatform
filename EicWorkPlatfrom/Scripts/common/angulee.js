@@ -259,8 +259,9 @@ var leeHelper = (function () {
         ///在线工具
         ToolsOnLine: 'ToolsOnLine',
         //华为协同
-        TolCooperateWithHw: 'TolCooperateWithHw'
-
+        TolCooperateWithHw: 'TolCooperateWithHw',
+        //智能隧道
+        TolManPowerTunnel: 'TolManPowerTunnel'
     };
     return {
         ///控制器名称

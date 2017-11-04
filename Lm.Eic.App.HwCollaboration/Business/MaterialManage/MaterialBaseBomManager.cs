@@ -39,12 +39,19 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         private HwMaterialBaseConfigDb materialBaseConfigDb = null;
         private MaterialBaseDtoSender baseDtoSender = null;
         private MaterialBomDtoSender bomDtoSender = null;
+
+        private List<HwCollaborationMaterialBaseConfigModel> materialBaseDictionary = null;
         /// <summary>
         /// 物料基础数据字典
         /// </summary>
         public List<HwCollaborationMaterialBaseConfigModel> MaterialBaseDictionary
         {
-            get { return this.materialBaseConfigDb.GetAll(); }
+            get
+            {
+                if (materialBaseDictionary == null)
+                    materialBaseDictionary = this.materialBaseConfigDb.GetAll();
+                return materialBaseDictionary;
+            }
         }
         public MaterialBaseBomManager()
         {
@@ -54,56 +61,85 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         }
 
         #region store method
+        private OpResult SendDtoToHw(List<HwCollaborationMaterialBaseConfigModel> entities)
+        {
+            OpResult opResult = null;
+            var baseDto = CreateMaterialBaseDto(entities);
+            opResult = this.baseDtoSender.SendDto(baseDto);
+            if (!opResult.Result) return opResult;
+
+            var bomDto = CreateMaterialBomDto(entities);
+            opResult = this.bomDtoSender.SendDto(bomDto);
+            if (!opResult.Result) return opResult;
+            return opResult;
+
+        }
         public OpResult Store(HwCollaborationMaterialBaseConfigModel entity)
         {
             entity.OpDate = DateTime.Now.ToDate();
             entity.OpTime = DateTime.Now.ToDateTime();
-            var baseDto = CreateMaterialBaseDto(entity);
-            var opResult = this.baseDtoSender.SendDto(baseDto);
-            if (!opResult.Result) return opResult;
-            if (entity.ParentMaterialId.Trim() != "MaterialBaseBomInfo")
-            {
-                var bomDto = CreateMaterialBomDto(entity);
-                opResult = this.bomDtoSender.SendDto(bomDto);
-                if (!opResult.Result) return opResult;
-            }
-
-            return this.materialBaseConfigDb.Store(entity);
+            var opresult = this.materialBaseConfigDb.Store(entity);
+            if (opresult.Result)
+                opresult = this.AutoSynchironizeData();
+            return opresult;
         }
-        private VendorItemRelationDto CreateMaterialBaseDto(HwCollaborationMaterialBaseConfigModel entity)
+        private VendorItemRelationDto CreateMaterialBaseDto(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
             VendorItemRelationDto dto = new VendorItemRelationDto() { vendorItemList = new List<SccVendorItemRelationVO>() };
-            SccVendorItemRelationVO vo = new SccVendorItemRelationVO()
+            entities.ForEach(entity =>
             {
-                customerItemCode = entity.CustomerItemCode,
-                customerProductModel = entity.CustomerProductModel,
-                customerVendorCode = entity.CustomerVendorCode,
-                goodPercent = entity.GoodPercent,
-                inventoryType = entity.InventoryType,
-                itemCategory = entity.ItemCategory,
-                leadTime = entity.LeadTime,
-                lifeCycleStatus = entity.LifeCycleStatus,
-                unitOfMeasure = entity.UnitOfMeasure,
-                vendorItemCode = entity.MaterialId,
-                vendorItemDesc = entity.VendorItemDesc,
-                vendorProductModel = entity.VendorProductModel
-            };
-            dto.vendorItemList.Add(vo);
+                SccVendorItemRelationVO vo = new SccVendorItemRelationVO()
+                {
+                    customerItemCode = entity.CustomerItemCode.Trim(),
+                    customerProductModel = entity.CustomerProductModel,
+                    customerVendorCode = entity.CustomerVendorCode.Trim(),
+                    goodPercent = entity.GoodPercent,
+                    inventoryType = entity.InventoryType,
+                    itemCategory = entity.ItemCategory,
+                    leadTime = entity.LeadTime,
+                    lifeCycleStatus = entity.LifeCycleStatus,
+                    unitOfMeasure = entity.UnitOfMeasure,
+                    vendorItemCode = entity.MaterialId.Trim(),
+                    vendorItemDesc = entity.VendorItemDesc.Trim(),
+                    vendorProductModel = entity.VendorProductModel
+                };
+                if (dto.vendorItemList.FirstOrDefault(e => e.vendorItemCode == entity.MaterialId.Trim()) == null)
+                    dto.vendorItemList.Add(vo);
+            });
             return dto;
         }
-        private KeyMaterialDto CreateMaterialBomDto(HwCollaborationMaterialBaseConfigModel entity)
+        private KeyMaterialDto CreateMaterialBomDto(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
             KeyMaterialDto dto = new KeyMaterialDto() { keyMaterialList = new List<SccKeyMaterialVO>() };
-            SccKeyMaterialVO vo = new SccKeyMaterialVO()
+            entities.ForEach(entity =>
             {
-                baseUsedQuantity = entity.Quantity.ToString().ToInt(),
-                standardQuantity = entity.Quantity.ToString().ToInt(),
-                subItemCode = entity.MaterialId,
-                vendorItemCode = entity.ParentMaterialId,
-                substituteGroup = entity.SubstituteGroup
-            };
-            dto.keyMaterialList.Add(vo);
+                SccKeyMaterialVO vo = new SccKeyMaterialVO()
+                {
+                    baseUsedQuantity = entity.Quantity.ToString().ToInt(),
+                    standardQuantity = entity.Quantity.ToString().ToInt(),
+                    subItemCode = entity.MaterialId,
+                    vendorItemCode = entity.ParentMaterialId,
+                    substituteGroup = entity.SubstituteGroup
+                };
+                if (entity.ParentMaterialId.Trim() != "MaterialBaseBomInfo")
+                {
+                    dto.keyMaterialList.Add(vo);
+                }
+            });
             return dto;
+        }
+
+
+        /// <summary>
+        /// 一键同步数据
+        /// </summary>
+        /// <returns></returns>
+        public OpResult AutoSynchironizeData()
+        {
+            var datas = CreateBomCellList();
+            if (datas == null || datas.Count == 0)
+                return OpResult.SetErrorResult("没有要同步的数据");
+            return SendDtoToHw(datas);
         }
         #endregion
 
@@ -114,6 +150,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             List<HwCollaborationMaterialBaseConfigModel> configDatas = new List<HwCollaborationMaterialBaseConfigModel>();
             var dftDatas = this.MaterialBaseDictionary.FindAll(e => e.ParentMaterialId == "MaterialBaseBomInfo");
             if (dftDatas == null || dftDatas.Count == 0) return configDatas;
+            configDatas.AddRange(dftDatas);
             dftDatas.ForEach(f =>
             {
                 var dataList = this.MaterialBaseDictionary.FindAll(e => e.ParentMaterialId == f.MaterialId);

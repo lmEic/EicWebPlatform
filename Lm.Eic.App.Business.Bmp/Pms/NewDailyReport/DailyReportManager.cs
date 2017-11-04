@@ -178,7 +178,23 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 if (!returndatas.Contains(model))
                     returndatas.Add(model);
             });
-            return returndatas.OrderByDescending(e => e.IsValid).ToList();
+            TreatmentNoProductOrderId(todayHaveDispatchProductionOrderDatas, erpInProductiondatas);
+            return returndatas.OrderByDescending(e => e.OrderId).ToList();
+        }
+        public void TreatmentNoProductOrderId(List<ProductOrderDispatchModel> todayHaveDispatchProductionOrderDatas, List<ProductionOrderIdInfo> erpInProductiondatas)
+        {
+            if (todayHaveDispatchProductionOrderDatas == null || todayHaveDispatchProductionOrderDatas.Count == 0) return;
+            todayHaveDispatchProductionOrderDatas.ForEach(e =>
+            {
+                var dates = erpInProductiondatas.FindAll(f => f.OrderId == e.OrderId);
+                if (dates == null || dates.Count == 0)
+                {
+                    e.IsValid = "False";
+                    e.OpSign = OpMode.Edit;
+                    StoreOrderDispatchData(e);
+                }
+            });
+
         }
         /// <summary>
         /// 保存订单数据

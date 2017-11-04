@@ -475,6 +475,18 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
+        /// <summary>
+        ///  orderId, orderIdNumber
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="orderNumber"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DeleleFqcInspectionAllGatherDatas(string orderId, int orderIdNumber)
+        {
+            var opResult = InspectionService.DataGatherManager.FqcDataGather.DeletFqcDetailDatasAndMasterDatasBy(orderId, orderIdNumber);
+            return Json(opResult);
+        }
 
         #endregion
         #endregion
@@ -502,7 +514,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public FileResult ExportDateToExcel()
+        public FileResult ExportIqcDateToExcel()
         {
             var datas = TempData["QuaDatas"] as List<InspectionIqcMasterModel>;
             //Excel
@@ -568,8 +580,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetInspectionMasterFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
         {
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
-            return DateJsonResult(datas);
+            var Fqcdatas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
+            TempData["QuaFqcDatas"] = Fqcdatas;
+            return DateJsonResult(Fqcdatas);
         }
         /// <summary>
         /// 查询FQC中Erp订单检验信息
@@ -636,7 +649,18 @@ namespace EicWorkPlatfrom.Controllers
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
 
-
+        /// <summary>
+        /// 导出EXCEl表清册 FileResult
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult ExportFqcDateToExcel()
+        {
+            var datas = TempData["QuaFqcDatas"] as List<InspectionFqcMasterModel>;
+            //Excel
+            var dlfm = InspectionService.InspectionFormManager.FqcFromManager.BuildDownLoadFileModel(datas);
+            return this.DownLoadFile(dlfm);
+        }
         #endregion
         #endregion
 

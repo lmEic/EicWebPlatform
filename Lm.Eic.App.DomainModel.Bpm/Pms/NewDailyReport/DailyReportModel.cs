@@ -595,7 +595,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             get
             {
                 if (StandardProductionTime != 0)
-                    return TodayProductionCount / StandardProductionTime;
+                    return Math.Round((TodayProductionCount * StandardProductionTime) / 3600, 2);
                 else return _getprodutiontime;
             }
         }
