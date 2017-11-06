@@ -222,7 +222,7 @@
                                             <th>图号</th>
                                             <th>抽测数量</th>
                                             <th>检测状态</th>
-                                            <th>进货日期</th>
+                                            <th>检验日期</th>
                                             <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                         </tr>
                                     </thead>
@@ -243,7 +243,7 @@
                                                     {{item.InspectionStatus}}
                                                 </span>
                                             </td>
-                                            <td>{{item.MaterialInDate}}</td>
+                                            <td>{{item.OpDate}}</td>
                                             <td>
                                                 <div><label ng-show="item.InspectionStatus === '已审核'">审核人:{{item.OpPerson}}</label></div>
                                                 <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未抽检'">明细</button>
@@ -345,8 +345,16 @@
                                                                     <label>描述:</label>{{item.Memo}}
                                                                 </td>
                                                             </tr>
+                                                            <tr ng-show="item.FileName!==null">
+                                                                <td>
+                                                                    <label>上传文件:</label>{{item.FileName}}
+                                                                    <span class="text-primary"><i class="{{editManager.getFileExtentionIcon(item)}}"></i></span>
+                                                                    <a class="btn btn-success btn-xs pull-right" ng-href="{{editManager.loadFile(item)}}"><i class="fa fa-download"></i></a>
+                                                                </td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
+                                                    <label>记录人：{{item.OpPerson}}</label>
                                                 </td>
                                             </tr>
                                         </tbody>

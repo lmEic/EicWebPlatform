@@ -661,6 +661,17 @@ namespace EicWorkPlatfrom.Controllers
             var dlfm = InspectionService.InspectionFormManager.FqcFromManager.BuildDownLoadFileModel(datas);
             return this.DownLoadFile(dlfm);
         }
+
+        /// <summary>
+        /// 下载数据文档
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult LoadFqcDatasDownLoadFile(string orderId, int orderIdNumber, string inspectionItem)
+        {
+            DownLoadFileModel dlfm = InspectionService.DataGatherManager.FqcDataGather.GetFqcDatasDownLoadFileModel(SiteRootPath, orderId, orderIdNumber, inspectionItem);
+            return this.DownLoadFile(dlfm);
+        }
         #endregion
         #endregion
 
@@ -672,7 +683,7 @@ namespace EicWorkPlatfrom.Controllers
     public class FileAttatchData
     {
         public string OrderId { get; set; }
-
+        public int OrderIdNumber { get; set; }
         public string MaterialId { get; set; }
         public string InspectionItem { get; set; }
     }
