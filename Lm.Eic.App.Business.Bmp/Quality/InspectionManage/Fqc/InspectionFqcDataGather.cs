@@ -203,6 +203,27 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 return InspectionManagerCrudFactory.FqcDetailCrud.DeleteFqcInspectionDetailDatasBy(orderId, orderIdNumber);
             return opResult;
         }
+
+
+        /// <summary>
+        /// 得到下载路经
+        /// </summary>
+        /// <param name="siteRootPath"></param>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        public DownLoadFileModel GetFqcDatasDownLoadFileModel(string siteRootPath, string orderId, int orderIdNumber, string inspectionItem)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            var model = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber, inspectionItem);
+            if (model == null || model.FileName == null || model.DocumentPath == null)
+                return dlfm.Default();
+            return dlfm.CreateInstance
+                (siteRootPath.GetDownLoadFilePath(model.DocumentPath),
+                model.FileName.GetDownLoadContentType(),
+                 model.FileName);
+        }
         #endregion
 
 
