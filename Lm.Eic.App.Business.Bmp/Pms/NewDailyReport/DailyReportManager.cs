@@ -186,12 +186,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             if (todayHaveDispatchProductionOrderDatas == null || todayHaveDispatchProductionOrderDatas.Count == 0) return;
             todayHaveDispatchProductionOrderDatas.ForEach(e =>
             {
-                var dates = erpInProductiondatas.FindAll(f => f.OrderId == e.OrderId);
-                if (dates == null || dates.Count == 0)
+                if (e.OrderId != "511-1111111")
                 {
-                    e.IsValid = "False";
-                    e.OpSign = OpMode.Edit;
-                    StoreOrderDispatchData(e);
+                    var dates = erpInProductiondatas.FindAll(f => f.OrderId == e.OrderId);
+                    if (dates == null || dates.Count == 0)
+                    {
+                        e.IsValid = "False";
+                        e.OpSign = OpMode.Edit;
+                        StoreOrderDispatchData(e);
+                    }
                 }
             });
 
@@ -226,8 +229,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     storeListDatas = null;
                     return OpResult.SetErrorResult("人员数据为空，操作失败!");
                 }
-                int sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
-                int sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
+                double sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
+                double sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
                 if (sumWorkerProductionTime == 0)
                 {
                     storeListDatas = null;

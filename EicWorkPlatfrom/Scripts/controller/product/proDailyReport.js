@@ -802,7 +802,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
                 if (vmManager.erpOrderInfoDatasSet.length > 0) {
                     var data = _.find(vmManager.erpOrderInfoDatasSet, function (e) {
-                        if (e.ProductName.indexOf(item) >= 0) {
+                        if (e.OrderId.indexOf(item) >= 0) {
                             return e;
                         }
                     });

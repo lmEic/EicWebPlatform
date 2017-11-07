@@ -865,8 +865,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     {
         public string WorkerId { set; get; }
         public string WorkerName { set; get; }
-        public int WorkerProductionTime { set; get; }
-        public int WorkerNoProductionTime { set; get; }
+        public double WorkerProductionTime { set; get; }
+        public double WorkerNoProductionTime { set; get; }
         public string WorkerNoProductionReason { set; get; }
     }
     /// <summary>

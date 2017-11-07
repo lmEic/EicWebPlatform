@@ -218,6 +218,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// 日报录入
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ActionResult DReportInput()
         {
             return View();

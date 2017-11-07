@@ -140,7 +140,7 @@ namespace EicWorkPlatfrom.Controllers
 
         #region FQC
         /// <summary>
-        /// IQC检验项目配置
+        /// FQC检验项目配置
         /// </summary>
         /// <returns></returns>
         public ActionResult FqcInspectionItemConfiguration()
