@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
@@ -11,18 +12,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     /// </summary>
     public class WorkerQueryManager
     {
-        /// <summary>
-        /// 获取统计分析Dto
-        /// </summary>
-        /// <returns></returns>
-        public CompanyWorkerAnalogDto GetWorkerAnalogDatas()
-        {
-            var workers = ArchiveService.ArchivesManager.FindWorkers();
 
+        private CompanyWorkerAnalogDto GetWorkerAnalogDto(List<ArWorkerInfo> workers)
+        {
             CompanyWorkerAnalogDto workerDto = new CompanyWorkerAnalogDto()
             {
                 Departments = new List<DepartmentAnalogDto>(),
-                Name = "公司",
+                Name = "总人数",
                 Count = workers.Count
             };
 
@@ -44,6 +40,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             });
             return workerDto;
         }
+        /// <summary>
+        /// 获取统计分析Dto
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public CompanyWorkerAnalogDto GetWorkerAnalogDatas(string department = null)
+        {
+            QueryWorkersDto qeryDto = string.IsNullOrEmpty(department) ? null : new QueryWorkersDto() { Department = department };
+            int searchMode = string.IsNullOrEmpty(department) ? 0 : 1;
+            var workers = ArchiveService.ArchivesManager.FindWorkers(qeryDto, searchMode);
+            return GetWorkerAnalogDto(workers);
+        }
 
         private List<PostAnalogDto> GetPostAnalogData(List<ArWorkerInfo> departments)
         {
@@ -56,7 +64,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             return datas;
         }
 
+        public DownLoadFileModel ExportWorkersToExcel()
+        {
+            var datas = ArchiveService.ArchivesManager.FindWorkers();
+            return datas.ToDownLoadExcelFileModel<ArWorkerInfo>("人员明细", "员工信息");
+        }
     }
+
+
+    #region dto model
     public class AnalogDto
     {
         public string Name { get; set; }
@@ -86,5 +102,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     public class CompanyWorkerAnalogDto : AnalogDto
     {
         public List<DepartmentAnalogDto> Departments { get; set; }
+    }
+    #endregion
+
+    public class THandler
+    {
+
     }
 }
