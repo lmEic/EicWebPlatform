@@ -613,12 +613,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         workDayDate: null,
         workDayTimeStart: new Date(00, 00, 00),
         workDayTimeEnd: new Date(00, 00, 00),
-
         workNightDate: null,
         workNightTimeStart: new Date(00, 00, 00),
         workNightTimeEnd: new Date(00, 00, 00),
-
-
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: "晚班" }],
         overTypes: [{ id: '平时加班', text: '平时加班' }, { id: '假日加班', text: '假日加班' }, { id: '节假日加班', text: '节假日加班' }],
         workOverHourss: [{ id: 0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0 }, { id: 2.5, text: 2.5 }],
