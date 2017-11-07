@@ -23,9 +23,9 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         {
             MaterialShipmentDto dto = new MaterialShipmentDto() { materialShipmentList = new List<SccMaterialShipmentVO>() };
             if (materialQueryCell == null) return dto;
-            materialQueryCell.KeyMaterialBomList.ForEach(materialBom =>
+            materialQueryCell.KeyMaterialBomList.ForEach(m =>
             {
-                List<ErpMaterialShipmentModel> datas = this.erpDbAccess.LoadMaterialShipmentDatas(materialBom);
+                List<ErpMaterialShipmentModel> datas = this.erpDbAccess.LoadMaterialShipmentDatas(m);
                 if (datas != null && datas.Count > 0)
                 {
                     datas.ForEach(d =>
@@ -33,7 +33,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
                         SccMaterialShipmentVO sms = new SccMaterialShipmentVO()
                         {
                             vendorFactoryCode = "421072-001",
-                            customerVendorCode = "157",
+                            customerVendorCode = m.customerVendorCode,
                             bomUsage = d.BomUsage,
                             itemCode = d.ItemCode,
                             orderNumber = d.OrderNumber,
