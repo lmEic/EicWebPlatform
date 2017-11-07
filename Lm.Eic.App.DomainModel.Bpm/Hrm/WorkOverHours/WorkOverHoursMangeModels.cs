@@ -100,8 +100,34 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _qryDate = value; }
             get { return _qryDate; }
         }
+        private string _workReason;
+        /// <summary>
+        /// 加班原因
+        /// </summary>
+        public string WorkReason
+        {
+            set { _workReason = value; }
+            get { return _workReason; }
+        }
+        private string _workDayTime;
+        /// <summary>
+        /// 白班时间
+        /// </summary>
+        public string WorkDayTime
+        {
+            set { _workDayTime = value; }
+            get { return _workDayTime; }
+        }
+        private string _workNightTime;
+        /// <summary>
+        /// 晚班时间
+        /// </summary>
+        public string WorkNightTime
+        {
+            set { _workNightTime = value; }
+            get { return _workNightTime; }
+        }
 
-    
 
         //private DateTime _opdate;
         /// <summary>
