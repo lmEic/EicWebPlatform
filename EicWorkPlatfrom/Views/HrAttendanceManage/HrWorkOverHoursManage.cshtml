@@ -89,11 +89,11 @@
                                         <ul class="nav nav-pills" role="tablist">
 
                                             <li role="presentation">
-                                                <a href="#" ng-click="operate.handleItem(item)" title="编辑行"><i class="fa fa-pencil"></i>编辑行</a>
+                                                <a href="#" ng-click="operate.handleItem(item)" title="编辑加班"><i class="fa fa-pencil"></i>编辑加班</a>
                                             </li>
-                                            <li role="presentation">
+                                            @*<li role="presentation">
                                                 <a href="#" ng-click="vmManager.editworkOverHours(item)" title="编辑加班时数"><i class="fa fa-pencil"></i>编辑时数</a>
-                                            </li>
+                                            </li>*@
                                             <li role="presentation">
                                                 <a href="#" ng-click="vmManager.copyAndPaste(item)" title="复制行"><i class="fa fa-clipboard"></i>复制行</a>
                                             </li>
@@ -285,7 +285,7 @@
                 <content dialog-title>
                     <i class="fa fa-pencil-square">数据窗口</i>
                 </content>
-                <content dialog-content style="width:100%" class="bs-callout bs-callout-info">
+                <content dialog-content style="width:100%" class="bs-callout bs-callout-info">               
                     <form role="form" name="formWorkover" novalidate class="form-horizontal">
                         <div class="form-group">
                             <label for="workerId" class="col-md-2 control-label">工号</label>
@@ -359,9 +359,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="workDate" class="col-md-2 control-label">日期</label>
+                            <label for="workDate" class="col-md-2 control-label">加班日期</label>
                             <div class="col-md-4">
-                                <input type="date" name="workDate" class="form-control" ng-model="vm.WorkDate" placeholder="加班日期" format-date required />
+                                <input type="date" name="workDate" class="form-control" ng-model="vmManager.changeworkDate" placeholder="加班日期"  format-date required />
                                 <div class="error-messages" ng-messages="formWorkover.workDate.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">日期不能为空</small>
                                 </div>
@@ -370,7 +370,7 @@
                             <div class="col-md-4">
 
                                 <input type="text" name="workDate" class="form-control" ng-model="vm.DepartmentText" placeholder="部门" readonly required />
-                                <div class="error-messages" ng-messages="formWorkover.department.$error" ng-show="operate.showValidation">
+                                <div class="error-messages" ng-messages="formWorkover.workDate.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">部门不能为空</small>
                                 </div>
                             </div>
@@ -384,11 +384,11 @@
                                     <div class="error-messages" ng-messages="formWorkover.workOverHour.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">加班时数不能为空</small>
                                     </div>
-                                    <span class="input-group-btn">
+                                    @*<span class="input-group-btn">
                                         <button type="button" class="btn btn-primary" ng-model="vm.WorkOverHours"
                                                 data-html="1" data-multiple="0" data-placeholder="选择时数" data-animation="am-flip-x"
                                                 data-bs-options="overHours.id as overHours.text for overHours in vmManager.workOverHourss" data-bs-select></button>
-                                    </span>
+                                    </span>*@
                                 </div>
                             </div>
                             <label for="remark" class="col-md-2 control-label">备注</label>
@@ -396,6 +396,7 @@
                                 <input type="text" name="remark" class="form-control" ng-model="vm.Remark" placeholder="备注" />
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="workstatus" class="col-md-2 control-label">工员状态:</label>
                             <div class="col-md-4">
@@ -412,7 +413,71 @@
                                 </div>
 
                             </div>
+
+                            @*<label for="changeDate" class="col-md-2 control-label">批量日期</label>
+                            <div class="col-md-4">
+                                <input type="date" class="form-control"  ng-model="vmManager.changeworkDate" placeholder="批量改日期" format-date />
+                                
+                            </div>*@
                         </div>
+
+                        <div class="form-group">
+                            <label for="workreason" class="col-md-2 control-label">加班原因:</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" name="workreason" class="form-control" ng-model="vm.WorkReason" placeholder="加班原因"  />
+                                    <div class="error-messages" ng-messages="formWorkover.workreason.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">日期不能为空</small>
+                                    </div>
+                            
+                                </div>
+                            </div>                        
+                        </div>
+
+                        <div class="form-group">
+                            <label for="workday" class="col-md-2 control-label">白班时间:</label>
+                            <div class="col-md-4">
+                                <input  id="workDayDate"type="date" name="workDayDate" class="form-control" ng-model="vmManager.workDayDate" placeholder="白班时间" format-date required />                             
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">                               
+                                    <input id="workdayTimestart" name="workdaystart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
+                                           ng-model="vmManager.workDayTimeStart" data-length="1" data-minute-step="1" 
+                                           required data-arrow-behavior="picker" />
+                           
+                                    <div class="input-group-addon">
+                                        <label>-</label>
+                                    </div>
+                                    <input id="workdayTimeend" name="workdayTimeend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
+                                           bs-timepicker data-time-format="HH:mm"
+                                           ng-model="vmManager.workDayTimeEnd" required data-arrow-behavior="picker" />                     
+                                </div>
+                            </div>
+
+
+                        
+                        </div>
+                        <div class="form-group">
+                            <label for="worknight" class="col-md-2 control-label">晚班时间:</label>
+                            <div class="col-md-4">
+                                <input id="workNightDate" type="date" name="workNightDate" class="form-control" ng-model="vmManager.workNightDate" placeholder="白班时间" format-date required />
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input id="worknightstart" name="worknightstart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
+                                           ng-model="vmManager.workNightTimeStart" data-length="1" data-minute-step="1"
+                                           required data-arrow-behavior="picker" />
+
+                                    <div class="input-group-addon">
+                                        <label>-</label>
+                                    </div>
+                                    <input id="worknightend" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
+                                           bs-timepicker data-time-format="HH:mm"
+                                           ng-model="vmManager.workNightTimeEnd" required data-arrow-behavior="picker" />
+                                </div>
+                            </div>
+                        </div>
+
 
 
 
@@ -422,7 +487,7 @@
                                 <div class="col-md-2 ">
                                 </div>
                                 <div class="col-md-2">
-                                    <button ng-if="!vmManager.editWindowShow" id="btnsave" class="btn btn-primary" ng-click="operate.updateItem()"><i class="fa fa-save"></i>确定</button>
+                                    <button ng-if="!vmManager.editWindowShow" id="btnsave" class="btn btn-primary" ng-click="operate.updateItem(formWorkover.$valid)"><i class="fa fa-save"></i>确定</button>
                                     <button ng-if="vmManager.editWindowShow" class="btn btn-primary" ng-click="operate.editALL(formWorkover.$valid)"><i class="fa fa-save"></i>编辑保存</button>
                                     <span yl-operatemsg-board></span>
                                 </div>

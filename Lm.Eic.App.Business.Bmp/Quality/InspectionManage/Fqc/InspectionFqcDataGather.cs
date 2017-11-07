@@ -336,12 +336,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             try
             {
                 List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
+                InspectionItemDataSummaryVM model = null;
                 var orderMaterialInfo = this.GetPuroductSupplierInfo(orderId).FirstOrDefault();
                 var needInspectionItems = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
                 fqcHaveInspectionDatas.ForEach(m =>
                 {
                     ///初始化 综合模块
-                    var model = new InspectionItemDataSummaryVM();
+                    model = new InspectionItemDataSummaryVM();
                     OOMaper.Mapper<InspectionFqcDetailModel, InspectionItemDataSummaryVM>(m, model);
                     //抽取数信息
                     model.NeedFinishDataNumber = m.NeedPutInDataCount;
@@ -355,16 +356,31 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.MaterialSupplier = orderMaterialInfo.ProductSupplier;
                     //物料项目抽取信息
                     var inspectionItem = needInspectionItems.Find(e => e.InspectionItem == m.InspectionItem);
-                    model.SizeLSL = inspectionItem.SizeLSL;
-                    model.SizeUSL = inspectionItem.SizeUSL;
-                    model.SizeMemo = inspectionItem.SizeMemo;
-                    model.InspectionAQL = inspectionItem.InspectionAQL;
-                    model.InspectionLevel = inspectionItem.InspectionLevel;
-                    //设备
-                    if (model.EquipmentId == string.Empty || model.EquipmentId == null)
-                        model.EquipmentId = inspectionItem.EquipmentId;
-                    //数据采集类型
-                    model.InspectionDataGatherType = inspectionItem.InspectionDataGatherType;
+                    if (inspectionItem != null)
+                    {
+                        model.SizeLSL = inspectionItem.SizeLSL;
+                        model.SizeUSL = inspectionItem.SizeUSL;
+                        model.SizeMemo = inspectionItem.SizeMemo;
+                        model.InspectionAQL = inspectionItem.InspectionAQL;
+                        model.InspectionLevel = inspectionItem.InspectionLevel;
+                        //设备
+                        if (model.EquipmentId == string.Empty || model.EquipmentId == null)
+                            model.EquipmentId = inspectionItem.EquipmentId;
+                        //数据采集类型
+                        model.InspectionDataGatherType = inspectionItem.InspectionDataGatherType;
+                    }
+                    else
+                    {
+                        model.SizeLSL = 0;
+                        model.SizeUSL = 0;
+                        model.SizeMemo = "配置文件没有此项";
+                        model.InspectionAQL = "无";
+                        model.InspectionLevel = "无";
+                        model.EquipmentId = "无";
+                        //数据采集类型
+                        model.InspectionDataGatherType = "E";
+                    }
+
                     if ((model.InspectionDataGatherType == "D" || model.InspectionDataGatherType == "E" || model.InspectionDataGatherType == "F") && model.InspectionItemResult == "OK")
                     { model.HaveFinishDataNumber = model.NeedFinishDataNumber; }
                     //如果没有检验方式 再去按规则去生成

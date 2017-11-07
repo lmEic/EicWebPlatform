@@ -7,6 +7,7 @@ using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.Linq;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
@@ -241,6 +242,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     newModel = new DailyProductionReportModel();
                     OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(model, newModel);
                     OOMaper.Mapper<UserInfoVm, DailyProductionReportModel>(m, newModel);
+                    ///日期格式 简化
+                    newModel.InPutDate = model.InPutDate.ToDate();
                     newModel.TodayProductionCount = Math.Round((sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
                     if (sumNoProductionTime != 0)
                         newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime, 2, MidpointRounding.AwayFromZero);
@@ -248,9 +251,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                         DailyReportList.Add(newModel);
                 });
             }
-            OpResult mm = DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
+            OpResult resultDatas = DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
             storeListDatas = DailyReportList;
-            return mm;
+            return resultDatas;
         }
         public List<ProductFlowCountDatasVm> GetProductionFlowCountDatas(string department, string orderId, string productName)
         {
@@ -269,7 +272,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 if (orderInfo != null)
                 {
                     modelVm.ProductName = orderInfo.ProductName;
-                    modelVm.OrderProductNumber = orderInfo.ProduceNumber;
+                    modelVm.OrderProductNumber = Math.Round(orderInfo.ProduceNumber, 2);
                     modelVm.OrderNeedPutInNumber = orderInfo.ProduceNumber * e.ProductCoefficient;
                 }
                 if (!retrundatas.Contains(modelVm))
