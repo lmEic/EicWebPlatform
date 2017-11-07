@@ -378,7 +378,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         internal List<DailyProductionReportModel> GetDailyDatasBy(DateTime date, string orderId, string processesName)
         {
             DateTime dateShort = date.ToDate();
-            return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList();
+            return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).OrderBy(f => f.InPutDate).ToList();
         }
         internal List<DailyProductionReportModel> GetWorkerDailyDatasBy(string workerId)
         {

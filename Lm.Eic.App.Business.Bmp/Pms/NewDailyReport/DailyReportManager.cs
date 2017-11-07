@@ -269,7 +269,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 if (orderInfo != null)
                 {
                     modelVm.ProductName = orderInfo.ProductName;
-                    modelVm.OrderProductNumber = orderInfo.ProduceNumber;
+                    modelVm.OrderProductNumber = Math.Round(orderInfo.ProduceNumber, 2);
                     modelVm.OrderNeedPutInNumber = orderInfo.ProduceNumber * e.ProductCoefficient;
                 }
                 if (!retrundatas.Contains(modelVm))
