@@ -25,16 +25,16 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             //string materialId = "349213C0350P0RT";//物料料号
             FactoryInventoryDto dto = new FactoryInventoryDto() { factoryInventoryList = new List<SccFactoryInventory>() };
             if (materialQueryCell == null) return dto;
-            materialQueryCell.MaterialIdList.ForEach(materialId =>
+            materialQueryCell.MaterialIdList.ForEach(m =>
             {
-                List<ErpMaterialInventoryModel> datas = this.erpDbAccess.LoadMeterialInventoryDatas(materialId);
+                List<ErpMaterialInventoryModel> datas = this.erpDbAccess.LoadMeterialInventoryDatas(m.MaterialId);
                 if (datas != null && datas.Count > 0)
                 {
                     datas.ForEach(d =>
                     {
                         SccFactoryInventory sfi = new SccFactoryInventory()
                         {
-                            customerCode = "157",
+                            customerCode = m.customerVendorCode,
                             vendorFactoryCode = "421072-001",
                             goodQuantity = d.GoodQuantity,
                             stockTime = d.StockTime.ToFormatDate(),

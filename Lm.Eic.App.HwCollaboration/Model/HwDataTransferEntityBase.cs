@@ -54,7 +54,6 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// <param name="operateName"></param>
         /// <param name="opResultMessage"></param>
         /// <param name="success"></param>
-        /// <param name="accessApiResult"></param>
         /// <param name="dataList"></param>
         /// <returns></returns>
         public static HwAccessOpResult SetResult(string operateName, string opResultMessage, bool success = true, List<string> dataList = null)

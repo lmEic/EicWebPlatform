@@ -150,6 +150,8 @@ hwCollaborationModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
     var initVm = _.clone(materialBaseConfigVm);
     //视图管理器
     var vmManager = $scope.vmManager = {
+        opresults: null,
+        opResultsViewDisplay: false,
         oldVM: _.clone(initVm),
         lifeCycleStatuses: [{ id: 'NPI', text: '量产前' }, { id: 'MP', text: '量产' }, { id: 'EOL', text: '停产' }],
         inventoryTypes: [{ id: 'FG', text: '成品' }, { id: 'FGSEMI-FG', text: '半成品' }, { id: 'RM', text: '原材料' }],
@@ -235,44 +237,48 @@ hwCollaborationModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
     operate.save = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             leeHelper.setUserData(materialBaseConfigVm);
-            $scope.opPromise = hwDataOpService.saveMaterialBaseConfigDatas(materialBaseConfigVm).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    if (opresult.Result) {
-                        var opNodeType = vmManager.opHandler.actionName;
-                        var opType = materialBaseConfigVm.OpSign;
-                        var vm = _.clone($scope.vm);
-                        if (opType === 'add') {
-                            //vm.Id_Key = opresult.Id_Key;
-                            var newNode = {
-                                name: vm.MaterialId,
-                                children: [],
-                                vm: vm
-                            };
-
-                            if (opNodeType === "addChildren") {
-                                leeTreeHelper.addChildrenNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
-                            }
-                            else if (opNodeType === "add") {
-                                leeTreeHelper.addNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
-                            }
-                        }
-                        else if (opType === 'edit') {//修改节点
-                            if (opNodeType === "edit") {
-                                zTreeSet.treeNode.name = vm.MaterialId;
-                                zTreeSet.treeNode.vm = vm;
-                                var childrens = zTreeSet.treeNode.children;
-
-                                angular.forEach(childrens, function (childrenNode) {
-                                    childrenNode.vm.ParentMaterialId = vm.MaterialId;
-                                })
-
-                                leeTreeHelper.updateNode(zTreeSet.treeId, zTreeSet.treeNode);
-                            }
-                        }
-
-                        vmManager.opHandler.init();
-                    }
+            $scope.opPromise = hwDataOpService.saveMaterialBaseConfigDatas(materialBaseConfigVm).then(function (opresults) {
+                if (!angular.isArray(opresults)) return;
+                vmManager.opresults = opresults;
+                vmManager.opResultsViewDisplay = true;
+                var opsuccess = true;
+                angular.forEach(opresults, function (opItem) {
+                    opsuccess = opsuccess && opItem.Result;
                 });
+                if (opsuccess) {
+                    var opNodeType = vmManager.opHandler.actionName;
+                    var opType = materialBaseConfigVm.OpSign;
+                    var vm = _.clone($scope.vm);
+                    if (opType === 'add') {
+                        var newNode = {
+                            name: vm.MaterialId,
+                            children: [],
+                            vm: vm
+                        };
+
+                        if (opNodeType === "addChildren") {
+                            leeTreeHelper.addChildrenNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
+                        }
+                        else if (opNodeType === "add") {
+                            leeTreeHelper.addNode(zTreeSet.treeId, zTreeSet.treeNode, newNode);
+                        }
+                    }
+                    else if (opType === 'edit') {//修改节点
+                        if (opNodeType === "edit") {
+                            zTreeSet.treeNode.name = vm.MaterialId;
+                            zTreeSet.treeNode.vm = vm;
+                            var childrens = zTreeSet.treeNode.children;
+
+                            angular.forEach(childrens, function (childrenNode) {
+                                childrenNode.vm.ParentMaterialId = vm.MaterialId;
+                            })
+
+                            leeTreeHelper.updateNode(zTreeSet.treeId, zTreeSet.treeNode);
+                        }
+                    }
+
+                    vmManager.opHandler.init();
+                }
             }, function (errResult) {
                 leePopups.alert(errResult);
             });
@@ -280,8 +286,9 @@ hwCollaborationModule.controller('hwMaterialBaseConfigCtrl', function (hwDataOpS
     };
     operate.autoSynchironizeData = function () {
         leeDataHandler.dataOperate.add(operate, true, function () {
-            $scope.opPromise = hwDataOpService.autoSynchironizeData().then(function (opResult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function (opResult) { });
+            $scope.opPromise = hwDataOpService.autoSynchironizeData().then(function (opResults) {
+                vmManager.opresults = opResults;
+                vmManager.opResultsViewDisplay = true;
             });
         });
     };

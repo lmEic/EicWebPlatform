@@ -58,22 +58,22 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             var ListModels = ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.OrderId = string.Format("{0}-{1}", dr["TA001"].ToString().Trim(), dr["TA002"].ToString().Trim()); ;
-                m.ProductID = dr["TA006"].ToString().Trim ();
-                m.ProductName = dr["TA034"].ToString().Trim ();
-                m.ProductSpecify = dr["TA035"].ToString().Trim ();
+                m.ProductID = dr["TA006"].ToString().Trim();
+                m.ProductName = dr["TA034"].ToString().Trim();
+                m.ProductSpecify = dr["TA035"].ToString().Trim();
                 m.OrderFinishStatus = OrderFinishStatusConverter(dr["TA011"].ToString().Trim());
-                m.Count = dr["TA015"].ToString().Trim ().ToDouble();
+                m.Count = dr["TA015"].ToString().Trim().ToDouble();
                 m.InStoreCount = dr["TA017"].ToString().Trim().ToDouble();
-                m.OrderFinishDate = dr["TA010"].ToString().Trim ().ToDate();
-                m.InStockDate = dr["TA063"].ToString().Trim ().ToDate();
+                m.OrderFinishDate = dr["TA010"].ToString().Trim().ToDate();
+                m.InStockDate = dr["TA063"].ToString().Trim().ToDate();
             });
             return ListModels.FirstOrDefault();
         }
-       /// <summary>
-       /// 未完工的工单
-       /// </summary>
+        /// <summary>
+        /// 未完工的工单
+        /// </summary>
         /// <param name="ContainsProductName">产品型号或规格</param>
-       /// <returns></returns>
+        /// <returns></returns>
         public List<OrderModel> GetUnfinishedOrderBy(string ContainsProductName)
         {
             string sqlWhere = string.Format(" WHERE (NOT (TA011 = 'Y' OR  TA011 = 'y')) AND (TA034 LIKE '%{0}%')", ContainsProductName);
@@ -97,7 +97,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
         /// <returns></returns>
         public List<OrderModel> GetAllOrderBy(string ContainsProductName)
         {
-            string sqlWhere = string.Format(" WHERE (TA034 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = '')) OR(TA035 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = ''))", ContainsProductName);
+            string sqlWhere = string.Format(" WHERE TA011 in ('1','2','3') And (TA034 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = '')) OR(TA035 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = ''))", ContainsProductName);
             return ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.OrderId = string.Format("{0}-{1}", dr["TA001"].ToString().Trim(), dr["TA002"].ToString().Trim());
@@ -113,8 +113,8 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             });
         }
 
-     
-    
+
+
 
         private string OrderFinishStatusConverter(string orderFinishStatusId)
         {
@@ -122,30 +122,26 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             switch (orderFinishStatusId)
             {
                 case "1":
-                    returnstring= "未生产";
+                    returnstring = "未生产";
                     break;
                 case "2":
-                    returnstring="已发料";
+                    returnstring = "已发料";
                     break;
                 case "3":
-                    returnstring= "生产中";
+                    returnstring = "生产中";
                     break;
                 case "Y":
-                    returnstring= "已完工";
+                    returnstring = "已完工";
                     break;
                 case "y":
-                    returnstring= "指定完工";
+                    returnstring = "指定完工";
                     break;
                 default:
-                    returnstring= string.Empty;
+                    returnstring = string.Empty;
                     break;
             }
             return returnstring;
         }
-
-
-    
-     
     }
 
     /// <summary>
@@ -171,11 +167,11 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             string sqlWhere = string.Format(" where TB001='{0}' and TB002='{1}' ", idm.Category, idm.Code);
             return ErpDbAccessHelper.FindDataBy<OrderMaterialModel>(SqlFields, sqlWhere, (dr, m) =>
             {
-                m.MaterialId = dr["材料品号"].ToString().Trim ();
-                m.MaterialName = dr["品名"].ToString().Trim ();
+                m.MaterialId = dr["材料品号"].ToString().Trim();
+                m.MaterialName = dr["品名"].ToString().Trim();
                 m.MaterialSpecify = dr["规格"].ToString().Trim();
                 m.Unit = dr["单位"].ToString().Trim();
-                m.ReceiveCount = dr["需领用量"].ToString().Trim ().ToDouble();
+                m.ReceiveCount = dr["需领用量"].ToString().Trim().ToDouble();
             });
         }
     }

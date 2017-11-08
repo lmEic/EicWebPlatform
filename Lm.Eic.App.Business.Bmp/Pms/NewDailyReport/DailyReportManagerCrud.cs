@@ -369,7 +369,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         internal double GetDailyProductionCountBy(string orderId, string processesName)
         {
-            return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList().Sum(f => f.TodayProductionCount);
+            var datas = irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList();
+            return (datas == null || datas.Count == 0) ? 0 : datas.Sum(f => f.TodayProductionCount);
         }
         /// <summary>
         /// 
@@ -392,6 +393,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 SetFixFieldValue(modelList, OpMode.Add);
                 if (!modelList.IsNullOrEmpty())
                     return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
+
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }

@@ -18,9 +18,9 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         {
         }
 
-        public OpResult SendDto(VendorItemRelationDto dto)
+        public HwAccessOpResult SendDto(VendorItemRelationDto dto)
         {
-            return this.AccessApi(this.apiUrl, dto).AsHwAccessApiResult().AsOpResult();
+            return this.AccessApi(this.apiUrl, dto).AsHwAccessApiResult().AsAccessOpResult(this.moduleName);
         }
     }
     public class MaterialBomDtoSender : HwCollaborationBase<KeyMaterialDto>
@@ -29,9 +29,9 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         {
         }
 
-        public OpResult SendDto(KeyMaterialDto dto)
+        public HwAccessOpResult SendDto(KeyMaterialDto dto)
         {
-            return this.AccessApi(this.apiUrl, dto).AsHwAccessApiResult().AsOpResult();
+            return this.AccessApi(this.apiUrl, dto).AsHwAccessApiResult().AsAccessOpResult(this.moduleName);
         }
     }
     public class MaterialBaseBomManager
@@ -61,27 +61,25 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         }
 
         #region store method
-        private OpResult SendDtoToHw(List<HwCollaborationMaterialBaseConfigModel> entities)
+        private List<HwAccessOpResult> SendDtoToHw(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
-            OpResult opResult = null;
+            List<HwAccessOpResult> accessOpResults = new List<HwAccessOpResult>();
             var baseDto = CreateMaterialBaseDto(entities);
-            opResult = this.baseDtoSender.SendDto(baseDto);
-            if (!opResult.Result) return opResult;
-
+            accessOpResults.Add(this.baseDtoSender.SendDto(baseDto));
             var bomDto = CreateMaterialBomDto(entities);
-            opResult = this.bomDtoSender.SendDto(bomDto);
-            if (!opResult.Result) return opResult;
-            return opResult;
-
+            accessOpResults.Add(this.bomDtoSender.SendDto(bomDto));
+            return accessOpResults;
         }
-        public OpResult Store(HwCollaborationMaterialBaseConfigModel entity)
+        public List<HwAccessOpResult> Store(HwCollaborationMaterialBaseConfigModel entity)
         {
             entity.OpDate = DateTime.Now.ToDate();
             entity.OpTime = DateTime.Now.ToDateTime();
             var opresult = this.materialBaseConfigDb.Store(entity);
-            if (opresult.Result)
-                opresult = this.AutoSynchironizeData();
-            return opresult;
+            this.RefreshCache(opresult);
+            List<HwAccessOpResult> accessOpResults = new List<HwAccessOpResult>() {
+                    HwAccessOpResult.SetResult("基础物料信息数据存储", opresult.Message, opresult.Result)
+                };
+            return accessOpResults;
         }
         private VendorItemRelationDto CreateMaterialBaseDto(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
@@ -129,16 +127,29 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             return dto;
         }
 
-
+        /// <summary>
+        /// 刷新缓存
+        /// </summary>
+        private void RefreshCache(OpResult result)
+        {
+            if (result.Result)
+                this.materialBaseDictionary = null;
+        }
         /// <summary>
         /// 一键同步数据
         /// </summary>
         /// <returns></returns>
-        public OpResult AutoSynchironizeData()
+        public List<HwAccessOpResult> AutoSynchironizeData()
         {
+            this.RefreshCache(OpResult.SetSuccessResult("OK"));
             var datas = CreateBomCellList();
             if (datas == null || datas.Count == 0)
-                return OpResult.SetErrorResult("没有要同步的数据");
+            {
+                List<HwAccessOpResult> accessOpResults = new List<HwAccessOpResult>() {
+                    HwAccessOpResult.SetResult("物料基础信息模块", "没有要同步的数据",false)
+                };
+                return accessOpResults;
+            }
             return SendDtoToHw(datas);
         }
         #endregion
@@ -163,24 +174,10 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         /// 获取所有的BOM配置数据
         /// </summary>
         /// <returns></returns>
-        public List<SccKeyMaterialVO> GetAllBomConfigDatas()
+        public List<HwCollaborationMaterialBaseConfigModel> GetAllBomConfigDatas()
         {
-            List<SccKeyMaterialVO> rtnDatas = new List<Model.SccKeyMaterialVO>();
-            var configDatas = CreateBomCellList();
-            if (configDatas != null && configDatas.Count > 0)
-            {
-                SccKeyMaterialVO vo = null;
-                configDatas.ForEach(m =>
-                {
-                    vo = new SccKeyMaterialVO()
-                    {
-                        vendorItemCode = m.ParentMaterialId,
-                        subItemCode = m.MaterialId
-                    };
-                    rtnDatas.Add(vo);
-                });
-            }
-            return rtnDatas;
+            List<HwCollaborationMaterialBomModel> rtnDatas = new List<HwCollaborationMaterialBomModel>();
+            return CreateBomCellList();
         }
         #endregion
     }
