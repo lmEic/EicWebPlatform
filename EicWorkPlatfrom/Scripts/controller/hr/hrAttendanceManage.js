@@ -760,6 +760,22 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             vmManager.edittingRow.isEdittingClassType = false;
 
         },
+        editOverHours: function (item) {         
+            item.wkhing = true;
+            vmManager.getCurrentRow(item);
+            var dataitem = _.clone(item);
+            dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+            $scope.vm = item;        
+            if (item !== undefined && item !== null) {
+                angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing = false });
+                leeHelper.copyVm(item, uiVM);
+                $scope.vm = uiVM;
+                vmManager.edittingRowIndex = item.rowindex;
+                vmManager.edittingRow = item;
+                item.wkhing = true;
+                focusSetter['workeroverFocus'] = true;
+            }
+        },
 
         //设置单元格编辑状态
         setEditCellStatus: function (item, cellField, status) {
