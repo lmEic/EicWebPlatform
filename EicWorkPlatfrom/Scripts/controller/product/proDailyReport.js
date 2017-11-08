@@ -114,7 +114,6 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     //----------------------------------------------------------//
     return reportDataOp;
 });
-
 //生产标准艺流程设定
 productModule.controller("standardProductionFlowSetCtrl", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
     ///工艺标准工时视图模型
@@ -557,9 +556,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         MachineProductionTime: 0,
         MachineUnproductiveTime: 0,
         MachineUnproductiveReason: null,
-        Field1: null,
-        Field2: null,
-        Field3: null,
+        MachineSetProcutionTime: 12,
+        MachineProductionCount: 0,
+        MachineProductionBadCount: 0,
         Field4: null,
         Field5: null,
         OpPerson: null,
@@ -946,7 +945,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
 
     };
-
     $scope.vmManagerMultiermUser = vmManagerMultiermUser;
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();
@@ -1045,7 +1043,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
 
     };
     $scope.focus = focusSetter;
-
 });
 /// 生产订单分派  
 productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
