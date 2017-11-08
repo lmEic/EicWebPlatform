@@ -72,17 +72,14 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         }
         public List<HwAccessOpResult> Store(HwCollaborationMaterialBaseConfigModel entity)
         {
-
             entity.OpDate = DateTime.Now.ToDate();
             entity.OpTime = DateTime.Now.ToDateTime();
             var opresult = this.materialBaseConfigDb.Store(entity);
-            if (opresult.Result)
-            {
-                List<HwAccessOpResult> accessOpResults = new List<HwAccessOpResult>() {
-                    HwAccessOpResult.SetResult("基础物料信息数据存储", opresult.Message, false)
+            this.RefreshCache(opresult);
+            List<HwAccessOpResult> accessOpResults = new List<HwAccessOpResult>() {
+                    HwAccessOpResult.SetResult("基础物料信息数据存储", opresult.Message, opresult.Result)
                 };
-            }
-            return this.AutoSynchironizeData();
+            return accessOpResults;
         }
         private VendorItemRelationDto CreateMaterialBaseDto(List<HwCollaborationMaterialBaseConfigModel> entities)
         {
@@ -130,13 +127,21 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             return dto;
         }
 
-
+        /// <summary>
+        /// 刷新缓存
+        /// </summary>
+        private void RefreshCache(OpResult result)
+        {
+            if (result.Result)
+                this.materialBaseDictionary = null;
+        }
         /// <summary>
         /// 一键同步数据
         /// </summary>
         /// <returns></returns>
         public List<HwAccessOpResult> AutoSynchironizeData()
         {
+            this.RefreshCache(OpResult.SetSuccessResult("OK"));
             var datas = CreateBomCellList();
             if (datas == null || datas.Count == 0)
             {
