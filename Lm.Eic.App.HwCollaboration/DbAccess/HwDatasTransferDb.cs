@@ -14,9 +14,9 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         public static OpResult ToOpResult(this int record)
         {
             if (record > 0)
-                return OpResult.SetSuccessResult("向华为协同平台发送配置数据成功！");
+                return OpResult.SetSuccessResult("存储数据成功！");
             else
-                return OpResult.SetErrorResult("向华为协同平台发送配置数据失败!");
+                return OpResult.SetErrorResult("存储数据失败!");
         }
     }
     public abstract class HwDbBase
@@ -41,7 +41,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
     /// <summary>
     /// 华为数据传输数据操作助手
     /// </summary>
-    /// 
+    ///
     public class HwDatasTransferDb
     {
         private string selectFileds = "OpModule, OpContent,OpLog, OpDate, OpTime, OpPerson, OpSign from HwCollaboration_DataTransfer";
