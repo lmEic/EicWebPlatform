@@ -776,7 +776,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
                 focusSetter['workeroverFocus'] = true;
             }
         },
-
         //设置单元格编辑状态
         setEditCellStatus: function (item, cellField, status) {
             var editCellSign = 'editting' + cellField + 'Mode';
