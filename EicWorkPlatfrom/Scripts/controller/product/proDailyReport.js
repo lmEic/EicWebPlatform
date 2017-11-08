@@ -988,7 +988,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         }
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
-        console.log(uiVM);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             $scope.searchPromise = dReportDataOpService.saveDailyReportData(uiVM).then(function (opResult) {
                 if (opResult.Result) {
