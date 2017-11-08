@@ -17,8 +17,8 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage.Tests
         [TestMethod()]
         public void ttTest()
         {
-            MaterialBaseInfoSettor settor = new MaterialBaseInfoSettor();
-            var r = settor.tt();
+            //MaterialBaseInfoSettor settor = new MaterialBaseInfoSettor();
+           // var r = settor.tt();
             Assert.Fail();
         }
     }
