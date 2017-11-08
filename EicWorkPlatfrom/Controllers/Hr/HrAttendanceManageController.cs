@@ -223,6 +223,23 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
+            TempData["WorkOverHourDatasBySum"] = datas;
+            return DateJsonResult(datas);
+
+        }
+        [NoAuthenCheck]
+        public ContentResult GetWorkOverHourSumsByWorkId(string qrydate,string departmentText,string workId,int mode)
+        {
+            
+            WorkOverHoursDto qryDto = new WorkOverHoursDto()
+            {
+                QryDate = qrydate,
+                DepartmentText = departmentText,
+                WorkId=workId,
+                SearchMode = mode
+            };
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
+            TempData["WorkOverHourDatasBySum"] = datas;
             return DateJsonResult(datas);
 
         }
@@ -279,7 +296,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
                 string fileName = "加班数据模板.xls";
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
-
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
                 return this.DownLoadFile(dlfm);
 
@@ -289,11 +305,21 @@ namespace EicWorkPlatfrom.Controllers.Hr
             {
 
                 throw new Exception(ex.Message);
-            }
-           
-
-           
+            }                  
         }
+        [NoAuthenCheck]
+        
+        public FileResult WorkOverHoursDatasSumToExcel()
+        {
+            string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
+            string fileName = "加班数据模板.xls";
+            var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
+            var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas, SiteRootPath, filePath, fileName);
+            return this.DownLoadFile(dlfm);
+
+        }
+
+
         /// <summary>
         /// 后台修改保存
         /// </summary>

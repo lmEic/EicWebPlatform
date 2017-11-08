@@ -902,20 +902,15 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         {
             try
             {
-
                 MemoryStream stream = new MemoryStream();
                 HSSFWorkbook workbook = (HSSFWorkbook)WorkbookFactory.Create(filepath);
                 foreach (string i in DicDataSources.Keys)
                 {
                     if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
-
                     ISheet sheet = WorkOverHoursCreateSheet<T>(DicDataSources[i], i, FieldMapList, workbook);
                     sheet.ForceFormulaRecalculation = true;
-
                 }
                 workbook.Write(stream);
-
-
 
                 return stream;
             }
