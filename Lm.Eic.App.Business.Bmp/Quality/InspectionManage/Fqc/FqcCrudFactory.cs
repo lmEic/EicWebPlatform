@@ -136,7 +136,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         internal InspectionFqcDetailModel GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber, string inspectionItem)
         {
-            return irep.Entities.Last(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspectionItem);
+            return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspectionItem);
         }
         internal bool IsExist(string orderId, int orderIdNumber, string inspecitonItem)
         {

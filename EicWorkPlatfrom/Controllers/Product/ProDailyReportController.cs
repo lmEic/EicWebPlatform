@@ -288,7 +288,19 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datasResult = new { opResult, dataslist };
             return Json(datasResult);
         }
+        /// <summary>
+        /// 机台录入存储
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveDailyReportDatas(List<DailyProductionReportModel> entitys)
+        {
 
+            var opResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entitys);
+
+            return Json(opResult);
+        }
 
         #endregion
     }

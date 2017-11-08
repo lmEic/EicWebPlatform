@@ -432,6 +432,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         public DailyProductionReportModel()
         { }
         #region Model
+        private double _machinesetprocutiontime;
+        /// <summary>
+        ///设置时数
+        /// </summary>
+        public double MachineSetProcutionTime
+        {
+            set { _machinesetprocutiontime = value; }
+            get { return _machinesetprocutiontime; }
+        }
+        private double _machineproductioncount;
+        /// <summary>
+        ///机台生产数量
+        /// </summary>
+        public double MachineProductionCount
+        {
+            set { _machineproductioncount = value; }
+            get { return _machineproductioncount; }
+        }
         private string _department;
         /// <summary>
         ///部门
@@ -585,19 +603,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _workerproductiontime = value; }
             get { return _workerproductiontime; }
         }
-        private double _getprodutiontime = 0;
+        private double _getprodutiontime;
         /// <summary>
         ///得到工时
         /// </summary>
         public double GetProdutionTime
         {
             set { _getprodutiontime = value; }
-            get
-            {
-                if (StandardProductionTime != 0)
-                    return Math.Round((TodayProductionCount * StandardProductionTime) / 3600, 2);
-                else return _getprodutiontime;
-            }
+            get { return _getprodutiontime; }
         }
         private double _workernoproductiontime;
         /// <summary>
@@ -673,7 +686,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private double _machineproductiontime;
         /// <summary>
-        ///机台工时
+        ///机台生产时数
         /// </summary>
         public double MachineProductionTime
         {
@@ -698,32 +711,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _machineunproductivereason = value; }
             get { return _machineunproductivereason; }
         }
-        private string _field1;
+        private double _machineProductionBadCount;
         /// <summary>
-        ///备用字1
+        ///生产不良数
         /// </summary>
-        public string Field1
+        public double MachineProductionBadCount
         {
-            set { _field1 = value; }
-            get { return _field1; }
-        }
-        private string _field2;
-        /// <summary>
-        ///备用字2
-        /// </summary>
-        public string Field2
-        {
-            set { _field2 = value; }
-            get { return _field2; }
-        }
-        private string _field3;
-        /// <summary>
-        ///备用字3
-        /// </summary>
-        public string Field3
-        {
-            set { _field3 = value; }
-            get { return _field3; }
+            set { _machineProductionBadCount = value; }
+            get { return _machineProductionBadCount; }
         }
         private string _field4;
         /// <summary>
