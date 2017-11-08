@@ -24,9 +24,9 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             //string productId = "14K1B169600M0RN";//产品品号
             MaterialMakingDto dto = new MaterialMakingDto() { materialMakingList = new List<SccMaterialMakingVO>() };
             if (materialQueryCell == null) return dto;
-            materialQueryCell.ProductIdList.ForEach(productId =>
+            materialQueryCell.ProductIdList.ForEach(m =>
             {
-                List<ErpMaterialMakingModel> datas = this.erpDbAccess.LoadMaterialMakingDatas(productId);
+                List<ErpMaterialMakingModel> datas = this.erpDbAccess.LoadMaterialMakingDatas(m.MaterialId);
                 if (datas != null && datas.Count > 0)
                 {
                     datas.ForEach(d =>
@@ -36,7 +36,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
                             vendorFactoryCode = "421072-001",
                             componentCode = d.ComponentCode.Trim(),
                             componentDescription = "BOSA Pigtail",
-                            customerVendorCode = "157",
+                            customerVendorCode = m.customerVendorCode,
                             orderCompletedQuantity = d.OrderCompletedQuantity,
                             orderNumber = d.OrderNumber.Trim(),
                             orderPublishDateStr = d.OrderPublishDateStr.ToFormatDate(),

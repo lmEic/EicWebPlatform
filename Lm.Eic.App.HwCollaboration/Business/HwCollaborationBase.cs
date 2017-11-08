@@ -278,17 +278,17 @@ namespace Lm.Eic.App.HwCollaboration.Business
             return apiResult;
         }
 
-        public static OpResult AsOpResult(this HwAccessApiResult accessApiResult)
+        public static HwAccessOpResult AsAccessOpResult(this HwAccessApiResult accessApiResult, string operateName)
         {
             bool isSuccess = accessApiResult != null && accessApiResult.success;
             if (isSuccess)
             {
-                return OpResult.SetSuccessResult("向华为平台发送信息成功");
+                return HwAccessOpResult.SetResult(operateName, "向华为平台发送信息成功");
             }
             else
             {
                 string msg = accessApiResult.errorMessage;
-                return OpResult.SetErrorResult(string.Format("向华为平台发送信息出现错误：{0}", msg));
+                return HwAccessOpResult.SetResult(operateName, string.Format("向华为平台发送信息出现错误：{0}", msg), false);
             }
         }
     }
