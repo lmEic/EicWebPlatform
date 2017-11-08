@@ -585,14 +585,21 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _workerproductiontime = value; }
             get { return _workerproductiontime; }
         }
-        private double _getprodutiontime;
+        private double _getproductiontime;
         /// <summary>
         ///得到工时
         /// </summary>
-        public double GetProdutionTime
+        public double GetProductionTime
         {
-            set { _getprodutiontime = value; }
-            get { return _getprodutiontime; }
+            set { _getproductiontime = value; }
+            get
+            {
+                if (StandardProductionTime != 0)
+                {
+                    return Math.Round(TodayProductionCount * StandardProductionTime / 3600, 2);
+                }
+                else return _getproductiontime;
+            }
         }
         private double _workernoproductiontime;
         /// <summary>
@@ -666,14 +673,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _mouldholecount = value; }
             get { return _mouldholecount; }
         }
-        private double _machinesetprocutiontime;
+        private double _machinesetproductiontime;
         /// <summary>
-        ///设置时数
+        ///机械设置时数
         /// </summary>
-        public double MachineSetProcutionTime
+        public double MachineSetProductionTime
         {
-            set { _machinesetprocutiontime = value; }
-            get { return _machinesetprocutiontime; }
+            set { _machinesetproductiontime = value; }
+            get { return _machinesetproductiontime; }
         }
         private double _machineproductiontime;
         /// <summary>
