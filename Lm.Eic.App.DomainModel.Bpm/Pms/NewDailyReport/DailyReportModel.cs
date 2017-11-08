@@ -432,24 +432,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         public DailyProductionReportModel()
         { }
         #region Model
-        private double _machinesetprocutiontime;
-        /// <summary>
-        ///设置时数
-        /// </summary>
-        public double MachineSetProcutionTime
-        {
-            set { _machinesetprocutiontime = value; }
-            get { return _machinesetprocutiontime; }
-        }
-        private double _machineproductioncount;
-        /// <summary>
-        ///机台生产数量
-        /// </summary>
-        public double MachineProductionCount
-        {
-            set { _machineproductioncount = value; }
-            get { return _machineproductioncount; }
-        }
         private string _department;
         /// <summary>
         ///部门
@@ -666,15 +648,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _mouldid = value; }
             get { return _mouldid; }
         }
-        private int _mouldholecount;
-        /// <summary>
-        ///模穴数
-        /// </summary>
-        public int MouldHoleCount
-        {
-            set { _mouldholecount = value; }
-            get { return _mouldholecount; }
-        }
         private double _machinepersonratio;
         /// <summary>
         ///人机配比
@@ -684,6 +657,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _machinepersonratio = value; }
             get { return _machinepersonratio; }
         }
+        private int _mouldholecount;
+        /// <summary>
+        ///模穴数
+        /// </summary>
+        public int MouldHoleCount
+        {
+            set { _mouldholecount = value; }
+            get { return _mouldholecount; }
+        }
+        private double _machinesetprocutiontime;
+        /// <summary>
+        ///设置时数
+        /// </summary>
+        public double MachineSetProcutionTime
+        {
+            set { _machinesetprocutiontime = value; }
+            get { return _machinesetprocutiontime; }
+        }
         private double _machineproductiontime;
         /// <summary>
         ///机台生产时数
@@ -692,6 +683,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _machineproductiontime = value; }
             get { return _machineproductiontime; }
+        }
+        private double _machineproductioncount;
+        /// <summary>
+        ///机台生产数量
+        /// </summary>
+        public double MachineProductionCount
+        {
+            set { _machineproductioncount = value; }
+            get { return _machineproductioncount; }
         }
         private double _machineunproductivetime;
         /// <summary>
@@ -711,14 +711,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _machineunproductivereason = value; }
             get { return _machineunproductivereason; }
         }
-        private double _machineProductionBadCount;
+        private double _machineproductionbadcount;
         /// <summary>
-        ///生产不良数
+        ///机台不良数
         /// </summary>
         public double MachineProductionBadCount
         {
-            set { _machineProductionBadCount = value; }
-            get { return _machineProductionBadCount; }
+            set { _machineproductionbadcount = value; }
+            get { return _machineproductionbadcount; }
         }
         private string _field4;
         /// <summary>
@@ -785,10 +785,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
-
-
-
-
     #region  
     /// <summary>
     /// 查询操作Model

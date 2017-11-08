@@ -318,7 +318,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <form role="form" ng-show="vm.ProcessesType ==='机台'" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <form role="form" ng-show="vm.ProcessesType ==='机台'" name="formMachinePutIn" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                 <fieldset>
                                     <div class="table-responsive" style="padding:10px;overflow-y:auto;">
                                         <div class="col-md-6">
@@ -332,9 +332,7 @@
                                                            ng-onblur="vmManager.findProcessesInfo($event)"
                                                            ng-model="vm.ProcessesIndex"
                                                            required />
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.processesIndex.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">录入工序不能为空</small>
-                                                    </div>
+
                                                     <div class="input-group-addon">
                                                         <label class="label label-primary" style='max-width:100px;display:inline-block;overflow:hidden;'><i class="fa fa-cutlery"></i> {{vm.ProcessesName}}</label>
                                                     </div>
@@ -367,9 +365,7 @@
                                                            focus-if="focus.workerIdFocus" focus-setter
                                                            placeholder="输工号或姓名"
                                                            data-ensure-user-exist required />
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.workerId.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">工号不能为空</small>
-                                                    </div>
+
                                                     <div class="input-group-addon" ng-show="vmManager.isSingle">
                                                         <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.WorkerName}}</label>
                                                     </div>
@@ -406,9 +402,7 @@
                                                            ng-model="vm.WorkerProductionTime" required />
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
-                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">录入生产工时不能为空</small>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -423,9 +417,7 @@
                                                            ng-model="vm.WorkerNoProductionTime" required />
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
-                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">录入非生产工时不能为空</small>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -458,9 +450,7 @@
                                                               focus-if="focus.workerNoProductionReasonFocus" focus-setter
                                                               ng-keydown=""
                                                               rows="2" class="form-control" ng-model="vm.WorkerNoProductionReason" required />
-                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerNoProductionReason.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">非生产原因不能为空</small>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -476,9 +466,7 @@
                                                            focus-if="focus.workerNoProductionReasonFocus" focus-setter
                                                            ng-keydown="vm.changeInPutNoProductionReason($event)"
                                                            rows="2" class="form-control" ng-model="vm.MachineId" required />
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.wmachineId.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">非生产原因不能为空</small>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                             @*设置时数 *@
@@ -489,9 +477,7 @@
                                                            focus-if="focus.workerNoProductionReasonFocus" focus-setter
                                                            ng-keydown=""
                                                            class="form-control" ng-model="vm.MachineSetProcutionTime" required />
-                                                    <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerNoProductionReason.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">设置时数不能为空</small>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -547,9 +533,7 @@
                                                                   focus-if="focus.workerNoProductionReasonFocus" focus-setter
                                                                   ng-keydown=""
                                                                   rows="2" class="form-control" ng-model="vm.MachineUnproductiveReason" required />
-                                                        <div class="error-messages" ng-messages="formMultitermDailyProductionReport.workerNoProductionReason.$error" ng-show="operate.showValidation">
-                                                            <small ng-message="required">非生产原因不能为空</small>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
