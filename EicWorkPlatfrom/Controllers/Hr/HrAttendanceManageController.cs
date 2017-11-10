@@ -198,8 +198,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
-        [NoAuthenCheck]
-       
+        [NoAuthenCheck]  
         public ContentResult GetWorkOverHoursData(DateTime workDate,string departmentText,int mode)
         {
             WorkOverHoursDto dto = new WorkOverHoursDto()
@@ -207,12 +206,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 WorkDate = workDate,
                 DepartmentText=departmentText,
                 SearchMode = mode
-
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBy(dto);
             return DateJsonResult(datas);
         }
-
         [NoAuthenCheck]
         public ContentResult GetWorkOverHoursSum(string qrydate,string departmentText, int mode)
         {
@@ -244,6 +241,21 @@ namespace EicWorkPlatfrom.Controllers.Hr
 
         }
         [NoAuthenCheck]
+        public ContentResult GetWorkOverHoursWorkIdBydetail(string qrydate,string departmentText,string workId,int mode)
+        {
+            WorkOverHoursDto qryDto = new WorkOverHoursDto()
+            {
+                QryDate = qrydate,
+                DepartmentText = departmentText,
+                WorkId = workId,
+                SearchMode = mode
+            };
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByDetail(qryDto);
+            TempData["WorkOverHourDatasBySum"] = datas;
+            return DateJsonResult(datas);
+
+        }
+        [NoAuthenCheck]
         /// <summary>
         /// 载入模板
         /// </summary>
@@ -257,8 +269,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return DateJsonResult(datas);
         }
         [HttpPost]
-        [NoAuthenCheck]
-        
+        [NoAuthenCheck]      
         public JsonResult HandlWorkOverHoursDt(List<WorkOverHoursMangeModels> workOverHours)
         {
             var result = WorkOverHoursService.WorkOverHoursManager.HandleWorkOverHoursDatas(workOverHours);
@@ -307,28 +318,33 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 throw new Exception(ex.Message);
             }                  
         }
-        [NoAuthenCheck]
-        
+        [NoAuthenCheck]      
         public FileResult WorkOverHoursDatasSumToExcel()
         {
-            string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
-            string fileName = "加班数据模板.xls";
-            var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
-            var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas, SiteRootPath, filePath, fileName);
-            return this.DownLoadFile(dlfm);
+            try
+            {
+                string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
+                string fileName1 = "加班汇总表.xls";
+                var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
+                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas,SiteRootPath, filePath1, fileName1);
+                return this.DownLoadFile(dlfm);
+            }
+            catch (Exception ex)
+            {
 
+                throw new Exception(ex.Message);
+            }
+            
+
+           
         }
-
-
         /// <summary>
         /// 后台修改保存
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-
         [HttpPost]
-        [NoAuthenCheck]
-        
+        [NoAuthenCheck]         
         public JsonResult StoreWorkOverHoursRecordSingle(WorkOverHoursMangeModels model)
         {
             try
