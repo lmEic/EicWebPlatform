@@ -141,6 +141,17 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
             mode: mode
         })
     };
+    //按工号查询加班时数汇总
+    hr.getWorkOverHourSumsByWorkIds = function (qrydate, departmentText, workId, mode)
+    {
+        var url = attendUrl + 'GetWorkOverHourSumsByWorkId';
+        return ajaxService.getData(url, {
+            qrydate: qrydate,
+            departmentText: departmentText,
+            workId:workId,
+            mode: mode
+        })
+    }
 
     //批量保存加班数据
     hr.storeHandlWorkOverHoursDt = function (workOverHours) {
@@ -597,6 +608,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
 
         departmentText: leeLoginUser.departmentText,
         workDate: new Date().toDateString(),
+        workId:null,
 
     };
     $scope.query = qryDto;
@@ -613,12 +625,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         workDayDate: null,
         workDayTimeStart: new Date(00, 00, 00),
         workDayTimeEnd: new Date(00, 00, 00),
-
         workNightDate: null,
         workNightTimeStart: new Date(00, 00, 00),
         workNightTimeEnd: new Date(00, 00, 00),
-
-
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: "晚班" }],
         overTypes: [{ id: '平时加班', text: '平时加班' }, { id: '假日加班', text: '假日加班' }, { id: '节假日加班', text: '节假日加班' }],
         workOverHourss: [{ id: 0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0 }, { id: 2.5, text: 2.5 }],
@@ -751,7 +760,22 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             vmManager.edittingRow.isEdittingClassType = false;
 
         },
-
+        editOverHours: function (item) {         
+            item.wkhing = true;
+            vmManager.getCurrentRow(item);
+            var dataitem = _.clone(item);
+            dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+            $scope.vm = item;        
+            if (item !== undefined && item !== null) {
+                angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing = false });
+                leeHelper.copyVm(item, uiVM);
+                $scope.vm = uiVM;
+                vmManager.edittingRowIndex = item.rowindex;
+                vmManager.edittingRow = item;
+                item.wkhing = true;
+                focusSetter['workeroverFocus'] = true;
+            }
+        },
         //设置单元格编辑状态
         setEditCellStatus: function (item, cellField, status) {
             var editCellSign = 'editting' + cellField + 'Mode';
@@ -824,9 +848,18 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         },
         //加班汇总
         getWorkOverHourSumss: function (mode)
-        {      
+        {     
+             qryDto.workId=null,
             vmManager.dataSourceSum = [];
             var datas = hrDataOpService.getWorkOverHourSums(vmManager.searchYear, qryDto.departmentText, 1).then(function (datas) {
+                vmManager.dataSourceSum = datas;
+            })
+        },
+        //按工号查询汇总
+        getWorkOverHourSumsByWorkId: function (mode)
+        {             
+            vmManager.dataSourceSum = [];
+            var datas = hrDataOpService.getWorkOverHourSumsByWorkIds(vmManager.searchYear, qryDto.departmentText,qryDto.workId,2).then(function (datas) {
                 vmManager.dataSourceSum = datas;
             })
         },
@@ -876,7 +909,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         },
         //编辑下一行加班时数
         editNextworkOverHours: function ($event, item) {
-            if ($event.keyCode === 13 || $event.keyCode === 9) {
+            if ($event.keyCode === 13 || $event.keyCode === 9||$event.keyCode==40) {
                 //累计时数
                 uiVM.WorkDate = vmManager.changeworkDate;
              
@@ -1046,7 +1079,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
            
         });           
         dialog.close();
-        focusSetter['workeroverFocus'] = true;     
+        focusSetter['workeroverFocus'] = true;             
     },
         //批量保存提示窗口
         operate.saveDialog = function () {

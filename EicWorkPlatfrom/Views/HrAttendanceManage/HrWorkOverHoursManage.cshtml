@@ -128,10 +128,10 @@
                                 </td>
                                 <td>{{item.WorkerId}}</td>
                                 <td>{{item.WorkerName}}</td>
-                                <td>
+                                <td title="双击可修改" ng-dblclick="vmManager.editOverHours(item)" >
                                     <span ng-hide="item.wkhing">{{item.WorkOverHours}}</span>
                                     <input ng-model="vm.WorkOverHours" ng-keydown="vmManager.inputWorkOverHours($event,item)"
-                                           focus-if="focus.workeroverFocus" focus-setter style="width:70px;"
+                                           focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入时数" ng-show="item.wkhing" />
                                 </td>
                                 <td>{{item.Remark}}</td>
@@ -161,9 +161,11 @@
                           </button>
                       </div>
                   </form>
+                
               </div>
 
-              <div class="col-md-5 pull-right">        
+              <div class="col-md-5 pull-right">    
+                 
                   <button class="btn btn-success pull-right" title="返回" ng-click="vmManager.returnWorkOverHoursDatas()"><i class="fa fa-refresh"></i>返回</button>
               </div>
           </div>  
@@ -231,14 +233,23 @@
     <div pageslide ps-open="vmManager.editWindowShow1" ps-side="right" ps-size="100%" ps-speed="1.0" ps-container='editWindow' ps-click-outside="false">
         <div class="bs-callout bs-callout-info">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <form for="form" class="form-inline">
-                        <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchYear"></span>
-                        <button type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHourSumss()"><i class="fa fa-search"></i> 查询汇总</button>                                          
+                        <div class="form-group">
+                            <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchYear"></span>
+                            <button type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHourSumss()"><i class="fa fa-search"></i> 查询汇总</button>                                          
+                        </div>
+                        <div class="form-group">                        
+                            <span class=" pull-right">
+                                <input id="queryworkid"  type="text" ng-model="query.workId" class="form-control pull-right" placeholder="输入工号查询人个汇总" ng-change="vmManager.getWorkOverHourSumsByWorkId()" />
+                            </span>
+                        </div>  
+                        <div class="form-group">
+                            <a class="btn btn-primary pull-right" href="@Url.Action("WorkOverHoursDatasSumToExcel", "HrAttendanceManage")"><i class="fa fa-file-excel-o"></i>导出汇总</a>
+                        </div>
                     </form>
-                </div>
-
-                <div class="col-md-5 pull-right">
+                </div>                                                              
+                <div class="col-md-2 pull-right">                
                     <button class="btn btn-success pull-right" title="返回" ng-click="vmManager.returnWorkOverHoursSum()"><i class="fa fa-refresh"></i>返回</button>
                 </div>
             </div>
@@ -252,19 +263,27 @@
                             <col width="60" />
                             <col width="60" />
                             <col width="60" />
+                           
+                            <col width="60" />
+                            <col width="60" />
                         </colgroup>
                         <thead>
                             <tr class="info">
-                               
-                                <th>部门</th>                       
+                                <td>日期</td>
+                                <th>加班类型</th>
+                                <th>部门</th>  
+                              
                                 <th>工号</th>
                                 <th>姓名</th>
                                 <th>汇总时数(h)</th>                                               
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index">                              
-                                <td ng-bind="item.DepartmentText"></td>                                                      
+                            <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index">  
+                                <td ng-bind="item.WorkDate"></td>
+                                <td ng-bind="item.WorkoverType"></td>
+                                <td ng-bind="item.DepartmentText"></td>  
+                               
                                 <td ng-bind="item.WorkerId"></td>
                                 <td ng-bind="item.WorkerName"></td>
                                 <td ng-bind="item.WorkOverHours"></td>                                                       
@@ -359,7 +378,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="workDate" class="col-md-2 control-label">加班日期</label>
+                            <label for="workDate" class="col-md-2 control-label">申请日期</label>
                             <div class="col-md-4">
                                 <input type="date" name="workDate" class="form-control" ng-model="vmManager.changeworkDate" placeholder="加班日期"  format-date required />
                                 <div class="error-messages" ng-messages="formWorkover.workDate.$error" ng-show="operate.showValidation">
@@ -435,7 +454,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="workday" class="col-md-2 control-label">白班时间:</label>
+                            <label for="workday" class="col-md-2 control-label">白班截止日期:</label>
                             <div class="col-md-4">
                                 <input  id="workDayDate"type="date" name="workDayDate" class="form-control" ng-model="vmManager.workDayDate" placeholder="白班时间" format-date required />                             
                             </div>
@@ -458,7 +477,7 @@
                         
                         </div>
                         <div class="form-group">
-                            <label for="worknight" class="col-md-2 control-label">晚班时间:</label>
+                            <label for="worknight" class="col-md-2 control-label">晚班截止日期:</label>
                             <div class="col-md-4">
                                 <input id="workNightDate" type="date" name="workNightDate" class="form-control" ng-model="vmManager.workNightDate" placeholder="白班时间" format-date required />
                             </div>

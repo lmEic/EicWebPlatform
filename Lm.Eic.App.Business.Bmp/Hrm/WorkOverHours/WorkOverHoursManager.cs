@@ -35,13 +35,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
          
             foreach (var item in GetWorkOverHoursList)
             {
-                if(modelList.FirstOrDefault(m=>m.WorkerId==item.WorkerId)==null)
+               if(modelList.FirstOrDefault(m=>m.WorkerId==item.WorkerId&&m.WorkoverType==item.WorkoverType)==null) 
                 {
                     var temModel = new WorkOverHoursMangeModels();
                     temModel.WorkerId = item.WorkerId;
                     temModel.WorkerName = item.WorkerName;
                     temModel.DepartmentText = item.DepartmentText;
-                    temModel.WorkOverHours = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
+                    temModel.WorkoverType = item.WorkoverType;
+                    temModel.WorkDate = item.WorkDate;
+                    temModel.WorkClassType = item.WorkClassType;
+                    temModel.WorkOverHours = GetWorkOverHoursList.Where(m => m.WorkoverType == item.WorkoverType &&  m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
 
                     modelList.Add(temModel);
                 }             
@@ -98,7 +101,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         /// </summary>
         /// <param name="datas"></param>
         /// <returns></returns>
-
         public DownLoadFileModel WorkOverHoursDatasDLFM(List<WorkOverHoursMangeModels>datas,string  SiteRootPath,string  filePath,string  fileName)
         {
             try
@@ -115,12 +117,32 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
 
         }
+        public DownLoadFileModel WorkOverHoursDatasSumDLFM(List<WorkOverHoursMangeModels> datas, string SiteRootPath, string filePath, string fileName)
+        {
+            try
+            {
+                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
+
+                return dataGroupping.ExportToExcelMultiSheets<WorkOverHoursMangeModels>(CreateFieldMapping()).WorkOverExcelTemplae("加班汇总报表");
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
+
         private List<FileFieldMapping> CreateFieldMapping()
         {
             List<FileFieldMapping> fieldmapping = new List<FileFieldMapping>()
             {
                 new FileFieldMapping("WorkDate","日期"),
                 new FileFieldMapping("DepartmentText","部门"),
+                new FileFieldMapping("WorkoverType","加班类型"),
                 new FileFieldMapping("WorkClassType","班别"),
                 new FileFieldMapping("WorkerId","工号"),
                 new FileFieldMapping("WorkerName","姓名"),

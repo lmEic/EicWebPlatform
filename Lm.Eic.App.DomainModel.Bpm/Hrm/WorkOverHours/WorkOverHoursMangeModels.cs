@@ -104,7 +104,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
         /// <summary>
         /// 加班原因
         /// </summary>
-        public string WorkReason
+        public string WorkReason 
         {
             set { _workReason = value; }
             get { return _workReason; }
