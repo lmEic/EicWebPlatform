@@ -1121,7 +1121,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
 
             });
         }
-
         //批量保存
         operate.saveAll = function () {
             if (vmManager.dataSets.length == 0) {
