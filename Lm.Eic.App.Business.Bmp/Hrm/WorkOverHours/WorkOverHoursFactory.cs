@@ -92,6 +92,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                         return irep.Entities.OrderBy(m=>m.WorkerId).Where(m =>m.QryDate==qryDto.QryDate && m.DepartmentText==qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
                     case 2:
                         return irep.Entities.OrderBy(m=>m.WorkerId).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId==qryDto.WorkId && m.WorkStatus == "在职").ToList();
+                    case 3:
+                        return irep.Entities.Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId == qryDto.WorkId && m.WorkStatus == "在职").ToList();
                     default:
                         return new List<WorkOverHoursMangeModels>();
                 }
@@ -104,7 +106,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
 
         }
-
         /// <summary>
         /// 模板载入
         /// </summary>
