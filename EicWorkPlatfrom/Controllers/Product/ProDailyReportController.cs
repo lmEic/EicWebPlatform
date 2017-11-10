@@ -289,17 +289,27 @@ namespace EicWorkPlatfrom.Controllers.Product
             return Json(datasResult);
         }
         /// <summary>
-        /// 机台录入存储
+        /// 批量存储数量
         /// </summary>
         /// <param name="entitys"></param>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult SaveDailyReportDatas(List<DailyProductionReportModel> entitys)
         {
-
             var opResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entitys);
-
             return Json(opResult);
+        }
+        /// <summary>
+        /// 处理多项数据 DisposeMultitermDailyReportdDatas
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <param name="inputSign"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DisposeMultitermDailyReportdDatas(List<DailyProductionReportModel> entitys, string inputSign)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.DisposeMultitermDailyReportdDatas(entitys, inputSign);
+            return Json(datas);
         }
 
         #endregion
