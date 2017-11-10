@@ -33,11 +33,11 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
 
                 if (mesPortype == null || mesPortype.Count <= 0) return typeMonitorModelList;
                 mesPortype.ForEach(e =>
-                 {
-                     var m = GetProductTypeMonitorInfoBy(e);
-                     if (m != null)
-                     { typeMonitorModelList.Add(m); }
-                 });
+                {
+                    var m = GetProductTypeMonitorInfoBy(e);
+                    if (m != null)
+                    { typeMonitorModelList.Add(m); }
+                });
                 return typeMonitorModelList;
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                localeFinishedSign = "D05",
                // 来料工单标识
                IncomingmaterialSign = "C03",
-               ///保税标识
+               ///保税标识  
                FreeTradeSign = "B03",
                // 已完工字段
                HaveFinishSign = "已完工",
@@ -119,7 +119,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
             #endregion
 
             #region  工单处理
-            // 依型号汇总工单信息
+            // 依型号汇总工单信息 
             OutunfinishedOrderConct(containsProductTypeOrProductSpecify, out orderCount, out allCheckOrderCount);
             #endregion
 
@@ -167,10 +167,10 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
             List<string> productIDList = GetAllPorductIdBy(containsProductName);
             //对每个料号得到相应的成品仓信息
             productIDList.ForEach(e =>
-                 {
-                     var mmm = InvOrderCrudFactory.InvManageDb.GetProductStroeInfoBy(e);
-                     productInStoreInfoList.AddRange(mmm);
-                 });
+            {
+                var mmm = InvOrderCrudFactory.InvManageDb.GetProductStroeInfoBy(e);
+                productInStoreInfoList.AddRange(mmm);
+            });
             return productInStoreInfoList;
 
         }
@@ -208,7 +208,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
         /// <param name="localeFinishedCount"></param>
         /// <param name="freeTradeInHouseCount"></param>
         /// <param name="putInMaterialCount"></param
-        ///
+        /// 
         private void OutProductInStoreConct(string containsProductTypeOrProductSpecify, out double localeFinishedCount, out double freeTradeInHouseCount, out double putInMaterialCount)
         {
             try
@@ -238,7 +238,8 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
         private void OutunfinishedOrderConct(string containsProductTypeOrProductSpecify, out double orderCount, out double allCheckOrderCount)
         {
             allCheckOrderCount = 0; orderCount = 0;
-            var unfinishedOrderList = GetAllProductOrderList(containsProductTypeOrProductSpecify);
+            var unfinishedOrderList = GetAllProductOrderList(containsProductTypeOrProductSpecify).
+                                   FindAll(e => !(e.OrderFinishStatus == HaveFinishSign || e.OrderFinishStatus == SpecifiedFinishSign));
             if (unfinishedOrderList == null || unfinishedOrderList.Count <= 0)
                 return;
             //不包括全检工单的工单

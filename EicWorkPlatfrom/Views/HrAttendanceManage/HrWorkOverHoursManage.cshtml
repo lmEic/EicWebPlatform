@@ -148,6 +148,7 @@
             </div>
         </div>
     </div>
+
     <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="1.0" ps-container='editWindow' ps-click-outside="false">
       <div class="bs-callout bs-callout-info">
           <div class="row">
@@ -237,15 +238,19 @@
                     <form for="form" class="form-inline">
                         <div class="form-group">
                             <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchYear"></span>
-                            <button type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHourSumss()"><i class="fa fa-search"></i> 查询汇总</button>                                          
+                            <button id="querySum" type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHourSumss()"><i class="fa fa-search"></i> 查询部门汇总</button>                                          
                         </div>
                         <div class="form-group">                        
                             <span class=" pull-right">
-                                <input id="queryworkid"  type="text" ng-model="query.workId" class="form-control pull-right" placeholder="输入工号查询人个汇总" ng-change="vmManager.getWorkOverHourSumsByWorkId()" />
+                                <input id="queryworkid"  type="text" ng-model="query.workId" class="form-control pull-right" placeholder="输入工号查询人个汇总" ng-keydown="vmManager.getWorkOverHourSumsByWorkId()" />
                             </span>
                         </div>  
                         <div class="form-group">
-                            <a class="btn btn-primary pull-right" href="@Url.Action("WorkOverHoursDatasSumToExcel", "HrAttendanceManage")"><i class="fa fa-file-excel-o"></i>导出汇总</a>
+                            <a class="btn btn-primary pull-right" href="@Url.Action("WorkOverHoursDatasSumToExcel", "HrAttendanceManage")"><i class="fa fa-file-excel-o"></i>导出汇总</a>         
+                        </div>
+                        <div class="form-group">
+                            <button id="querytable" type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursWorkIdBydetail()"><i class="fa fa-search"></i> 查询员工明细</button>                                          
+
                         </div>
                     </form>
                 </div>                                                              
@@ -259,34 +264,42 @@
                     <table class="table table-striped table-hover table-condensed" style="table-layout:fixed;">
                         <colgroup>
                           
+                         
                             <col width="60" />
                             <col width="60" />
                             <col width="60" />
                             <col width="60" />
-                           
                             <col width="60" />
                             <col width="60" />
+                            <col width="60" />
+                            <col width="60" />
+                         
                         </colgroup>
                         <thead>
                             <tr class="info">
-                                <td>日期</td>
                                 <th>加班类型</th>
-                                <th>部门</th>  
-                              
+                                <th>部门</th>
+                                <th>日期</th>
+                                <th>班别</th>
                                 <th>工号</th>
                                 <th>姓名</th>
-                                <th>汇总时数(h)</th>                                               
+                                <th>加班时数(h)</th>
+                                <th>备注</th>                                        
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index">  
-                                <td ng-bind="item.WorkDate"></td>
+                            <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index"> 
                                 <td ng-bind="item.WorkoverType"></td>
                                 <td ng-bind="item.DepartmentText"></td>  
+                                <td ng-bind="item.WorkDate"></td>
+                                <td ng-bind="item.WorkClassType"></td>
+                              
+                                
                                
                                 <td ng-bind="item.WorkerId"></td>
                                 <td ng-bind="item.WorkerName"></td>
-                                <td ng-bind="item.WorkOverHours"></td>                                                       
+                                <td ng-bind="item.WorkOverHours"></td> 
+                                <td ng-bind="item.Remark"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -476,6 +489,7 @@
 
                         
                         </div>
+
                         <div class="form-group">
                             <label for="worknight" class="col-md-2 control-label">晚班截止日期:</label>
                             <div class="col-md-4">
@@ -496,9 +510,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
 
                         <div class="h-split" />
                         <div class="alert alert-info ">

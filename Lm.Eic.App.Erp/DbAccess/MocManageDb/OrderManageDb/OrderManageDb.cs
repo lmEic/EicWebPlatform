@@ -97,7 +97,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
         /// <returns></returns>
         public List<OrderModel> GetAllOrderBy(string ContainsProductName)
         {
-            string sqlWhere = string.Format(" WHERE TA011 in ('1','2','3') And (TA034 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = '')) OR(TA035 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = ''))", ContainsProductName);
+            string sqlWhere = string.Format(" WHERE (TA034 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = '')) OR(TA035 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = ''))", ContainsProductName);
             return ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.OrderId = string.Format("{0}-{1}", dr["TA001"].ToString().Trim(), dr["TA002"].ToString().Trim());
@@ -142,6 +142,10 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             }
             return returnstring;
         }
+
+
+
+
     }
 
     /// <summary>
