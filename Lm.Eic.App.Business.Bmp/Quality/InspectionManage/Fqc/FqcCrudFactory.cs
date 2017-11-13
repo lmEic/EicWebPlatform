@@ -187,6 +187,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Delete(e => e.OrderIdNumber == orderIdNumber && e.OrderId == orderId).ToOpResult_Delete(OpContext);
         }
+
+        internal OpResult UpAuditDetailDataStatus(string orderId, int orderIdNumber, string Updatestring)
+        {
+            return irep.Update(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber, u => new InspectionFqcDetailModel { InspectionItemStatus = Updatestring }).ToOpResult_Eidt(OpContext);
+        }
         #endregion
     }
     /// <summary>
@@ -289,18 +294,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionResult = updateInspectionResult
             }).ToOpResult_Eidt(OpContext);
         }
-        /// <summary>
-        /// 更新 详细表状态
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="orderIdNumber"></param>
-        /// <param name="Updatestring"></param>
-        /// <returns></returns>
-        internal OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
-        {
-            return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
-        }
-
     }
     /// <summary>
     /// ORT物料配置

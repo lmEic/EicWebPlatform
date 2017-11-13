@@ -371,8 +371,8 @@
                                                             <span class="input-group-addon">生产工序:</span>
                                                             <input name="processesIndex" type="text" class="form-control"
                                                                    focus-if="focus.processesIndexFocus" focus-setter
-                                                                   ng-keydown="vmManager.findProcessesInfo($event)"
-                                                                   ng-onblur="vmManager.findProcessesInfo($event)"
+                                                                   ng-keydown="vmMMachineInPut.putInProcesses($event)"
+                                                                   ng-onblur="vmMMachineInPut.putInProcesses($event)"
                                                                    ng-model="vm.ProcessesIndex"
                                                                    required />
                                                             <div class="error-messages" ng-messages="formDailyProductionReport.processesIndex.$error" ng-show="operate.showValidation">
@@ -412,7 +412,6 @@
                                                                    ng-keydown="focus.changeEnter($event,'workerIdFocus','inPutMachineworkerNoProductionTimeFocus')"
                                                                    ng-minlength="0"
                                                                    ng-maxlength="24"
-                                                                   ng-readonly="vmMMachineInPut.isConfirmMachineInputData"
                                                                    ng-model="vm.WorkerProductionTime" required />
                                                             <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
                                                             <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
@@ -424,10 +423,9 @@
                                                             <span class="input-group-addon">非生产工时:</span>
                                                             <input name="workerProductionTime" type="number" class="form-control"
                                                                    focus-if="focus.inPutMachineworkerNoProductionTimeFocus" focus-setter
-                                                                   ng-keydown="vmMMachineInPut. confirmWorkerInputInfoEnter($event)"
+                                                                   ng-keydown="vmMMachineInPut.confirmWorkerInputInfoEnter($event)"
                                                                    ng-minlength="0"
                                                                    ng-maxlength="24"
-                                                                   ng-readonly="vmMMachineInPut.isConfirmMachineInputData"
                                                                    ng-model="vm.WorkerNoProductionTime" required />
                                                             <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
                                                             <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
@@ -435,15 +433,15 @@
                                                     </div>
 
                                                 </div>
-                                                @*非产工时原因 *@
+                                                @*非产工时原因   ng-keydown="focus.changeEnter($event,'inPutMachineworkerNoProductionTimeFocus','showMachineDialogFocus'" *@
                                                 <div class="form-group" ng-if="vm.WorkerNoProductionTime>0">
                                                     <div class="input-group">
                                                         <span class="input-group-addon">非生产原因:</span>
                                                         <textarea name="workerNoProductionReason"
                                                                   focus-if="focus.workerNoProductionReasonFocus" focus-setter
-                                                                  ng-keydown=""
+                                                                  ng-keydown="vmMMachineInPut.workerNoProductionReasonFoucschange($event)"
                                                                   rows="2" class="form-control"
-                                                                  ng-model="vm.WorkerNoProductionReason" required />
+                                                                  ng-model="vm.WorkerNoProductionReason" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -452,7 +450,7 @@
                                         <div class="col-md-6 pull-right">
                                             <button class="btn btn-primary"
                                                     type="button"
-                                                    focus-if="focus.saveAlldataFocus" focus-setter
+                                                    focus-if="focus.showMachineDialogFocus" focus-setter
                                                     ng-keypress="vmMMachineInPut.showMachineDialog()"
                                                     ng-click="vmMMachineInPut.showMachineDialog()">
                                                 <i class="fa fa-save"></i>确认
@@ -794,7 +792,7 @@
                                             <span class="input-group-addon">机台号:</span>
                                             <input name="machineId"
                                                    focus-if="focus.machineIdFocus" focus-setter
-                                                   ng-keydown="vm.changeInPutNoProductionReason($event)"
+                                                   ng-keydown="focus.moveFocusNext($event,'machineProductionCountFocus')"
                                                    rows="2" class="form-control" ng-model="vm.MachineId" required />
                                         </div>
                                     </div>
@@ -802,9 +800,7 @@
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <span class="input-group-addon">机台设置时数:</span>
-                                            <input name="workerNoProductionReason" ng-readonly="true"
-                                                   focus-if="focus.workerNoProductionReasonFocus" focus-setter
-                                                   ng-keydown=""
+                                            <input name="machineSetProductionTime" ng-readonly="true"
                                                    class="form-control" ng-model="vm.MachineSetProductionTime" required />
                                         </div>
                                     </div>
@@ -815,8 +811,8 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">机台日产量:</span>
                                             <input name="workerNoProductionTime" type="number" class="form-control"
-                                                   focus-if="focus.workerNoProductionTimeFocus" focus-setter
-                                                   ng-keydown=""
+                                                   focus-if="focus.machineProductionCountFocus" focus-setter
+                                                   ng-keydown="focus.moveFocusNext($event,'machineProductionTimeFocus')"
                                                    ng-model="vm.MachineProductionCount" />
                                         </div>
                                     </div>
@@ -825,8 +821,8 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">机台运行时间:</span>
                                             <input name="workerNoProductionTime" type="number" class="form-control"
-                                                   focus-if="focus.workerNoProductionTimeFocus" focus-setter
-                                                   ng-keydown=""
+                                                   focus-if="focus.machineProductionTimeFocus" focus-setter
+                                                   ng-keydown="focus.moveFocusNext($event,'machineUnproductiveReasonFocus')"
                                                    ng-model="vm.MachineProductionTime" />
                                         </div>
                                     </div>
@@ -837,8 +833,8 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">机械非生产原因代码:</span>
                                             <input type="text" name="machineUnproductiveReason"
-                                                   focus-if="focus.workerNoProductionReasonFocus" focus-setter
-                                                   ng-keydown=""
+                                                   focus-if="focus.machineUnproductiveReasonFocus" focus-setter
+                                                   ng-keydown="focus.moveFocusNext($event,'machineProductionBadCountFocus')"
                                                    rows="2" class="form-control" ng-model="vm.MachineUnproductiveReason" required />
                                         </div>
                                     </div>
@@ -846,9 +842,9 @@
                                     <div class="col-md-6 ">
                                         <div class="input-group">
                                             <span class="input-group-addon">机台生产不良数:</span>
-                                            <input type="number" class="form-control"
-                                                   ng-model="vm.MachineProductionBadCount"
-                                                   focus-if="focus.todayBadProductCountFocus" focus-setter />
+                                            <input type="number" class="form-control" ng-model="vm.MachineProductionBadCount"
+                                                   ng-keydown="vmMMachineInPut.pushMachinePutInData(formMachinePutin.$valid,$event)"
+                                                   focus-if="focus.machineProductionBadCountFocus" focus-setter />
                                         </div>
                                     </div>
                                 </div>
@@ -869,7 +865,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="item in vmMMachineInPut.handleDatas track by $index">
+                                            <tr ng-repeat="item in    vmMMachineInPut.handleDatas  track by $index">
                                                 <td title="{{item.WorkerId}}">{{item.WorkerName}}</td>
                                                 <td>{{item.MachineId}}</td>
                                                 <td>{{item.WorkerProductionTime}}</td>
@@ -882,6 +878,8 @@
                                                 <td>
                                                     <button class="btn btn-xs btn-primary" ng-click="vmMMachineInPut.changeMachineInfo(item)" title="修改">
                                                         修改
+                                                    </button><button class="btn btn-xs btn-danger" ng-click="vmMMachineInPut.deleteInputMachineVm(item)" title="删除">
+                                                        删除
                                                     </button>
                                                 </td>
                                             </tr>
@@ -893,11 +891,11 @@
                                             <button class="btn btn-primary"
                                                     type="button"
                                                     focus-if="focus.saveAlldataFocus" focus-setter
-                                                    ng-keypress="operate.saveData(formDailyProductionReport.$valid)"
-                                                    ng-click="operate.saveData(formDailyProductionReport.$valid)">
+                                                    ng-keypress=" operate.saveMachineDatas (formMachinePutin.$valid)"
+                                                    ng-click=" operate.saveMachineDatas (formMachinePutin.$valid)">
                                                 <i class="fa fa-save"></i>批量保存
                                             </button>
-                                            <button class="btn btn-info" ng-click="vmMMachineInPut.showInPutMachineInfoTable()"><i class="fa fa-undo"></i>返回</button>
+                                            <button class="btn btn-info" ng-click="vmMMachineInPut. hideInPutMachineInfoTable()"><i class="fa fa-undo"></i>清除返回</button>
                                         </div>
                                     </div>
                                 </div>
