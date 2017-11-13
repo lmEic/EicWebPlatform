@@ -96,14 +96,14 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             date: date,
         });
     };
-    /// 但个保存
+    /// 单人个保存
     reportDataOp.saveDailyReportData = function (entity) {
         var url = urlPrefix + 'SaveDailyReportData';
         return ajaxService.postData(url, {
             entity: entity,
         });
     };
-    ///批量保存
+    ///团队录入批量保存
     reportDataOp.saveGroupDailyReportData = function (entity, groupUserInfos) {
         var url = urlPrefix + 'SaveGroupDailyReportData';
         return ajaxService.postData(url, {
@@ -119,6 +119,15 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             entitys: entitys,
         });
     };
+    ///机台批量输入
+    reportDataOp.saveMachineDailyReportDatas = function (entiys) {
+        var url = urlPrefix + 'SaveMachineDailyReportDatas';
+        return ajaxService.postData(url, {
+            entitys: entitys,
+        });
+    };
+
+
     //----------------------------------------------------------//
     return reportDataOp;
 });
@@ -1014,9 +1023,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         ///修改已经输入的机台
         changeInputMachineVm: function (item) {
-            var machinevminfo = _.clone(item);
-            machinevminfo.id = leeHelper.newGuid();
-            uiVM = machinevminfo;
+            // var machinevminfo = _.clone(item);
+            console.log(item);
+            uiVM = item;
         },
         ///删除已经输入的机台信息
         deleteInputMachineVm: function (item) {
@@ -1041,16 +1050,18 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 else focusSetter.showMachineDialogFocus = true
             };
         },
-        ///不良代码编写
+        ///不良代码编写---- 返回不良代码信息
         workerNoProductionReasonFoucschange: function ($event) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
                 focusSetter.showMachineDialogFocus = true;
             };
         },
+        ///清除返回输入数据
         hideInPutMachineInfoTable: function () {
             vmMMachineInPut.handleDatas = [];
             vmMMachineInPut.putInDatasSet = [];
             clearDatas();
+            machineDialog.close();
         },
 
         /// 输入完成处理分摊数据
@@ -1078,6 +1089,23 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         else {
             operate.saveSingleData(isValid);
         };
+    };
+
+    operate.saveMachineDatas = function (isValid) {
+        $scope.searchPromise = dReportDataOpService.saveMachineDailyReportDatas(vmMMachineInPut.handleDatas).then(function (datasResult) {
+            console.log(datasResult);
+            if (datasResult.opResult.Result) {
+                console.log(datasResult.dataslist);
+                leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.opResult);
+                angular.forEach(datasResult.dataslist, function (m) {
+                    if (m.OpSign == leeDataHandler.dataOpMode.add) {
+                        vmManager.havePutInData.push(m);
+                    }
+                });
+                vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
+                vmMMachineInPut.handleDatas = [];
+            };
+        });
     };
     /// 团队合作录入信息
     operate.saveMulitelData = function (isValid) {

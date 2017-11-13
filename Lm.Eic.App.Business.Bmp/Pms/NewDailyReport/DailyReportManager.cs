@@ -217,9 +217,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
-        public OpResult StoreDailyReport(List<DailyProductionReportModel> model)
+        public OpResult StoreDailyReport(List<DailyProductionReportModel> DailyReportList)
         {
-            return null;
+            return DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
         }
         public OpResult StoreDailyReport(DailyProductionReportModel model, List<UserInfoVm> groupUserInfos, out List<DailyProductionReportModel> storeListDatas)
         {

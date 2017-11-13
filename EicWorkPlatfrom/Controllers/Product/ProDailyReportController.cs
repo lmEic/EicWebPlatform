@@ -294,7 +294,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="entitys"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveDailyReportDatas(List<DailyProductionReportModel> entitys)
+        public JsonResult SaveMachineDailyReportDatas(List<DailyProductionReportModel> entitys)
         {
             var opResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entitys);
             return Json(opResult);
