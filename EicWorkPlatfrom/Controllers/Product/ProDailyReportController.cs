@@ -297,7 +297,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         public JsonResult SaveMachineDailyReportDatas(List<DailyProductionReportModel> entitys)
         {
             var opResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entitys);
-            return Json(opResult);
+            var datasResult = new { opResult, entitys };
+            return Json(datasResult);
         }
         /// <summary>
         /// 处理多项数据 DisposeMultitermDailyReportdDatas

@@ -120,7 +120,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         });
     };
     ///机台批量输入
-    reportDataOp.saveMachineDailyReportDatas = function (entiys) {
+    reportDataOp.saveMachineDailyReportDatas = function (entitys) {
         var url = urlPrefix + 'SaveMachineDailyReportDatas';
         return ajaxService.postData(url, {
             entitys: entitys,
@@ -1092,6 +1092,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     };
 
     operate.saveMachineDatas = function (isValid) {
+
         $scope.searchPromise = dReportDataOpService.saveMachineDailyReportDatas(vmMMachineInPut.handleDatas).then(function (datasResult) {
             console.log(datasResult);
             if (datasResult.opResult.Result) {
