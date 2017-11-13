@@ -42,7 +42,7 @@ namespace EicWorkPlatfrom.Controllers
             }, searchMode);
             return Json(workers, JsonRequestBehavior.AllowGet);
         }
-
+        [NoAuthenCheck]
         public FileResult ExportWorkersToExcel()
         {
             return this.DownLoadFile(ArchiveService.WorkerQueryManager.ExportWorkersToExcel());
