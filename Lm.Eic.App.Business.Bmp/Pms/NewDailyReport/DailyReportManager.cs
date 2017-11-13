@@ -273,9 +273,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             if (datas != null)
             {
                 double workerLookMachineSumTime = datas.FirstOrDefault().WorkerProductionTime;
-                double machineRunSumTime = datas.Sum(e => e.MachineProductionTime);
                 double sumProductCount = datas.FirstOrDefault().MachineProductionCount;
                 double sumProductBadCount = datas.FirstOrDefault().MachineUnproductiveTime;
+                double machineRunSumTime = datas.Sum(e => e.MachineProductionTime);
                 double sumNoProductionTime = datas.Sum(e => e.WorkerNoProductionTime);
                 double sumWorkerProductionTime = datas.Sum(e => e.WorkerProductionTime);
                 if (sumWorkerProductionTime == 0 || machineRunSumTime == 0)
