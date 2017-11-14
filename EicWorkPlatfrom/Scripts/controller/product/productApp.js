@@ -9,10 +9,10 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var boardUrlPrefix = leeHelper.controllers.productBoard + "/";
     //报表Url前缀
     var reportUrlPrefix = leeHelper.controllers.dailyReport + "/";
-
+    //重工制程前缀
+    var redoUrlPrefix = leeHelper.controllers.redoProduct + "/";
     //工单Url前缀
     var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
-
     //--------------生产日报-------------------------
     $stateProvider.state('dReportFlowSet', {
         //生产工艺设定
@@ -37,6 +37,10 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     .state('dReportInput', {
         //日报录入
         templateUrl: reportUrlPrefix + 'DReportInput'
+    })
+    .state('dRRedoInput', {
+        //重工登记
+        templateUrl: redoUrlPrefix + 'DRRedoInput'
     })
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {
