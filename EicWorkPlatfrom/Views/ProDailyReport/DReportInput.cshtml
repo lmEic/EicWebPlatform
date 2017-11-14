@@ -283,13 +283,13 @@
                                                     </div>
                                                 </div>
                                                 @*所得工时*@
-                                                <label for="getProdutionTime" class="col-md-2 control-label">所得工时</label>
+                                                <label for="getProductionTime" class="col-md-2 control-label">所得工时</label>
                                                 <div class="col-md-4">
                                                     <input type="number" name="todayProductionCount" class="form-control"
                                                            focus-if="focus.getProdutionTimeFocus" focus-setter
                                                            ng-keydown="focus.changeEnter($event,'workerProductionTimeFocus','saveAlldataFocus')"
-                                                           ng-model="vm.GetProdutionTime" required />
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.getProdutionTime.$error" ng-show="operate.showValidation">
+                                                           ng-model="vm.GetProductionTime" required />
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.getProductionTime.$error" ng-show="operate.showValidation">
                                                         <small ng-message="required">录入工序不能为空</small>
                                                     </div>
                                                 </div>

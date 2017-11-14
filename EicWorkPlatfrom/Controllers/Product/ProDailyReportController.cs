@@ -270,6 +270,30 @@ namespace EicWorkPlatfrom.Controllers.Product
             return DateJsonResult(datas);
         }
         /// <summary>
+        /// 得到数部门机台信息
+        /// </summary>
+        /// <param name="Department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetMachineInfoDataBy(string Department)
+        {
+            var datas = "";
+            return DateJsonResult(datas);
+        }
+
+        /// <summary>
+        /// 得到数部门机台信息
+        /// </summary>
+        /// <param name="Department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetNoProductSeasonBy(string Department, string NoProductId)
+        {
+            var datas = "";
+            return DateJsonResult(datas);
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="entity"></param>

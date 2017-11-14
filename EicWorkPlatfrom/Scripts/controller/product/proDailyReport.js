@@ -599,9 +599,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         putInDate: new Date(new Date().setDate(new Date().getDate() - 1)),
         productionFlowShow: true,
         putInDataProcessesName: null,
-
-
-
         ///初始化
         init: function () {
             uiVM = _.clone(initVM);
@@ -636,6 +633,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         processesInfos: [],
         workerId: null,
         isSingle: true,//是否搜寻到的是单个人
+        ///得到用户信息
         getWorkerInfo: function () {
             if (uiVM.WorkerId === undefined) return;
             var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
@@ -659,13 +657,14 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
 
             }
         },
+        ///录入工号
         selectWorker: function (worker) {
             if (worker !== null) {
                 uiVM.WorkerName = worker.Name;
                 uiVM.WorkerId = worker.WorkerId;
                 uiVM.Department = worker.Department;
                 vmManager.WorkerId = worker.WorkerId;
-                // focusSetter.processesIndexFocus = true;
+                focusSetter.processesIndexFocus = true;
             }
             else {
                 uiVM.Department = null;
@@ -677,7 +676,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         erpOrderInfoDatasSource: [],
         productionFlowDatasSet: [],//工序信息
         productionFlowDatasSouce: [],//工序信息
-
         //选择部门
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (erpDatas) {
@@ -689,7 +687,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             });
 
         },
-        //部门变化载入分配的订单信息
         ////选择产品名称得理该产品的
         putInDatas: function (item) {
             uiVM.OrderId = item.OrderId;
@@ -700,7 +697,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
             vmManager.queryActiveTab = 'qryFolwProcessTab';
         },
-        //选择录入的项次
+        //选择品名得到所有的工艺统计
         getProductionFlowDatas: function (productName, orderId) {
             $scope.searchPromise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
                 vmManager.productionFlowDatasSet = datas;
@@ -714,6 +711,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmManager.findProcesses();
             };
         },
+        ///选择录入
         findProcesses: function () {
             if (uiVM.ProcessesIndex === null || vmManager.productionFlowDatasSouce.length == 0) return;
             var processesInfo = _.find(vmManager.productionFlowDatasSouce, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
@@ -729,7 +727,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         focusSetter.workerProductionTimeFocus = true;
                     else focusSetter.todayProductionCountFocus = true;
                 };
+                uiVM.OpSign = leeDataHandler.dataOpMode.add;
+                uiVM.WorkerId = null;
+                uiVM.WorkerName = null;
                 vmManager.isProcessesNameShow = true;
+
             };
         },
         //在数据查找相应的信息
@@ -773,7 +775,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //显示明细
         showPutInDetail: function (item) {
-            console.log(item);
             vmManager.putInDataProcessesName = item.ProcessesName;
             vmManager.havePutInData = [];
             $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, item.OrderId, item.ProcessesName).then(function (dailyDatas) {
@@ -1030,6 +1031,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         ///删除已经输入的机台信息
         deleteInputMachineVm: function (item) {
             console.log(item);
+
             leeHelper.delWithId(vmMMachineInPut.handleDatas, item);
             /// vmMMachineInPut.handleHavePutIntData(vmMMachineInPut.putInDatasSet);
         },
@@ -1060,7 +1062,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         hideInPutMachineInfoTable: function () {
             vmMMachineInPut.handleDatas = [];
             vmMMachineInPut.putInDatasSet = [];
-            clearDatas();
+            vmMMachineInPut.clearDatas();
             machineDialog.close();
         },
 
@@ -1090,9 +1092,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             operate.saveSingleData(isValid);
         };
     };
-
+    ///机台录入保存数据
     operate.saveMachineDatas = function (isValid) {
-
         $scope.searchPromise = dReportDataOpService.saveMachineDailyReportDatas(vmMMachineInPut.handleDatas).then(function (datasResult) {
             console.log(datasResult);
             if (datasResult.opResult.Result) {
@@ -1207,6 +1208,130 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     $scope.focus = focusSetter;
 });
 /// 生产订单分派  
+productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
+    ///日报分派录入视图模型
+    var uiVm = {
+        OrderId: null,
+        ProductionDepartment: null,
+        ProductId: null,
+        ProductName: null,
+        ProductSpec: null,
+        PutInStoreNumber: 0,
+        ProduceNumber: 0,
+        ProductStatus: null,
+        ProductionDate: null,
+        IsValid: true,
+        ValidDate: null,
+        OpPerson: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        OpDate: null,
+        OpTime: null,
+        Id_Key: null,
+        Id: null,
+    }
+    $scope.vm = uiVm;
+    var initVM = _.clone(uiVm);
+    var dialog = $scope.dialog = leePopups.dialog();
+    var vmManager = {
+        ///部门 
+        department: leeLoginUser.department,
+        dispatchActiveTab: 'qryERPFormTab',
+        departments: [
+           { value: "MS1", label: "制一课" },
+           { value: "MS2", label: "制二课" },
+           { value: "MS3", label: "制三课" },
+           { value: "MS5", label: "制五课" },
+           { value: "MS6", label: "制六课" },
+           { value: "MS7", label: "制七课" },
+           { value: "MS10", label: "制十课" },
+           { value: "PT1", label: "成型课" }],
+        IsValids: [{ id: "true", text: "启用" }, { id: "false", text: "不启用" }],
+        erpOrderInfoDatas: [],
+        nowDate: new Date(),
+        erpOrderInfoDatasSource: [],
+        todayHaveDispatchDatas: [],
+        haveHaveDispatchCount: 0,
+        changeDepartment: function () {
+            $scope.promise = dReportDataOpService.getOrderDispatchInfoDatas(vmManager.department, vmManager.nowDate).then(function (datas) {
+                vmManager.erpOrderInfoDatas = [];
+                vmManager.erpOrderInfoDatasSource = [];
+                vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatas = datas;
+                vmManager.haveHaveDispatchCount = 0;
+                angular.forEach(vmManager.erpOrderInfoDatas, function (item) {
+                    if (item.IsValid == 'True') {
+                        vmManager.haveHaveDispatchCount += 1;
+                    }
+                });
+                ///根据登录用户 载入信息 ，如果没有侧 选择载入
+                if (datas.erpInProductiondatas > 0)
+                    vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
+            });
+        },
+        ///分配订单到数据表中(取消分配)
+        dispatchOrder: function (item) {
+            var findItem = _.findWhere(vmManager.todayHaveDispatchDatas, { OrderId: item.OrderId });
+            if (_.isUndefined(findItem)) {
+                console.log(item);
+                leeHelper.copyVm(item, uiVm)
+                uiVm.IsValid = true;
+                uiVm.OpSign = leeDataHandler.dataOpMode.add;
+
+            }
+            else {
+                leeHelper.copyVm(findItem, uiVm)
+                uiVm.IsValid = false;
+                uiVm.OpSign = leeDataHandler.dataOpMode.edit;
+                console.log(findItem);
+            }
+            item.ProductStatus = uiVm.ProductStatus;
+            dialog.show();
+        },
+        editHaveDispatchOrder: function (item) {
+            leeHelper.copyVm(item, uiVm)
+            uiVm.OpSign = leeDataHandler.dataOpMode.edit;
+            dialog.show();
+        },
+        deleteHaveDispatchOrder: function (item) {
+            leeHelper.copyVm(item, uiVm)
+            uiVm.IsValid = false;
+            uiVm.OpSign = leeDataHandler.dataOpMode.delete;
+            dialog.show();
+        },
+    };
+    $scope.vmManager = vmManager;
+    $scope.promise = vmManager.changeDepartment();
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveDispatchData = function (isValid) {
+        leeHelper.setUserData(uiVm);
+        if (uiVm.IsValid == true)
+        { uiVm.ProductStatus = "已分配"; }
+        else { uiVm.ProductStatus = "未分配"; }
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            $scope.promise = dReportDataOpService.saveOrderDispatch(uiVm).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        var dataItem = _.clone(opresult.Entity);
+                        var findItem = _.findWhere(vmManager.todayHaveDispatchDatas, { OrderId: dataItem.OrderId });
+                        if (_.isUndefined(findItem)) {
+                            vmManager.todayHaveDispatchDatas.push(dataItem);
+                        }
+                        else {
+                            if (dataItem.opSign == leeDataHandler.dataOpMode.delete)
+                                leeHelper.delWithId(vmManager.todayHaveDispatchDatas, uiVm)
+                        };
+                        vmManager.changeDepartment();
+                        dialog.close();
+                    }
+                });
+            });
+        });
+    }
+    operate.Cancel = function () {
+        dialog.close();
+    }
+});
+/// 重工登记
 productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报分派录入视图模型
     var uiVm = {
