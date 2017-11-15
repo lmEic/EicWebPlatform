@@ -345,7 +345,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     ///初始化 综合模块
                     model = new InspectionItemDataSummaryVM();
                     OOMaper.Mapper<InspectionFqcDetailModel, InspectionItemDataSummaryVM>(m, model);
-                    //抽取数信息
+                    //抽取数信息   InsptecitonItemIsFinished
+                    model.InsptecitonItemIsFinished = true;
                     model.NeedFinishDataNumber = m.NeedPutInDataCount;
                     model.HaveFinishDataNumber = this.GetHaveFinishDataNumber(m.InspectionItemDatas);
                     //物料信息
@@ -422,7 +423,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 masterModel.InspectionItemCount = sumModel.InspectionItemSumCount;
                 masterModel.InspectionItems = sumModel.InspectionItem;
                 masterModel.FinishDate = DateTime.Now.Date;
-                masterModel.InspectionStatus = "未检验";
+                masterModel.InspectionStatus = "未抽检";
                 masterModel.InspectionResult = "未完成";
                 masterModel.InspectionCount = sumModel.MaterialCount;
                 detailModel = new InspectionFqcDetailModel();
