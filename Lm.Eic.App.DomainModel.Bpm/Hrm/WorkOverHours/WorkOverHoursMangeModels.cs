@@ -158,7 +158,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
         }
         private string _opperson;
         /// <summary>
-        ///操作人
+        ///操作人1
         /// </summary>
         public string OpPerson
         {
