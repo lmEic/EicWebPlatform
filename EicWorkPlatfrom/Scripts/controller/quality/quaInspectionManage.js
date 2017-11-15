@@ -939,6 +939,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         queryActiveTab: null,
         queryMaterialId: null,
         querySupplierId: null,
+        // inspectionStatus: null,
         selecteInspectionItem: "ROHS检验",
         queryInspectionItems: [{ label: "ROHS检验", value: "ROHS检验" }, { label: "盐雾试验", value: "盐雾试验" }, { label: "全尺寸量测", value: "全尺寸量测" }],
         dateFrom: null,
@@ -979,6 +980,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             },
             show: false,
         }),
+
         changeCheckModal: function (inspectionStatus) {
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.InspectionStatus = inspectionStatus;
@@ -1031,18 +1033,16 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             if (isCheck) vmManager.checkModal.$promise.then(vmManager.checkModal.show);
             else vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.show);
         },
-        inspectionStatus: null,
+        ////详细表中审核
         detailCheckModal: function () {
             vmManager.checkModal.$promise.then(vmManager.checkModal.show);
         },
         //获取详细数据
         getDetailDatas: function (item) {
-            console.log(item);
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfIqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
                 vmManager.detailDatas = datas;
-                console.log(datas);
                 angular.forEach(datas, function (item) {
                     if (item.InspectionItemDatas != null && item.InspectionItemDatas != '') {
                         var dataItems = item.InspectionItemDatas.split(",");
