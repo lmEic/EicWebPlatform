@@ -13,6 +13,9 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
+    /// <summary>
+    /// Crud 工厂数据
+    /// </summary>
     internal class DailyReportCrudFactory
     {
         /// <summary>
@@ -36,6 +39,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             get { return OBulider.BuildInstance<DailyProductionReportCrud>(); }
         }
     }
+
+
+
     /// <summary>
     /// 生产工序CRUD
     /// </summary>
@@ -400,6 +406,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         }
         #endregion
     }
+
+
+
 }
 
 

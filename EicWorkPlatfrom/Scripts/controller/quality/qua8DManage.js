@@ -539,7 +539,6 @@ qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
             //$scope.searchPromise = BDataOpService.changeReportIdStatus(item.ReportId)
         },
         bringToFiles: function (item) {
-            console.log(item);
             if (_.isUndefined(item))
             { item = vmManager.dataHead; }
             leeHelper.setUserData(item);
