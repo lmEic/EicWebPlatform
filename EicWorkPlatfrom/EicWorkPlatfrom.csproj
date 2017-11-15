@@ -159,6 +159,7 @@
     <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
     <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
+    <Compile Include="Controllers\ProRedoProductAreaController.cs" />
     <Compile Include="Controllers\Purchase\PurSupplierManageController.cs" />
     <Compile Include="Controllers\Quality\Qua8DManageController.cs" />
     <Compile Include="Controllers\Quality\QuaInspectionManageController.cs" />
@@ -1535,6 +1536,7 @@
     <Content Include="Views\TolManPowerTunnel\TolManpowerDisk.cshtml" />
     <Content Include="Views\ProDailyReport\DReportBadReasonSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportUnproductionSet.cshtml" />
+    <Content Include="Views\ProRedoProductArea\DRRedoInput.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

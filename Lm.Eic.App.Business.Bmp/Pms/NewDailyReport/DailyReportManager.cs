@@ -7,6 +7,7 @@ using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.Linq;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
@@ -186,12 +187,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             if (todayHaveDispatchProductionOrderDatas == null || todayHaveDispatchProductionOrderDatas.Count == 0) return;
             todayHaveDispatchProductionOrderDatas.ForEach(e =>
             {
-                var dates = erpInProductiondatas.FindAll(f => f.OrderId == e.OrderId);
-                if (dates == null || dates.Count == 0)
+                if (e.OrderId != "511-1111111")
                 {
-                    e.IsValid = "False";
-                    e.OpSign = OpMode.Edit;
-                    StoreOrderDispatchData(e);
+                    var dates = erpInProductiondatas.FindAll(f => f.OrderId == e.OrderId);
+                    if (dates == null || dates.Count == 0)
+                    {
+                        e.IsValid = "False";
+                        e.OpSign = OpMode.Edit;
+                        StoreOrderDispatchData(e);
+                    }
                 }
             });
 
@@ -213,6 +217,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
+        public OpResult StoreDailyReport(List<DailyProductionReportModel> DailyReportList)
+        {
+            return DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
+        }
         public OpResult StoreDailyReport(DailyProductionReportModel model, List<UserInfoVm> groupUserInfos, out List<DailyProductionReportModel> storeListDatas)
         {
             List<DailyProductionReportModel> DailyReportList = new List<DailyProductionReportModel>();
@@ -226,8 +234,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     storeListDatas = null;
                     return OpResult.SetErrorResult("人员数据为空，操作失败!");
                 }
-                int sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
-                int sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
+                double sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
+                double sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
                 if (sumWorkerProductionTime == 0)
                 {
                     storeListDatas = null;
@@ -238,6 +246,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     newModel = new DailyProductionReportModel();
                     OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(model, newModel);
                     OOMaper.Mapper<UserInfoVm, DailyProductionReportModel>(m, newModel);
+                    ///日期格式 简化
+                    newModel.InPutDate = model.InPutDate.ToDate();
                     newModel.TodayProductionCount = Math.Round((sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
                     if (sumNoProductionTime != 0)
                         newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime, 2, MidpointRounding.AwayFromZero);
@@ -245,9 +255,59 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                         DailyReportList.Add(newModel);
                 });
             }
-            OpResult mm = DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
+            OpResult resultDatas = DailyReportCrudFactory.DailyProductionReport.SavaDailyReportList(DailyReportList);
             storeListDatas = DailyReportList;
-            return mm;
+            return resultDatas;
+        }
+
+        /// <summary>
+        /// 处理日报表数据反回到界中去
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <param name="disposeSign"></param>
+        /// <returns></returns>
+        public List<DailyProductionReportModel> DisposeMultitermDailyReportdDatas(List<DailyProductionReportModel> datas, string disposeSign)
+        {
+            List<DailyProductionReportModel> DailyReportList = new List<DailyProductionReportModel>();
+            DailyProductionReportModel newModel = null;
+            if (datas != null)
+            {
+                double workerLookMachineSumTime = datas.FirstOrDefault().WorkerProductionTime;
+                double sumProductCount = datas.FirstOrDefault().MachineProductionCount;
+                double sumProductBadCount = datas.FirstOrDefault().MachineUnproductiveTime;
+                double machineRunSumTime = datas.Sum(e => e.MachineProductionTime);
+                double sumNoProductionTime = datas.Sum(e => e.WorkerNoProductionTime);
+                double sumWorkerProductionTime = datas.Sum(e => e.WorkerProductionTime);
+                if (sumWorkerProductionTime == 0 || machineRunSumTime == 0)
+                    return DailyReportList;
+                // 人员投入工时 分摊到每个工单上  依据 出勤时数=（人员工时/ 机台生产总时间）* 当前机台生产时间
+                // WorkerProductionTime= （WorkerProductionTime/ MachineProductionTimeSum） *MachineProductionTime
+                datas.ForEach(e =>
+                {
+                    newModel = new DailyProductionReportModel();
+                    OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(e, newModel);
+                    newModel.InPutDate = e.InPutDate.ToDate();
+                    newModel.TodayProductionCount = e.MachineProductionCount;
+                    newModel.TodayBadProductCount = e.MachineProductionBadCount;
+                    newModel.GetProductionTime = Math.Round(e.MachineProductionCount * e.StandardProductionTime / 3600, 2);
+                    if (disposeSign == "机台")
+                    {
+                        /// 机台录入分摊人工工时
+                        newModel.WorkerProductionTime = Math.Round((workerLookMachineSumTime / machineRunSumTime) * e.MachineProductionTime, 2);
+                        newModel.MachineUnproductiveTime = e.MachineSetProductionTime - e.MachineProductionTime;
+                    }
+                    else
+                    {
+                        /// 团队录入分摊数量
+                        newModel.TodayProductionCount = Math.Round((sumProductCount / sumWorkerProductionTime) * e.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
+                        if (sumNoProductionTime != 0)
+                            newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumNoProductionTime) * e.WorkerNoProductionTime, 2, MidpointRounding.AwayFromZero);
+                    }
+                    if (!DailyReportList.Contains(newModel))
+                        DailyReportList.Add(newModel);
+                });
+            }
+            return DailyReportList;
         }
         public List<ProductFlowCountDatasVm> GetProductionFlowCountDatas(string department, string orderId, string productName)
         {
@@ -266,7 +326,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 if (orderInfo != null)
                 {
                     modelVm.ProductName = orderInfo.ProductName;
-                    modelVm.OrderProductNumber = orderInfo.ProduceNumber;
+                    modelVm.OrderProductNumber = Math.Round(orderInfo.ProduceNumber, 2);
                     modelVm.OrderNeedPutInNumber = orderInfo.ProduceNumber * e.ProductCoefficient;
                 }
                 if (!retrundatas.Contains(modelVm))

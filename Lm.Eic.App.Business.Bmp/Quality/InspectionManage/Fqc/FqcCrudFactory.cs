@@ -93,12 +93,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         #region Crud
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddFqcInspectionDetail);
+            this.AddOpItem(OpMode.Add, Add);
         }
 
 
 
-        private OpResult AddFqcInspectionDetail(InspectionFqcDetailModel model)
+        private OpResult Add(InspectionFqcDetailModel model)
         {
             if (model == null) return new OpResult("保存文件不能为空", false);
             //如果存在 (Id_key 已经赋值） 
@@ -118,7 +118,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (model == null) return new OpResult("采集数据模型不能为NULL", false);
             var oldmodel = this.GetFqcOldDetailModelBy(model);
             if (oldmodel == null)
-                return this.AddFqcInspectionDetail(model);//若不存在则直接添加
+                return this.Add(model);//若不存在则直接添加
             model.Id_Key = oldmodel.Id_Key;
             oldmodel.DocumentPath.DeleteExistFile(model.DocumentPath, siteRootPath);//删除旧的文件
             this.SetFixFieldValue(model);
@@ -132,6 +132,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
+        }
+
+        internal InspectionFqcDetailModel GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber, string inspectionItem)
+        {
+            return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspectionItem);
         }
         internal bool IsExist(string orderId, int orderIdNumber, string inspecitonItem)
         {
@@ -181,6 +186,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal OpResult DeleteFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
         {
             return irep.Delete(e => e.OrderIdNumber == orderIdNumber && e.OrderId == orderId).ToOpResult_Delete(OpContext);
+        }
+
+        internal OpResult UpAuditDetailDataStatus(string orderId, int orderIdNumber, string Updatestring)
+        {
+            return irep.Update(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber, u => new InspectionFqcDetailModel { InspectionItemStatus = Updatestring }).ToOpResult_Eidt(OpContext);
         }
         #endregion
     }
@@ -251,8 +261,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(DateTime dateFrom, DateTime dateTo, string selectedDepartment, string formStatus = null)
         {
             if (formStatus == null || formStatus == "全部")
-                return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
-            return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.InspectionStatus == formStatus && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
+                return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+            return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.InspectionStatus == formStatus && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
         }
         /// <summary>
         /// 
@@ -284,18 +294,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionResult = updateInspectionResult
             }).ToOpResult_Eidt(OpContext);
         }
-        /// <summary>
-        /// 更新 详细表状态
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="orderIdNumber"></param>
-        /// <param name="Updatestring"></param>
-        /// <returns></returns>
-        internal OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
-        {
-            return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
-        }
-
     }
     /// <summary>
     /// ORT物料配置

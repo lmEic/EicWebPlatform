@@ -569,7 +569,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 //0,1
                                 if (rowIndex < 36)
                                 {
-                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime,rowWorkNightTime,entity, tpis,colIndex0, colIndex1, colIndex2, colIndex3);
+                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
                                     colIndex++;
                                     row_day = rowIndex;//35
                                     row_day_index = rowIndex;
@@ -580,7 +580,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     if (rowIndex > 107)
                                     {
                                         //6,7
-                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line67, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis,colIndex13, colIndex14, colIndex15, colIndex16);
+                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line67, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
                                         colIndex++;
                                         row_day_index = rowIndex;
 
@@ -591,7 +591,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         if (rowIndex > 71)
                                         {
                                             //4,5
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line45, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis,colIndex9, colIndex10, colIndex11, colIndex12);
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line45, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
                                             colIndex++;
                                             row_day_67 = rowIndex;
                                             row_day_index = rowIndex;
@@ -600,7 +600,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         else
                                         {
                                             // 2,3                                                                
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line23, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis,colIndex5, colIndex6, colIndex7, colIndex8);
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line23, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
                                             colIndex++;
                                             row_day_45 = rowIndex;//18
                                             row_day_index = rowIndex;
@@ -615,7 +615,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 //0,1
                                 if (rowIndex < 180)
                                 {
-                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis,colIndex0, colIndex1, colIndex2, colIndex3);
+                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
                                     colIndex++;
                                     row_day1 = rowIndex;//1  
 
@@ -625,8 +625,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 {
                                     if (rowIndex > 251)
                                     {
-                                       
-                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis,colIndex13, colIndex14, colIndex15, colIndex16);
+
+                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
                                         colIndex++;
 
 
@@ -636,16 +636,16 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     {
                                         if (rowIndex > 215)
                                         {
-                                         
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9,colIndex10, colIndex11, colIndex12);
+
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
                                             colIndex++;
                                             row_day_671 = rowIndex;
 
                                             break;
                                         }
                                         else
-                                        {                                                                                                    
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5,colIndex6, colIndex7, colIndex8);
+                                        {
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
                                             colIndex++;
                                             row_day_451 = rowIndex;
 
@@ -664,6 +664,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             #endregion 填充内容区域
 
             return sheet;
+
+
         }
         /// <summary>
         /// 填充表格值
@@ -728,10 +730,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <summary>
         /// 填充表格值
         /// </summary>
-        private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType,IRow rowWorkReason,IRow rowWorkDayTime,IRow rowWorkNightTime, T entity, PropertyInfo[] tpis,int colindex0, int colindex1, int colindex2, int colindex3)
+        private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
         {
-
-            #region 报表参数
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
             object department = tpis[2].GetValue(entity, null);//企业信息中心
@@ -770,10 +770,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             double doubV = 0;
             double.TryParse(workhours.ToString(), out doubV);
             rowContent.GetCell(colindex3).SetCellValue(doubV);
-
-
-            #endregion
-
 
         }
       

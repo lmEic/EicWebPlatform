@@ -309,7 +309,6 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     return quality;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 })
-
 //检验方式转换配置
 qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = $scope.vmManager = {
@@ -1072,10 +1071,6 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 })
-
-
-
-
 //fqc检验项目配置
 qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
     var uiVM = {
@@ -1737,19 +1732,35 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             })
         },
 
+        ////获取详细数据
+        //getDetailDatas: function (item) {
+        //    vmManager.currentItem = item;
+        //    qualityInspectionDataOpService.getInspectionFormDetailOfFqcDatas(item.OrderId, item.OrderIdNumber).then(function (datas) {
+        //        angular.forEach(datas, function (item) {
+        //            var dataItems = item.InspectionItemDatas.split(",");
+        //            item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
+        //        })
+        //        vmManager.detailDatas = datas;
+        //        console.log(vmManager.detailDatas);
+        //        vmManager.isShowDetailWindow = true;
+        //    })
+        //},
+
         //获取详细数据
         getDetailDatas: function (item) {
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfFqcDatas(item.OrderId, item.OrderIdNumber).then(function (datas) {
-                angular.forEach(datas, function (item) {
-                    var dataItems = item.InspectionItemDatas.split(",");
-                    item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
-                })
-                vmManager.detailDatas = datas;
-                console.log(vmManager.detailDatas);
                 vmManager.isShowDetailWindow = true;
+                vmManager.detailDatas = datas;
+                angular.forEach(datas, function (item) {
+                    if (item.InspectionItemDatas != null && item.InspectionItemDatas != '') {
+                        var dataItems = item.InspectionItemDatas.split(",");
+                        item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
+                    }
+                })
             })
         },
+
         //返回
         refresh: function () {
             vmManager.isShowDetailWindow = false;
@@ -1760,6 +1771,19 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             vmManager.isShowDetailWindow = false;
             vmManager.isShowMasterErpFrom = true;
             vmManager.isShowMasterDetailFrom = false;
+        }
+    };
+
+    var editManager = $scope.editManager = {
+        ///下载文件
+        loadFile: function (item) {
+
+            var loadUrl = "/QuaInspectionManage/LoadFqcDatasDownLoadFile?OrderId=" + item.OrderId + "&OrderIdNumber=" + item.OrderIdNumber + "&InspectionItem=" + item.InspectionItem;
+            return loadUrl;
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.FileName);
         }
     };
     var operate = Object.create(leeDataHandler.operateStatus);

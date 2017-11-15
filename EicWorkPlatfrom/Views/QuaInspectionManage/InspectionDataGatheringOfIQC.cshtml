@@ -126,13 +126,20 @@
                                     {{vmManager.currentInspectionItem.SizeMemo}}
                                 </span>
                             </div>
-                            @*检验水平*@
+                            @*检验方案*@
                             <div class="col-md-4">
                                 <span>
-                                    <label>检验水平:</label>
-                                    {{vmManager.currentInspectionItem.InspectionLevel}}
-                                    <span ng-if="vmManager.currentInspectionItem.InspectionAQL">  AQL=</span>
-                                    {{vmManager.currentInspectionItem.InspectionAQL}}
+                                    <label>检验方案:</label>
+                                    <span class="label label-primary">
+                                        {{vmManager.currentInspectionItem.InspectionMode}}
+                                    </span>
+                                    <span class="label label-success">
+                                        {{vmManager.currentInspectionItem.InspectionLevel}}
+                                    </span>
+                                    <span class="label label-danger" ng-if="vmManager.currentInspectionItem.InspectionAQL">
+                                        AQL={{vmManager.currentInspectionItem.InspectionAQL}}
+                                    </span>
+
                                 </span>
                             </div>
                         </div>
@@ -151,11 +158,9 @@
                                     </span>
                                 </div>
                             </div>
-                            @*检验方式/检验方法*@
+                            @*检验方法*@
                             <div class="col-md-4">
                                 <span>
-                                    <label>检验方式:</label>
-                                    {{vmManager.currentInspectionItem.InspectionMode}}
                                     <label>检验方法:</label>
                                     {{vmManager.currentInspectionItem.InspectionMethod}}
                                 </span>

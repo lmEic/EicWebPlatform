@@ -167,26 +167,36 @@
                             </div>
                             <div class="col-md-4">
                                 <span>
-                                    <label>检验水平:</label>
-                                    {{vmManager.currentInspectionItem.InspectionLevel}}
-                                    <span ng-if="vmManager.currentInspectionItem.InspectionAQL">  AQL=</span>
-                                    {{vmManager.currentInspectionItem.InspectionAQL}}
+                                    <label>检验方案:</label>
+                                    <span ng-if="vmManager.currentInspectionItem.InspectionMode!==null && vmManager.currentInspectionItem.InspectionMode!==''">
+                                        <span class="label label-primary">
+                                            {{vmManager.currentInspectionItem.InspectionMode}}
+                                        </span>
+                                        <span class="label label-success">
+                                            {{vmManager.currentInspectionItem.InspectionLevel}}
+                                        </span>
+                                        <span class="label label-danger" ng-if="vmManager.currentInspectionItem.InspectionAQL">
+                                            AQL={{vmManager.currentInspectionItem.InspectionAQL}}
+                                        </span>
+                                    </span>
                                 </span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <span>
-                                    <label>抽样方案:</label>
-                                    {{vmManager.currentInspectionItem.InspectionCount}}/
-                                    {{vmManager.currentInspectionItem.AcceptCount}}/
-                                    {{vmManager.currentInspectionItem.RefuseCount}}
+                                <label>抽样方案:</label>
+                                <span ng-if="vmManager.currentInspectionItem.InspectionCount">
+                                    <span class="label label-primary">
+                                        {{vmManager.currentInspectionItem.InspectionCount}}
+                                    </span>
+                                    <span class="label label-success"
+                                          ng-if="vmManager.currentInspectionItem.AcceptCount!==null">/{{vmManager.currentInspectionItem.AcceptCount}}</span>
+                                    <span class="label label-danger" ng-if="vmManager.currentInspectionItem.RefuseCount">/{{vmManager.currentInspectionItem.RefuseCount}}</span>
                                 </span>
                             </div>
                             <div class="col-md-4">
                                 <span>
-                                    <label>检验方法:</label>
-                                    {{vmManager.currentInspectionItem.InspectionMode}}
+
                                     <label>检验方法:</label>
                                     {{vmManager.currentInspectionItem.InspectionMethod}}
                                 </span>

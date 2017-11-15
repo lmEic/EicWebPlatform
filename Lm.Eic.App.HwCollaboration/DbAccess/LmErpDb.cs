@@ -138,7 +138,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         /// </summary>
         /// <param name="materialBom">物料BOM表</param>
         /// <returns></returns>
-        public List<ErpMaterialShipmentModel> LoadMaterialShipmentDatas(SccKeyMaterialVO materialBom)
+        public List<ErpMaterialShipmentModel> LoadMaterialShipmentDatas(HwCollaborationMaterialBomModel materialBom)
         {
             List<ErpMaterialShipmentModel> datas = new List<ErpMaterialShipmentModel>();
             var orderMasterList = LoadMaterialMakingDatas(materialBom.vendorItemCode);

@@ -585,18 +585,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _workerproductiontime = value; }
             get { return _workerproductiontime; }
         }
-        private double _getprodutiontime = 0;
+        private double _getproductiontime;
         /// <summary>
         ///得到工时
         /// </summary>
-        public double GetProdutionTime
+        public double GetProductionTime
         {
-            set { _getprodutiontime = value; }
+            set { _getproductiontime = value; }
             get
             {
                 if (StandardProductionTime != 0)
-                    return Math.Round((TodayProductionCount * StandardProductionTime) / 3600, 2);
-                else return _getprodutiontime;
+                {
+                    return Math.Round(TodayProductionCount * StandardProductionTime / 3600, 2);
+                }
+                else return _getproductiontime;
             }
         }
         private double _workernoproductiontime;
@@ -653,15 +655,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _mouldid = value; }
             get { return _mouldid; }
         }
-        private int _mouldholecount;
-        /// <summary>
-        ///模穴数
-        /// </summary>
-        public int MouldHoleCount
-        {
-            set { _mouldholecount = value; }
-            get { return _mouldholecount; }
-        }
         private double _machinepersonratio;
         /// <summary>
         ///人机配比
@@ -671,14 +664,41 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _machinepersonratio = value; }
             get { return _machinepersonratio; }
         }
+        private int _mouldholecount;
+        /// <summary>
+        ///模穴数
+        /// </summary>
+        public int MouldHoleCount
+        {
+            set { _mouldholecount = value; }
+            get { return _mouldholecount; }
+        }
+        private double _machinesetproductiontime;
+        /// <summary>
+        ///机械设置时数
+        /// </summary>
+        public double MachineSetProductionTime
+        {
+            set { _machinesetproductiontime = value; }
+            get { return _machinesetproductiontime; }
+        }
         private double _machineproductiontime;
         /// <summary>
-        ///机台工时
+        ///机台生产时数
         /// </summary>
         public double MachineProductionTime
         {
             set { _machineproductiontime = value; }
             get { return _machineproductiontime; }
+        }
+        private double _machineproductioncount;
+        /// <summary>
+        ///机台生产数量
+        /// </summary>
+        public double MachineProductionCount
+        {
+            set { _machineproductioncount = value; }
+            get { return _machineproductioncount; }
         }
         private double _machineunproductivetime;
         /// <summary>
@@ -698,32 +718,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _machineunproductivereason = value; }
             get { return _machineunproductivereason; }
         }
-        private string _field1;
+        private double _machineproductionbadcount;
         /// <summary>
-        ///备用字1
+        ///机台不良数
         /// </summary>
-        public string Field1
+        public double MachineProductionBadCount
         {
-            set { _field1 = value; }
-            get { return _field1; }
-        }
-        private string _field2;
-        /// <summary>
-        ///备用字2
-        /// </summary>
-        public string Field2
-        {
-            set { _field2 = value; }
-            get { return _field2; }
-        }
-        private string _field3;
-        /// <summary>
-        ///备用字3
-        /// </summary>
-        public string Field3
-        {
-            set { _field3 = value; }
-            get { return _field3; }
+            set { _machineproductionbadcount = value; }
+            get { return _machineproductionbadcount; }
         }
         private string _field4;
         /// <summary>
@@ -790,10 +792,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
-
-
-
-
     #region  
     /// <summary>
     /// 查询操作Model
@@ -865,8 +863,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     {
         public string WorkerId { set; get; }
         public string WorkerName { set; get; }
-        public int WorkerProductionTime { set; get; }
-        public int WorkerNoProductionTime { set; get; }
+        public double WorkerProductionTime { set; get; }
+        public double WorkerNoProductionTime { set; get; }
         public string WorkerNoProductionReason { set; get; }
     }
     /// <summary>

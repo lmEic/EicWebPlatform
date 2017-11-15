@@ -218,6 +218,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// 日报录入
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ActionResult DReportInput()
         {
             return View();
@@ -269,6 +270,30 @@ namespace EicWorkPlatfrom.Controllers.Product
             return DateJsonResult(datas);
         }
         /// <summary>
+        /// 得到数部门机台信息
+        /// </summary>
+        /// <param name="Department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetMachineInfoDataBy(string Department)
+        {
+            var datas = "";
+            return DateJsonResult(datas);
+        }
+
+        /// <summary>
+        /// 得到数部门机台信息
+        /// </summary>
+        /// <param name="Department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetNoProductSeasonBy(string Department, string NoProductId)
+        {
+            var datas = "";
+            return DateJsonResult(datas);
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="entity"></param>
@@ -287,7 +312,30 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datasResult = new { opResult, dataslist };
             return Json(datasResult);
         }
-
+        /// <summary>
+        /// 批量存储数量
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveMachineDailyReportDatas(List<DailyProductionReportModel> entitys)
+        {
+            var opResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entitys);
+            var datasResult = new { opResult, entitys };
+            return Json(datasResult);
+        }
+        /// <summary>
+        /// 处理多项数据 DisposeMultitermDailyReportdDatas
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <param name="inputSign"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DisposeMultitermDailyReportdDatas(List<DailyProductionReportModel> entitys, string inputSign)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.DisposeMultitermDailyReportdDatas(entitys, inputSign);
+            return Json(datas);
+        }
 
         #endregion
     }

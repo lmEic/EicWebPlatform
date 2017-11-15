@@ -23,7 +23,7 @@
             <div class="panel-heading">
                 <h6 class="panel-title"><i class="glyphicon glyphicon-pencil">物料基础编辑</i></h6>
             </div>
-            <div class="panel-body">
+            <div class="panel-body" id="mainDataWindow">
                 <form role="form" name="materialBaseForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="bs-callout bs-callout-info">
                         <div class="row">
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-warning pull-right" ng-click="operate.autoSynchironizeData()">一键同步</button>
+                                <button class="btn btn-warning pull-right" ng-click="operate.autoSynchironizeData()">上传至华为系统</button>
                             </div>
                         </div>
 
@@ -225,6 +225,32 @@
 
                     </div>
                 </form>
+
+                <div pageslide ps-open="vmManager.opResultsViewDisplay" style="padding:10px;overflow-y:auto;height:550px" ps-side="top" ps-speed="0.25" ps-size="100%" ps-container='mainDataWindow' ps-key-listener="true">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr class="success">
+                                    <th>操作名称</th>
+                                    <th>结果</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.opresults">
+                                    <td>{{item.OperationName}}</td>
+                                    <td>
+                                        <div ng-if="item.Result" class="bs-callout bs-callout-success">
+                                            <h2>{{item.OpResultMessage}}</h2>
+                                        </div>
+                                        <div ng-if="!item.Result" class="bs-callout bs-callout-danger">
+                                            <h2 class="text-danger">{{item.OpResultMessage}}</h2>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="panel-footer">
             </div>

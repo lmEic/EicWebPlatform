@@ -238,6 +238,8 @@ var leeHelper = (function () {
         productBoard: 'ProBoard',
         //日报管理
         dailyReport: 'ProDailyReport',
+        //重工制程处理
+        redoProduct: 'ProRedoProductArea',
         //工单管理
         mocManage: 'ProMocManage',
         //采购管理

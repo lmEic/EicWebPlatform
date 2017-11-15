@@ -215,4 +215,33 @@ namespace Lm.Eic.App.HwCollaboration.Model
         }
         #endregion Model
     }
+    /// <summary>
+    /// 华为物料BOM表
+    /// </summary>
+    [Serializable]
+    public class HwCollaborationMaterialBomModel
+    {
+        /// <summary>
+        /// 父阶编号
+        /// </summary>
+        public string vendorItemCode { get; set; }
+        /// <summary>
+        /// 子阶编号
+        /// </summary>
+        public string subItemCode { get; set; }
+        ///// <summary>
+        ///// 子阶用量
+        ///// </summary>
+        //public double standardQuantity { get; set; }
+        /// <summary>
+        /// 客户代码
+        /// </summary>
+        public string customerVendorCode { get; set; }
+        /// <summary>
+        /// 客户物料编号
+        /// </summary>
+        public string customerItemCode { get; set; }
+
+        public string MaterialId { get; set; }
+    }
 }

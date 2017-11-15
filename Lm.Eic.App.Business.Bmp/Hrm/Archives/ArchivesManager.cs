@@ -466,6 +466,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 sqlWhere = string.Format("RegistedDate >='{0}' And RegistedDate <='{1}' And WorkingStatus='在职'", qryDto.RegistedDateStart.ToDate(), qryDto.RegistedDateEnd.ToDate());
             }
+            else if (searchMode == 4)
+            {
+                sqlWhere = string.Format("Department='{0}' And Post='{1}' And  WorkingStatus='在职'", qryDto.Department, qryDto.Post);
+            }
             return this.irep.GetWorkerInfos(sqlWhere);
         }
         /// <summary>
@@ -885,6 +889,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     /// </summary>
     public class QueryWorkersDto
     {
+
+        public string Post { get; set; }
+
+
         private string _Department;
 
         /// <summary>
@@ -984,6 +992,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 }
             }
         }
+        public int SearchModel { get; set; }
     }
 
 

@@ -25,12 +25,27 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         [NoAuthenCheck]
-        public JsonResult GetWorkerAnalogDatas()
+        public JsonResult GetWorkerAnalogDatas(string department)
         {
-            var workerAnalogDatas = ArchiveService.WorkerQueryManager.GetWorkerAnalogDatas();
+            CompanyWorkerAnalogDto workerAnalogDatas = ArchiveService.WorkerQueryManager.GetWorkerAnalogDatas(department);
             var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
             var dto = new { workerAnalogDatas, departments };
             return Json(dto, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult GetWorkersDetailBy(string department, string post, int searchMode)
+        {
+            var workers = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto()
+            {
+                Department = department,
+                Post = post
+            }, searchMode);
+            return Json(workers, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public FileResult ExportWorkersToExcel()
+        {
+            return this.DownLoadFile(ArchiveService.WorkerQueryManager.ExportWorkersToExcel());
         }
     }
 }

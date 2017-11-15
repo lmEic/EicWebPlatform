@@ -23,16 +23,16 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
             //string materialId = "349213C0350P0RT";//物料料号
             PurchaseOnWayDto dto = new PurchaseOnWayDto() { sccOpenPOList = new List<SccOpenPOVO>() };
             if (materialQueryCell == null) return dto;
-            materialQueryCell.MaterialIdList.ForEach(materialId =>
+            materialQueryCell.MaterialIdList.ForEach(m =>
             {
-                List<ErpPurchaseOnWayModel> datas = this.erpDbAccess.LoadPurchaseOnWayDatas(materialId);
+                List<ErpPurchaseOnWayModel> datas = this.erpDbAccess.LoadPurchaseOnWayDatas(m.MaterialId);
                 if (datas != null && datas.Count > 0)
                 {
                     datas.ForEach(d =>
                     {
                         SccOpenPOVO sop = new SccOpenPOVO()
                         {
-                            customerVendorCode = "157",
+                            customerVendorCode = m.customerVendorCode,
                             vdFactoryCode = "421072-001",
                             businessMode = d.BusinessMode,
                             poPublishDateStr = d.PoPublishDateStr.ToFormatDate(),

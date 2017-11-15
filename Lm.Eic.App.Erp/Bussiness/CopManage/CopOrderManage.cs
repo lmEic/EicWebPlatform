@@ -33,11 +33,11 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
 
                 if (mesPortype == null || mesPortype.Count <= 0) return typeMonitorModelList;
                 mesPortype.ForEach(e =>
-                 {
-                     var m = GetProductTypeMonitorInfoBy(e);
-                     if (m != null)
-                     { typeMonitorModelList.Add(m); }
-                 });
+                {
+                    var m = GetProductTypeMonitorInfoBy(e);
+                    if (m != null)
+                    { typeMonitorModelList.Add(m); }
+                });
                 return typeMonitorModelList;
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
         {
             try
             {
-                
+
                 if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
                 var datasGroupping = datas.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
                 return datasGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping).CreateDownLoadExcelFileModel(fileDownLoadName);
@@ -167,10 +167,10 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
             List<string> productIDList = GetAllPorductIdBy(containsProductName);
             //对每个料号得到相应的成品仓信息
             productIDList.ForEach(e =>
-                 {
-                     var mmm = InvOrderCrudFactory.InvManageDb.GetProductStroeInfoBy(e);
-                     productInStoreInfoList.AddRange(mmm);
-                 });
+            {
+                var mmm = InvOrderCrudFactory.InvManageDb.GetProductStroeInfoBy(e);
+                productInStoreInfoList.AddRange(mmm);
+            });
             return productInStoreInfoList;
 
         }
