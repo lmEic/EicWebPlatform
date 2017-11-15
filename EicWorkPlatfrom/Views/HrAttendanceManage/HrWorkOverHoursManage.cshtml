@@ -89,7 +89,7 @@
                                         <ul class="nav nav-pills" role="tablist">
 
                                             <li role="presentation">
-                                                <a href="#" ng-click="operate.handleItem(item)" title="编辑加班"><i class="fa fa-pencil"></i>编辑加班</a>
+                                                <a href="#" ng-click="operate.handleItem(item)" title="批量编辑"><i class="fa fa-pencil"></i>批量编辑</a>
                                             </li>
                                             @*<li role="presentation">
                                                 <a href="#" ng-click="vmManager.editworkOverHours(item)" title="编辑加班时数"><i class="fa fa-pencil"></i>编辑时数</a>
@@ -264,11 +264,8 @@
                     <table class="table table-striped table-hover table-condensed" style="table-layout:fixed;">
                         <colgroup>
                           
-                         
-                            <col width="60" />
-                            <col width="60" />
-                            <col width="60" />
-                            <col width="60" />
+                            <col width="30" />                  
+                            <col width="60" />                     
                             <col width="60" />
                             <col width="60" />
                             <col width="60" />
@@ -277,9 +274,7 @@
                         </colgroup>
                         <thead>
                             <tr class="info">
-                                <th>加班类型</th>
-                                <th>部门</th>
-                                <th>日期</th>
+                                <th>序号</th>                                                       
                                 <th>班别</th>
                                 <th>工号</th>
                                 <th>姓名</th>
@@ -289,13 +284,8 @@
                         </thead>
                         <tbody>
                             <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index"> 
-                                <td ng-bind="item.WorkoverType"></td>
-                                <td ng-bind="item.DepartmentText"></td>  
-                                <td ng-bind="item.WorkDate"></td>
-                                <td ng-bind="item.WorkClassType"></td>
-                              
-                                
-                               
+                                <td ng-bind="$index+1"></td>                                                    
+                                <td ng-bind="item.WorkClassType"></td>                                                                                     
                                 <td ng-bind="item.WorkerId"></td>
                                 <td ng-bind="item.WorkerName"></td>
                                 <td ng-bind="item.WorkOverHours"></td> 
@@ -393,7 +383,7 @@
                         <div class="form-group">
                             <label for="workDate" class="col-md-2 control-label">申请日期</label>
                             <div class="col-md-4">
-                                <input type="date" name="workDate" class="form-control" ng-model="vmManager.changeworkDate" placeholder="加班日期"  format-date required />
+                                <input type="date" name="workDate" class="form-control" ng-model="vm.WorkDate" placeholder="加班日期"  format-date required />
                                 <div class="error-messages" ng-messages="formWorkover.workDate.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">日期不能为空</small>
                                 </div>

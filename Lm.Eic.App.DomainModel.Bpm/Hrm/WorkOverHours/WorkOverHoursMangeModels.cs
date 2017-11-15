@@ -100,7 +100,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _qryDate = value; }
             get { return _qryDate; }
         }
-        private string _workReason;
+        private string _workReason="产线加班";
         /// <summary>
         /// 加班原因
         /// </summary>

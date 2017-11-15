@@ -159,7 +159,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 new FileFieldMapping("DepartmentText","部门"),
                 new FileFieldMapping("WorkoverType","加班类型"),
                 new FileFieldMapping("WorkClassType","班别"),                                         
-                new FileFieldMapping("Remark","备注")               
+                new FileFieldMapping("Remark","备注"),
+                new FileFieldMapping("WorkClassType","班别"),
+                new FileFieldMapping("WorkDate","申请日期"),
+                new FileFieldMapping("WorkStatus","员工状态"),
+                new FileFieldMapping("QryDate","年月份"),
+                new FileFieldMapping("WorkReason","加班原因"),
+                new FileFieldMapping("WorkDayTime","白班日期"),
+                new FileFieldMapping("WorkNightTime","晚班日期")
+
+
+
             };
             return fieldmapping;
 
