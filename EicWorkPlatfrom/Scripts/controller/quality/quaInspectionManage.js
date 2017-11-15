@@ -1323,6 +1323,16 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
     $scope.opPersonInfo = { Department: '', ClassType: '' };
+    function ChangeDateFormat(val) {
+        if (val != null) {
+            var date = new Date(parseInt(val.replace("/Date(", "").replace(")/", ""), 10));
+            //月份为0-11，所以+1，月份小于10时补个0
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            return date.getFullYear() + "-" + month + "-" + currentDate;
+        }
+        return "";
+    };
     var vmManager = {
         classTypes: [{ id: "白班", text: "白班" }, { id: "晚班", text: "晚班" }],
         classType: "白班",
@@ -1378,7 +1388,16 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
                     angular.forEach(datas.sampledDatas, function (item) {
-                        var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionCount: item.InspectionCount, inspectionItemDatas: [], dataSets: [] };
+                        var dataItem = {
+                            orderId: item.OrderId,
+                            orderIdNumber: item.OrderIdNumber,
+                            inspectionStatus: item.InspectionStatus,
+                            inspectionCount: item.InspectionCount,
+                            inspectionResult: item.InspectionResult,
+                            finishDate: ChangeDateFormat(item.FinishDate),
+                            inspectionItemDatas: [],
+                            dataSets: []
+                        };
                         dataItem.Id = leeHelper.newGuid();
                         vmManager.panelDataSet.push(dataItem);
                     })
@@ -1562,8 +1581,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         });
     };
-
-
     ///表单附件模型
     var attachFileVM = {
         ModuleName: null,
