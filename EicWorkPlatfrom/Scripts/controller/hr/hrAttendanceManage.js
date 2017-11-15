@@ -910,7 +910,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         //编辑加班时数
         editworkOverHours: function (item) {          
             if (item !== undefined && item !== null) {
-               
+              
                 angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing = false });
                 leeHelper.copyVm(item, uiVM);
                 $scope.vm = uiVM;
@@ -924,10 +924,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         //编辑下一行加班时数
         editNextworkOverHours: function ($event, item) {
             if ($event.keyCode === 13 || $event.keyCode === 9) {
-                //累计时数
-             
-               item.WorkDate = vmManager.changeworkDate;
-             
+                //累计时数            
+                $scope.vm.WorkDate = item.WorkDate;            
                 tempVm.workOverCount = 0;
                 angular.forEach(vmManager.dataSets, function (row) {
                     $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
@@ -935,7 +933,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                 leeHelper.copyVm($scope.vm, vmManager.edittingRow);
                 if (item.rowindex < vmManager.dataSets.length) {
                     vmManager.edittingRowIndex = item.rowindex + 1;
+
                     var rowItem = vmManager.getEdittingRow();
+                   
                     vmManager.editworkOverHours(rowItem);
                 }
                 else {
@@ -1024,7 +1024,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;     
         $scope.vm = item;  
         $scope.vm.WorkoverType = item.WorkoverType;
-      //  $scope.vm.WorkDate = item.WorkDate;
+        $scope.vm.WorkDate = item.WorkDate;
          vmManager.changeworkDate = item.WorkDate;     
      
          $scope.vm.WorkClassType = item.WorkClassType;
@@ -1088,8 +1088,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         var _workNightTime = "从 " + vmManager.changeworkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm") + " 至 " + vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");
         var qryDateFormat = $filter('date')(uiVM.WorkDate, "yyyyMM");
            uiVM.WorkDayTime = _workDayTime;
-           uiVM.WorkNightTime = _workNightTime;   
-          
+           uiVM.WorkNightTime = _workNightTime;          
         angular.forEach(vmManager.dataSets, function (row) {
             $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);           
             row.WorkDate = uiVM.WorkDate;
