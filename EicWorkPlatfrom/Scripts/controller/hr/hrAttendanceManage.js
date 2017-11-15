@@ -624,11 +624,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         department: leeLoginUser.departmentText,
         workOverCount: 0,
     };
-    var vmManager = {      
+    var vmManager = { 
+        qryWorkName:null,
         searchYear: new Date().getFullYear(),
         changeworkDate:null,
-        workDayDate: null,
-        workNightDate: null,
+        workDayDate: new Date().toDateString(),
+        workNightDate: new Date().toDateString(),
         workDayTimeStart: new Date(00, 00, 00),
         workDayTimeEnd: new Date(00, 00, 00),     
         workNightTimeStart: new Date(00, 00, 00),
@@ -883,6 +884,17 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             var rowItem = _.find(vmManager.dataSets, { rowindex: vmManager.edittingRowIndex });
             return rowItem;
         },
+        //快速查找员工
+        getWorkName: function () {
+            //if (vmManager.dataSets.length = 0) { leePopups.alert("亲，没有要查找的记录！请加载模板后再查询"); return;}
+            var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
+            if (qryItem != null)
+            {           
+                vmManager.editworkOverHours(qryItem)               
+            }  
+           
+        },
+
         //载入模板
         getWorkOverHoursModes: function () {        
             vmManager.dataSets = [];
@@ -932,23 +944,22 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                 leeHelper.copyVm($scope.vm, vmManager.edittingRow);
                 if (item.rowindex < vmManager.dataSets.length) {
                     vmManager.edittingRowIndex = item.rowindex + 1;
-
-                    var rowItem = vmManager.getEdittingRow();
-                   
+                    var rowItem = vmManager.getEdittingRow();                 
                     vmManager.editworkOverHours(rowItem);
                 }
                 else {
                     vmManager.edittingRow.wkhing = false;
                 }
+                vmManager.qryWorkName=null;
             }
+                  
         },
         //加班时数输入框
         inputWorkOverHours: function ($event, item) {
             var year = new Date().getFullYear();
             var mm = new Date().getMonth() + 1;
             var dd = new Date().getDate();
-           var nowdate = year + "-" + mm + "-" + dd;
-           
+           var nowdate = year + "-" + mm + "-" + dd;         
             uiVM.WorkDate = nowdate;
             item.WorkOverHours = $scope.vm.WorkOverHours;
             focusSetter.doWhenKeyDown($event, function () {
@@ -1018,7 +1029,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     //编辑行
-    operate.handleItem = function (item) {
+    operate.handleItem = function (item) {     
         var dataitem = _.clone(item);
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;     
         $scope.vm = item;  
@@ -1039,13 +1050,11 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             focusSetter['workeroverFocus'] = true;
         }
     };
+
     //后台编辑
-    operate.editItem = function (item) {   
-      
-        item.OpSign = leeDataHandler.dataOpMode.edit;
-        
-        $scope.vm = uiVM = item;
-        
+    operate.editItem = function (item) {      
+        item.OpSign = leeDataHandler.dataOpMode.edit;      
+        $scope.vm = uiVM = item;      
         dialog.show();
     };
     //后台保存
