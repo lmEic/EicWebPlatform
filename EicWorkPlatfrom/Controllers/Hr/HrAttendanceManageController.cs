@@ -221,6 +221,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
             TempData["WorkOverHourDatasBySum"] = datas;
+       
             return DateJsonResult(datas);
 
         }
@@ -326,17 +327,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
                 string fileName1 = "加班汇总表.xls";
                 var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
+               
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas,SiteRootPath, filePath1, fileName1);
                 return this.DownLoadFile(dlfm);
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
-            }
-            
-
-           
+            }                   
         }
         /// <summary>
         /// 后台修改保存
