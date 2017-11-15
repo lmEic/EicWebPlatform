@@ -157,6 +157,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             get { return _opsign; }
         }
         private string _opperson;
+
         /// <summary>
         ///操作人1
         /// </summary>
