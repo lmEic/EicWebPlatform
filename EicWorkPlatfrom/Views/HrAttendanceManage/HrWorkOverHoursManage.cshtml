@@ -36,20 +36,20 @@
                 <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
                     <table class="table table-striped table-hover table-condensed" style="table-layout:fixed;">
                         <colgroup>
-                            <col width="40" />
+                            <col width="20" />
+                            <col width="30" />
                             <col width="50" />
                             <col width="70" />
                             <col width="90" />
                             <col width="60" />
                             <col width="60" />
                             <col width="60" />
-                            <col width="60" />
-                            <col width="60" />
-                            <col width="60" />
+                            <col width="60" />                                    
                         </colgroup>
 
                         <thead>
                             <tr class="info">
+                                <th>项次</th>
                                 <th class="text-center danger">
                                     <i class="fa fa-flag"></i>操作
                                 </th>
@@ -59,13 +59,12 @@
                                 <th>班别</th>
                                 <th>工号</th>
                                 <th>姓名</th>
-                                <th>加班时数(h)</th>
-                                <th>备注</th>
-                                <th>员工状态</th>
+                                <th>加班时数(h)</th>                                                     
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody>                    
                             <tr ng-repeat="item in vmManager.dataSets track by $index" ng-click="vmManager.getCurrentRow(item)">
+                                <td ng-bind="$index+1"></td>
                                 @*工具按钮*@
                                 <td class="text-center">
                                     <button type="button" class="btn btn btn-danger" ng-show="item.editting"
@@ -138,8 +137,7 @@
                                            focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入时数" ng-show="item.wkhing" />
                                 </td>
-                                <td>{{item.Remark}}</td>
-                                <td>{{item.WorkStatus}}</td>
+                                                           
                             </tr>
                         </tbody>
                     </table>
@@ -268,18 +266,19 @@
                     <table class="table table-striped table-hover table-condensed" style="table-layout:fixed;">
                         <colgroup>
                           
-                            <col width="30" />                  
-                            <col width="60" />                     
+                            <col width="30" />
+                            <col width="60" />
+                            <col width="60" />                       
                             <col width="60" />
                             <col width="60" />
                             <col width="60" />
-                            <col width="60" />
-                         
+                            <col width="60" />                      
                         </colgroup>
                         <thead>
                             <tr class="info">
-                                <th>序号</th>                                                       
-                                <th>班别</th>
+                                <th>序号</th> 
+                                <th>日期</th>
+                                <th>加班类型</th>                           
                                 <th>工号</th>
                                 <th>姓名</th>
                                 <th>加班时数(h)</th>
@@ -288,25 +287,22 @@
                         </thead>
                         <tbody>
                             <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index"> 
-                                <td ng-bind="$index+1"></td>                                                    
-                                <td ng-bind="item.WorkClassType"></td>                                                                                     
+                                <td ng-bind="$index+1"></td> 
+                                <td ng-bind="item.WorkDate"></td>
+                                <td ng-bind="item.WorkoverType"></td>
+                                                                                                                 
                                 <td ng-bind="item.WorkerId"></td>
                                 <td ng-bind="item.WorkerName"></td>
                                 <td ng-bind="item.WorkOverHours"></td> 
                                 <td ng-bind="item.Remark"></td>
                             </tr>
                         </tbody>
-                    </table>
-                   
-                </div>
-            
-            
+                    </table>                 
+                </div>           
         </div>
-
     </div>
 
-
-        <div class="panel-footer">
+    <div class="panel-footer">
             <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
                 <content dialog-title>
                     <i class="fa fa-pencil-square">数据窗口</i>
