@@ -1346,7 +1346,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         //生成抽样表单项
         createSampleFormItem: function () {
             var noSampleCount = vmManager.orderInfo.MaterialInCount - vmManager.orderInfo.HaveInspectionSumCount;
-            if (vmManager.sampleCount >= noSampleCount) {
+            if (vmManager.sampleCount > noSampleCount) {
                 alert("抽样批次数量不能大于未抽样数!")
                 return;
             };
@@ -1354,7 +1354,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 alert("抽样批次数量不能小于等于0!")
                 return;
             };
-            console.log(mmm);
             qualityInspectionDataOpService.createFqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (inspectionItemDatas) {
 
                 if (angular.isArray(inspectionItemDatas) && inspectionItemDatas.length > 0) {
