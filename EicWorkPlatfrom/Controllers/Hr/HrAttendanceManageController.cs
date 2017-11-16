@@ -344,7 +344,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         [NoAuthenCheck]  
         
-        
+      
         public JsonResult StoreWorkOverHoursRecordSingle(WorkOverHoursMangeModels model)
         {
             try
