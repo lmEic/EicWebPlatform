@@ -7,7 +7,6 @@
     <div>
         <div class="panel-body">
             <div bs-tabs bs-active-pane="vmManager.queryActiveTab">
-
                 @*FQC(ERP表单)统计*@
                 <div bs-pane data-title="FQC(ERP表单)统计" class="active" data-name="qryERPFormProcessTab">
                     @*抬头*@
@@ -27,6 +26,10 @@
 
                                     <button role="button" class="btn btn-primary tipBox" ng-click="vmManager.queryErpOrderInspectionInfo()"><i class="fa fa-search"></i>查询</button>
                                 </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" placeholder="输入品名快速定位" ng-model="filterErpOrder"
+                                           bs-options="item.OrderId as item.OrderId for item in vmManager.erpOrderInfoDatasSet" limit="10" bs-typeahead />
+                                </div>
                                 <span yl-operatemsg-board></span>
                             </form>
                         </div>
@@ -34,6 +37,7 @@
                             <button class="btn btn-default" type="button" ng-click="vmManager. refreshErp()"><i class="fa fa-reply"></i>返回(Erp)</button>
                         </div>
                     </div>
+
                     @*查询主表*@
                     <div class="row">
                         <div class="col-md-12" id="editWindow">
@@ -53,7 +57,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in vmManager.erpDataSets track by $index">
+                                        <tr ng-repeat="item in vmManager.erpDataSets |filter:filterErpOrder">
                                             <td>{{item.OrderID}}</td>
                                             <td>{{item.InspectionNumber}}</td>
                                             <td>{{item.ProductName}} </td>
@@ -208,6 +212,10 @@
                                     </button>
                                     <button role="button" class="btn btn-primary tipBox" ng-click="vmManager.queryFqcMasterInspectionInfo()"><i class="fa fa-search"></i>查询</button>
                                 </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" placeholder="输入品名快速定位" ng-model="filterFqcOrder"
+                                           bs-options="item.OrderId as item.OrderId for item in vmManager.erpOrderInfoDatasSet" limit="10" bs-typeahead />
+                                </div>
                                 <span yl-operatemsg-board></span>
                             </form>
                         </div>
@@ -237,7 +245,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in vmManager.fqcDataSets track by $index">
+                                        <tr ng-repeat="item in vmManager.fqcDataSets  |filter:filterFqcOrder">
                                             <td>{{item.OrderId}}</td>
                                             <td>{{item.OrderIdNumber}}</td>
                                             <td style="white-space:nowrap;">
