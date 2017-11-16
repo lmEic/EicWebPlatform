@@ -122,11 +122,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             try
             {
                 List<InspectionItemDataSummaryVM> returnDatas = null;
-                if (sampleCount <= 0) return returnDatas;
                 ///一个工单 对应一个料号，有工单就是料号
                 var orderMaterialInfoList = this.GetPuroductSupplierInfo(orderId);
                 if (orderMaterialInfoList == null || orderMaterialInfoList.Count <= 0) return returnDatas;
                 var orderMaterialInfo = orderMaterialInfoList[0];
+                /// 如果生成的数据大于 总数 则反回空
+                if (sampleCount <= 0 || sampleCount > orderMaterialInfo.ProduceNumber) return returnDatas;
                 ///得到需要检验的项目
                 var fqcNeedInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
 

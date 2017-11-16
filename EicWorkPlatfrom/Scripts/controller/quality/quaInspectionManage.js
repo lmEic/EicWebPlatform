@@ -1323,7 +1323,6 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
     $scope.opPersonInfo = { Department: '', ClassType: '' };
-
     var vmManager = {
         classTypes: [{ id: "白班", text: "白班" }, { id: "晚班", text: "晚班" }],
         classType: "白班",
@@ -1346,10 +1345,18 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         cacheDatas: [],
         //生成抽样表单项
         createSampleFormItem: function () {
+            var noSampleCount = vmManager.orderInfo.MaterialInCount - vmManager.orderInfo.HaveInspectionSumCount;
+            if (vmManager.sampleCount >= noSampleCount) {
+                alert("抽样批次数量不能大于未抽样数!")
+                return;
+            };
+            if (vmManager.sampleCount <= 0) {
+                alert("抽样批次数量不能小于等于0!")
+                return;
+            };
+            console.log(mmm);
             qualityInspectionDataOpService.createFqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (inspectionItemDatas) {
-                if (!vmManager.sampleCount) {
-                    alert("抽样批次数量不能为空！")
-                }
+
                 if (angular.isArray(inspectionItemDatas) && inspectionItemDatas.length > 0) {
                     var item = inspectionItemDatas[0];
                     var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: inspectionItemDatas, dataSets: inspectionItemDatas };
@@ -1358,8 +1365,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                     vmManager.getFqcOrderInfo();
                 }
             })
-
-
         },
         searchFqcOrderInfoKeyDown: function ($event) {
             if ($event.keyCode === 13) {
