@@ -411,6 +411,8 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
             }
         },
         getInspectionModeDatas: function () {
+            vmManager.dataSource = [];
+            vmManager.dataSets = [];
             $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionModeDatas($scope.vmManager.inspectionMode, $scope.vmManager.inspectionLevel, $scope.vmManager.inspectionAQL).then(function (datas) {
                 vmManager.dataSource = datas;
                 vmManager.dataSets = datas;
