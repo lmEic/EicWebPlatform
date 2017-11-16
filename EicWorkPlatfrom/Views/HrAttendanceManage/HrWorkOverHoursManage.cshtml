@@ -14,6 +14,10 @@
                                 <i class="fa fa-download"></i>载入模板
                             </button>
                         </div>
+                        <div class="form-group">
+                            <input type="text" ng-model="vmManager.qryWorkName" class="form-control"placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
+                        </div>
+
                     </form>
                 </div>
                 <div class="col-md-5 pull-right">
@@ -406,11 +410,7 @@
                                     <div class="error-messages" ng-messages="formWorkover.workOverHour.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">加班时数不能为空</small>
                                     </div>
-                                    @*<span class="input-group-btn">
-                                        <button type="button" class="btn btn-primary" ng-model="vm.WorkOverHours"
-                                                data-html="1" data-multiple="0" data-placeholder="选择时数" data-animation="am-flip-x"
-                                                data-bs-options="overHours.id as overHours.text for overHours in vmManager.workOverHourss" data-bs-select></button>
-                                    </span>*@
+                                 
                                 </div>
                             </div>
                             <label for="remark" class="col-md-2 control-label">备注</label>
@@ -418,7 +418,6 @@
                                 <input type="text" name="remark" class="form-control" ng-model="vm.Remark" placeholder="备注" />
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="workstatus" class="col-md-2 control-label">工员状态:</label>
                             <div class="col-md-4">

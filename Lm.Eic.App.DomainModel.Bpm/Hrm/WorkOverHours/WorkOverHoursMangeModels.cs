@@ -109,7 +109,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _workReason = value; }
             get { return _workReason; }
         }
-        private string _workDayTime;
+        private string _workDayTime="NULL";
         /// <summary>
         /// 白班时间
         /// </summary>
@@ -118,7 +118,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _workDayTime = value; }
             get { return _workDayTime; }
         }
-        private string _workNightTime;
+        private string _workNightTime="NULL";
         /// <summary>
         /// 晚班时间
         /// </summary>
@@ -157,8 +157,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             get { return _opsign; }
         }
         private string _opperson;
+
         /// <summary>
-        ///操作人
+        ///操作人1
         /// </summary>
         public string OpPerson
         {
