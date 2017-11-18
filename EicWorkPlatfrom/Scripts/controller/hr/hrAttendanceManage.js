@@ -917,7 +917,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                 })
             })
         },
-
         //编辑加班时数
         editworkOverHours: function (item) {          
             if (item !== undefined && item !== null) {
