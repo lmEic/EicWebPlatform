@@ -256,13 +256,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         private OpResult Add(ProductOrderDispatchModel model)
         {
             //生成组合键值
+            model.DicpatchStatus = (model.IsValid == "True" || model.IsValid == "true") ? "已分配" : "未分配";
             if (irep.IsExist(e => e.OrderId == model.OrderId))
+            {
                 return irep.Update(e => e.OrderId == model.OrderId, u => new ProductOrderDispatchModel
                 {
                     IsValid = model.IsValid,
                     ProductionDate = model.ProductionDate,
                     ValidDate = model.ValidDate,
+                    DicpatchStatus = model.DicpatchStatus,
                 }).ToOpResult_Eidt(OpContext);
+            };
+
             return irep.Insert(model).ToOpResult(OpContext);
         }
 
@@ -294,15 +299,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
+    
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime validDate)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).OrderBy(e => e.OrderId).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.ValidDate >= validDate).OrderBy(e => e.OrderId).ToList();
         }
+        internal List<ProductOrderDispatchModel> GetVirtualOrderDataBy(string department)
+        {
+            /// 1.要有效
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsVirtualOrderId == 1).OrderBy(e => e.OrderId).ToList();
+        }
+
         internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department).OrderBy(e => e.OrderId).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department).ToList();
         }
         internal ProductOrderDispatchModel GetOrderInfoBy(string orderid)
         {

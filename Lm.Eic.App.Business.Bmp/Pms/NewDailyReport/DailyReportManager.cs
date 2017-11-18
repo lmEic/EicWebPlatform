@@ -41,64 +41,74 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
+
+        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime date)
         {
-            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, date);
         }
-        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
+        public List<ProductOrderDispatchModel> GetVirtualOrderDataBy(string department)
         {
-            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
+            return DailyReportCrudFactory.ProductOrderDispatch.GetVirtualOrderDataBy(department);
         }
         public List<ProductOrderDispatchModel> GetNeedDispatchOrderBy(string department, DateTime nowDate)
         {
+            DateTime getDate = nowDate.ToDate();
             List<ProductOrderDispatchModel> returndatas = new List<ProductOrderDispatchModel>();
             ProductOrderDispatchModel model = null;
             ///ERP在制生产订单
             var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
             ///今日生产已确认分配的订单
-            var todayHaveDispatchProductionOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+
             if (erpInProductiondatas == null || erpInProductiondatas.Count == 0) return returndatas;
             erpInProductiondatas.ForEach(e =>
             {
                 model = new ProductOrderDispatchModel();
                 OOMaper.Mapper<ProductionOrderIdInfo, ProductOrderDispatchModel>(e, model);
-                var haveDispatchOrder = todayHaveDispatchProductionOrderDatas.Find(m => m.OrderId == e.OrderId);
+                ////如果订单在数据库中不存在
+                var haveDispatchOrder = DailyReportCrudFactory.ProductOrderDispatch.GetOrderInfoBy(e.OrderId);
                 if (haveDispatchOrder == null)
                 {
                     model.ProductionDate = e.PlanStartProductionDate;
                     model.ValidDate = e.PlanEndProductionDate;
-                    model.IsValid = "False";
+                    model.DicpatchStatus = "未分配";
+                    model.IsValid = "false";
                 }
                 else
                 {
-                    model.IsValid = "True";
-                    model.ProductionDate = haveDispatchOrder.ProductionDate;
-                    model.ValidDate = haveDispatchOrder.ValidDate;
+                    model = haveDispatchOrder;
+                    if (model.ValidDate <= nowDate)
+                    {
+                        model.DicpatchStatus = "已失效";
+                    }
+                    model.ProductStatus = e.ProductStatus;
                 }
-
                 if (!returndatas.Contains(model))
                     returndatas.Add(model);
             });
-            TreatmentNoProductOrderId(todayHaveDispatchProductionOrderDatas, erpInProductiondatas);
+            TreatmentNoProductOrderId(department, returndatas);
             return returndatas.OrderByDescending(e => e.OrderId).ToList();
         }
-        public void TreatmentNoProductOrderId(List<ProductOrderDispatchModel> todayHaveDispatchProductionOrderDatas, List<ProductionOrderIdInfo> erpInProductiondatas)
+        /// <summary>
+        /// 处理已经分配的但是完工的订单
+        /// </summary>
+        /// <param name="todayHaveDispatchProductionOrderDatas"></param>
+        /// <param name="erpInProductiondatas"></param>
+        public void TreatmentNoProductOrderId(string department, List<ProductOrderDispatchModel> erpInProductiondatas)
         {
+            var todayHaveDispatchProductionOrderDatas = DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
             if (todayHaveDispatchProductionOrderDatas == null || todayHaveDispatchProductionOrderDatas.Count == 0) return;
             todayHaveDispatchProductionOrderDatas.ForEach(e =>
             {
-                if (e.OrderId != "511-1111111")
+                ///如果工单不在ERP中的在制工单中 那么此分配的工单失效 状态变为已经完工 如果是虚拟工单不用改变
+                var dates = erpInProductiondatas.FirstOrDefault(f => f.OrderId == e.OrderId && e.IsVirtualOrderId == 0);
+                if (dates == null)
                 {
-                    var dates = erpInProductiondatas.FindAll(f => f.OrderId == e.OrderId);
-                    if (dates == null || dates.Count == 0)
-                    {
-                        e.IsValid = "False";
-                        e.OpSign = OpMode.Edit;
-                        StoreOrderDispatchData(e);
-                    }
+                    e.IsValid = "false";
+                    e.ProductStatus = "已完工";
+                    e.OpSign = OpMode.Edit;
+                    StoreOrderDispatchData(e);
                 }
             });
-
         }
         /// <summary>
         /// 保存订单数据

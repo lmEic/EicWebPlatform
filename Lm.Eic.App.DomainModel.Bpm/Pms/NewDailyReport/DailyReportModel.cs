@@ -340,6 +340,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _producenumber = value; }
             get { return _producenumber; }
         }
+        private DateTime _productiondate;
+        /// <summary>
+        ///生产日期
+        /// </summary>
+        public DateTime ProductionDate
+        {
+            set { _productiondate = value; }
+            get { return _productiondate; }
+        }
         private string _productstatus;
         /// <summary>
         ///订单状态
@@ -349,14 +358,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _productstatus = value; }
             get { return _productstatus; }
         }
-        private DateTime _productiondate;
+        private int _isvirtualorderid;
         /// <summary>
-        ///生产日期
+        ///是否为虚工单
         /// </summary>
-        public DateTime ProductionDate
+        public int IsVirtualOrderId
         {
-            set { _productiondate = value; }
-            get { return _productiondate; }
+            set { _isvirtualorderid = value; }
+            get { return _isvirtualorderid; }
+        }
+        private string _dicpatchstatus;
+        /// <summary>
+        ///分配状态
+        /// </summary>
+        public string DicpatchStatus
+        {
+            set { _dicpatchstatus = value; }
+            get { return _dicpatchstatus; }
         }
         private string _isvalid;
         /// <summary>

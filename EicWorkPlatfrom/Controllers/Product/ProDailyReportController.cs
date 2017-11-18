@@ -9,6 +9,7 @@ using System.IO;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Web;
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -197,7 +198,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetOrderDispatchInfoDatas(string department, DateTime nowDate)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(department, nowDate);
+            var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(department, nowDate);
+            var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetVirtualOrderDataBy(department);
+            var datas = new { erpOrderDatas, virtualOrderDatas };
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -231,7 +234,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetInProductionOrderDatas(string department)
         {
-            DateTime nowDate = DateTime.Now.Date;
+            DateTime nowDate = DateTime.Now.Date.ToDate();
             var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
             return DateJsonResult(datas);
         }
