@@ -914,9 +914,10 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });          
             if (qryItem != null)
             {              
-                vmManager.editworkOverHours(qryItem);                
+                vmManager.editworkOverHours(qryItem); 
+                vmManager.qryWorkName = null;
             }   
-            vmManager.qryWorkName=null;
+           
         },
         //加载部门信息
         getDepartment: function ()
