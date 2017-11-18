@@ -910,13 +910,13 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         },
         //快速查找员工
         getWorkName: function () {
-            //if (vmManager.dataSets.length = 0) { leePopups.alert("亲，没有要查找的记录！请加载模板后再查询"); return;}
-            var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
+                    
+            var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });          
             if (qryItem != null)
-            {           
-                vmManager.editworkOverHours(qryItem)               
-            }  
-           
+            {              
+                vmManager.editworkOverHours(qryItem);                
+            }   
+            vmManager.qryWorkName=null;
         },
         //加载部门信息
         getDepartment: function ()
