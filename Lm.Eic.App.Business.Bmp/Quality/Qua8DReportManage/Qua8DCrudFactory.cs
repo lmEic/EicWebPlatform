@@ -127,7 +127,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         /// <returns></returns>
         public List<Qua8DReportDetailModel> GetQua8DDetailDatasBy(string reportId)
         {
-            return irep.Entities.Where(e => e.ReportId == reportId).ToList();
+            return irep.Entities.Where(e => e.ReportId == reportId).OrderBy(f => f.StepId).ToList();
         }
         internal OpResult ChangeDetailStatus(string reportId, int stepId, string status)
         {

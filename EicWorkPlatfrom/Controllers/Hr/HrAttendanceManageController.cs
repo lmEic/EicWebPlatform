@@ -196,7 +196,8 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
-        [NoAuthenCheck]  
+        [NoAuthenCheck] 
+        //获取信息
         public ContentResult GetWorkOverHoursData(DateTime workDate,string departmentText,int mode)
         {
             WorkOverHoursDto dto = new WorkOverHoursDto()
@@ -339,12 +340,12 @@ namespace EicWorkPlatfrom.Controllers.Hr
             }                   
         }
         /// <summary>
-        /// 后台修改保存
+        /// 后台保存
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [NoAuthenCheck]         
+        [NoAuthenCheck]             
         public JsonResult StoreWorkOverHoursRecordSingle(WorkOverHoursMangeModels model)
         {
             try
