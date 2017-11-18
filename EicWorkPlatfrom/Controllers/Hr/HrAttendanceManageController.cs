@@ -9,15 +9,13 @@ using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
 using Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours;
 using System.Web;
 using System.IO;
-
 using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
 using Lm.Eic.App.Business.Bmp.Pms.NewDailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
-
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
-
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
+
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -217,6 +215,8 @@ namespace EicWorkPlatfrom.Controllers.Hr
             {
                 QryDate = qrydate,
                 DepartmentText = departmentText,
+                ParentDataNodeText = departmentText,
+                
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
@@ -264,13 +264,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="departmentText"></param>
         /// <returns></returns>
         public ContentResult GetWorkOverHoursMode(string departmentText,DateTime workDate)
-        {
-            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,workDate);
-            TempData["WorkOverHoursDatas"] = datas;
-            return DateJsonResult(datas);
+        {    
+            
+           var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText, workDate);
+           TempData["WorkOverHoursDatas"] = datas;
+           return DateJsonResult(datas);                         
         }
+        [NoAuthenCheck]    
         [HttpPost]
-        [NoAuthenCheck]      
+          
         public JsonResult HandlWorkOverHoursDt(List<WorkOverHoursMangeModels> workOverHours)
         {
             var result = WorkOverHoursService.WorkOverHoursManager.HandleWorkOverHoursDatas(workOverHours);
@@ -357,6 +359,29 @@ namespace EicWorkPlatfrom.Controllers.Hr
             }
 
         }
+
+        [NoAuthenCheck]
+        public ContentResult GetDepartment(string datanodeName)
+        {
+            
+            try
+            {
+                var  datas = PmConfigService.DataDicManager.GetConfigDataDepartment("Organization", "HrBaseInfoManage", datanodeName);
+
+                return DateJsonResult(datas);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
+
+
         #endregion
     }
 }

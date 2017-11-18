@@ -178,13 +178,19 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
             model: model
         });
     },
-
-
     //加班时数导入Excel
     hr.importWorkOverHoursByDatas = function (file) {
         var url = attendUrl + 'ImportWorkOverHoursDatas';
         return ajaxService.uploadFile(url, file);
-    };
+        };
+    hr.getDepartments = function (datanodeName)
+    {
+        var url = attendUrl + 'GetDepartment';
+        return ajaxService.getData(url, {
+            datanodeName: datanodeName
+            
+        })
+    }
     return hr;
 });
 //-----------考勤业务管理-----------------------
@@ -599,20 +605,23 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         WorkDate: null,//
         WorkOverHours: null,//
         Remark: null,
-        DepartmentText: null,
+        DepartmentText: null,       
         WorkStatus: '在职',
         QryDate: null,
         WorkReason: '产线加班',
         WorkDayTime: '空白',
-        WorkNightTime:'空白',
+        WorkNightTime: '空白',
+        ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
         //OpDate: null,
         OpPerson: leeLoginUser.userName,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null,
+       
     };
     $scope.vm = uiVM;
     var dialog = $scope.dialog = leePopups.dialog();
     var qryDto = {
+       
         departmentText: leeLoginUser.departmentText,
         workDate: new Date().toDateString(),
         workId:null,
@@ -625,6 +634,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         workOverCount: 0,
     };
     var vmManager = { 
+        selectDepartment:null,
         qryWorkName:null,
         searchYear: new Date().getFullYear(),
         changeworkDate:null,
@@ -654,7 +664,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         editWindowShow1: false,
         dataSet: [],
         selectedWorkers: [],
-        dataSource:[],        
+        dataSource: [],  
+        DepartmentDatas:[],
         init: function () {
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
@@ -839,33 +850,46 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         },
         //查询
         getWorkOverHoursByDatas: function (mode) {
-            $scope.searchPromise = hrDataOpService.getWorkOverHoursData(qryDto.workDate, qryDto.departmentText, mode).then(function (datas) {
+            $scope.searchPromise = hrDataOpService.getWorkOverHoursData(qryDto.workDate, vmManager.selectDepartment, mode).then(function (datas) {
                 vmManager.dataSource = datas;
                 vmManager.searchDatas = datas;
 
             })
         },
+
         //后台查询
         getWorkOverHoursDatas: function (mode)
         {    
-            var datas = hrDataOpService.getWorkOverHoursData(qryDto.workDate, qryDto.departmentText, 1).then(function (datas) {
+            var datas = hrDataOpService.getWorkOverHoursData(qryDto.workDate, vmManager.selectDepartment, 1).then(function (datas) {
                 vmManager.searchDatas = datas;
             })
         },
         //加班汇总
         getWorkOverHourSumss: function (mode)
         {               
-             vmManager.dataSourceSum = [];
-            var datas = hrDataOpService.getWorkOverHourSums(vmManager.searchYear, qryDto.departmentText, 1).then(function (datas) {
-                vmManager.dataSourceSum = datas;
-            })
+            vmManager.dataSourceSum = [];
+            if (vmManager.selectDepartment == null)
+            {
+                var datas = hrDataOpService.getWorkOverHourSums(vmManager.searchYear, uiVM.ParentDataNodeText, 1).then(function (datas) {
+                    vmManager.dataSourceSum = datas;
+                })
+
+            }
+            else
+            {
+                var datas = hrDataOpService.getWorkOverHourSums(vmManager.searchYear, vmManager.selectDepartment, 1).then(function (datas) {
+                    vmManager.dataSourceSum = datas;
+                })
+
+            }
+           
         },
         //按工号查询汇总
         getWorkOverHourSumsByWorkId: function (mode)
         {        
          
             vmManager.dataSourceSum = [];
-            var datas = hrDataOpService.getWorkOverHourSumsByWorkIds(vmManager.searchYear, qryDto.departmentText,qryDto.workId,2).then(function (datas) {
+            var datas = hrDataOpService.getWorkOverHourSumsByWorkIds(vmManager.searchYear, vmManager.selectDepartment,qryDto.workId,2).then(function (datas) {
                 vmManager.dataSourceSum = datas;
             })
         },
@@ -873,7 +897,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         getWorkOverHoursWorkIdBydetail: function (mode)
         {
              vmManager.dataSourceSum = [];
-             var datas = hrDataOpService.getWorkOverHoursWorkIdBydetails(vmManager.searchYear, qryDto.departmentText, qryDto.workId,3).then(function (datas) {
+             var datas = hrDataOpService.getWorkOverHoursWorkIdBydetails(vmManager.searchYear, vmManager.selectDepartment, qryDto.workId,3).then(function (datas) {
               vmManager.dataSourceSum = datas;
             })
 
@@ -894,28 +918,63 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             }  
            
         },
-
+        //加载部门信息
+        getDepartment: function ()
+        {         
+          vmManager.DepartmentDatas = [];
+          $scope.searchPromise = hrDataOpService.getDepartments(uiVM.ParentDataNodeText).then(function (datas) {
+             vmManager.DepartmentDatas = datas;
+               
+          })
+            
+        },
         //载入模板
-        getWorkOverHoursModes: function () {        
+        getWorkOverHoursModes: function () {           
             vmManager.dataSets = [];
             vmManager.dataSource = [];
             tempVm.workOverCount = 0;
-            $scope.searchPromise = hrDataOpService.getWorkOverHoursMode(qryDto.departmentText, qryDto.workDate).then(function (datas) {
-                //构建索引号
-                var rindex = 1;
-                angular.forEach(datas, function (item) {
-                    item.rowindex = rindex;
-                    rindex += 1;
-                });
-                vmManager.dataSource = datas;
-                vmManager.dataSets = datas;
-                //统计行数
-                $scope.tempVm.workOverCount = 0;
-                tempVm.tabCount = vmManager.dataSets.length;
-                angular.forEach(vmManager.dataSets, function (row) {
-                    $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
+            if (vmManager.selectDepartment == null)
+            {
+                $scope.searchPromise = hrDataOpService.getWorkOverHoursMode(uiVM.ParentDataNodeText, qryDto.workDate).then(function (datas) {
+                    //构建索引号
+                    var rindex = 1;
+                    angular.forEach(datas, function (item) {
+                        item.rowindex = rindex;
+                        rindex += 1;
+                    });
+                    vmManager.dataSource = datas;
+                    vmManager.dataSets = datas;
+                    //统计行数
+                    $scope.tempVm.workOverCount = 0;
+                    tempVm.tabCount = vmManager.dataSets.length;
+                    angular.forEach(vmManager.dataSets, function (row) {
+                        $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
+                    })
                 })
-            })
+            }
+            else
+            {
+                $scope.searchPromise = hrDataOpService.getWorkOverHoursMode(vmManager.selectDepartment, qryDto.workDate).then(function (datas) {
+                    //构建索引号
+                    var rindex = 1;
+                    angular.forEach(datas, function (item) {
+                        item.rowindex = rindex;
+                        rindex += 1;
+                    });
+                    vmManager.dataSource = datas;
+                    vmManager.dataSets = datas;
+                    //统计行数
+                    $scope.tempVm.workOverCount = 0;
+                    tempVm.tabCount = vmManager.dataSets.length;
+                    angular.forEach(vmManager.dataSets, function (row) {
+                        $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
+                    })
+                })
+
+
+            }
+               
+                         
         },
 
         //编辑加班时数
@@ -1167,7 +1226,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
     };
     $scope.focus = focusSetter;
 
-
+    vmManager.getDepartment();
 });
 //考勤异常数据处理
 hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {

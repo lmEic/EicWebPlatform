@@ -9,6 +9,7 @@ using System.Text;
 using static Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours.WorkOverHoursManager;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Framework.ProductMaster.Model;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 {
@@ -89,7 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 switch (qryDto.SearchMode)
                 {
                     case 1:
-                        return irep.Entities.OrderBy(m=>m.WorkerId).Where(m =>m.QryDate==qryDto.QryDate && m.DepartmentText==qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
+                        return irep.Entities.OrderBy(m=>m.WorkerId).Where(m =>m.QryDate==qryDto.QryDate &&( m.DepartmentText==qryDto.DepartmentText||m.ParentDataNodeText==qryDto.DepartmentText) && m.WorkStatus == "在职").ToList();
                     case 2:
                         return irep.Entities.OrderBy(m=>m.WorkerId).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId==qryDto.WorkId && m.WorkStatus == "在职").ToList();
                     case 3:
@@ -116,7 +117,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         {
             try
             {
-                return irep.Entities.OrderBy(e=>e.WorkClassType).Where(e => e.DepartmentText == departmentText && e.WorkDate == workDate && e.WorkStatus == "在职").ToList();
+               
+                    return irep.Entities.OrderBy(e => e.WorkerId).Where(e => e.WorkDate == workDate && e.WorkStatus == "在职"&& (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
+               
+                
                
             }
             catch (Exception ex)
@@ -126,6 +130,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
             
         }
+       
+
 
 
     }
