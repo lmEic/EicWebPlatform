@@ -127,7 +127,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _workNightTime = value; }
             get { return _workNightTime; }
         }
-
+        private string _parentDataNodeText;
+        /// <summary>
+        /// 部级代码
+        /// </summary>
+        public string ParentDataNodeText
+        {
+            set { _parentDataNodeText = value; }
+            get { return _parentDataNodeText; }
+        }
 
         //private DateTime _opdate;
         /// <summary>
@@ -177,5 +185,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
         }
 
        
+
+
     }
+
+    
 }
