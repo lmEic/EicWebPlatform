@@ -885,8 +885,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         },
         //按工号查询汇总
         getWorkOverHourSumsByWorkId: function (mode)
-        {        
-         
+        {             
             vmManager.dataSourceSum = [];
             var datas = hrDataOpService.getWorkOverHourSumsByWorkIds(vmManager.searchYear, vmManager.selectDepartment,qryDto.workId,2).then(function (datas) {
                 vmManager.dataSourceSum = datas;
@@ -1193,7 +1192,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         //批量保存
         operate.saveAll = function () {
             if (vmManager.dataSets.length == 0) {
-                alert("没有任何记录！");
+                leeHelper.alert("没有任何记录！");
                 return;
             }
             hrDataOpService.storeHandlWorkOverHoursDt(vmManager.dataSets).then(function (opResult) {
