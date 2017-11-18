@@ -44,8 +44,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
         {
             try
             {
-                var datas = this.irep.Entities.Where(e => e.ModuleName == moduleName && e.AboutCategory == aboutCategory).ToList();
-                datas = datas.OrderBy(o => o.DisplayOrder).ToList();
+                var datas = this.irep.Entities.OrderBy(e => e.DisplayOrder).Where(e => e.ModuleName == moduleName && e.AboutCategory == aboutCategory).ToList();
+           
                 return datas;
             }
             catch (Exception ex)
@@ -58,8 +58,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
         {
             try
             {
-                var datas = this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey).ToList();
-                datas = datas.OrderBy(o => o.DisplayOrder).ToList();
+                var datas = this.irep.Entities.OrderBy(e => e.DisplayOrder).Where(e => e.TreeModuleKey == treeModuleKey).ToList();
+              
                 return datas;
             }
             catch (Exception ex)
@@ -72,13 +72,47 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
         {
             try
             {
-                var datas = this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName).ToList();
-                datas = datas.OrderBy(o => o.DisplayOrder).ToList();
+                var datas = this.irep.Entities.OrderBy(e=> e.DisplayOrder).Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName).ToList();
+             
                 return datas;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+
+        public List<ConfigDataDictionaryModel> GetConfigDataDepartment(string treeModuleKey, string moduleName, string dataNodeName)
+        {
+            try
+            {
+                string parentDeparmentText = "";
+                var datasList = this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName && e.DataNodeName== dataNodeName).ToList();
+                foreach (var item in datasList)
+                {
+                    parentDeparmentText = item.DataNodeText;
+                }
+                   
+                var getdatas= this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName && e.ParentDataNodeText== parentDeparmentText).ToList();
+                if(getdatas.Count==0)
+                {
+                    var datas = this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName && e.DataNodeName == dataNodeName).ToList();
+                    return datas;
+                }
+                else
+                {
+                    var datas = this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName && e.ParentDataNodeText == parentDeparmentText).ToList();
+                    return datas;
+                }
+               
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
             }
         }
 

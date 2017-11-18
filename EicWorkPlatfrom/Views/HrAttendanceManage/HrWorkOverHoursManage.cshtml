@@ -8,6 +8,12 @@
                 <div class="col-md-6">
                     <form for="form" class="form-inline">
                         <div class="form-group">
+                            <select class="form-control" ng-model="vmManager.selectDepartment">
+                                <option ></option>
+                                <option ng-repeat="item in vmManager.DepartmentDatas" value={{item.DataNodeText}}>{{item.DataNodeText}}</option>
+                            </select>                                                                              
+                        </div>
+                        <div class="form-group">
                             <label for="workDate">日期:</label>
                             <input type="date" ng-model="query.workDate" class="form-control" placeholder="请选日期" ng-keydown="vmManager.getWorkOverHoursModes()" format-date />
                             <button type="button" title="载入模板" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursModes()">

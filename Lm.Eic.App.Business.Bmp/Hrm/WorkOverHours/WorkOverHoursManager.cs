@@ -75,6 +75,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         {
             return WorkOverHoursFactory.WorkOverHoursCrud.FindByMode(departmentText, workDate);
         }
+
         /// <summary>
         /// 批量保存数据
         /// </summary>
