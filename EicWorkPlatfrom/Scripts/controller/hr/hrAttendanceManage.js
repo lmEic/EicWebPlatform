@@ -923,8 +923,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         {         
           vmManager.DepartmentDatas = [];
           $scope.searchPromise = hrDataOpService.getDepartments(uiVM.ParentDataNodeText).then(function (datas) {
-             vmManager.DepartmentDatas = datas;
-               
+             vmManager.DepartmentDatas = datas             
           })       
         },
         //载入模板
