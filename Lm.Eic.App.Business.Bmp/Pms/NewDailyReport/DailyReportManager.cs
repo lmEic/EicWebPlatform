@@ -32,7 +32,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyReportManager>(); }
         }
-
+        /// <summary>
+        /// 日报表生产编码管理
+        /// </summary>
+        public DailyProductionCodeConfigManager DailyProductionCodeConfig
+        {
+            get { return OBulider.BuildInstance<DailyProductionCodeConfigManager>(); }
+        }
     }
     public class ProductOrderDispatchManager
     {

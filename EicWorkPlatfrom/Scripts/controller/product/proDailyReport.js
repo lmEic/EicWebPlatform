@@ -127,9 +127,22 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             entitys: entitys,
         });
     };
-
-
     //----------------------------------------------------------//
+
+    //-------------非生产原因配置--------------------- department, string aboutCategory
+    reportDataOp.loadUnProductionConfigDicData = function (department, aboutCategory) {
+        var url = urlPrefix + 'LoadUnProductionConfigDicData';
+        return ajaxService.getData(url, {
+            department: department,
+            aboutCategory: aboutCategory,
+        });
+
+
+
+    };
+
+
+    ///--------------
     return reportDataOp;
 });
 //生产标准艺流程设定
@@ -1395,5 +1408,122 @@ productModule.controller("DailyRedoProductOrderCtrl", function ($scope, dataDicC
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+
+});
+// 非生产原类配置 
+productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
+    ///日报分派录入视图模型
+    var departmentDto = {
+        TreeModuleKey: 'Organization',
+        ModuleName: 'smconfigManage',
+        DataNodeName: null,
+        DataNodeText: null,
+        ParentDataNodeText: null,
+        IsHasChildren: 0,
+        AtLevel: 0,
+        AboutCategory: 'smDepartmentSet',
+        Icon: null,
+        DisplayOrder: 0,
+        Memo: null
+    };
+    var oldDepartmentDto = _.clone(departmentDto);
+    $scope.vm = departmentDto;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    operate.vm = departmentDto;
+    $scope.operate = operate;
+    operate.delNode = function () {
+        if (angular.isUndefined(departmentTreeSet.treeNode) || departmentTreeSet.treeNode === null) {
+            alert("请先选择要删除的节点!")
+        }
+        else {
+            operate.deleteModal.$promise.then(operate.deleteModal.show);
+        }
+    };
+    operate.addChildNode = function (isValid) {
+        saveDataDicNode(isValid, 'add', 'addChildNode');
+    };
+    operate.addNode = function (isValid) {
+        saveDataDicNode(isValid, 'add', 'addNode');
+    };
+    operate.updateNode = function (isValid) {
+        saveDataDicNode(isValid, 'edit', 'updateNode');
+    };
+    var saveDataDicNode = function (isValid, opType, opNodeType) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            connDataOpService.saveConfigDicData(departmentDto, oldDepartmentDto, opType).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        var vm = _.clone($scope.vm);
+                        if (opType === 'add') {
+                            vm.Id_Key = opresult.Id_Key;
+                            var newNode = {
+                                name: vm.DataNodeText,
+                                children: [],
+                                vm: vm
+                            };
+                            if (opNodeType === "addChildNode")
+                                leeTreeHelper.addChildrenNode(departmentTreeSet.treeId, departmentTreeSet.treeNode, newNode);
+                            else if (opNodeType === "addNode")
+                                leeTreeHelper.addNode(departmentTreeSet.treeId, departmentTreeSet.treeNode, newNode);
+                        }
+                            //修改节点
+                        else if (opType === 'edit') {
+                            if (opNodeType === "updateNode") {
+                                departmentTreeSet.treeNode.name = vm.DataNodeText;
+                                departmentTreeSet.treeNode.vm = vm;
+                                var childrens = departmentTreeSet.treeNode.children;
+                                angular.forEach(childrens, function (childrenNode) {
+                                    childrenNode.vm.ParentDataNodeText = vm.DataNodeText;
+                                })
+                                leeTreeHelper.updateNode(departmentTreeSet.treeId, departmentTreeSet.treeNode);
+                            }
+                        }
+                        pHelper.clearVM();
+                    }
+                });
+            });
+        });
+    };
+    //刷新操作
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            pHelper.clearVM();
+        });
+    };
+    operate.deleteModal = $modal({
+        title: "删除提示",
+        content: "你确定要删除此节点数据吗?",
+        templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
+        controller: function ($scope) {
+            $scope.confirmDelete = function () {
+                connDataOpService.saveConfigDicData(departmentDto, oldDepartmentDto, 'delete').then(function (opresult) {
+                    if (opresult.Result) {
+                        operate.deleteModal.$promise.then(operate.deleteModal.hide);
+                        leeTreeHelper.removeNode(departmentTreeSet.treeId, departmentTreeSet.treeNode);
+                        operate.refresh();
+                    }
+                })
+            };
+        },
+        show: false
+    });
+    var pHelper = {
+        clearVM: function () {
+            leeHelper.clearVM(departmentDto, ['ModuleName', 'AboutCategory', 'TreeModuleKey']);
+        }
+    };
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('lightmaster', "非生原因架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        //departmentDto = _.clone(departmentTreeSet.treeNode.vm);
+        //console.log(departmentDto);
+        //departmentDto.AboutCategory = "UnProductionConfig";
+        //oldDepartmentDto = _.clone(departmentDto);
+        //$scope.vm = departmentDto;
+    };
+    $scope.ztree = departmentTreeSet;
+    $scope.promise = dReportDataOpService.loadUnProductionConfigDicData("制一部", "UnProductionConfig").then(function (datas) {
+        console.log(datas);
+        departmentTreeSet.setTreeDataset(datas);
+    });
 
 });

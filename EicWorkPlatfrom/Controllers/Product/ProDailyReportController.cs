@@ -42,6 +42,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
+        [NoAuthenCheck]
+        public JsonResult LoadUnProductionConfigDicData(string department, string aboutCategory)
+        {
+            var modules = DailyProductionReportService.ProductionConfigManager.DailyProductionCodeConfig.GetProductionDictiotry(aboutCategory, department);
+            return Json(modules, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region report Flow Set set method  生产工艺录入

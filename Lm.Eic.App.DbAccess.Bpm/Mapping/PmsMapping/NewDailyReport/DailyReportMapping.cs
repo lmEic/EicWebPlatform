@@ -48,5 +48,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
             this.ToTable("Pms_DailyProductionReport");
         }
     }
-
+    /// <summary>
+    ///DailyProductionReport 日报表生产编码配置
+    /// </summary>
+    public class ProductionCodeConfigMapping : EntityTypeConfiguration<ProductionCodeConfigModel>
+    {
+        public ProductionCodeConfigMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DailyProductionCodeConfig");
+        }
+    }
 }
+
+
+

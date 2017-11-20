@@ -115,7 +115,6 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
         $scope.vm = departmentDto;
     };
     $scope.ztree = departmentTreeSet;
-
     $scope.promise = connDataOpService.getConfigDicData(departmentDto.TreeModuleKey).then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
     });

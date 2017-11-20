@@ -38,10 +38,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyProductionReportCrud>(); }
         }
+        /// <summary>
+        /// 非生产原因
+        /// </summary>
+        public static DailyProductionCodeConfigCrud ProductionSeason
+        {
+            get { return OBulider.BuildInstance<DailyProductionCodeConfigCrud>(); }
+        }
     }
-
-
-
     /// <summary>
     /// 生产工序CRUD
     /// </summary>
@@ -299,7 +303,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-    
+
         internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime validDate)
         {
             /// 1.要有效
@@ -419,7 +423,59 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         #endregion
     }
 
+    /// <summary>
+    /// 生产代码配置表CRUD
+    /// </summary>
+    internal class DailyProductionCodeConfigCrud : CrudBase<ProductionCodeConfigModel, IProductionCodeConfigRepository>
+    {
+        public DailyProductionCodeConfigCrud() : base(new ProductionCodeConfigRepository(), "非生产代码编码")
+        { }
+        #region   Store
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(ProductionCodeConfigModel model)
+        {
+            //生成组合键值
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(ProductionCodeConfigModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(ProductionCodeConfigModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+        #endregion
 
+        public List<ProductionCodeConfigModel> GetProductionDictiotry(string aboutCategory, string department)
+        {
+            return irep.Entities.Where(e => e.AboutCategory == aboutCategory && e.Department == department).ToList();
+        }
+
+
+    }
 
 }
 
