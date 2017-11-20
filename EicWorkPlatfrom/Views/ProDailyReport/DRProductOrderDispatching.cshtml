@@ -19,16 +19,15 @@
                 </div>
                 <div class="col-md-4">
                     <form class="form-inline" novalidate>
-                        <label>日期:</label>
-                        <input name="queryDate" type="date" class="form-control" format-date ng-model="vmManager.nowDate"
-                               focus-setter data-ensure-user-exist style="width:200px;"
-                               placeholder="日期" />
+                        <label>工单号:</label>
+                        <input name="queryOrderid"  class="form-control"  ng-model="queryOrderid"
+                               placeholder="输入工单号" />
                     </form>
                 </div>
                 <div class="col-md-4">
                     <button class="btn btn-success "
-                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="分配工单">
-                        <span class="caret"></span>查询
+                            ng-click="vmManager.queryOrderId(queryOrderid)">
+                        查询
                     </button>
                 </div>
                 <div class="pull-right">

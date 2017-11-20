@@ -206,15 +206,24 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <summary>
         /// 得到工单分配信息
         /// </summary>
-        /// <param name="department"></param>
+        /// <param name="queryString"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetOrderDispatchInfoDatas(string department, DateTime nowDate)
+        public ContentResult GetOrderDispatchInfoDatas(string queryString, int  opType)
         {
-            var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(department, nowDate);
-            var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetVirtualOrderDataBy(department);
-            var datas = new { erpOrderDatas, virtualOrderDatas };
-            return DateJsonResult(datas);
+       
+            if (opType == 1)
+            {
+                var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(queryString);
+                var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetVirtualOrderDataBy(queryString);
+                var datas = new { erpOrderDatas, virtualOrderDatas };
+                return DateJsonResult(datas);
+            }
+            else
+            {
+                var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetQueryOrderBy(queryString);
+                return DateJsonResult(datas);
+                    }
         }
         /// <summary>
         /// 存储数据 StoreOrderDispatchDatas

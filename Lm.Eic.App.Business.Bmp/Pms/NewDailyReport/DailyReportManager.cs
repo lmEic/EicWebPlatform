@@ -56,9 +56,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.ProductOrderDispatch.GetVirtualOrderDataBy(department);
         }
-        public List<ProductOrderDispatchModel> GetNeedDispatchOrderBy(string department, DateTime nowDate)
+        public List<ProductOrderDispatchModel> GetNeedDispatchOrderBy(string department)
         {
-            DateTime getDate = nowDate.ToDate();
+            DateTime getDate =DateTime.Now.Date.ToDate();
             List<ProductOrderDispatchModel> returndatas = new List<ProductOrderDispatchModel>();
             ProductOrderDispatchModel model = null;
             ///ERP在制生产订单
@@ -82,7 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 else
                 {
                     model = haveDispatchOrder;
-                    if (model.ValidDate <= nowDate)
+                    if (model.ValidDate <= getDate)
                     {
                         model.DicpatchStatus = "已失效";
                     }
@@ -92,6 +92,41 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     returndatas.Add(model);
             });
             TreatmentNoProductOrderId(department, returndatas);
+            return returndatas.OrderByDescending(e => e.OrderId).ToList();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public List<ProductOrderDispatchModel> GetQueryOrderBy(string orderId)
+        {
+        
+            List<ProductOrderDispatchModel> returndatas = new List<ProductOrderDispatchModel>();
+            ProductOrderDispatchModel model = null;
+            ///ERP在制生产订单
+            var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(orderId);
+            ///今日生产已确认分配的订单
+
+            if (erpInProductiondatas == null || erpInProductiondatas.Count == 0) return returndatas;
+            erpInProductiondatas.ForEach(e =>
+            {
+                model = new ProductOrderDispatchModel();
+                OOMaper.Mapper<ProductionOrderIdInfo, ProductOrderDispatchModel>(e, model);
+                ////如果订单在数据库中不存在
+                var haveDispatchOrder = DailyReportCrudFactory.ProductOrderDispatch.GetOrderInfoBy(e.OrderId);
+                if (haveDispatchOrder == null)
+                {
+                    model.ProductionDate = e.PlanStartProductionDate;
+                    model.ValidDate = e.PlanEndProductionDate;
+                    model.DicpatchStatus = "未分配";
+                    model.IsValid = "false";
+                }
+                else model = haveDispatchOrder;
+                
+                if (!returndatas.Contains(model))
+                    returndatas.Add(model);
+            });
             return returndatas.OrderByDescending(e => e.OrderId).ToList();
         }
         /// <summary>
