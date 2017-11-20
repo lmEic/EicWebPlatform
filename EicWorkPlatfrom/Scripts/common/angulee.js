@@ -625,7 +625,7 @@ var leeHelper = (function () {
         isServerObject: function (obj) {
             if (_.isUndefined(obj.isServer)) return false;
             return obj.isServer;
-        }
+        },
     };
 })();
 // 弹出框助手

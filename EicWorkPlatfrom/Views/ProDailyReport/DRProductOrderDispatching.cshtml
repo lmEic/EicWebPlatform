@@ -25,16 +25,38 @@
                                placeholder="日期" />
                     </form>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <button class="btn btn-success "
                             data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="分配工单">
                         <span class="caret"></span>查询
                     </button>
                 </div>
+                <div class="pull-right">
+                    <button class="btn btn-success"
+                            ng-click="vmManager.showVirtualOrderdialog()" data-placeholder="虚拟工单">
+                        添加虚拟工单
+                    </button>
+                </div>
             </div>
         </div>
-        <div bs-tabs bs-active-pane="vmManager.dispatchActiveTab">
-            <div bs-pane data-title="(ERP中部门制令单)统计" data-name="qryERPFormTab">
+        <div class="row ">
+            <div class="h-split"></div>
+        </div>
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#ErpOrderTab" data-toggle="tab">
+                    <i class="fa fa-user text-info">在制工单分配一览表</i>
+                </a>
+
+            </li>
+            <li>
+                <a href="#VirtualOrderTab" data-toggle="tab">
+                    <i class="fa fa-user text-info">虚拟工单一览表</i>
+                </a>
+            </li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="ErpOrderTab">
                 <div class="table-responsive bs-callout bs-callout-info" style="min-height:500px;" cg-busy="{promise:searchPromise}">
                     <div class="table-responsive">
                         <div style="padding:10px;overflow-y:auto;height:480px">
@@ -59,20 +81,21 @@
                                         <td>{{item.ProduceNumber - item.PutInStoreNumber}}</td>
                                         <td>{{item.ProductionDate}}</td>
                                         <td>{{item.ValidDate}}</td>
-                                        <td>
-                                            <button ng-show="item.IsValid=='True'" class="btn btn-danger">
+                                        <td title="{{item.IsValid}}">
+
+                                            <button ng-show="(item.IsValid=='True'||item.IsValid=='true' )&&item.DicpatchStatus=='已分配'" class="btn btn-danger">
                                                 {{item.ProductStatus}} <i class="fa fa-flag-checkered"></i>
                                             </button>
-                                            <button ng-show="item.IsValid =='False'" class="btn btn-default">
+                                            <button ng-show="(item.IsValid!='True'&&item.IsValid!='true' )||item.DicpatchStatus!='已分配'" class="btn btn-default">
                                                 {{item.ProductStatus}}<i class="fa fa-flag"></i>
                                             </button>
                                         </td>
                                         <td>
-                                            <button ng-show="item.IsValid =='False'" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
-                                                未分配<i class="fa fa-angle-double-right"></i>
+                                            <button ng-show="item.DicpatchStatus=='已分配'" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
+                                                <i class="fa fa-angle-double-left"></i> {{item.DicpatchStatus}}
                                             </button>
-                                            <button ng-show="item.IsValid=='True'" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
-                                                <i class="fa fa-angle-double-left"></i> 已分配
+                                            <button ng-show="item.DicpatchStatus!='已分配'" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
+                                                <i class="fa fa-angle-double-left"></i> {{item.DicpatchStatus}}
                                             </button>
                                         </td>
                                     </tr>
@@ -89,43 +112,50 @@
                     </div>
                 </div>
             </div>
-            @*<div bs-pane data-title="已经分配生产工单" data-name="qryTodayHaveDispatchTab">
-                    <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
-                        <div class="table-responsive" cg-busy="{promise:searchPromise}">
+            <div id="VirtualOrderTab" class="tab-pane fade">
+                <div class="table-responsive bs-callout bs-callout-info" style="min-height:500px;" cg-busy="{promise:searchPromise}">
+                    <div class="table-responsive">
+                        <div style="padding:10px;overflow-y:auto;height:480px">
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
-                                        <th>单号</th>
-                                        <th>品名</th>
-                                        <th>需生产量</th>
-                                        <th>开工日期</th>
-                                        <th>完工日期</th>
+                                        <th>虚拟单号</th>
+                                        <th>工单说明</th>
+                                        <th>工单作用</th>
+                                        <th>设置日期</th>
+                                        <th>失效日期</th>
                                         <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.todayHaveDispatchDatas track by $index">
+                                    <tr ng-repeat="item in vmManager.virtualOrderDatas  track by $index">
                                         <td>{{item.OrderId}}</td>
-                                        <td title="{{item.ProductSpec}}">
-                                            {{item.ProductName}}
-                                        </td>
-                                        <td>{{item.ProduceNumber - item.PutInStoreNumber}}</td>
+                                        <td>{{item.ProductName}}</td>
+                                        <td>{{item.ProductSpec}}</td>
                                         <td>{{item.ProductionDate}}</td>
                                         <td>{{item.ValidDate}}</td>
                                         <td>
-                                            <button class="btn btn-xs btn-primary" ng-click="vmManager.editHaveDispatchOrder(item)" title="编辑">
-                                                <i class="fa fa-edit"></i>
+                                            <button class="btn btn-primary" ng-click="vmManager.editVirtualOrder(item)">
+                                                <i class="fa fa-angle-double-left"></i> 修改
                                             </button>
-                                            <button class="btn btn-xs btn-danger" ng-click="vmManager.deleteHaveDispatchOrder(item)" title="删除">
-                                                <i class="fa fa-remove"></i>
+                                            <button class="btn btn-success" ng-click="vmManager.deleteVirtualOrder(item)">
+                                                删除 <i class="fa fa-angle-double-right"></i>
                                             </button>
+
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>*@
+                    <div ng-if="vmManager.virtualOrderDatas.length>0"
+                         yl-pagination data-dataset="vmManager.virtualOrderDatas"
+                         data-datasource="vmManager.virtualOrderDatasSource">
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:45%">
             <content dialog-title class="fa fa-bell">
@@ -166,7 +196,6 @@
                                     <input name="materialSpec" type="text" readonly class="form-control col-md-4" ng-model="vm.PutInStoreNumber" />
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="text-right col-md-2" for="productionDate">开工日期:</label>
                                 <div class="col-md-4">
@@ -182,11 +211,8 @@
                                         <small ng-message="required">日期不能为空</small>
                                     </div>
                                 </div>
-
                             </div>
-
                             <div class="form-group">
-
                                 <label class="text-right col-md-2" for="validDate">启用:</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
@@ -209,6 +235,79 @@
                             <div class="row  fa-pull-right">
                                 <div class="col-md-12 ">
                                     <button class="btn btn-primary " ng-click="operate.saveDispatchData(formOrderDispatchData.$valid)"><i class="fa fa-save"></i>保存</button>
+                                    <button class="btn btn-default" ng-click="operate.Cancel()"><i class="fa fa-undo"></i>取消</button>
+                                    <span yl-operatemsg-board></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </content>
+        </dialog>
+
+        <dialog ng-if="dialogVirtualOrder.open" modal data-close="dialogVirtualOrder.close()" style="width:45%">
+            <content dialog-title class="fa fa-bell">
+                <i class="fa fa-pencil-square">增加虚拟工单</i>
+            </content>
+            <content dialog-content>
+                <div class="col-md-12 well">
+                    <form role="form" name="formVirtualOrderDispatchData" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                        @*录入单头*@
+                        <div class="col-md-12 well">
+                            <div class="form-group">
+                                <label for="orderId" class="text-right  col-md-2">虚拟工单:</label>
+                                <div class="col-md-4">
+                                    <input name="orderId" type="text" class="form-control" ng-model="vm.OrderId" required />
+                                    <div class="error-messages" ng-messages="formVirtualOrderDispatchData.orderId.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">虚拟工单不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="productName" class="text-right  col-md-2">订单说明:</label>
+                                <div class="col-md-4">
+                                    <input name="productName" type="text" class="form-control" ng-model="vm.ProductName" required />
+                                    <div class="error-messages" ng-messages="formVirtualOrderDispatchData.productName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">订单说明不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <label for="materialSpec" class="text-right  col-md-2">用途说明:</label>
+                                <div class="col-md-4">
+                                    <input name="materialSpec" type="text" class="form-control col-md-4" ng-model="vm.ProductSpec" />
+                                </div>
+                                <label form="validDate" class="text-right col-md-2" for="validDate">失效日期:</label>
+                                <div class="col-md-4">
+                                    <input name="validDate" type="date" class="form-control col-md-3" ng-model="vm.ValidDate" format-date required />
+                                    <div class="error-messages" ng-messages="formVirtualOrderDispatchData.validDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">日期不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-right col-md-2" for="isValid">启用/禁用:</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="isValid" placeholder="是否启用" readonly class="form-control col-md-3" ng-model="vm.IsValid" required />
+                                        <div class="error-messages" ng-messages="formVirtualOrderDispatchData.isValid.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">是否启用不能为空</small>
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-model="vm.IsValid"
+                                                    data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="是否启用"
+                                                    data-bs-options="item.id as item.text for item in vmManager.IsValids" data-bs-select></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        @*保存 取消 *@
+                        <div class="alert alert-info ">
+                            <div class="row  fa-pull-right">
+                                <div class="col-md-12 ">
+                                    <button class="btn btn-primary " ng-click="operate.savevirtualOrderData(formVirtualOrderDispatchData.$valid)"><i class="fa fa-save"></i>保存</button>
                                     <button class="btn btn-default" ng-click="operate.Cancel()"><i class="fa fa-undo"></i>取消</button>
                                     <span yl-operatemsg-board></span>
                                 </div>
