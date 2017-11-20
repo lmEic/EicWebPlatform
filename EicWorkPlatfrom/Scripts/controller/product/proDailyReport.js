@@ -136,11 +136,17 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             department: department,
             aboutCategory: aboutCategory,
         });
-
-
-
     };
 
+
+    reportDataOp.saveConfigDicData = function (vm, oldVm, opType) {
+        var url = urlPrefix + "SaveUnProductionConfigDicData";
+        return ajaxService.postData(url, {
+            opType: opType,
+            model: vm,
+            oldModel: oldVm
+        });
+    };
 
     ///--------------
     return reportDataOp;
@@ -1412,24 +1418,26 @@ productModule.controller("DailyRedoProductOrderCtrl", function ($scope, dataDicC
 });
 // 非生产原类配置 
 productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
-    ///日报分派录入视图模型
-    var departmentDto = {
-        TreeModuleKey: 'Organization',
-        ModuleName: 'smconfigManage',
+    ///
+    var unProductionCodeConfigDto = {
+        Department: leeLoginUser.department,
         DataNodeName: null,
         DataNodeText: null,
         ParentDataNodeText: null,
         IsHasChildren: 0,
-        AtLevel: 0,
         AboutCategory: 'smDepartmentSet',
-        Icon: null,
         DisplayOrder: 0,
-        Memo: null
+        Memo: null,
+        OpPerson: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        OpDate: null,
+        OpTime: null,
+        Id_Key: null,
     };
-    var oldDepartmentDto = _.clone(departmentDto);
-    $scope.vm = departmentDto;
+    var oldUnProductionCodeConfigDto = _.clone(unProductionCodeConfigDto);
+    $scope.vm = unProductionCodeConfigDto;
     var operate = Object.create(leeDataHandler.operateStatus);
-    operate.vm = departmentDto;
+    operate.vm = unProductionCodeConfigDto;
     $scope.operate = operate;
     operate.delNode = function () {
         if (angular.isUndefined(departmentTreeSet.treeNode) || departmentTreeSet.treeNode === null) {
@@ -1440,21 +1448,21 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
         }
     };
     operate.addChildNode = function (isValid) {
-        saveDataDicNode(isValid, 'add', 'addChildNode');
+        saveDataDicNode(isValid, leeDataHandler.dataOpMode.add, 'addChildNode');
     };
     operate.addNode = function (isValid) {
-        saveDataDicNode(isValid, 'add', 'addNode');
+        saveDataDicNode(isValid, leeDataHandler.dataOpMode.add, 'addNode');
     };
     operate.updateNode = function (isValid) {
-        saveDataDicNode(isValid, 'edit', 'updateNode');
+        saveDataDicNode(isValid, leeDataHandler.dataOpMode.edit, 'updateNode');
     };
     var saveDataDicNode = function (isValid, opType, opNodeType) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            connDataOpService.saveConfigDicData(departmentDto, oldDepartmentDto, opType).then(function (opresult) {
+            dReportDataOpService.saveConfigDicData(unProductionCodeConfigDto, oldUnProductionCodeConfigDto, opType).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var vm = _.clone($scope.vm);
-                        if (opType === 'add') {
+                        if (opType === leeDataHandler.dataOpMode.add) {
                             vm.Id_Key = opresult.Id_Key;
                             var newNode = {
                                 name: vm.DataNodeText,
@@ -1462,20 +1470,20 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
                                 vm: vm
                             };
                             if (opNodeType === "addChildNode")
-                                leeTreeHelper.addChildrenNode(departmentTreeSet.treeId, departmentTreeSet.treeNode, newNode);
+                                leeTreeHelper.addChildrenNode(unProductionCodeTreeSet.treeId, unProductionCodeTreeSet.treeNode, newNode);
                             else if (opNodeType === "addNode")
-                                leeTreeHelper.addNode(departmentTreeSet.treeId, departmentTreeSet.treeNode, newNode);
+                                leeTreeHelper.addNode(unProductionCodeTreeSet.treeId, unProductionCodeTreeSet.treeNode, newNode);
                         }
                             //修改节点
-                        else if (opType === 'edit') {
+                        else if (opType === leeDataHandler.dataOpMode.edit) {
                             if (opNodeType === "updateNode") {
-                                departmentTreeSet.treeNode.name = vm.DataNodeText;
-                                departmentTreeSet.treeNode.vm = vm;
-                                var childrens = departmentTreeSet.treeNode.children;
+                                unProductionCodeTreeSet.treeNode.name = vm.DataNodeText;
+                                unProductionCodeTreeSet.treeNode.vm = vm;
+                                var childrens = unProductionCodeTreeSet.treeNode.children;
                                 angular.forEach(childrens, function (childrenNode) {
                                     childrenNode.vm.ParentDataNodeText = vm.DataNodeText;
                                 })
-                                leeTreeHelper.updateNode(departmentTreeSet.treeId, departmentTreeSet.treeNode);
+                                leeTreeHelper.updateNode(unProductionCodeTreeSet.treeId, unProductionCodeTreeSet.treeNode);
                             }
                         }
                         pHelper.clearVM();
@@ -1496,7 +1504,7 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
         templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
         controller: function ($scope) {
             $scope.confirmDelete = function () {
-                connDataOpService.saveConfigDicData(departmentDto, oldDepartmentDto, 'delete').then(function (opresult) {
+                dReportDataOpService.saveConfigDicData(departmentDto, oldDepartmentDto, 'delete').then(function (opresult) {
                     if (opresult.Result) {
                         operate.deleteModal.$promise.then(operate.deleteModal.hide);
                         leeTreeHelper.removeNode(departmentTreeSet.treeId, departmentTreeSet.treeNode);
@@ -1509,21 +1517,21 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
     });
     var pHelper = {
         clearVM: function () {
-            leeHelper.clearVM(departmentDto, ['ModuleName', 'AboutCategory', 'TreeModuleKey']);
+            leeHelper.clearVM(unProductionCodeConfigDto, ['AboutCategory', 'ParentDataNodeText']);
         }
     };
-    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('lightmaster', "非生原因架构");
-    departmentTreeSet.bindNodeToVm = function () {
-        //departmentDto = _.clone(departmentTreeSet.treeNode.vm);
-        //console.log(departmentDto);
-        //departmentDto.AboutCategory = "UnProductionConfig";
-        //oldDepartmentDto = _.clone(departmentDto);
-        //$scope.vm = departmentDto;
+    var unProductionCodeTreeSet = dataDicConfigTreeSet.getTreeSet('lightmaster', "非生原因架构");
+    unProductionCodeTreeSet.bindNodeToVm = function () {
+        unProductionCodeConfigDto = _.clone(unProductionCodeTreeSet.treeNode.vm);
+        console.log(unProductionCodeConfigDto);
+        unProductionCodeConfigDto.AboutCategory = "UnProductionConfig";
+        oldUnProductionCodeConfigDto = _.clone(unProductionCodeConfigDto);
+        $scope.vm = unProductionCodeConfigDto;
     };
-    $scope.ztree = departmentTreeSet;
+    $scope.ztree = unProductionCodeTreeSet;
     $scope.promise = dReportDataOpService.loadUnProductionConfigDicData("制一部", "UnProductionConfig").then(function (datas) {
         console.log(datas);
-        departmentTreeSet.setTreeDataset(datas);
+        unProductionCodeTreeSet.setTreeDataset(datas);
     });
 
 });
