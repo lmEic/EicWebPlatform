@@ -767,6 +767,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionngcount = value; }
             get { return _inspectionngcount; }
         }
+        private string _inspectionRuleDatas;
+        /// <summary>
+        ///抽样规则历史记录数据
+        /// </summary>
+        public string InspectionRuleDatas
+        {
+            set { _inspectionRuleDatas = value; }
+            get { return _inspectionRuleDatas; }
+        }
         private string _memo;
         /// <summary>
         ///说明
@@ -1395,6 +1404,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectiondate = value; }
             get { return _inspectiondate; }
         }
+        private string _inspectionRuleDatas;
+        /// <summary>
+        ///抽样规则历史记录数据
+        /// </summary>
+        public string InspectionRuleDatas
+        {
+            set { _inspectionRuleDatas = value; }
+            get { return _inspectionRuleDatas; }
+        }
+
         private string _memo;
         /// <summary>
         ///备注
