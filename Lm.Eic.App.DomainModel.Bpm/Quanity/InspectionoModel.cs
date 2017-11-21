@@ -1869,37 +1869,49 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// </summary>
     public class InspectionItemDataSummaryVM
     {
+
+        ///// InspectionMethod  InspectionLevel InspectionAQL InspectionCount AcceptCount
+        //// RefuseCount SizeLSL SizeUSL
+        ////
         #region Model
         /// <summary>
-        ///单号
+        ///单号*
         /// </summary>
         public string OrderId { get; set; }
         /// <summary>
-        ///序号
+        ///序号* 
         /// </summary>
         public int OrderIdNumber { get; set; }
         /// <summary>
-        ///料号
+        ///料号*
         /// </summary>
         public string MaterialId { get; set; }
         /// <summary>
-        /// MaterialName
+        /// MaterialName*
         /// </summary>
         public string MaterialName { set; get; }
+        /// <summary>
+        /// 产品规格*
+        /// </summary>
         public string MaterialSpec { set; get; }
+        /// <summary>
+        ///图号
+        /// </summary>
         public string MaterialDrawId { set; get; }
+        /// <summary>
+        /// 供应商
+        /// </summary>
         public string MaterialSupplier { set; get; }
         /// <summary>
         /// 站点根路径
         /// </summary>
         public string SiteRootPath { get; set; }
-
         /// <summary>
-        /// 文件存放路径
+        /// 文件存放路径*
         /// </summary>
         public string DocumentPath { set; get; }
         /// <summary>
-        /// 文件名
+        /// 文件名*
         /// </summary>
         public string FileName { set; get; }
         /// <summary>
@@ -1907,11 +1919,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public string MachineId { set; get; }
         /// <summary>
-        /// 班别
+        /// 班别*
         /// </summary>
         public string ClassType { set; get; }
         /// <summary>
-        /// 抽检验部门
+        /// 抽检验部门*
         /// </summary>
         public string ProductDepartment { set; get; }
         /// <summary>
@@ -1919,14 +1931,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public string Department { set; get; }
         /// <summary>
-        /// 录入数据的时间段
+        /// 录入数据的时间段*
         /// </summary>
         public string InspectionDataTimeRegion { set; get; }
         /// <summary>
         /// 
         /// </summary>
         public string InStorageOrderId { set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int InspectionItemSumCount { set; get; }
         /// <summary>
         /// 不良数
@@ -1956,8 +1970,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///检验项目
         /// </summary>
         public string InspectionItem { get; set; }
-
-
         /// <summary>
         ///检验方法
         /// </summary>
@@ -1994,7 +2006,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///下限
         /// </summary>
         public double SizeLSL { set; get; }
-
         /// <summary>
         ///规格值 说明
         /// </summary>
@@ -2003,7 +2014,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///检验所有所得的数据
         /// </summary>
         public string InspectionItemDatas { get; set; }
-
         /// <summary>
         /// 备注说明
         /// </summary>

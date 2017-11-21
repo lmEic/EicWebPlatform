@@ -871,6 +871,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         WorkerProductionTime: 0,
         WorkerNoProductionTime: 0,
         WorkerNoProductionReason: 0,
+        GetProductionTime:0,
     };
     var initVmUser = _.clone(uiVmUser);
     $scope.vmUser = uiVmUser;
@@ -1213,6 +1214,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         saveAlldataFocus: false,
         inPutMachineworkerNoProductionTimeFocus: false,
         showMachineDialogFocus: false,
+        getProductionTimeFocus:false,
         //机台输入焦点
         machineIdFocus: false,
         machineProductionCountFocus: false,
