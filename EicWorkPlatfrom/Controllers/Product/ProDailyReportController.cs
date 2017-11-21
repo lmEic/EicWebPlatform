@@ -64,25 +64,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        /// 获取产品工艺流程列表
+        /// 获取产品工艺流程列表 GetProductionFlowDatas
         /// </summary>
         /// <param name="department"></param>
         /// <param name="productName"></param>
         /// <returns></returns>
-        [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
+        public JsonResult GetProductionFlowDatas(QueryDailyProductReportDto queryDto)
         {
             //工单没有用到
             //用品名得到多处数据 把数据转化为 ProductsFlowOverModel
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
-            {
-                Department = department,
-                ProductName = productName,
-                OrderId = orderId,
-                SearchMode = searchMode
-            });
-            return DateJsonResult(datas);
+           var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(queryDto);
+           return Json(datas, JsonRequestBehavior.AllowGet);
+           // return DateJsonResult(datas);
         }
 
         /// <summary>
@@ -211,19 +205,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetOrderDispatchInfoDatas(string queryString, int  opType)
         {
-       
-            if (opType == 1)
+            switch (opType)
             {
-                var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(queryString);
-                var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetVirtualOrderDataBy(queryString);
-                var datas = new { erpOrderDatas, virtualOrderDatas };
-                return DateJsonResult(datas);
+                case 1:
+                    var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(queryString);
+                    var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetVirtualOrderDataBy(queryString);
+                    var datas = new { erpOrderDatas, virtualOrderDatas };
+                    return DateJsonResult(datas);
+                case 2:
+                    var data = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetQueryOrderBy(queryString);
+                    return DateJsonResult(data);
+                default: 
+                    return DateJsonResult("操作类型不对");
             }
-            else
-            {
-                var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetQueryOrderBy(queryString);
-                return DateJsonResult(datas);
-                    }
         }
         /// <summary>
         /// 存储数据 StoreOrderDispatchDatas
@@ -256,8 +250,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetInProductionOrderDatas(string department)
         {
-            DateTime nowDate = DateTime.Now.Date.ToDate();
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配");
             return DateJsonResult(datas);
         }
         /// <summary>

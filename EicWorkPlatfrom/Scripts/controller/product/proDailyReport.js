@@ -10,13 +10,10 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     var reportDataOp = {};
     //-------------------------标准工时设置-------------------------------------//
     //获取产品工艺流程列表
-    reportDataOp.getProductionFlowList = function (department, productName, orderId, searchMode) {
-        var url = urlPrefix + 'GetProductionFlowList';
-        return ajaxService.getData(url, {
-            department: department,
-            productName: productName,
-            orderId: orderId,
-            searchMode: searchMode,
+    reportDataOp.getProductionFlowDatas = function (queryDto) {
+        var url = urlPrefix + 'GetProductionFlowDatas';
+        return ajaxService.postData(url, {
+            queryDto: queryDto,
         });
     };
     //保存产品工艺流程数据
@@ -275,7 +272,16 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             uiVM.ProductId = item.ProductId;
             uiVM.ProductName = item.ProductName;
             vmManager.standardHoursCount = item.StandardHoursCount;
-            $scope.searchPromise = dReportDataOpService.getProductionFlowList(vmManager.department, vmManager.productName, "", 2).then(function (datas) {
+            var thisQueryDto = {
+                Department: vmManager.department,
+                InputDate:null,
+                ProductName: vmManager.productName,
+                ProcessesName: '',
+                OrderId: null,
+                SearchMode: 2
+            };
+            console.log(thisQueryDto)
+            $scope.searchPromise = dReportDataOpService.getProductionFlowDatas(thisQueryDto).then(function (datas) {
                 vmManager.handleEditDataSource(datas);
             });
         },

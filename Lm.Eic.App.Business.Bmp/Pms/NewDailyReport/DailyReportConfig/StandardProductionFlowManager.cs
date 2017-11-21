@@ -80,7 +80,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
         {
             DateTime nowDate = DateTime.Now.Date.ToDate();
             //从ERP中获得部门 在制所有工单信息
-            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department,"已分配");
             List<ProductFlowSummaryVm> flowSummaryVms = new List<ProductFlowSummaryVm>();
             List<string> productNamelist = new List<string>();
             ProductFlowSummaryVm flowSummaryVm = null;

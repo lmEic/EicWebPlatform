@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="pull-left" style="width:55%;">
+            <div class="pull-left" style="width:60%;">
                 <div class="bs-callout bs-callout-success">
                     <div id="editWindow" class="table-responsive" style="padding:10px;overflow-y:auto;height:550px">
                         <div class="row ">
@@ -40,6 +40,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <lable for="inputDate" class="col-md-6 label-warning control-label">录入日期:{{vm.InPutDate}}</lable>
                         </div>
                         <div class="row ">
                             <div class="h-split"></div>
@@ -85,6 +86,7 @@
                         <input type="text" placeholder="输入品名快速定位" ng-model="filterErpOrder" ng-keydown="vmManager.confirmSearch($event,filterErpOrder)"
                                bs-options="item.OrderId as item.OrderId for item in vmManager.erpOrderInfoDatasSet" limit="10" bs-typeahead />
                     </div>
+                    <lable for="inputDate" class="col-md-6 label-warning control-label">录入日期:{{vm.InPutDate}}</lable>
                 </div>
                 <div class="row ">
                     <div class="h-split"></div>
@@ -109,7 +111,6 @@
                                 <i class="fa fa-users  text-success">团队录入</i>
                             </a>
                         </li>
-                        <lable for="inputDate" class="col-md-8 label-warning control-label">录入日期:{{vm.InPutDate}}</lable>
                     </ul>
                     @*Tab列表内容*@
                     <div id="myTabContent" class="tab-content">
@@ -894,7 +895,7 @@
                     </dialog>
                 </div>
             </div>
-            <div class="pull-right" style="width:45%;">
+            <div class="pull-right" style="width:40%;">
                 <div class="bs-callout bs-callout-info" style="height:580px;overflow-y:auto;">
                     <div class="table-responsive" bs-tabs bs-active-pane="vmManager.queryActiveTab" cg-busy="{promise:searchPromise}">
                         <div bs-pane data-title="产品工艺" class="active" data-name="qryFolwProcessTab">
@@ -904,9 +905,9 @@
                                         <th>工艺编号</th>
                                         <th>工艺名称</th>
                                         <th>工单数</th>
-                                        <th>需录数</th>
-                                        <th>已录数</th>
-                                        <th>差异数</th>
+                                        <th>需录</th>
+                                        <th>已录</th>
+                                        <th>差异</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -939,9 +940,9 @@
                                     <tr class="info">
                                         <th>工号</th>
                                         <th>姓名</th>
-                                        <th>录入产量</th>
-                                        <th>生产工时</th>
-                                        <th>非生产时</th>
+                                        <th>产量</th>
+                                        <th>工时</th>
+                                        <th>非工时</th>
                                         <th>录入时间</th>
                                         <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                     </tr>

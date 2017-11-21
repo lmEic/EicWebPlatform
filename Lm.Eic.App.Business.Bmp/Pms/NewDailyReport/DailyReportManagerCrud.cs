@@ -171,6 +171,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         public List<StandardProductionFlowModel> FindBy(QueryDailyProductReportDto qryDto)
         {
+            if (qryDto == null) return new List<StandardProductionFlowModel>();
             try
             {
                 switch (qryDto.SearchMode)
@@ -304,10 +305,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <param name="department">部门</param>
         /// <returns></returns>
 
-        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime validDate)
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department && e.ValidDate >= validDate).OrderBy(e => e.OrderId).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.DicpatchStatus == dicpatchStatus).OrderBy(e => e.OrderId).ToList();
         }
         internal List<ProductOrderDispatchModel> GetVirtualOrderDataBy(string department)
         {

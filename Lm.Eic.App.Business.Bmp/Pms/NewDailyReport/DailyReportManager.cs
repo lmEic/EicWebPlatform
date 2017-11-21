@@ -48,9 +48,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <param name="department">部门</param>
         /// <returns></returns>
 
-        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime date)
+        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus)
         {
-            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, date);
+            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, dicpatchStatus);
         }
         public List<ProductOrderDispatchModel> GetVirtualOrderDataBy(string department)
         {
