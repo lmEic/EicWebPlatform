@@ -262,6 +262,70 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @*B类  所得工时、生产工时*@
+                                    <div ng-if="vmManager.inspectionDataGatherType==='B'">
+                                        <div class="well" style="overflow:hidden;background:#C0C0C0; color:#000000">
+                                            @*所得工时、生产工时*@
+                                            <div class="form-group">
+                                                @*录入产量*@
+                                                  <div class="col-md-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">生产量:</span>
+                                                        <input type="number" name="todayProductionCount" class="form-control"
+                                                               focus-if="focus.todayProductionCountFocus" focus-setter
+                                                               ng-keydown="focus.changeEnter($event,'processesIndexFocus','workerProductionTimeFocus')"
+                                                               ng-model="vm.TodayProductionCount" required />
+                                                        <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-show="operate.showValidation">
+                                                            <small ng-message="required">录入工序不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                   </div>
+                                                @*生产工时*@ 
+                                                <div class="col-md-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">生产工时:</span>
+                                                        <input name="workerProductionTime" type="number" class="form-control"
+                                                               focus-if="focus.workerProductionTimeFocus" focus-setter
+                                                               ng-keydown="focus.changeEnter($event,'processesIndexFocus','getProdutionTimeFocus')"
+                                                               ng-minlength="0"
+                                                               ng-maxlength="24"
+                                                               ng-model="vm.WorkerProductionTime" required />
+                                                        <p ng-show="formDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
+                                                        <p ng-show="formDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
+                                                        <div class="error-messages" ng-messages="formDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
+
+                                                            <small ng-message="required">录入生产工时不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*所得工时*@ 
+                                                <div class="col-md-4">
+                                                   
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">得到工时:</span>
+                                                            <input type="number" name="getProductionTime" class="form-control"
+                                                                   focus-if="focus.getProdutionTimeFocus" focus-setter
+                                                                   ng-keydown="focus.changeEnter($event,'workerProductionTimeFocus','saveAlldataFocus')"
+                                                                   ng-model="vm.GetProductionTime" required />
+                                                            <div class="error-messages" ng-messages="formDailyProductionReport.getProductionTime.$error" ng-show="operate.showValidation">
+                                                                <small ng-message="required">得到工时不能为空</small>
+                                                            </div>
+                                                        </div>
+
+                                                  
+                                                </div>
+                                            </div>
+                                            @*备注*@
+                                            <div class="form-group">
+                                                <label for="remark" class="col-md-2 control-label">备注</label>
+                                                <div class="col-md-10">
+                                                    <textarea name="remark"
+                                                              focus-if="focus.remarkFocus" focus-setter
+                                                              rows="1" cols="4" class="form-control" ng-model="vm.Field5" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     @*E类  所得工时、生产工时*@
                                     <div ng-if="vmManager.inspectionDataGatherType==='E'">
                                         <div class="well" style="overflow:hidden;background:#C0C0C0; color:#000000">
