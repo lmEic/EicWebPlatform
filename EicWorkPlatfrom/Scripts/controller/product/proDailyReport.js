@@ -232,6 +232,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ///输入类型
         inputTypes: [
            { id: "A", text: "A" },
+                { id: "B", text: "B" },
            { id: "E", text: "E" },
             { id: "F", text: "F" },
             { id: "G", text: "G" },
@@ -528,8 +529,9 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         vmManager.editDatasSummyset = [];
         vmManager.editDatasSummyset = datas;
         ///根据登录用户 载入信息 ，如果没有侧 选择载入
-        if (datas.length > 0)
-            vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
+
+        // if (datas.length > 0)
+       //     vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
     });
     //焦点设置器
     var focusSetter = {
@@ -713,8 +715,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmManager.erpOrderInfoDatasSet = [];
                 vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatasSet = erpDatas;
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
-                if (erpDatas.length > 0)
-                    vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
+               // if (erpDatas.length > 0)
+                 ///   vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
             });
 
         },

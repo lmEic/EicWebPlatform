@@ -272,7 +272,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     DicpatchStatus = model.DicpatchStatus,
                 }).ToOpResult_Eidt(OpContext);
             };
-
+            switch(model.ProductionDepartment)
+            {
+                case "MS1":
+                    model.ProductName = ( model.OrderId.Contains("511")) ? model.ProductName : model.ProductName + "(非正常)";
+                    break;
+                case "MS6":
+                    model.ProductName = (model.OrderId.Contains("511")) ? model.ProductName : model.ProductName + "(非正常)";
+                    break;
+                default:
+                    break;
+            };
             return irep.Insert(model).ToOpResult(OpContext);
         }
 
