@@ -707,16 +707,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                   
                 };
                 uiVM.Department = vmManager.department;
-                focusSetter.processesIndexFocus = true;
-            }
-            else {
-                uiVM.Department = null;
-            }
-        },
-        ///录入师傅员工号
-        selectMasterWorker: function (worker) {
-            if (worker !== null) {
-               
             }
             else {
                 uiVM.Department = null;
@@ -1162,6 +1152,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 });
                 vmMMachineInPut.handleDatas = [];
                 vmMMachineInPut.putInDatasSet = [];
+                vmManager.init();
                 machineDialog.close();
             };
         });

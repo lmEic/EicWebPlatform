@@ -423,10 +423,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             try
             {
-                SetFixFieldValue(modelList, OpMode.Add);
                 if (!modelList.IsNullOrEmpty())
-                    return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
-
+                return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
+                SetFixFieldValue(modelList, OpMode.Add);
+                modelList.ToList().ForEach((m) => {  if(m!=null) m.OpDate = m.OpDate.ToDate(); });
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
