@@ -628,7 +628,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         putInDisplay: false,
         inPutMultiermUserInfoTable: false,
         classType: '白班',
-        classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: '晚班' }],
+        classTypeChange:function(){
+            if (vmManager.classType === "白班")
+                vmManager.classType = "晚班";
+            else vmManager.classType = "白班";
+        },
         putInDate: new Date(new Date().setDate(new Date().getDate() - 1)),
         productionFlowShow: true,
         putInDataProcessesName: null,
@@ -667,17 +671,17 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         workerId: null,
         isSingle: true,//是否搜寻到的是单个人
         ///得到用户信息
-        getWorkerInfo: function () {
-            if (uiVM.WorkerId === undefined) return;
-            var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
-            if (uiVM.WorkerId.length >= strLen) {
+        getWorkerInfo: function (workerid,opSign) {
+            if (workerid === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(workerid) ? 2 : 6;
+            if (workerid.length >= strLen) {
                 vmManager.searchedWorkers = [];
-                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerid).then(function (datas) {
                     if (datas.length > 0) {
                         vmManager.searchedWorkers = datas;
                         if (vmManager.searchedWorkers.length === 1) {
                             vmManager.isSingle = true;
-                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                            vmManager.selectWorker(vmManager.searchedWorkers[0],opSign);
                         }
                         else {
                             vmManager.isSingle = false;
@@ -690,14 +694,29 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
 
             }
         },
-        ///录入工号
-        selectWorker: function (worker) {
+        ///录入作业员工号
+        selectWorker: function (worker, opSign) {
             if (worker !== null) {
-                uiVM.WorkerName = worker.Name;
-                uiVM.WorkerId = worker.WorkerId;
-                uiVM.Department = worker.Department;
-                vmManager.WorkerId = worker.WorkerId;
+                if (opSign === 1) {
+                    uiVM.WorkerName = worker.Name;
+                    uiVM.WorkerId = worker.WorkerId;
+                };
+                if (opSign == 2) {
+                    uiVM.MasterName = worker.Name;
+                    uiVM.MasterWorkerId = worker.WorkerId;
+                  
+                };
+                uiVM.Department = vmManager.department;
                 focusSetter.processesIndexFocus = true;
+            }
+            else {
+                uiVM.Department = null;
+            }
+        },
+        ///录入师傅员工号
+        selectMasterWorker: function (worker) {
+            if (worker !== null) {
+               
             }
             else {
                 uiVM.Department = null;
