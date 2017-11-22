@@ -42,15 +42,16 @@
                 <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
                     <table class="table table-striped table-hover table-condensed" style="table-layout:fixed;">
                         <colgroup>
-                            <col width="20" />
+                            <col width="15" />
+                            <col width="25" />
                             <col width="30" />
-                            <col width="50" />
-                            <col width="70" />
-                            <col width="90" />
-                            <col width="60" />
-                            <col width="60" />
-                            <col width="60" />
-                            <col width="60" />                                    
+                            <col width="40" />
+                            <col width="40" />
+                            <col width="40" />
+                            <col width="40" />
+                            <col width="40" />
+                            <col width="40" />    
+                            <col width="90" />  
                         </colgroup>
 
                         <thead>
@@ -65,11 +66,12 @@
                                 <th>班别</th>
                                 <th>工号</th>
                                 <th>姓名</th>
-                                <th>加班时数(h)</th>                                                     
+                                <th>加班时数(h)</th> 
+                                <th>备注</th>
                             </tr>
                         </thead>
                         <tbody>                    
-                            <tr ng-repeat="item in vmManager.dataSets track by $index" ng-click="vmManager.getCurrentRow(item)">
+                            <tr ng-repeat="item in vmManager.dataSets|filter:vmManager.qryWorkName track by $index" ng-click="vmManager.getCurrentRow(item)">
                                 <td ng-bind="$index+1"></td>
                                 @*工具按钮*@
                                 <td class="text-center">
@@ -143,6 +145,13 @@
                                            focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入时数" ng-show="item.wkhing" />
                                 </td>
+                                <td title="双击可修改" ng-dblclick="vmManager.editremark(item)" >
+                                    <span ng-hide="item.wkhing1">{{item.Remark}}</span>
+                                    <input ng-model="vm.Remark" ng-keydown="vmManager.inputremark($event,item)"
+                                           focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
+                                           placeholder="请输入备注" ng-show="item.wkhing1" />
+                                  
+                                </td>
                                                            
                             </tr>
                         </tbody>
@@ -186,7 +195,7 @@
                           <col width="40" />
                           <col width="50" />
                           <col width="70" />
-                          <col width="90" />
+                          <col width="60" />
                           <col width="60" />
                           <col width="60" />
                           <col width="60" />
@@ -270,20 +279,17 @@
            
                 <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
                     <table class="table table-striped table-hover table-condensed" style="table-layout:fixed;">
-                        <colgroup>
-                          
-                            <col width="30" />
-                            <col width="60" />
-                            <col width="60" />                       
-                            <col width="60" />
-                            <col width="60" />
-                            <col width="60" />
-                            <col width="60" />                      
+                        <colgroup>                       
+                            <col width="20" />                       
+                            <col width="40" />                       
+                            <col width="40" />
+                            <col width="40" />
+                            <col width="40" />
+                            <col width="90" />                      
                         </colgroup>
                         <thead>
                             <tr class="info">
-                                <th>序号</th> 
-                                <th>日期</th>
+                                <th>序号</th>                          
                                 <th>加班类型</th>                           
                                 <th>工号</th>
                                 <th>姓名</th>
@@ -293,10 +299,8 @@
                         </thead>
                         <tbody>
                             <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index"> 
-                                <td ng-bind="$index+1"></td> 
-                                <td ng-bind="item.WorkDate"></td>
-                                <td ng-bind="item.WorkoverType"></td>
-                                                                                                                 
+                                <td ng-bind="$index+1"></td>                             
+                                <td ng-bind="item.WorkoverType"></td>                                                                                                            
                                 <td ng-bind="item.WorkerId"></td>
                                 <td ng-bind="item.WorkerName"></td>
                                 <td ng-bind="item.WorkOverHours"></td> 
@@ -397,7 +401,7 @@
                             <label for="department" class="col-md-2 control-label">部门</label>
                             <div class="col-md-4">
 
-                                <input type="text" name="workDate" class="form-control" ng-model="vm.DepartmentText" placeholder="部门" readonly required />
+                                <input type="text" name="workDate" class="form-control" ng-model="vm.DepartmentText" placeholder="部门"  required />
                                 <div class="error-messages" ng-messages="formWorkover.workDate.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">部门不能为空</small>
                                 </div>
@@ -434,16 +438,8 @@
                                                 data-bs-options="status.id as status.text for status in vmManager.workStatuss" data-bs-select></button>
                                     </span>
                                 </div>
-
-                            </div>
-
-                            @*<label for="changeDate" class="col-md-2 control-label">批量日期</label>
-                            <div class="col-md-4">
-                                <input type="date" class="form-control"  ng-model="vmManager.changeworkDate" placeholder="批量改日期" format-date />
-                                
-                            </div>*@
+                            </div>                         
                         </div>
-
                         <div class="form-group">
                             <label for="workreason" class="col-md-2 control-label">加班原因:</label>
                             <div class="col-md-4">
@@ -451,8 +447,7 @@
                                     <input type="text" name="workreason" class="form-control" ng-model="vm.WorkReason" placeholder="加班原因"  />
                                     <div class="error-messages" ng-messages="formWorkover.workreason.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">日期不能为空</small>
-                                    </div>
-                            
+                                    </div>                        
                                 </div>
                             </div>                        
                         </div>
