@@ -580,7 +580,6 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             });
         });
     };
-
     $scope.promise = hrDataOpService.getLeaveTypesConfigs().then(function (datas) {
         var leaveTypes = _.where(datas, {
             ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType"
