@@ -18,10 +18,7 @@
                            placeholder="日期" />
                     <label>白晚班:</label>
                     <button class="btn btn-success "
-                            ng-model="vmManager.classType" ng-change="vmManager.classTypeChange()"
-                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择班别"
-                            data-bs-options="classType.id as classType.text for classType in vmManager.classTypes track by $index" data-bs-select>
-                        <span class="caret"></span>
+                            ng-click="vmManager.classTypeChange()">{{vmManager.classType}}
                     </button>
                 </form>
             </div>
@@ -125,7 +122,7 @@
                                         <div class="col-md-5">
                                             <div class="input-group">
                                                 <input name="workerId" class="form-control"
-                                                       ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo()"
+                                                       ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo(vm.WorkerId,1)"
                                                        ng-keydown="focus.changeEnter($event,'workerIdFocus','processesIndexFocus')"
                                                        focus-if="focus.workerIdFocus" focus-setter
                                                        placeholder="输工号或姓名"
@@ -396,10 +393,10 @@
                                                     @*工号人员信息*@
                                                     <div class="col-md-6">
                                                         <div class="input-group">
-                                                            <span class="input-group-addon">人员:</span>
+                                                            <span class="input-group-addon">作业人员:</span>
                                                             <input name="workerId" class="form-control"
-                                                                   ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo()"
-                                                                   ng-keydown="focus.changeEnter($event,'workerIdFocus','workerProductionTimeFocus')"
+                                                                   ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo(vm.WorkerId,1)"
+                                                                   ng-keydown="focus.changeEnter($event,'workerIdFocus','masterWorkerIdFocus')"
                                                                    focus-if="focus.workerIdFocus" focus-setter
                                                                    placeholder="输工号或姓名"
                                                                    data-ensure-user-exist required />
@@ -429,8 +426,46 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @*工号人员信息*@
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">机台师傅:</span>
+                                                            <input name="masterWorkerId" class="form-control"
+                                                                   ng-model="vm.MasterWorkerId" ng-change="vmManager.getWorkerInfo(vm.MasterWorkerId,2)"
+                                                                   ng-keydown="focus.changeEnter($event,'workerIdFocus','workerProductionTimeFocus')"
+                                                                   focus-if="focus.masterWorkerIdFocus" focus-setter
+                                                                   placeholder="输工号或姓名"
+                                                                   data-ensure-user-exist required />
+                                                            <div class="error-messages" ng-messages="formDailyProductionReport.masterWorkerId.$error" ng-show="operate.showValidation">
+                                                                <small ng-message="required">工号不能为空</small>
+                                                            </div>
+                                                            <div class="input-group-addon">
+                                                                <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.MasterName}}</label>
+                                                            </div>
+                                                            <div class="input-group-btn">
+                                                                <button type="button" class="btn btn-primary"
+                                                                        data-animation="am-flip-x"
+                                                                        bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                                    <span class="fa fa-chevron-circle-down"></span>
+                                                                </button>
+                                                                <div class="dropdown-menu" role="menu">
+                                                                    <ul class="list-group">
+                                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectMasterWorker(worker)"
+                                                                            ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                                            <i class="fa fa-user"></i>
+                                                                            <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                                            <span>姓名：{{worker.Name}}</span>|
+                                                                            <span>部门：{{worker.Department}}</span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     @*出勤时数*@
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-6">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">出勤:</span>
                                                             <input name="workerProductionTime" type="number" class="form-control"
@@ -443,7 +478,7 @@
                                                             <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-6">
                                                         @*非生产作业工时  *@
                                                         <div class="input-group">
                                                             <span class="input-group-addon">非生产:</span>
