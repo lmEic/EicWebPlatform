@@ -152,6 +152,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new ProductOrderDispatchMapping());
             //每天生产日报表
             modelBuilder.Configurations.Add(new DailyProductionReportMapping());
+            //非生产代码
+            modelBuilder.Configurations.Add(new ProductionCodeConfigMapping());
 
             #endregion
 

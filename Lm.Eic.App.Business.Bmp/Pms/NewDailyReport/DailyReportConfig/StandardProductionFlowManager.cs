@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
@@ -77,9 +78,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
         /// <returns></returns>
         public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department)
         {
-            DateTime nowDate = DateTime.Now.Date;
+            DateTime nowDate = DateTime.Now.Date.ToDate();
             //从ERP中获得部门 在制所有工单信息
-            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
+            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department,"已分配");
             List<ProductFlowSummaryVm> flowSummaryVms = new List<ProductFlowSummaryVm>();
             List<string> productNamelist = new List<string>();
             ProductFlowSummaryVm flowSummaryVm = null;

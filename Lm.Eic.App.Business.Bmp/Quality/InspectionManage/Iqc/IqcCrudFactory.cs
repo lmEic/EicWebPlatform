@@ -93,7 +93,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcItemConfigModel> FindIqcSpecialItemConfigDatasBy(string sizeMemo)
         {
-            return irep.Entities.Where(e => e.SizeMemo == sizeMemo).OrderBy(e => e.InspectionItemIndex).ToList();
+            return irep.Entities.Where(e => e.SizeMemo.Contains(sizeMemo)).OrderBy(e => e.InspectionItemIndex).ToList();
         }
 
         /// <summary>
