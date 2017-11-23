@@ -13,6 +13,8 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
 
 namespace EicWorkPlatfrom.Controllers
 {
