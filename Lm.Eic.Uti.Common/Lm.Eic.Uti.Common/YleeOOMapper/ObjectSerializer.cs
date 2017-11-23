@@ -23,6 +23,19 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
             return JsonConvert.SerializeObject(value, Formatting.Indented);
         }
         /// <summary>
+        /// 将对象反序列.NET Type 类型数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static T DeserializeObject<T>(string value)
+        {
+            if (value == null)
+                return default(T);
+            return JsonConvert.DeserializeObject<T>(value);
+        }
+
+        /// <summary>
         /// 把对象序列化 JSON 字符串 
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
@@ -30,10 +43,6 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// <returns>JSON字符串</returns>
         public static string GetJson<T>(T obj)
         {
-            //记住 添加引用 System.ServiceModel.Web 
-            /**
-             * 如果不添加上面的引用,System.Runtime.Serialization.Json; Json是出不来的哦
-             * */
             DataContractJsonSerializer json = new DataContractJsonSerializer(typeof(T));
             using (MemoryStream ms = new MemoryStream())
             {
@@ -56,18 +65,6 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
                 DataContractJsonSerializer dcj = new DataContractJsonSerializer(typeof(T));
                 return (T)dcj.ReadObject(ms);
             }
-        }
-        /// <summary>
-        /// 将对象反序列.NET Type 类型数据
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static T DeserializeObject<T>(string value)
-        {
-            if (value == null)
-                return default(T);
-            return JsonConvert.DeserializeObject<T>(value);
         }
     }
 }

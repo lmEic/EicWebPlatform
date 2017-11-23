@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model)
         {
-          
+         
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
                 OrderId = model.OrderId,
