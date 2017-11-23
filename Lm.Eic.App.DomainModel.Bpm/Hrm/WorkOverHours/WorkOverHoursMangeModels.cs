@@ -136,7 +136,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _parentDataNodeText = value; }
             get { return _parentDataNodeText; }
         }
-
         private string _opsign;
         /// <summary>
         ///操作标志
