@@ -1096,6 +1096,31 @@
 
                         </content>
                     </dialog>
+                    @*非生产原因代码选择 Dialog*@
+                    <dialog ng-if="machineNnProductionSeasonDialog.open" modal data-close="machineNnProductionSeasonDialog.close()" style="width:65%;">
+                        <content dialog-title>
+                            <i class="fa fa-pencil-square">选择非生产原因</i>
+                        </content>
+                        <content dialog-content style="width:100%;">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h6 class="panel-title"><i class="glyphicon glyphicon-home"></i>非生产原因架构图</h6>
+                                        </div>
+                                        <div class="panel-body" style="max-height:515px;overflow:auto">
+                                            <ul data-yl-tree cg-busy="{promise:promise}"
+                                                data-tree-dataset="ztree.configDataNodes"
+                                                data-start-load="ztree.startLoad"
+                                                ng-model="ztree.treeNode"
+                                                data-binding-nodevm="ztree.bindNodeToVm()"
+                                                id="{{ztree.treeId}}" class="ztree"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </content>
+                    </dialog>
                 </div>
             </div>
             <div class="pull-right" style="width:40%;">
