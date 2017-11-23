@@ -130,6 +130,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionItemDataSummaryVM> FindIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
             List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
+            InspectionItemDataSummaryVM model = null;
             ///明细表中查找
             var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId, materialId);
             if (iqcHaveInspectionData == null || iqcHaveInspectionData.Count == 0) return returnList;
@@ -141,87 +142,90 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///每个一项添加相应的信息
             iqcHaveInspectionData.ForEach(m =>
            {
-               ///初始化 综合模块
-               var model = new InspectionItemDataSummaryVM()
-               {
-                   OrderId = orderId,
-                   MaterialId = materialId,
-
-                   MaterialName = materialinfo.ProductName,
-                   MaterialSpec = materialinfo.ProductStandard,
-                   MaterialDrawId = materialinfo.ProductDrawID,
-                   MaterialSupplier = materialinfo.ProductSupplier,
-
-                   Department = string.Empty,
-                   ClassType = string.Empty,
-                   InspectionDataGatherType = string.Empty,
-                   InspectionDataTimeRegion = DateTime.Now.ToDateTimeStr(),
-                   InspectionItemSumCount = 0,
-                   InspectionNGCount = 0,
-                   InStorageOrderId = string.Empty,
-                   MachineId = string.Empty,
-                   MaterialCount = 0,
-                   OrderIdNumber = 0,
-                   ProductDepartment = string.Empty,
-                   SiteRootPath = string.Empty,
-                   InspectionItem = m.InspecitonItem,
-                   EquipmentId = m.EquipmentId,
-                   MaterialInDate = m.MaterialInDate,
-                   MaterialInCount = m.MaterialCount,
-                   SizeLSL = 0,
-                   SizeUSL = 0,
-                   InspectionItemStatus = m.InspectionItemStatus,
-                   SizeMemo = string.Empty,
-                   InspectionAQL = string.Empty,
-                   InspectionLevel = string.Empty,
-                   InspectionCount = Convert.ToInt16(m.InspectionCount),
-                   AcceptCount = 0,
-                   RefuseCount = 0,
-                   InspectionItemDatas = m.InspectionItemDatas,
-                   InsptecitonItemIsFinished = true,
-                   NeedFinishDataNumber = Convert.ToInt16(m.InspectionCount),
-                   HaveFinishDataNumber = this.GetHaveFinishDataNumber(m.InspectionItemDatas),
-                   InspectionItemResult = m.InspectionItemResult,
-                   FileName = m.FileName,
-                   DocumentPath = m.DocumentPath,
-                   Memo = m.Memo,
-                   OpPerson = m.OpPerson,
-                   OpSign = m.OpSign,
-                   InspectionMethod = string.Empty,
-                   InspectionMode = m.InspectionMode,
-                   Id_Key = m.Id_Key,
-               };
-               /// 找到对应的项目
-               var iqcItemConfigdata = iqcItemConfigdatas.FirstOrDefault(e => e.InspectionItem == m.InspecitonItem);
-               if (m.InspecitonItem == "ROHS检验")
-                   iqcItemConfigdata = InspectionManagerCrudFactory.IqcItemConfigCrud.FindFirstOrDefaultDataBy(m.InspecitonItem);
-               if (iqcItemConfigdata != null)
-               {
-
-                   model.SizeLSL = iqcItemConfigdata.SizeLSL;
-                   model.SizeUSL = iqcItemConfigdata.SizeUSL;
-                   model.SizeMemo = iqcItemConfigdata.SizeMemo;
-                   model.InspectionAQL = iqcItemConfigdata.InspectionAQL;
-                   model.InspectionMethod = iqcItemConfigdata.InspectionMethod;
-                   model.InspectionLevel = iqcItemConfigdata.InspectionLevel;
-                   if (model.EquipmentId == string.Empty || model.EquipmentId == null)
-                       model.EquipmentId = iqcItemConfigdata.EquipmentId;
-                   //数据采集类型
-                   model.InspectionDataGatherType = iqcItemConfigdata.InspectionDataGatherType;
-                   if ((model.InspectionDataGatherType == "D" || model.InspectionDataGatherType == "E" || model.InspectionDataGatherType == "F") && model.InspectionItemResult == "OK")
-                   { model.HaveFinishDataNumber = model.NeedFinishDataNumber; }
-                   //如果没有检验方式 再去按规则去生成
-                   if (model.InspectionMode == string.Empty)
-                       model.InspectionMode = GetJudgeIQCInspectionMode("IQC", m.MaterialId);
-                   var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(model.InspectionLevel, model.InspectionAQL, m.MaterialCount, model.InspectionMode);
-                   if (inspectionModeConfigModelData != null)
-                   {
-                       model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
-                       model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
-                   }
+               if (m.InspectionRuleDatas != null) {
+                    model = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m.InspectionRuleDatas);
+                  
                }
-               returnList.Add(model);
-
+               else {
+                   ///初始化 综合模块
+                    model = new InspectionItemDataSummaryVM()
+                   {
+                       OrderId = orderId,
+                       MaterialId = materialId,
+                       MaterialName = materialinfo.ProductName,
+                       MaterialSpec = materialinfo.ProductStandard,
+                       MaterialDrawId = materialinfo.ProductDrawID,
+                       MaterialSupplier = materialinfo.ProductSupplier,
+                       Department = string.Empty,
+                       ClassType = string.Empty,
+                       InspectionDataGatherType = string.Empty,
+                       InspectionDataTimeRegion = DateTime.Now.ToDateTimeStr(),
+                       InspectionItemSumCount = 0,
+                       InspectionNGCount = 0,
+                       InStorageOrderId = string.Empty,
+                       MachineId = string.Empty,
+                       MaterialCount = 0,
+                       OrderIdNumber = 0,
+                       ProductDepartment = string.Empty,
+                       SiteRootPath = string.Empty,
+                       InspectionItem = m.InspecitonItem,
+                       EquipmentId = m.EquipmentId,
+                       MaterialInDate = m.MaterialInDate,
+                       MaterialInCount = m.MaterialCount,
+                       SizeLSL = 0,
+                       SizeUSL = 0,
+                       InspectionItemStatus = m.InspectionItemStatus,
+                       SizeMemo = string.Empty,
+                       InspectionAQL = string.Empty,
+                       InspectionLevel = string.Empty,
+                       InspectionCount = Convert.ToInt16(m.InspectionCount),
+                       AcceptCount = 0,
+                       RefuseCount = 0,
+                       InspectionItemDatas = m.InspectionItemDatas,
+                       InsptecitonItemIsFinished = true,
+                       NeedFinishDataNumber = Convert.ToInt16(m.InspectionCount),
+                       HaveFinishDataNumber = this.GetHaveFinishDataNumber(m.InspectionItemDatas),
+                       InspectionItemResult = m.InspectionItemResult,
+                       FileName = m.FileName,
+                       DocumentPath = m.DocumentPath,
+                       Memo = m.Memo,
+                       OpPerson = m.OpPerson,
+                       OpSign = m.OpSign,
+                       InspectionMethod = string.Empty,
+                       InspectionMode = m.InspectionMode,
+                       Id_Key = m.Id_Key,
+                   };
+                   /// 找到对应的项目
+                   var iqcItemConfigdata = iqcItemConfigdatas.FirstOrDefault(e => e.InspectionItem == m.InspecitonItem);
+                   if (m.InspecitonItem == "ROHS检验")
+                       iqcItemConfigdata = InspectionManagerCrudFactory.IqcItemConfigCrud.FindFirstOrDefaultDataBy(m.InspecitonItem);
+                   if (iqcItemConfigdata != null)
+                   {
+                       model.SizeLSL = iqcItemConfigdata.SizeLSL;
+                       model.SizeUSL = iqcItemConfigdata.SizeUSL;
+                       model.SizeMemo = iqcItemConfigdata.SizeMemo;
+                       model.InspectionAQL = iqcItemConfigdata.InspectionAQL;
+                       model.InspectionMethod = iqcItemConfigdata.InspectionMethod;
+                       model.InspectionLevel = iqcItemConfigdata.InspectionLevel;
+                       if (model.EquipmentId == string.Empty || model.EquipmentId == null)
+                           model.EquipmentId = iqcItemConfigdata.EquipmentId;
+                       //数据采集类型
+                       model.InspectionDataGatherType = iqcItemConfigdata.InspectionDataGatherType;
+                       if ((model.InspectionDataGatherType == "D" || model.InspectionDataGatherType == "E" || model.InspectionDataGatherType == "F") && model.InspectionItemResult == "OK")
+                       { model.HaveFinishDataNumber = model.NeedFinishDataNumber; }
+                       //如果没有检验方式 再去按规则去生成
+                       if (model.InspectionMode == string.Empty)
+                           model.InspectionMode = GetJudgeIQCInspectionMode("IQC", m.MaterialId);
+                       var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(model.InspectionLevel, model.InspectionAQL, m.MaterialCount, model.InspectionMode);
+                       if (inspectionModeConfigModelData != null)
+                       {
+                           model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
+                           model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
+                       }
+                   }
+                  
+               };
+               if(!returnList.Contains(model))  returnList.Add(model);
            });
             return returnList;
         }
