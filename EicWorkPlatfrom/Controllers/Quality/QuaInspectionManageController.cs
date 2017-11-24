@@ -552,7 +552,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model, bool isCheck)
+        public JsonResult InspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model, bool isCheck)
         {
             var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model, isCheck);
             return Json(opResult);
