@@ -250,7 +250,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetInProductionOrderDatas(string department)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配");
+            var haveDispatchOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配");
+            ///由部门信息得对应所有师傅
+            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = department,PostType= "技术类" }, 6);
+            var datas = new { haveDispatchOrderDatas, departmentMasterDatas };
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -273,11 +276,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         public ContentResult GetWorkerDailyInfoBy(string workerId)
         {
             var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetWorkerDailyDatasBy(workerId);
-
+            ///由邮此录入员得到想 所有师傅信息
             return DateJsonResult(datas);
         }
+
+        
         /// <summary>
-        ///
+        ///得到日报录入的详细信息
         /// </summary>
         /// <param name="wokerId"></param>
         /// <returns></returns>
@@ -300,7 +305,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        /// 得到数部门机台信息
+        /// 得到非产原因信息
         /// </summary>
         /// <param name="Department"></param>
         /// <returns></returns>
@@ -312,7 +317,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        ///
+        /// 单录入存储
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
@@ -322,6 +327,12 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datasResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entity);
             return Json(datasResult);
         }
+        /// <summary>
+        ///  批量存储多人合作录入
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="groupUserInfos"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult SaveGroupDailyReportData(DailyProductionReportModel entity, List<UserInfoVm> groupUserInfos)
         {
@@ -343,7 +354,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             return Json(datasResult);
         }
         /// <summary>
-        /// 处理多项数据 DisposeMultitermDailyReportdDatas
+        /// 机台处理多项数据 DisposeMultitermDailyReportdDatas
         /// </summary>
         /// <param name="entitys"></param>
         /// <param name="inputSign"></param>

@@ -451,7 +451,7 @@
                                                                 <div class="dropdown-menu" role="menu">
                                                                     <ul class="list-group">
                                                                         <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectMasterWorker(worker)"
-                                                                            ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                                            ng-repeat="worker in vmManager.departmentMasterData track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
                                                                             <i class="fa fa-user"></i>
                                                                             <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
                                                                             <span>姓名：{{worker.Name}}</span>|

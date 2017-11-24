@@ -676,11 +676,13 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             var strLen = leeHelper.checkIsChineseValue(workerid) ? 2 : 6;
             if (workerid.length >= strLen) {
                 vmManager.searchedWorkers = [];
+                console.log(vmManager.departmentMasterDatas);
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerid).then(function (datas) {
                     if (datas.length > 0) {
                         vmManager.searchedWorkers = datas;
                         if (vmManager.searchedWorkers.length === 1) {
                             vmManager.isSingle = true;
+                           
                             vmManager.selectWorker(vmManager.searchedWorkers[0],opSign);
                         }
                         else {
@@ -691,7 +693,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         vmManager.selectWorker(null);
                     }
                 });
-
             }
         },
         ///录入作业员工号
@@ -718,11 +719,14 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         erpOrderInfoDatasSource: [],
         productionFlowDatasSet: [],//工序信息
         productionFlowDatasSouce: [],//工序信息
+        departmentMasterDatas:[],
         //选择部门
         changeDepartment: function () {
-            $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (erpDatas) {
+            $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (datas) {
                 vmManager.erpOrderInfoDatasSet = [];
-                vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatasSet = erpDatas;
+                vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatasSet = datas.haveDispatchOrderDatas;
+
+                vmManager.departmentMasterDatas = datas.departmentMasterDatas;
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
                // if (erpDatas.length > 0)
                  ///   vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
