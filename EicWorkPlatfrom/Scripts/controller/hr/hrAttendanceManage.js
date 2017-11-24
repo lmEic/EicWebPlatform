@@ -640,8 +640,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         qryWorkName:null,
         searchYear: new Date().getFullYear(),
         changeworkDate:null,
-        workDayDate: new Date().toDateString(),
-        workNightDate: new Date().toDateString(),
+        workDayDate: null,
+        workNightDate: null,
         workDayTimeStart: new Date(00, 00, 00),
         workDayTimeEnd: new Date(00, 00, 00),     
         workNightTimeStart: new Date(00, 00, 00),
@@ -1227,27 +1227,26 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             rindex += 1;
         });     
         item.OpSign = leeDataHandler.dataOpMode.edit;      
-        $scope.vm = uiVM = item; 
+        $scope.vm = uiVM = item;            
          uiVM.BackgroundIndex = item.rowindex1;                      
          dialog.show();     
     };
     //后台保存
     operate.editALL = function (isValid) {         
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-           
+        leeDataHandler.dataOperate.add(operate, isValid, function () {         
             hrDataOpService.storeWorkOverHoursDt(uiVM).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {                 
                     if (opresult.Result) {
                         var mode = _.clone(uiVM)                                           
                         mode.Id_Key === opresult.Id_Key;
+                       
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);                        
                         }
                         vmManager.init();
                         dialog.close();                                          
                         vmManager.getWorkOverHoursDatas(1);   
-                      
-                       
+                                     
                     }
                    
                 })
@@ -1278,7 +1277,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
            uiVM.WorkDayTime = _workDayTime;
            uiVM.WorkNightTime = _workNightTime; 
            uiVM.Remark = item.Remark;    
-           uiVM.DepartmentText = item.DepartmentText;
+          
            angular.forEach(vmManager.dataSets, function (row) {
             $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);           
             row.WorkDate = uiVM.WorkDate;
@@ -1288,7 +1287,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             row.WorkoverType = uiVM.WorkoverType;
             row.QryDate = qryDateFormat;
             row.WorkClassType = uiVM.WorkClassType;
-            row.WorkOverHours = uiVM.WorkOverHours;          
+            row.WorkOverHours = uiVM.WorkOverHours;   
+            row.DepartmentText = uiVM.DepartmentText;
            // row.ParentDataNodeText =uiVM.ParentDataNodeText;
            
          });           
