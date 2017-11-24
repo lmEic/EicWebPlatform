@@ -1949,7 +1949,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 物料进货日期
         /// </summary>
-        public DateTime MaterialInDate { set; get; }
+        private DateTime _materialInDate = DateTime.MinValue;
+
+        public DateTime MaterialInDate
+        {
+
+            set { _materialInDate = value; }
+            get { return _materialInDate; }
+
+        }
         /// <summary>
         /// 物料进货数量
         /// </summary>
