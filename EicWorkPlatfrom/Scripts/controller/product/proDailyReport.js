@@ -1154,6 +1154,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmMMachineInPut.putInDatasSet = [];
                 vmManager.init();
                 machineDialog.close();
+                vmManager.putInDisplay = false;
             };
         });
     };
