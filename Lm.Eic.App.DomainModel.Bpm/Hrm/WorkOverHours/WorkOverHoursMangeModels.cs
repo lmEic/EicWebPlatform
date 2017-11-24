@@ -136,6 +136,32 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _parentDataNodeText = value; }
             get { return _parentDataNodeText; }
         }
+        private string _backgroundIndex = "NULL";
+        public string BackgroundIndex
+        {
+            set { _backgroundIndex = value; }
+            get { return _backgroundIndex; }
+        }
+
+
+        //private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        //public DateTime OpDate
+        //{
+        //    set { _opdate = value; }
+        //    get { return _opdate; }
+        //}
+        //private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        //public DateTime OpTime
+        //{
+        //    set { _optime = value; }
+        //    get { return _optime; }
+        //}
         private string _opsign;
         /// <summary>
         ///操作标志

@@ -127,7 +127,15 @@
                                         平时加班 <span class="caret"></span>
                                     </button>
                                 </td>
-                                <td>{{item.DepartmentText}}</td>
+                                <td title="双击可修改" ng-dblclick="vmManager.editdepartmentText(item)">
+                                    <span ng-hide="item.wkhing2">{{item.DepartmentText}}</span>
+                                    <input ng-model="vm.DepartmentText" ng-keydown="vmManager.inputdepartmentText($event,item)"
+                                           focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
+                                           placeholder="请输入部门" ng-show="item.wkhing2" />
+
+                                </td>
+
+                               
                                 <td>{{item.WorkDate}}</td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editClassType(item)">
                                     <span ng-hide="item.isEdittingClassType">{{item.WorkClassType}}</span>
@@ -205,7 +213,7 @@
                           <col width="60" />
                       </colgroup>
                       <thead>
-                          <tr class="info">
+                          <tr >
                               <th>项次</th>
                               <th>加班类型</th>
                               <th>部门</th>
@@ -220,7 +228,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <tr class="success" ng-repeat="item in vmManager.searchDatas track by $index">
+                          <tr ng-repeat="item in vmManager.searchDatas  track by $index">
                               <td ng-bind="$index+1"></td>
                               <td ng-bind="item.WorkoverType"></td>
                               <td ng-bind="item.DepartmentText"></td>
@@ -228,7 +236,7 @@
                               <td ng-bind="item.WorkClassType"></td>
                               <td ng-bind="item.WorkerId"></td>
                               <td ng-bind="item.WorkerName"></td>
-                              <td ng-bind="item.WorkOverHours"></td>
+                              <td ng-class="{bkcolor:$index==item.BackgroundIndex}" ng-bind="item.WorkOverHours"></td>
                               <td ng-bind="item.Remark"></td>
                               <td ng-bind="item.WorkStatus"></td>                         
                               <td>
