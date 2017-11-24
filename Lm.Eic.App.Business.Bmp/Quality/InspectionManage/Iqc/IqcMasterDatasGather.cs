@@ -107,5 +107,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcMasterContainDatasBy(orderId);
         }
+        public InspectionIqcMasterModel GetIqcMasterDatasBy(string orderId, string materialId)
+        {
+            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcMasterDatasBy(orderId, materialId);
+        }
+        public List<InspectionIqcMasterModel> GetIqcMasterDatasBy(string orderId)
+        {
+            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcMasterDatasBy(orderId);
+        }
     }
 }

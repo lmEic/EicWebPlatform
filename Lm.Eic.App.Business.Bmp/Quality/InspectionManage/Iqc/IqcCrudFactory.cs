@@ -185,6 +185,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
         }
+        internal List<InspectionIqcMasterModel> GetIqcMasterDatasBy(string orderid)
+        {
+            return irep.Entities.Where(e => e.OrderId== orderid).OrderBy(f=>f.Id_Key).ToList();
+        }
+        internal InspectionIqcMasterModel GetIqcMasterDatasBy(string orderid,string materialId)
+        {
+            return irep.FirstOfDefault(e => e.OrderId==orderid&&e.MaterialId == materialId);
+        }
         /// <summary>
         /// 
         /// </summary>
