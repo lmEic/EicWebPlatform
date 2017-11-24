@@ -127,7 +127,7 @@
                                                        focus-if="focus.workerIdFocus" focus-setter
                                                        placeholder="输工号或姓名"
                                                        data-ensure-user-exist required />
-                                                <div class="error-messages" ng-messages="formDailyProductionReport.workerId.$error" ng-show="operate.showValidation">
+                                                <div class="error-messages" ng-messages="formDailyProductionReport.workerId.$error" ng-if="formDailyProductionReport.workerId.$touched">
                                                     <small ng-message="required">工号不能为空</small>
                                                 </div>
                                                 <div class="input-group-addon" ng-show="vmManager.isSingle">
@@ -165,7 +165,7 @@
                                                        ng-onblur="vmManager.findProcessesInfo($event)"
                                                        ng-model="vm.ProcessesIndex"
                                                        required />
-                                                <div class="error-messages" ng-messages="formDailyProductionReport.processesIndex.$error" ng-show="operate.showValidation">
+                                                <div class="error-messages" ng-messages="formDailyProductionReport.processesIndex.$error" ng-show="formDailyProductionReport.processesIndex.$touched">
                                                     <small ng-message="required">录入工序不能为空</small>
                                                 </div>
                                                 <div class="input-group-addon">
@@ -203,8 +203,8 @@
                                                            focus-if="focus.todayProductionCountFocus" focus-setter
                                                            ng-keydown="focus.changeEnter($event,'processesIndexFocus','workerProductionTimeFocus')"
                                                            ng-model="vm.TodayProductionCount" required />
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">录入工序不能为空</small>
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-if="formDailyProductionReport.todayProductionCount.$touched">
+                                                        <small ng-message="required">录入生产数量不能为空</small>
                                                     </div>
                                                 </div>
                                                 <label for="workerProductionTime" class="col-md-2 control-label">生产工时</label>
@@ -215,10 +215,10 @@
                                                            ng-minlength="0"
                                                            ng-maxlength="24"
                                                            ng-model="vm.WorkerProductionTime" required />
-                                                    <p ng-show="formDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
-                                                    <p ng-show="formDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">录入工序不能为空</small>
+                                                    <p ng-if="formDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
+                                                    <p ng-if="formDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.workerProductionTime.$error" ng-if="formDailyProductionReport.workerProductionTime.$touched">
+                                                        <small ng-message="required">录入生产工时不能为空</small>
                                                     </div>
                                                 </div>
                                             </div>

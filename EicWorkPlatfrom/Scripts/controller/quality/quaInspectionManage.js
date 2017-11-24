@@ -706,11 +706,14 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.cacheDatas = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                     angular.forEach(materialIdDatas, function (item) {
+                        console.log(item);
                         var dataItem = {
                             productId: item.MaterialId,
                             orderId: item.OrderId,
                             productName: item.MaterialName,
                             inspectionStatus: item.InspectionStatus,
+                            inspectionResult: item.InspectionResult,
+                            finishDate:item.FinishDate,
                             materialIdItem: item,
                             inspectionItemDatas: [],
                             dataSets: []
@@ -740,7 +743,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             else {
                 var dataItems = _.find(vmManager.panelDataset, { productId: item.MaterialId, orderId: item.OrderId });
                 if (dataItems !== undefined) {
-                    dataItems.dataSets = dataItems.inspectionItemDatas = datas.dataSource;
+                    dataItems.dataSets = dataItems.inspectionItemDatas = datas.dataSource;  
                 }
             }
         },
@@ -850,12 +853,16 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //删除抽检的项目数据
         selectDeleteInspectionItems: function (item) {
+
             var dataItems = _.find(vmManager.panelDataset, { productId: item.MaterialId, orderId: item.OrderId });
             leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
                 $scope.$apply(function () {
                     $scope.opPromise = qualityInspectionDataOpService.deleteIqcInspectionItemData(item.OrderId, item.MaterialId, item.InspectionItem).then(function (opResult) {
                         if (opResult.Result) {
-                            leeHelper.delWithId(dataItems.inspectionItemDatas, item);//从表中移除
+                          
+                             //leeHelper.delWithId(dataItems.inspectionItemDatas, item);//从表中移除
+                            var ddd = _.find(dataItems.inspectionItemDatas, { InspectionItem: item.InspectionItem, })
+                            leeHelper.remove(dataItems.inspectionItemDatas, ddd);//从表中移除
                             //刷新界面
                             vmManager.updateInspectionItemList(dataItems);
                         }

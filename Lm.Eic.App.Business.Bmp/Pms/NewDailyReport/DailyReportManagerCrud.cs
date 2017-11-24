@@ -361,6 +361,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             ///日期格式 简化
             model.InPutDate = model.InPutDate.ToDate();
+            if(model.StandardProductionTime != 0&& model.TodayProductionCount!=0 && model.GetProductionTime==0)
+                model.GetProductionTime =Math.Round(model.TodayProductionCount * model.StandardProductionTime / 3600,2);
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
         }
@@ -426,7 +428,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 if (!modelList.IsNullOrEmpty())
                 return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
                 SetFixFieldValue(modelList, OpMode.Add);
-                modelList.ToList().ForEach((m) => {  if(m!=null) m.OpDate = m.OpDate.ToDate(); });
+                modelList.ToList().ForEach((model) => {
+                    if (model != null)
+                    {
+                        model.InPutDate = model.InPutDate.ToDate();
+                        if (model.StandardProductionTime != 0 && model.TodayProductionCount != 0 && model.GetProductionTime == 0)
+                            model.GetProductionTime = Math.Round(model.TodayProductionCount * model.StandardProductionTime / 3600, 2);
+                    }
+                });
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }

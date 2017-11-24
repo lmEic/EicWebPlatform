@@ -611,13 +611,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _getproductiontime = value; }
             get
-            {
-                if (StandardProductionTime != 0&& TodayBadProductCount!=0)
-                {
-                    return Math.Round(TodayProductionCount * StandardProductionTime / 3600, 2);
-                }
-                else return _getproductiontime;
-            }
+            {  return _getproductiontime; }
         }
         private double _workernoproductiontime;
         /// <summary>

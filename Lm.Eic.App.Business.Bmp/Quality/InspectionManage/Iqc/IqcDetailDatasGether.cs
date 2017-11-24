@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Lm.Eic.Uti.Common.YleeOOMapper;
+
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
@@ -101,6 +101,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 OpSign = model.OpSign,
                 Memo = model.Memo,
                 InspectionNGCount = model.InspectionNGCount,
+                InspectionRuleDatas= ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(model),
                 OpPerson = model.OpPerson,
                 DocumentPath = model.DocumentPath
             };

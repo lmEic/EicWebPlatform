@@ -147,10 +147,8 @@
                                                ng-keydown="focus.changeEnter($event,'productNameFocus','processesIndexFocus')"
                                                title="提示"
                                                data-show="false"
-                                               data-container="body" data-toggle="popover" data-placement="right"
-                                               data-content="同一产品工艺名称不能重复"
-                                               ng-model="vm.ProcessesName" required />
-                                        <div class="error-messages" ng-messages="formProductionFlow.processesName.$error" ng-show="operate.showValidation">
+                                               ng-model="vm.ProcessesName"     autofocus required placeholder="工艺名称" />
+                                        <div class="error-messages" ng-messages="formProductionFlow.processesName.$error"  ng-if="formProductionFlow.processesName.$touched">
                                             <small ng-message="required">工艺名称不能为空</small>
                                         </div>
                                     </div>
@@ -172,7 +170,7 @@
                                                focus-if="focus.processesIndexFocus" focus-setter
                                                ng-keydown="focus.changeEnter($event,'processesNameFocus','standardProductionTimeFocus')"
                                                ng-model="vm.ProcessesIndex" required />
-                                        <div class="error-messages" ng-messages="formProductionFlow.processesIndex.$error" ng-show="operate.showValidation">
+                                        <div class="error-messages" ng-messages="formProductionFlow.processesIndex.$error" ng-if="formProductionFlow.processesIndex.$touched">
                                             <small ng-message="required">工艺编号不能为空</small>
                                         </div>
                                     </div>
