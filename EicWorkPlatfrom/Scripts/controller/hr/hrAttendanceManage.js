@@ -1195,8 +1195,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     //编辑行
-    operate.handleItem = function (item) {   
-    
+    operate.handleItem = function (item) {     
         var dataitem = _.clone(item);
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;     
         $scope.vm = item;  
