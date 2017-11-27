@@ -119,7 +119,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             {
                
                     return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职"&& (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
-               
+                    
                 
                
             }
