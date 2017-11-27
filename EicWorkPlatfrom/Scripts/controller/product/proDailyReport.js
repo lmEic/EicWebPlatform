@@ -671,19 +671,18 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         workerId: null,
         isSingle: true,//是否搜寻到的是单个人
         ///得到用户信息
-        getWorkerInfo: function (workerid,opSign) {
+        getWorkerInfo: function (workerid,opData) {
             if (workerid === undefined) return;
             var strLen = leeHelper.checkIsChineseValue(workerid) ? 2 : 6;
             if (workerid.length >= strLen) {
-                vmManager.searchedWorkers = [];
+                if (opData==1)  vmManager.searchedWorkers = [];
                 console.log(vmManager.departmentMasterDatas);
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerid).then(function (datas) {
                     if (datas.length > 0) {
                         vmManager.searchedWorkers = datas;
                         if (vmManager.searchedWorkers.length === 1) {
                             vmManager.isSingle = true;
-                           
-                            vmManager.selectWorker(vmManager.searchedWorkers[0],opSign);
+                            vmManager.selectWorker(vmManager.searchedWorkers[0],opData);
                         }
                         else {
                             vmManager.isSingle = false;
@@ -695,14 +694,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 });
             }
         },
-        ///录入作业员工号
-        selectWorker: function (worker, opSign) {
+        ///录入作业员工号 selectWorker
+        selectWorker: function (worker, opData) {
             if (worker !== null) {
-                if (opSign === 1) {
+                if (opData === 1) {
                     uiVM.WorkerName = worker.Name;
                     uiVM.WorkerId = worker.WorkerId;
                 };
-                if (opSign == 2) {
+                if (opData == 2) {
+                    console.log(worker);
                     uiVM.MasterName = worker.Name;
                     uiVM.MasterWorkerId = worker.WorkerId;
                   
@@ -728,8 +728,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
 
                 vmManager.departmentMasterDatas = datas.departmentMasterDatas;
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
-               // if (erpDatas.length > 0)
-                 ///   vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
+                // if (erpDatas.length > 0)
+                ///   vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
             });
 
         },
