@@ -426,12 +426,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @*工号人员信息*@
+                                                    @*机台师傅信息*@
                                                     <div class="col-md-6">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">机台师傅:</span>
                                                             <input name="masterWorkerId" class="form-control"
-                                                                   ng-model="vm.MasterWorkerId" ng-change="vmManager.getWorkerInfo(vm.MasterWorkerId,2)"
+                                                                   ng-model="vm.MasterWorkerId" ng-change="vmManager.getWorkerInfo(vm.WorkerId,2)"
                                                                    ng-keydown="focus.changeEnter($event,'workerIdFocus','workerProductionTimeFocus')"
                                                                    focus-if="focus.masterWorkerIdFocus" focus-setter
                                                                    placeholder="输工号或姓名"
@@ -450,8 +450,8 @@
                                                                 </button>
                                                                 <div class="dropdown-menu" role="menu">
                                                                     <ul class="list-group">
-                                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectMasterWorker(worker)"
-                                                                            ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker,2)"
+                                                                            ng-repeat="worker in  vmManager.departmentMasterDatas  track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
                                                                             <i class="fa fa-user"></i>
                                                                             <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
                                                                             <span>姓名：{{worker.Name}}</span>|

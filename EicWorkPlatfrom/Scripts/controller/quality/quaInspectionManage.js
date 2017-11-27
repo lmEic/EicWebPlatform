@@ -152,8 +152,8 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     //iqc检验单管理模块    发送审核数据
-    quality.postInspectionFormManageCheckedOfIqcData = function (model, isCheck) {
-        var url = quaInspectionManageUrl + "PostInspectionFormManageCheckedOfIqcData";
+    quality.inspectionFormManageCheckedOfIqcData = function (model, isCheck) {
+        var url = quaInspectionManageUrl + "InspectionFormManageCheckedOfIqcData";
         return ajaxService.postData(url, {
             model: model,
             isCheck: isCheck
@@ -994,7 +994,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.InspectionStatus = inspectionStatus;
             vmManager.currentItem.OpSign = leeDataHandler.dataOpMode.edit;
-            qualityInspectionDataOpService.postInspectionFormManageCheckedOfIqcData(vmManager.currentItem, vmManager.isCheck).then(function (opresult) {
+            qualityInspectionDataOpService.inspectionFormManageCheckedOfIqcData(vmManager.currentItem, vmManager.isCheck).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                         vmManager.checkModal.$promise.then(vmManager.checkModal.hide);

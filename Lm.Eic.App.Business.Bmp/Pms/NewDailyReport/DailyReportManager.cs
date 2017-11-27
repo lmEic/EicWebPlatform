@@ -185,23 +185,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     storeListDatas = null;
                     return OpResult.SetErrorResult("人员数据为空，操作失败!");
                 }
-                double sumNoProductionTime = groupUserInfos.Sum(e => e.WorkerNoProductionTime);
                 double sumWorkerProductionTime = groupUserInfos.Sum(e => e.WorkerProductionTime);
+                ///总工时不能为空
                 if (sumWorkerProductionTime == 0)
                 {
                     storeListDatas = null;
                     return OpResult.SetErrorResult("人员统计的工时为空，操作失败!");
                 }
+                ///对多人信息进行分摊
                 groupUserInfos.ForEach(m =>
                 {
                     newModel = new DailyProductionReportModel();
                     OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(model, newModel);
                     OOMaper.Mapper<UserInfoVm, DailyProductionReportModel>(m, newModel);
-                    ///日期格式 简化
-                    newModel.InPutDate = model.InPutDate.ToDate();
                     newModel.TodayProductionCount = Math.Round((sumProductCount / sumWorkerProductionTime) * m.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
-                    if (sumNoProductionTime != 0)
-                        newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumNoProductionTime) * m.WorkerNoProductionTime, 2, MidpointRounding.AwayFromZero);
+                    //不良数也按工时分分摊
+                    newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumWorkerProductionTime) * m.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
                     if (!DailyReportList.Contains(newModel))
                         DailyReportList.Add(newModel);
                 });
