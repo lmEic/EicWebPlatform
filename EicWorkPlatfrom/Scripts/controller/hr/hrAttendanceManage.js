@@ -1250,10 +1250,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                 })
             })
         })
-        dialog.close();  
-       
-
-       
+        dialog.close();     
     };
     //后台删除
     operate.deleteItem = function (item) {
