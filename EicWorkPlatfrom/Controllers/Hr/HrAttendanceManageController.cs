@@ -268,6 +268,13 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {    
             
            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText, workDate);
+            foreach (var item in datas)
+            {
+                if(item.OpSign=="edit")
+                {
+                    item.OpSign = "add";
+                }              
+            }
            TempData["WorkOverHoursDatas"] = datas;
            return DateJsonResult(datas);                         
         }
