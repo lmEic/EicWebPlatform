@@ -1217,7 +1217,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             focusSetter['workeroverFocus'] = true;
         }
     };
-
     //后台编辑
     operate.editItem = function (item) {   
         //构建索引号
@@ -1247,8 +1246,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                         dialog.close();                                          
                         vmManager.getWorkOverHoursDatas(1);   
                                      
-                    }
-                   
+                    }                  
                 })
             })
         })
