@@ -641,8 +641,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         getworkdate:null,
         getcolorindex: null,     
         selectDepartment:null,
-        qryWorkName: null,
-        FindWorkName:null,
         searchYear: new Date().getFullYear(),
         changeworkDate:null,
         workDayDate: null,
@@ -1045,8 +1043,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         getWorkOverHoursModes: function () {           
             vmManager.dataSets = [];
             vmManager.dataSource = [];
-            tempVm.workOverCount = 0;
-            vmManager.qryWorkName = null;
+            tempVm.workOverCount = 0;          
             if (vmManager.selectDepartment == null)
             {
                 $scope.searchPromise = hrDataOpService.getWorkOverHoursMode(uiVM.ParentDataNodeText, qryDto.workDate).then(function (datas) {
@@ -1289,7 +1286,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             row.BackgroundIndex = null;                                          
            });        
            dialog.close();
-
           focusSetter['workeroverFocus'] = true;             
     },
         //批量保存提示窗口
@@ -1310,7 +1306,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                 })
             })
             vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
-
             });
         }
         //批量保存
@@ -1319,8 +1314,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                 leeHelper.alert("没有任何记录！");
                 return;
             }
-            hrDataOpService.storeHandlWorkOverHoursDt(vmManager.dataSets).then(function (opResult) {
-               
+            hrDataOpService.storeHandlWorkOverHoursDt(vmManager.dataSets).then(function (opResult) {            
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                     vmManager.dataSets = [];
                 });
@@ -1331,7 +1325,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         workeroverFocus: false,
         remark: false,
         departmentText:false,
-
         //移动焦点到指定对象
         moveFocusTo: function ($event, elPreName, elNextName) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
