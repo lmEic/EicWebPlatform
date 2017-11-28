@@ -142,15 +142,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _backgroundIndex = value; }
             get { return _backgroundIndex; }
         }
-        public string _postNature;
-        /// <summary>
-        /// 员工类型
-        /// </summary>
-        public string PostNature
-        {
-            set { _postNature = value; }
-            get { return _postNature; }
-        }
+        //public string _postNature;
+        ///// <summary>
+        ///// 员工类型
+        ///// </summary>
+        //public string PostNature
+        //{
+        //    set { _postNature = value; }
+        //    get { return _postNature; }
+        //}
 
 
         //private DateTime _opdate;
