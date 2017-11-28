@@ -2,7 +2,6 @@
     <div class="panel-heading">
         <h6 class="panel-title"><i class="fa fa-hand-peace-o">加班管理</i></h6>
     </div>
-
     <div class="panel-body" id="editWindow">
         <div class="bs-callout bs-callout-info">
             <div class="row">
@@ -72,7 +71,7 @@
                             </tr>
                         </thead>
                         <tbody>                    
-                            <tr ng-repeat="item in vmManager.dataSets|filter:vmManager.qryWorkName track by $index" ng-click="vmManager.getCurrentRow(item)">
+                            <tr ng-repeat="item in vmManager.dataSets |filter:vmManager.qryWorkName track by $index" ng-click="vmManager.getCurrentRow(item)">
                                 <td ng-bind="$index+1"></td>
                                 @*工具按钮*@
                                 <td class="text-center">
@@ -188,7 +187,7 @@
                           </button>
                       </div>
                       <div class="form-group">
-                          <input type="text" ng-model="vmManager.FindWorkName" class="form-control" placeholder="快速查找"/>
+                          <input id="findworkName" type="text" ng-model="vmManager.FindWorkName" class="form-control" placeholder="快速查找"/>
                       </div>
                   </form>
                 

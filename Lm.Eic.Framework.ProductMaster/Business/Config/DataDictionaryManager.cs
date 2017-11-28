@@ -58,8 +58,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
         {
             try
             {
-                var datas = this.irep.Entities.OrderBy(e => e.DisplayOrder).Where(e => e.TreeModuleKey == treeModuleKey).ToList();
-              
+                var datas = this.irep.Entities.OrderBy(e => e.DisplayOrder).Where(e => e.TreeModuleKey == treeModuleKey).ToList();             
                 return datas;
             }
             catch (Exception ex)
@@ -72,8 +71,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
         {
             try
             {
-                var datas = this.irep.Entities.OrderBy(e=> e.DisplayOrder).Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName).ToList();
-             
+                var datas = this.irep.Entities.OrderBy(e=> e.DisplayOrder).Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName).ToList();            
                 return datas;
             }
             catch (Exception ex)
@@ -81,8 +79,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
-
+        /// <summary>
+        /// 获取部门信息
+        /// </summary>
+        /// <param name="treeModuleKey"></param>
+        /// <param name="moduleName"></param>
+        /// <param name="dataNodeName"></param>
+        /// <returns></returns>
         public List<ConfigDataDictionaryModel> GetConfigDataDepartment(string treeModuleKey, string moduleName, string dataNodeName)
         {
             try
@@ -92,8 +95,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
                 foreach (var item in datasList)
                 {
                     parentDeparmentText = item.DataNodeText;
-                }
-                   
+                }                
                 var getdatas= this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName && e.ParentDataNodeText== parentDeparmentText).ToList();
                 if(getdatas.Count==0)
                 {
@@ -104,14 +106,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
                 {
                     var datas = this.irep.Entities.Where(e => e.TreeModuleKey == treeModuleKey && e.ModuleName == moduleName && e.ParentDataNodeText == parentDeparmentText).ToList();
                     return datas;
-                }
-               
-
-
+                }            
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
         }
