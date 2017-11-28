@@ -1029,6 +1029,16 @@
                                                    focus-if="focus.machineUnproductiveReasonFocus" focus-setter
                                                    ng-keydown="focus.moveFocusNext($event,'machineProductionBadCountFocus')"
                                                    rows="2" class="form-control" ng-model="vm.MachineUnproductiveReason" required />
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
+                                                        data-title="选择非生产原因"
+                                                        data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                        data-animation="am-flip-x" data-auto-close="1"
+                                                        data-keyboard="false"
+                                                        data-bs-popover>
+                                                    <i class="fa fa-sitemap"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     @*不良数*@

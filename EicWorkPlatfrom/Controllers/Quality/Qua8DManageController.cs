@@ -64,6 +64,27 @@ namespace EicWorkPlatfrom.Controllers
             var data = Qua8DService.Qua8DManager.Qua8DMaster.AutoBuildingReportId(discoverPosition);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 上传文件附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadCreate8DAttachFile(HttpPostedFileBase file)
+        {
+            FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Qua8DUpAttachFile, dto.ModuleName);
+            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId + "-" + "1");
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+                result.PreviewFileName = (result.DocumentFilePath + "\\" + result.FileName).ToPhotoByte().ToBase64Url();
+            }
+            return Json(result);
+        }
         #endregion
 
 
@@ -147,9 +168,6 @@ namespace EicWorkPlatfrom.Controllers
                 var imgBytes = imgFilePath.ToPhotoByte();
                 result.PreviewFileName = imgBytes.ToBase64Url();
             }
-
-
-
             return Json(result);
         }
         #endregion

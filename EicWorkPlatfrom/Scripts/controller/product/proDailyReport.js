@@ -1081,6 +1081,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         ///显示机台输入 machineDialog
         showMachineDialog: function () {
+            console.log(leeLoginUser);
+            $scope.promise = dReportDataOpService.loadUnProductionConfigDicData(leeLoginUser.departmentText, "UnProductionConfig").then(function (datas) {
+                unProductionCodeTreeSet.setTreeDataset(datas);
+            });
             machineDialog.show();
             focusSetter.machineIdFocus = true;
         },
@@ -1211,7 +1215,14 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     operate.refresh = function () {
         vmManager.putInDisplay = false;
         //  vmManager.init();
-    }
+    };
+    var unProductionCodeTreeSet = dataDicConfigTreeSet.getTreeSet('lightmaster', "非生原因架构");
+    unProductionCodeTreeSet.bindNodeToVm = function () {
+        unProductionCodeConfigDto = _.clone(unProductionCodeTreeSet.treeNode.vm);
+        uiVM.MachineUnproductiveReason = unProductionCodeConfigDto.DataNodeText;
+    };
+    $scope.ztree = unProductionCodeTreeSet;
+
     //焦点设置器
     var focusSetter = {
         workerIdFocus: false,
@@ -1569,7 +1580,6 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
     };
     $scope.ztree = unProductionCodeTreeSet;
     $scope.promise = dReportDataOpService.loadUnProductionConfigDicData("制一部", "UnProductionConfig").then(function (datas) {
-        console.log(datas);
         unProductionCodeTreeSet.setTreeDataset(datas);
     });
 
