@@ -186,6 +186,9 @@
                               <i class="fa fa-search-plus"></i>查询
                           </button>
                       </div>
+                      <div class="form-group">
+                          <input type="text" ng-model="vmManager.FindWorkName" class="form-control" placeholder="快速查找"/>
+                      </div>
                   </form>
                 
               </div>
@@ -228,7 +231,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <tr ng-repeat="item in vmManager.searchDatas  track by $index">
+                          <tr ng-repeat="item in vmManager.searchDatas|filter:vmManager.FindWorkName  track by $index">
                               <td ng-bind="$index+1"></td>
                               <td ng-bind="item.WorkoverType"></td>
                               <td ng-bind="item.DepartmentText"></td>
