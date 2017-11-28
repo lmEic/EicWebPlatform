@@ -15,13 +15,13 @@
                         </div>
                         <div class="form-group">
                             <label for="workDate">日期:</label>
-                            <input type="date" ng-model="query.workDate" class="form-control" placeholder="请选日期" ng-keydown="vmManager.getWorkOverHoursModes()" format-date />
+                            <input id="loadDate" type="date" ng-model="query.workDate" class="form-control" placeholder="请选日期" ng-keydown="vmManager.getWorkOverHoursModes()" format-date />
                             <button type="button" title="载入模板" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursModes()">
                                 <i class="fa fa-download"></i>载入模板
                             </button>
                         </div>
                         <div class="form-group">
-                            <input type="text" ng-model="vmManager.qryWorkName" class="form-control"placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
+                            <input id="qry_workname" type="text" ng-model="vmManager.qryWorkName" class="form-control"placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
                         </div>
 
                     </form>
@@ -412,7 +412,7 @@
                             <label for="department" class="col-md-2 control-label">部门</label>
                             <div class="col-md-4">
 
-                                <input type="text" name="workDate" class="form-control" ng-model="vm.DepartmentText" placeholder="部门"  required />
+                                <input type="text" name="workDate" class="form-control" ng-model="vm.DepartmentText" placeholder="部门" readonly required />
                                 <div class="error-messages" ng-messages="formWorkover.workDate.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">部门不能为空</small>
                                 </div>
