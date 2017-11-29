@@ -770,6 +770,8 @@ var leeLoginUser = (function () {
         department: null,
         //部门标题名称
         departmentText: null,
+        //组织级别
+        organization: null,
         ///个人头像
         headPortrait: "../Content/login/profilepicture.jpg",
         ///载入个人头像
@@ -780,6 +782,7 @@ var leeLoginUser = (function () {
                 user.userName = loginUser.userName;
                 user.department = loginUser.department;
                 user.departmentText = loginUser.departmentText;
+                user.organization = loginUser.organization;
             }
             user.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
         },
