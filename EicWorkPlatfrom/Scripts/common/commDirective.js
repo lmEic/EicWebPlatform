@@ -1304,7 +1304,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                         zTreeSet.startLoad = true;
                     }
                 };
-
                 ztreeSetItem = { treeId: treeId, ztreeSet: zTreeSet };
                 ztreeSets.push(ztreeSetItem);
             }

@@ -470,6 +470,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 sqlWhere = string.Format("Department='{0}' And Post='{1}' And  WorkingStatus='在职'", qryDto.Department, qryDto.Post);
             }
+            else if (searchMode == 6)
+            {
+                sqlWhere = string.Format("Department='{0}' And PostType='{1}' And  WorkingStatus='在职'", qryDto.Department, qryDto.PostType);
+            }
             return this.irep.GetWorkerInfos(sqlWhere);
         }
         /// <summary>
@@ -892,6 +896,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         public string Post { get; set; }
 
+        public string PostType { get; set; }
 
         private string _Department;
 

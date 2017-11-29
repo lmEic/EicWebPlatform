@@ -54,6 +54,13 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
         return ajaxService.uploadFile(url, file
         );
     };
+    ///初始创建8D表格
+    bugd.uploadCreate8DAttachFile = function (file) {
+        var url = quabugDManageUrl + 'UploadCreate8DAttachFile';
+        return ajaxService.uploadFile(url, file
+        );
+    };
+
     ///储存处理8D数据
     bugd.saveQua8DHandleDatas = function (handelData) {
         var url = quabugDManageUrl + 'SaveQua8DHandleDatas';
@@ -271,10 +278,11 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         leeHelper.upoadFile(el, function (fd) {
             var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
             fd.append("attachFileDto", JSON.stringify(dto));
-            $scope.doPromise = BDataOpService.upload8DAttachFile(fd).then(function (uploadResult) {
+            $scope.doPromise = BDataOpService.uploadCreate8DAttachFile(fd).then(function (uploadResult) {
                 console.log(uploadResult);
                 if (uploadResult.Result) {
-                    $scope.uploadFileName = uiHandelVm.FileName = uploadResult.FileName;
+                    uiHandelVm.FileName = uploadResult.FileName;
+                    $scope.uploadFileName = _.clone(uploadResult.FileName);
                     uiHandelVm.FilePath = uploadResult.DocumentFilePath;
                     uiHandelVm.PreviewFileName = uploadResult.PreviewFileName;
                 }
@@ -392,6 +400,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             else step.IsCheck = true;
             leeHelper.copyVm(stepItem.VmDatas, uiVm);
             vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
+            console.log(vmManager.viewDataset);
         },
         ///显示主表信息数据 isShowMasterData  showMasterData
         showMasterData: function () {

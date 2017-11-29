@@ -93,7 +93,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcItemConfigModel> FindIqcSpecialItemConfigDatasBy(string sizeMemo)
         {
-            return irep.Entities.Where(e => e.SizeMemo == sizeMemo).OrderBy(e => e.InspectionItemIndex).ToList();
+            return irep.Entities.Where(e => e.SizeMemo.Contains(sizeMemo)).OrderBy(e => e.InspectionItemIndex).ToList();
         }
 
         /// <summary>
@@ -184,6 +184,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal List<InspectionIqcMasterModel> GetIqcMasterDatasBy(DateTime startTime, DateTime endTime)
         {
             return irep.Entities.Where(e => e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
+        }
+        internal List<InspectionIqcMasterModel> GetIqcMasterDatasBy(string orderid)
+        {
+            return irep.Entities.Where(e => e.OrderId== orderid).OrderBy(f=>f.Id_Key).ToList();
+        }
+        internal InspectionIqcMasterModel GetIqcMasterDatasBy(string orderid,string materialId)
+        {
+            return irep.FirstOfDefault(e => e.OrderId==orderid&&e.MaterialId == materialId);
         }
         /// <summary>
         /// 

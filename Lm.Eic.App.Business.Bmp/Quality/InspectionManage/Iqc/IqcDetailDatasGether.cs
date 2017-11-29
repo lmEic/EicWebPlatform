@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
 
@@ -32,6 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model)
         {
+         
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
                 OrderId = model.OrderId,
@@ -44,7 +46,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionDate = DateTime.Now,
                 InspectionItemDatas = model.InspectionItemDatas,
                 InspectionItemResult = model.InspectionItemResult,
-                //InspectionItemStatus = model.InsptecitonItemIsFinished.ToString(),
                 InspectionItemStatus = "doing",
                 InspectionMode = model.InspectionMode,
                 MaterialId = model.MaterialId,
@@ -55,6 +56,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionNGCount = model.InspectionNGCount,
                 OpPerson = model.OpPerson,
                 DocumentPath = model.DocumentPath,
+                InspectionRuleDatas= ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(model),
                 Id_Key = model.Id_Key
             };
             return storeInspectionDetial(datailModel);
@@ -99,6 +101,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 OpSign = model.OpSign,
                 Memo = model.Memo,
                 InspectionNGCount = model.InspectionNGCount,
+                InspectionRuleDatas= ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(model),
                 OpPerson = model.OpPerson,
                 DocumentPath = model.DocumentPath
             };

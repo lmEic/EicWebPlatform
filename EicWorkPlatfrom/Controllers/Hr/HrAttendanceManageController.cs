@@ -15,7 +15,7 @@ using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
-
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -314,12 +314,17 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult WorkOverHoursDatasToExcel()
         {
             try
-            {
+            {         
                 string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
                 string fileName = "加班数据模板.xls";
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
+                if(datas==null||datas.Count==0)
+                {
+                  new DownLoadFileModel().Default();                 
+                }            
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
-                return this.DownLoadFile(dlfm)
+                return this.DownLoadFile(dlfm);
+                              
             }
             catch (Exception ex)
             {
@@ -335,7 +340,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
                 string fileName1 = "加班汇总表.xls";
                 var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
-               
+                if (datas == null || datas.Count == 0)
+                {
+                    new DownLoadFileModel().Default();
+                }
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas,SiteRootPath, filePath1, fileName1);
                 return this.DownLoadFile(dlfm);
             }

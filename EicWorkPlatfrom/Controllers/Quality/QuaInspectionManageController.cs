@@ -13,6 +13,8 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -550,7 +552,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model, bool isCheck)
+        public JsonResult InspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model, bool isCheck)
         {
             var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model, isCheck);
             return Json(opResult);

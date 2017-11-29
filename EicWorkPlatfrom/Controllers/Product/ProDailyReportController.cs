@@ -9,6 +9,7 @@ using System.IO;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Web;
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -41,6 +42,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
+        [NoAuthenCheck]
+        public JsonResult LoadUnProductionConfigDicData(string department, string aboutCategory)
+        {
+            var modules = DailyProductionReportService.ProductionConfigManager.DailyProductionCodeConfig.GetProductionDictiotry(aboutCategory, department);
+            return Json(modules, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveUnProductionConfigDicData(ProductionCodeConfigModel model, ProductionCodeConfigModel oldModel, string opType)
+        {
+            var result = DailyProductionReportService.ProductionConfigManager.DailyProductionCodeConfig.Store(model, oldModel, opType);
+            return Json(result);
+        }
         #endregion
 
         #region report Flow Set set method  生产工艺录入
@@ -50,25 +64,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        /// 获取产品工艺流程列表
+        /// 获取产品工艺流程列表 GetProductionFlowDatas
         /// </summary>
         /// <param name="department"></param>
         /// <param name="productName"></param>
         /// <returns></returns>
-        [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
+        public JsonResult GetProductionFlowDatas(QueryDailyProductReportDto queryDto)
         {
             //工单没有用到
             //用品名得到多处数据 把数据转化为 ProductsFlowOverModel
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
-            {
-                Department = department,
-                ProductName = productName,
-                OrderId = orderId,
-                SearchMode = searchMode
-            });
-            return DateJsonResult(datas);
+           var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(queryDto);
+           return Json(datas, JsonRequestBehavior.AllowGet);
+           // return DateJsonResult(datas);
         }
 
         /// <summary>
@@ -192,13 +200,24 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <summary>
         /// 得到工单分配信息
         /// </summary>
-        /// <param name="department"></param>
+        /// <param name="queryString"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetOrderDispatchInfoDatas(string department, DateTime nowDate)
+        public ContentResult GetOrderDispatchInfoDatas(string queryString, int  opType)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(department, nowDate);
-            return DateJsonResult(datas);
+            switch (opType)
+            {
+                case 1:
+                    var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(queryString);
+                    var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetVirtualOrderDataBy(queryString);
+                    var datas = new { erpOrderDatas, virtualOrderDatas };
+                    return DateJsonResult(datas);
+                case 2:
+                    var data = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetQueryOrderBy(queryString);
+                    return DateJsonResult(data);
+                default: 
+                    return DateJsonResult("操作类型不对");
+            }
         }
         /// <summary>
         /// 存储数据 StoreOrderDispatchDatas
@@ -231,8 +250,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetInProductionOrderDatas(string department)
         {
-            DateTime nowDate = DateTime.Now.Date;
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+            var haveDispatchOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配");
+            ///由部门信息得对应所有师傅
+            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = department,PostType= "技术类" }, 6);
+            var datas = new { haveDispatchOrderDatas, departmentMasterDatas };
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -255,11 +276,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         public ContentResult GetWorkerDailyInfoBy(string workerId)
         {
             var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetWorkerDailyDatasBy(workerId);
-
+            ///由邮此录入员得到想 所有师傅信息
             return DateJsonResult(datas);
         }
+
+        
         /// <summary>
-        ///
+        ///得到日报录入的详细信息
         /// </summary>
         /// <param name="wokerId"></param>
         /// <returns></returns>
@@ -282,7 +305,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        /// 得到数部门机台信息
+        /// 得到非产原因信息
         /// </summary>
         /// <param name="Department"></param>
         /// <returns></returns>
@@ -294,7 +317,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        ///
+        /// 单录入存储
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
@@ -304,6 +327,12 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datasResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entity);
             return Json(datasResult);
         }
+        /// <summary>
+        ///  批量存储多人合作录入
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="groupUserInfos"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult SaveGroupDailyReportData(DailyProductionReportModel entity, List<UserInfoVm> groupUserInfos)
         {
@@ -325,7 +354,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             return Json(datasResult);
         }
         /// <summary>
-        /// 处理多项数据 DisposeMultitermDailyReportdDatas
+        /// 机台处理多项数据 DisposeMultitermDailyReportdDatas
         /// </summary>
         /// <param name="entitys"></param>
         /// <param name="inputSign"></param>

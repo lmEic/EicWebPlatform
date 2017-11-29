@@ -265,11 +265,12 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             return ProductionOrderIdDatas;
         }
 
+
         public List<ProductionOrderIdInfo> GetProductionOrderIdInfoBy(string orderId)
         {
             List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
             ProductionOrderIdInfo OrderIdData = null;
-            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011 FROM MOCTA WHERE  CAST(RTRIM(TA001) AS varchar(10)) + '-' + CAST(RTRIM(TA002) AS varchar(10)) ='{0}'   ORDER BY TA002 ", orderId);
+            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011,TA003,TA010  FROM MOCTA WHERE  CAST(RTRIM(TA001) AS varchar(10)) + '-' + CAST(RTRIM(TA002) AS varchar(10)) like'{0}%'   ORDER BY TA002 ", orderId);
             DataTable dt = DbHelper.Erp.LoadTable(sql);
             if (dt.Rows.Count > 0)
             {
@@ -278,7 +279,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     OrderIdData = new ProductionOrderIdInfo()
                     {
                         ProductionDepartment = dr[7].ToString().Trim(),
-                        ProductStatus = dr[8].ToString().Trim(),
+                        ProductStatus = RetrunOrderStatus(dr[8].ToString().Trim()),
                         Category = dr[0].ToString().Trim(),
                         Code = dr[1].ToString().Trim(),
                         ProduceNumber = Convert.ToDouble(dr[6].ToString().Trim()),
@@ -286,6 +287,8 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                         ProductName = dr[3].ToString().Trim(),
                         ProductSpec = dr[4].ToString().Trim(),
                         PutInStoreNumber = Convert.ToDouble(dr[5].ToString().Trim()),
+                        PlanEndProductionDate = dr[10].ToString().Trim().ToDate(),
+                        PlanStartProductionDate = dr[9].ToString().Trim().ToDate(),
                     };
                     if (!ProductionOrderIdDatas.Contains(OrderIdData))
                         ProductionOrderIdDatas.Add(OrderIdData);

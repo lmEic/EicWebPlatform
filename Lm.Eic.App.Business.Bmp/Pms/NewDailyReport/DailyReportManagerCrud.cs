@@ -38,10 +38,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyProductionReportCrud>(); }
         }
+        /// <summary>
+        /// 非生产原因
+        /// </summary>
+        public static DailyProductionCodeConfigCrud ProductionSeason
+        {
+            get { return OBulider.BuildInstance<DailyProductionCodeConfigCrud>(); }
+        }
     }
-
-
-
     /// <summary>
     /// 生产工序CRUD
     /// </summary>
@@ -167,6 +171,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         public List<StandardProductionFlowModel> FindBy(QueryDailyProductReportDto qryDto)
         {
+            if (qryDto == null) return new List<StandardProductionFlowModel>();
             try
             {
                 switch (qryDto.SearchMode)
@@ -256,13 +261,28 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         private OpResult Add(ProductOrderDispatchModel model)
         {
             //生成组合键值
+            model.DicpatchStatus = (model.IsValid == "True" || model.IsValid == "true") ? "已分配" : "未分配";
             if (irep.IsExist(e => e.OrderId == model.OrderId))
+            {
                 return irep.Update(e => e.OrderId == model.OrderId, u => new ProductOrderDispatchModel
                 {
                     IsValid = model.IsValid,
                     ProductionDate = model.ProductionDate,
                     ValidDate = model.ValidDate,
+                    DicpatchStatus = model.DicpatchStatus,
                 }).ToOpResult_Eidt(OpContext);
+            };
+            switch(model.ProductionDepartment)
+            {
+                case "MS1":
+                    model.ProductName = ( model.OrderId.Contains("511")) ? model.ProductName : model.ProductName + "(非正常)";
+                    break;
+                case "MS6":
+                    model.ProductName = (model.OrderId.Contains("520")) ? model.ProductName : model.ProductName + "(非正常)";
+                    break;
+                default:
+                    break;
+            };
             return irep.Insert(model).ToOpResult(OpContext);
         }
 
@@ -294,15 +314,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
+
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).OrderBy(e => e.OrderId).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.DicpatchStatus == dicpatchStatus).OrderBy(e => e.OrderId).ToList();
         }
+        internal List<ProductOrderDispatchModel> GetVirtualOrderDataBy(string department)
+        {
+            /// 1.要有效
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsVirtualOrderId == 1).OrderBy(e => e.OrderId).ToList();
+        }
+
         internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department).OrderBy(e => e.OrderId).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department).ToList();
         }
         internal ProductOrderDispatchModel GetOrderInfoBy(string orderid)
         {
@@ -334,6 +361,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             ///日期格式 简化
             model.InPutDate = model.InPutDate.ToDate();
+            if(model.StandardProductionTime != 0&& model.TodayProductionCount!=0 && model.GetProductionTime==0)
+                model.GetProductionTime =Math.Round(model.TodayProductionCount * model.StandardProductionTime / 3600,2);
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
         }
@@ -396,18 +425,71 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             try
             {
-                SetFixFieldValue(modelList, OpMode.Add);
                 if (!modelList.IsNullOrEmpty())
-                    return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
-
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+                return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
+                SetFixFieldValue(modelList, OpMode.Add);
+                int i = 0;
+                modelList.ForEach((model) => { if (Store(model).Result) i++; });
+                return (modelList.Count == i) ? new OpResult(OpContext, true) : new OpResult( "还有"+ (modelList.Count-i)+"数据没有保存", false);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
         #endregion
     }
 
+    /// <summary>
+    /// 生产代码配置表CRUD
+    /// </summary>
+    internal class DailyProductionCodeConfigCrud : CrudBase<ProductionCodeConfigModel, IProductionCodeConfigRepository>
+    {
+        public DailyProductionCodeConfigCrud() : base(new ProductionCodeConfigRepository(), "非生产代码编码")
+        { }
+        #region   Store
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(ProductionCodeConfigModel model)
+        {
+            //生成组合键值
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(ProductionCodeConfigModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(ProductionCodeConfigModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+        #endregion
 
+        public List<ProductionCodeConfigModel> GetProductionDictiotry(string aboutCategory, string department)
+        {
+            return irep.Entities.Where(e => e.AboutCategory == aboutCategory && e.Department.Contains(department)).ToList();
+        }
+
+
+    }
 
 }
 

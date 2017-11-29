@@ -208,14 +208,16 @@
                                                 <div yl-upload-file></div>
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <a data-toggle="collapse" data-parent="#accordion"
-                                                           href="#collapseOne">{{item.VmDatas.FileName}}</a>
+                                                        <a data-toggle="collapse" data-parent="#accordion" ng-click=""
+                                                          >{{item.VmDatas.FileName}}
+                                                        <img ng-if="" class="img-rounded" ng-src="{{item.VmDatas.ImgUrl}}"/>
+                                                        </a>
                                                     </div>
-                                                    <div id="collapseOne" class="panel-collapse collapse">
+                                                    @*<div id="collapseOne" class="panel-collapse collapse">
                                                         <div class="panel-body">
                                                             <img class="img-rounded" ng-src="{{item.VmDatas.ImgUrl}}" />
                                                         </div>
-                                                    </div>
+                                                    </div>*@
                                                 </div>
                                             </div>
                                             <label class="col-md-2" name="signaturePersons" role="form">责任单位:</label>

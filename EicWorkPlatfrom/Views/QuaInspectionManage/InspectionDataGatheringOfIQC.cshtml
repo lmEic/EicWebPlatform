@@ -66,13 +66,17 @@
                 <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" style="height:450px;overflow-y:auto;" bs-collapse>
                     <div class="panel panel-default" ng-repeat="item in vmManager.panelDataset">
                         <div class="panel-heading" role="tab" ng-click="vmManager.selectMaterialIdItem(item.materialIdItem)">
-                            <a bs-collapse-toggle style="cursor:pointer;color:#EE112E" title="{{item.productId}}">
-                                {{item.productName}}
+                            <a bs-collapse-toggle style="cursor:pointer;color:#112BEE" title="{{item.productId}}">
+                                <span>
+                                    <i title="完成日期:{{item.finishDate}}">{{item.productName}}</i>
+                                    <i ng-show="item.inspectionResult==='未完成'||item.inspectionResult==='未抽检'||item.inspectionResult==='NG'" style="cursor:pointer;color:#CC0000">({{item.inspectionResult}})</i>
+                                    <i ng-show="item.inspectionResult==='OK'" style="cursor:pointer;color:#336600">({{item.inspectionResult}})</i>
+                                </span>
                                 <span class="pull-right">
-                                    <i ng-show="item.inspectionStatus==='未抽检'" title="结果判定标志" class="badge-fail fa fa-battery-empty"></i>
-                                    <i ng-show="item.inspectionStatus==='未完成'" title="结果判定标志" class="badge-fail fa fa-battery-quarter"></i>
-                                    <i ng-show="item.inspectionStatus==='待审核'" title="结果判定标志" class="badge-success fa fa-battery-full"></i>
-                                    <i ng-show="item.inspectionStatus==='已审核'" title="结果判定标志" class="badge-success fa fa-lock"></i>
+                                    <i ng-show="item.inspectionStatus==='未抽检'" title="未抽检" class="badge-fail fa fa-battery-empty"></i>
+                                    <i ng-show="item.inspectionStatus==='未完成'" title="未完成" class="badge-fail fa fa-battery-quarter"></i>
+                                    <i ng-show="item.inspectionStatus==='待审核'" title="待审核" class="badge-success fa fa-battery-full"></i>
+                                    <i ng-show="item.inspectionStatus==='已审核'" title="已审核" class="badge-success fa fa-lock"></i>
                                 </span>
                             </a>
                         </div>
@@ -81,14 +85,15 @@
                                ng-class="{'active':inspectionItem===vmManager.currentInspectionItem}"
                                ng-click="vmManager.selectInspectionItem(inspectionItem)">
                                 {{inspectionItem.InspectionItem}}
-                                <span class="panel-title">
-                                    <i class="fa fa-trash" style="cursor:pointer;color:#ff0000" ng-show="inspectionItem.InspectionItemStatus==='doing'" ng-click="vmManager.selectDeleteInspectionItems(inspectionItem)"></i>
+                                <span class="pull-left">
+                                    <i class="fa fa-trash" title="删除已经生成的此项目" style="cursor:pointer;color:#ff0000" ng-if="inspectionItem.InspectionItemStatus==='doing'||inspectionItem.InspectionItemStatus==='Doing'" ng-click="vmManager.selectDeleteInspectionItems(inspectionItem)"></i>
                                 </span>
                                 <span class="pull-right">
-                                    <i class="fa fa-check badge-success" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='OK' && inspectionItem.InsptecitonItemIsFinished===true"></i>
-                                    <i class="fa fa-close badge-fail" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='NG' && inspectionItem.InsptecitonItemIsFinished==true"></i>
+                                    <i class="fa fa-check badge-success" title="OK" ng-if="inspectionItem.InspectionItemResult==='OK' && inspectionItem.InsptecitonItemIsFinished===true"></i>
+                                    <i class="fa fa-close badge-fail" title="NG" ng-if="inspectionItem.InspectionItemResult==='NG' && inspectionItem.InsptecitonItemIsFinished==true"></i>
+                                    <i class="fa fa-anchor badge-success" title="未完成" ng-if="inspectionItem.InsptecitonItemIsFinished!=true"></i>
                                 </span>
-                                <span class="pull-right" title="数量显示标志" ng-class="{true: 'badge-info', false: 'badge-fail'}[inspectionItem.NeedFinishDataNumber===inspectionItem.HaveFinishDataNumber]">
+                                <span class="pull-right" title="需检数量/已检数量" ng-class="{true: 'badge-info', false: 'badge-fail'}[inspectionItem.NeedFinishDataNumber===inspectionItem.HaveFinishDataNumber]">
                                     {{inspectionItem.NeedFinishDataNumber}}/{{inspectionItem.HaveFinishDataNumber}}
                                 </span>
                             </a>

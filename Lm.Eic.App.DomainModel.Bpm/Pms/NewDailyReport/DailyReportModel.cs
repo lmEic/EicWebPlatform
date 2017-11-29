@@ -340,6 +340,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _producenumber = value; }
             get { return _producenumber; }
         }
+        private DateTime _productiondate;
+        /// <summary>
+        ///生产日期
+        /// </summary>
+        public DateTime ProductionDate
+        {
+            set { _productiondate = value; }
+            get { return _productiondate; }
+        }
         private string _productstatus;
         /// <summary>
         ///订单状态
@@ -349,14 +358,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _productstatus = value; }
             get { return _productstatus; }
         }
-        private DateTime _productiondate;
+        private int _isvirtualorderid;
         /// <summary>
-        ///生产日期
+        ///是否为虚工单
         /// </summary>
-        public DateTime ProductionDate
+        public int IsVirtualOrderId
         {
-            set { _productiondate = value; }
-            get { return _productiondate; }
+            set { _isvirtualorderid = value; }
+            get { return _isvirtualorderid; }
+        }
+        private string _dicpatchstatus;
+        /// <summary>
+        ///分配状态
+        /// </summary>
+        public string DicpatchStatus
+        {
+            set { _dicpatchstatus = value; }
+            get { return _dicpatchstatus; }
         }
         private string _isvalid;
         /// <summary>
@@ -593,13 +611,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _getproductiontime = value; }
             get
-            {
-                if (StandardProductionTime != 0)
-                {
-                    return Math.Round(TodayProductionCount * StandardProductionTime / 3600, 2);
-                }
-                else return _getproductiontime;
-            }
+            {  return _getproductiontime; }
         }
         private double _workernoproductiontime;
         /// <summary>
@@ -792,6 +804,147 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
+
+
+    /// <summary>
+    ///非生产代码模式
+    /// </summary>
+    [Serializable]
+    public partial class ProductionCodeConfigModel
+    {
+        public ProductionCodeConfigModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _datanodename;
+        /// <summary>
+        ///节点代码
+        /// </summary>
+        public string DataNodeName
+        {
+            set { _datanodename = value; }
+            get { return _datanodename; }
+        }
+        private string _datanodetext;
+        /// <summary>
+        ///节点名称
+        /// </summary>
+        public string DataNodeText
+        {
+            set { _datanodetext = value; }
+            get { return _datanodetext; }
+        }
+        private string _parentdatanodetext;
+        /// <summary>
+        ///上级节点
+        /// </summary>
+        public string ParentDataNodeText
+        {
+            set { _parentdatanodetext = value; }
+            get { return _parentdatanodetext; }
+        }
+        private int _ishaschildren;
+        /// <summary>
+        ///是否有子节点
+        /// </summary>
+        public int IsHasChildren
+        {
+            set { _ishaschildren = value; }
+            get { return _ishaschildren; }
+        }
+        private string _aboutcategory;
+        /// <summary>
+        ///大类别
+        /// </summary>
+        public string AboutCategory
+        {
+            set { _aboutcategory = value; }
+            get { return _aboutcategory; }
+        }
+        private int _displayorder;
+        /// <summary>
+        ///显示顺序
+        /// </summary>
+        public int DisplayOrder
+        {
+            set { _displayorder = value; }
+            get { return _displayorder; }
+        }
+        private string _primarykey;
+        /// <summary>
+        ///关键字
+        /// </summary>
+        public string PrimaryKey
+        {
+            set { _primarykey = value; }
+            get { return _primarykey; }
+        }
+        private string _memo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Memo
+        {
+            set { _memo = value; }
+            get { return _memo; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///关键字
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+
     #region  
     /// <summary>
     /// 查询操作Model

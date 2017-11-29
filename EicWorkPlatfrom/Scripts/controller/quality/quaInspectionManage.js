@@ -152,8 +152,8 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     //iqc检验单管理模块    发送审核数据
-    quality.postInspectionFormManageCheckedOfIqcData = function (model, isCheck) {
-        var url = quaInspectionManageUrl + "PostInspectionFormManageCheckedOfIqcData";
+    quality.inspectionFormManageCheckedOfIqcData = function (model, isCheck) {
+        var url = quaInspectionManageUrl + "InspectionFormManageCheckedOfIqcData";
         return ajaxService.postData(url, {
             model: model,
             isCheck: isCheck
@@ -706,11 +706,14 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.cacheDatas = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                     angular.forEach(materialIdDatas, function (item) {
+                        console.log(item);
                         var dataItem = {
                             productId: item.MaterialId,
                             orderId: item.OrderId,
                             productName: item.MaterialName,
                             inspectionStatus: item.InspectionStatus,
+                            inspectionResult: item.InspectionResult,
+                            finishDate:item.FinishDate,
                             materialIdItem: item,
                             inspectionItemDatas: [],
                             dataSets: []
@@ -740,7 +743,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             else {
                 var dataItems = _.find(vmManager.panelDataset, { productId: item.MaterialId, orderId: item.OrderId });
                 if (dataItems !== undefined) {
-                    dataItems.dataSets = dataItems.inspectionItemDatas = datas.dataSource;
+                    dataItems.dataSets = dataItems.inspectionItemDatas = datas.dataSource;  
                 }
             }
         },
@@ -850,12 +853,16 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //删除抽检的项目数据
         selectDeleteInspectionItems: function (item) {
+
             var dataItems = _.find(vmManager.panelDataset, { productId: item.MaterialId, orderId: item.OrderId });
             leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
                 $scope.$apply(function () {
                     $scope.opPromise = qualityInspectionDataOpService.deleteIqcInspectionItemData(item.OrderId, item.MaterialId, item.InspectionItem).then(function (opResult) {
                         if (opResult.Result) {
-                            leeHelper.delWithId(dataItems.inspectionItemDatas, item);//从表中移除
+                          
+                             //leeHelper.delWithId(dataItems.inspectionItemDatas, item);//从表中移除
+                            var ddd = _.find(dataItems.inspectionItemDatas, { InspectionItem: item.InspectionItem, })
+                            leeHelper.remove(dataItems.inspectionItemDatas, ddd);//从表中移除
                             //刷新界面
                             vmManager.updateInspectionItemList(dataItems);
                         }
@@ -987,7 +994,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.InspectionStatus = inspectionStatus;
             vmManager.currentItem.OpSign = leeDataHandler.dataOpMode.edit;
-            qualityInspectionDataOpService.postInspectionFormManageCheckedOfIqcData(vmManager.currentItem, vmManager.isCheck).then(function (opresult) {
+            qualityInspectionDataOpService.inspectionFormManageCheckedOfIqcData(vmManager.currentItem, vmManager.isCheck).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                         vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
@@ -1323,16 +1330,6 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
     $scope.opPersonInfo = { Department: '', ClassType: '' };
-    function ChangeDateFormat(val) {
-        if (val != null) {
-            var date = new Date(parseInt(val.replace("/Date(", "").replace(")/", ""), 10));
-            //月份为0-11，所以+1，月份小于10时补个0
-            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-            return date.getFullYear() + "-" + month + "-" + currentDate;
-        }
-        return "";
-    };
     var vmManager = {
         classTypes: [{ id: "白班", text: "白班" }, { id: "晚班", text: "晚班" }],
         classType: "白班",
@@ -1388,13 +1385,15 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
                     angular.forEach(datas.sampledDatas, function (item) {
+                        //处理数据库 返回为date(1506009600000)形式的数据
+                        var itemfinishDate = new Date(parseInt(item.FinishDate.replace("/Date(", "").replace(")/", "").split("+")[0])).pattern("yyyy-MM-dd");
                         var dataItem = {
                             orderId: item.OrderId,
                             orderIdNumber: item.OrderIdNumber,
                             inspectionStatus: item.InspectionStatus,
                             inspectionCount: item.InspectionCount,
                             inspectionResult: item.InspectionResult,
-                            finishDate: ChangeDateFormat(item.FinishDate),
+                            finishDate: itemfinishDate,
                             inspectionItemDatas: [],
                             dataSets: []
                         };

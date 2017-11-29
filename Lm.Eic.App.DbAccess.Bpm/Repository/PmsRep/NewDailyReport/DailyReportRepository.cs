@@ -102,7 +102,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
 
 
     /// <summary>
-    ///每天生产日报表
+    ///每天生产日报表 UnProductionReportModel
     /// </summary>
     public interface IDailyProductionReportRepository : IRepository<DailyProductionReportModel> { }
     /// <summary>
@@ -110,7 +110,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
     /// </summary>
     public class DailyProductionReportRepository : BpmRepositoryBase<DailyProductionReportModel>, IDailyProductionReportRepository
     { }
-
+    /// <summary>
+    /// 生产代码配置
+    /// </summary>
+    public interface IProductionCodeConfigRepository : IRepository<ProductionCodeConfigModel> { }
+    /// <summary>
+    ///非生产日报表
+    /// </summary>
+    public class ProductionCodeConfigRepository : BpmRepositoryBase<ProductionCodeConfigModel>, IProductionCodeConfigRepository
+    { }
 
 
 
