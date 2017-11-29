@@ -30,7 +30,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             get { return PmConfigService.DataDicManager.FindConfigDatasBy("Organization"); }
         }
-
+       
         #endregion property
 
         #region method
@@ -131,6 +131,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             string code = dep == null ? "" : dep.DataNodeName;
             return code;
         }
+
+      
 
 
         #endregion method
