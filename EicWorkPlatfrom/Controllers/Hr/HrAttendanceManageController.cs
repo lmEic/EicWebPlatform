@@ -319,9 +319,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 string fileName = "加班数据模板.xls";
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
-                return this.DownLoadFile(dlfm);
-
-
+                return this.DownLoadFile(dlfm)
             }
             catch (Exception ex)
             {
