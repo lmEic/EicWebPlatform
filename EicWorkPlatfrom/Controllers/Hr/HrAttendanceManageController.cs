@@ -323,8 +323,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                   new DownLoadFileModel().Default();                 
                 }            
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
-                return this.DownLoadFile(dlfm);
-                              
+                return this.DownLoadFile(dlfm);                       
             }
             catch (Exception ex)
             {
