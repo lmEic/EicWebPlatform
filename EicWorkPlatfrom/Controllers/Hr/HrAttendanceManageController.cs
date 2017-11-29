@@ -369,7 +369,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
 
                 throw new System.Exception(ex.Message);
             }
-
         }
 
         [NoAuthenCheck]
