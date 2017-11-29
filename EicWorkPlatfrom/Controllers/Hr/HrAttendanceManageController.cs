@@ -328,7 +328,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }                  
         }
