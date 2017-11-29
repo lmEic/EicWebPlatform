@@ -1082,17 +1082,46 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         ///显示机台输入 machineDialog
         showMachineDialog: function () {
             console.log(leeLoginUser);
-            $scope.promise = dReportDataOpService.loadUnProductionConfigDicData(leeLoginUser.departmentText, "UnProductionConfig").then(function (datas) {
+            $scope.promise = dReportDataOpService.loadUnProductionConfigDicData(leeLoginUser.organization.B, "UnProductionConfig").then(function (datas) {
                 unProductionCodeTreeSet.setTreeDataset(datas);
             });
-            machineDialog.show();
-            focusSetter.machineIdFocus = true;
+            if (vmMMachineInPut.inputInfoIsValid()) {
+                machineDialog.show();
+                focusSetter.machineIdFocus = true;
+            };
         },
+        //验证录入的信息是否有效
+        inputInfoIsValid: function () {
+            if (uiVM.OrderId == null || uiVM.OrderId.length == 0) {
+                leePopups.alert("工单信息不能为空");
+                return false;
+            }
+            if (uiVM.WorkerName == null || uiVM.WorkerName.length == 0 || uiVM.WorkerId == null || uiVM.WorkerId.length == 0) {
+                leePopups.alert("作业人员信息不能为空");
+                return false;
+            };
+            if (uiVM.MasterName == null || uiVM.MasterName.length == 0 || uiVM.MasterWorkerId == null || uiVM.MasterWorkerId.length == 0) {
+                leePopups.alert("机台师傅信息不能为空");
+                return false;
+            };
+            if (uiVM.WorkerProductionTime == null || uiVM.WorkerProductionTime.length == 0 || uiVM.WorkerProductionTime == 0) {
+                leePopups.alert("出勤时数不能为空或零");
+                return false;
+            };
+            if (uiVM.WorkerNoProductionTime != null && uiVM.WorkerNoProductionTime.length != 0 && uiVM.WorkerNoProductionTime != 0) {
+                if (uiVM.WorkerNoProductionReason == null || uiVM.WorkerNoProductionReason.length == 0) {
+                    leePopups.alert("非生产不为零，必填写非生产原因！");
+                    return false;
+                }; 
+            };
+            return true;
+        },
+
         ///固定单头（人员录入信息）
         confirmWorkerInputInfoEnter: function ($event) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
                 if (uiVM.WorkerProductionTime + uiVM.WorkerNoProductionTime >= 13) {
-                    leePopups.alert("生产时超出");
+                    leePopups.alert("生产总工时不能超过13小时");
                     return;
                 }
                 if (uiVM.WorkerNoProductionTime > 0)
@@ -1216,10 +1245,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         vmManager.putInDisplay = false;
         //  vmManager.init();
     };
-    var unProductionCodeTreeSet = dataDicConfigTreeSet.getTreeSet('lightmaster', "非生原因架构");
-    unProductionCodeTreeSet.bindNodeToVm = function () {
-        unProductionCodeConfigDto = _.clone(unProductionCodeTreeSet.treeNode.vm);
-        uiVM.MachineUnproductiveReason = unProductionCodeConfigDto.DataNodeText;
+    var unProductionCodeTreeSet = dataDicConfigTreeSet.getTreeSet('UnProductionSeason', "非生产原因");
+       unProductionCodeTreeSet.bindNodeToVm = function () {
+           unProductionCodeConfigDto = _.clone(unProductionCodeTreeSet.treeNode.vm);
+           uiVM.MachineUnproductiveReason = unProductionCodeConfigDto.DataNodeText;
     };
     $scope.ztree = unProductionCodeTreeSet;
 
@@ -1470,7 +1499,7 @@ productModule.controller("DailyRedoProductOrderCtrl", function ($scope, dataDicC
 productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///
     var unProductionCodeConfigDto = {
-        Department: leeLoginUser.department,
+        Department: departmentOrganization,
         DataNodeName: null,
         DataNodeText: null,
         ParentDataNodeText: null,
@@ -1489,6 +1518,7 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
     var operate = Object.create(leeDataHandler.operateStatus);
     operate.vm = unProductionCodeConfigDto;
     $scope.operate = operate;
+    //删除节点
     operate.delNode = function () {
         if (angular.isUndefined(departmentTreeSet.treeNode) || departmentTreeSet.treeNode === null) {
             alert("请先选择要删除的节点!")
@@ -1497,15 +1527,19 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
             operate.deleteModal.$promise.then(operate.deleteModal.show);
         }
     };
+    ///添加子节点
     operate.addChildNode = function (isValid) {
         saveDataDicNode(isValid, leeDataHandler.dataOpMode.add, 'addChildNode');
     };
+    ///添加同级节点
     operate.addNode = function (isValid) {
         saveDataDicNode(isValid, leeDataHandler.dataOpMode.add, 'addNode');
     };
+    ///修改节点数据
     operate.updateNode = function (isValid) {
         saveDataDicNode(isValid, leeDataHandler.dataOpMode.edit, 'updateNode');
     };
+   ///保存数据操作
     var saveDataDicNode = function (isValid, opType, opNodeType) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             dReportDataOpService.saveConfigDicData(unProductionCodeConfigDto, oldUnProductionCodeConfigDto, opType).then(function (opresult) {
@@ -1548,6 +1582,7 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
             pHelper.clearVM();
         });
     };
+    ///删除对话框
     operate.deleteModal = $modal({
         title: "删除提示",
         content: "你确定要删除此节点数据吗?",
@@ -1570,7 +1605,12 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
             leeHelper.clearVM(unProductionCodeConfigDto, ['AboutCategory', 'ParentDataNodeText']);
         }
     };
+    // 部门组织
+    var departmentOrganization = leeLoginUser.organization.C + "," + leeLoginUser.organization.B + "," + leeLoginUser.organization.K
+
+   ///树的根级
     var unProductionCodeTreeSet = dataDicConfigTreeSet.getTreeSet('lightmaster', "非生原因架构");
+    ///选择树 赋值对相应的模
     unProductionCodeTreeSet.bindNodeToVm = function () {
         unProductionCodeConfigDto = _.clone(unProductionCodeTreeSet.treeNode.vm);
         console.log(unProductionCodeConfigDto);
@@ -1578,8 +1618,11 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
         oldUnProductionCodeConfigDto = _.clone(unProductionCodeConfigDto);
         $scope.vm = unProductionCodeConfigDto;
     };
+    ///  对树赋值
     $scope.ztree = unProductionCodeTreeSet;
-    $scope.promise = dReportDataOpService.loadUnProductionConfigDicData("制一部", "UnProductionConfig").then(function (datas) {
+
+    $scope.promise = dReportDataOpService.loadUnProductionConfigDicData("MD1", "UnProductionConfig").then(function (datas) {
+        console.log(departmentOrganization);
         unProductionCodeTreeSet.setTreeDataset(datas);
     });
 

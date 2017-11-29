@@ -428,15 +428,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 if (!modelList.IsNullOrEmpty())
                 return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
                 SetFixFieldValue(modelList, OpMode.Add);
-                modelList.ToList().ForEach((model) => {
-                    if (model != null)
-                    {
-                        model.InPutDate = model.InPutDate.ToDate();
-                        if (model.StandardProductionTime != 0 && model.TodayProductionCount != 0 && model.GetProductionTime == 0)
-                            model.GetProductionTime = Math.Round(model.TodayProductionCount * model.StandardProductionTime / 3600, 2);
-                    }
-                });
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+                int i = 0;
+                modelList.ForEach((model) => { if (Store(model).Result) i++; });
+                return (modelList.Count == i) ? new OpResult(OpContext, true) : new OpResult( "还有"+ (modelList.Count-i)+"数据没有保存", false);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
@@ -491,7 +485,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
         public List<ProductionCodeConfigModel> GetProductionDictiotry(string aboutCategory, string department)
         {
-            return irep.Entities.Where(e => e.AboutCategory == aboutCategory && e.Department == department).ToList();
+            return irep.Entities.Where(e => e.AboutCategory == aboutCategory && e.Department.Contains(department)).ToList();
         }
 
 
