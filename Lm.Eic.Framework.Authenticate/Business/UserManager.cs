@@ -13,7 +13,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
         /// </summary>
         public RegistManager UserRegister
         {
-            
+
             get { return OBulider.BuildInstance<RegistManager>(); }
         }
     }

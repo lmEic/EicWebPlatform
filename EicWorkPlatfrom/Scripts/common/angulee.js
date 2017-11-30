@@ -142,6 +142,7 @@ var leeDataHandler = (function () {
                     //处级
                     C: null
                 },
+                organizationUnits: [],
                 //网站物理路径
                 webSitePhysicalApplicationPath: null,
                 serverName: null
@@ -162,6 +163,10 @@ var leeDataHandler = (function () {
                                 loginedUser.department = user.LoginedUser.Department;
                             if (!_.isUndefined(user.LoginedUser.DepartmentText))
                                 loginedUser.departmentText = user.LoginedUser.DepartmentText;
+
+                            if (!_.isUndefined(user.LoginedUser.OrganizationUnits))
+                                loginedUser.organizationUnits = user.LoginedUser.OrganizationUnits;
+
                             if (!_.isUndefined(user.LoginedUser.Organizetion)) {
                                 var fds = user.LoginedUser.Organizetion.split(',');
                                 var organization;
