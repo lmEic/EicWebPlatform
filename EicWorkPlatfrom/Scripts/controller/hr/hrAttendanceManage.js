@@ -975,9 +975,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
         //后台查询
         getWorkOverHoursDatas: function (mode)
         {          
-           var datas = hrDataOpService.getWorkOverHoursData(qryDto.workDate, vmManager.selectDepartment, 1).then(function (datas) {
-           vmManager.searchDatas = datas;
-            })                                
+            var datas = hrDataOpService.getWorkOverHoursData(qryDto.workDate, vmManager.selectDepartment, 1).then(function (datas) {             
+             vmManager.searchDatas = datas;
+            })          
         },
         //加班汇总
         getWorkOverHourSumss: function (mode)
@@ -1052,7 +1052,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
                     angular.forEach(datas, function (item) {
                         item.rowindex = rindex;
                         rindex += 1;
-                    });
+                    });           
                     vmManager.dataSource = datas;
                     vmManager.dataSets = datas;
                     //统计行数
@@ -1290,7 +1290,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
     },
         //批量保存提示窗口
         operate.saveDialog = function () {
-            leePopups.confirm("保存提示", "加班单编辑好了，您确定保存吗？", function () {
+        if (vmManager.dataSets.length == 0) {
+            leePopups.alert("亲，没有任何记录！");
+            return;
+        }
+        leePopups.confirm("保存提示", "加班单编辑好了，您确定保存吗？", function () {
+           
                 operate.saveAll();
             });
         },
@@ -1309,11 +1314,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter,
             });
         }
         //批量保存
-        operate.saveAll = function () {
-            if (vmManager.dataSets.length == 0) {
-                leeHelper.alert("没有任何记录！");
-                return;
-            }
+        operate.saveAll = function () {         
             hrDataOpService.storeHandlWorkOverHoursDt(vmManager.dataSets).then(function (opResult) {            
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                     vmManager.dataSets = [];
