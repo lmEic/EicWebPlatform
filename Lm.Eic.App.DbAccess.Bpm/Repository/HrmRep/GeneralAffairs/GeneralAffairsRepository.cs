@@ -8,11 +8,22 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.GeneralAffairs
     /// 厂服管理持久层
     /// </summary>
     public interface IWorkClothesManageModelRepository : IRepository<WorkClothesManageModel> { }
-    
+
     /// <summary>
     /// 厂服管理持久层
     /// </summary>
     public class WorkClothesManageModelRepository : HrmRepositoryBase<WorkClothesManageModel>, IWorkClothesManageModelRepository
+    { }
+
+
+    /// <summary>
+    ///
+    /// </summary>
+    public interface IMealReportManageRepository : IRepository<MealReportManageModel> { }
+    /// <summary>
+    ///
+    /// </summary>
+    public class MealReportManageRepository : HrmRepositoryBase<MealReportManageModel>, IMealReportManageRepository
     { }
 
 }

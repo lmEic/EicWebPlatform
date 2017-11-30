@@ -15,13 +15,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        #region 厂服管理
 
         public ActionResult GaWorkerClothesManage()
         {
             return View();
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -51,7 +52,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public ContentResult GetWorkerClothesReceiveRecords(string workerId, string department, string receiveMonth, int mode)
         {
-            
+
             var datas = GeneralAffairsService.WorkerClothesManager.FindReceiveRecordBy(new QueryGeneralAffairsDto()
             {
                 Department = department,
@@ -68,6 +69,13 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var dlfm = GeneralAffairsService.WorkerClothesManager.DownLaodBuildReceiveWorkClothesFile();
             return this.DownLoadFile(dlfm);
         }
-       
+        #endregion
+
+        #region 报餐管理
+        public ActionResult GaMealReportManage()
+        {
+            return View();
+        }
+        #endregion
     }
 }

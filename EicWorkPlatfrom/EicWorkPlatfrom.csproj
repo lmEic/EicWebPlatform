@@ -1537,6 +1537,7 @@
     <Content Include="Views\ProDailyReport\DReportBadReasonSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportUnproductionSet.cshtml" />
     <Content Include="Views\ProRedoProductArea\DRRedoInput.cshtml" />
+    <Content Include="Views\HrGeneralAffairsManage\GaMealReportManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
