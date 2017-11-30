@@ -362,6 +362,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult DisposeMultitermDailyReportdDatas(List<DailyProductionReportModel> entitys, string inputSign)
         {
+
+
             var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.DisposeMultitermDailyReportdDatas(entitys, inputSign);
             return Json(datas);
         }

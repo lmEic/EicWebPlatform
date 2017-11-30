@@ -13,7 +13,7 @@
                         <span class="caret"></span>
                     </button>
                     <label>日期:</label>
-                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.InPutDate"
+                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vmManager.inPutDate" ng-change="vmManager.changeInPutDate()"
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <label>白晚班:</label>
@@ -944,6 +944,7 @@
                                 <label class="control-label">规格:<span class="label label-default">{{vm.ProductSpec}}</span></label>
                                 <label class="control-label" title="{{vm.WorkerId}}">姓名:<span class="label label-primary">{{vm.WorkerName}}</span> </label>
                                 <label class="control-label">出勤时数:<span class="label label-success">{{vm.WorkerProductionTime}}</span></label>
+                                <label class="control-label">日期:<span class="label label-primary"> {{vm.InPutDate}}</span> </label>
                             </div>
                         </content>
                         <content dialog-content>
