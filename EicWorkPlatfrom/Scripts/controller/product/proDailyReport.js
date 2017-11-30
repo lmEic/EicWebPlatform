@@ -1245,7 +1245,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
            uiVM.MachineUnproductiveReason = unProductionCodeConfigDto.DataNodeText;
     };
     $scope.ztree = unProductionCodeTreeSet;
-
     //焦点设置器
     var focusSetter = {
         workerIdFocus: false,
