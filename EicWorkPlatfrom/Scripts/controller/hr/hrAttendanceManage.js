@@ -1814,6 +1814,8 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     var vmManager = {
         activeTab: 'initTab',
         calendar: null,
+        //数据存储集合
+        dbDataSet: [],
         loadCalendarDatas: function () {
             $scope.promise = connDataOpService.getCalendarDatas(queryVM.year, queryVM.month).then(function (datas) {
                 vmManager.calendar = datas;
@@ -1827,6 +1829,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.reportMealType = mode;
             vmManager.activeTab = 'initTab';
         },
+
         //创建员工报餐记录
         createEmployeeMealRecord: function (item) {
             var dataitem = _.clone(initVM);
@@ -1838,6 +1841,11 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             dataitem.CountOfLunch = 0;
             dataitem.CountOfMidnight = 0;
             dataitem.CountOfSupper = 0;
+
+            leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+
+            console.log(vmManager.dbDataSet);
+
             //业务数据
             item.bsData = dataitem;
             vmManager.editEmployeeMealRecord(item);
@@ -1845,6 +1853,12 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         editEmployeeMealRecord: function (item) {
             $scope.vm = mealReportVM = item.bsData;
             employeeMealDialog.show();
+        },
+        removeEmployeeMealRecord: function (item) {
+            var dataitem = item.bsData;
+            leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
+                delete item.bsData;
+            });
         },
         confirmEdit: function () {
             employeeMealDialog.close();
