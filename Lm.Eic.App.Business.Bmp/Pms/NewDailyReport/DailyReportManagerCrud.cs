@@ -361,7 +361,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             ///日期格式 简化
             model.InPutDate = model.InPutDate.ToDate();
-            if(model.StandardProductionTime != 0&& model.TodayProductionCount!=0 && model.GetProductionTime==0)
+            if(model.StandardProductionTime != 0&& model.TodayProductionCount!=0)
                 model.GetProductionTime =Math.Round(model.TodayProductionCount * model.StandardProductionTime / 3600,2);
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
