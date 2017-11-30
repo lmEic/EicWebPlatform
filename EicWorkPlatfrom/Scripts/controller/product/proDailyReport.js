@@ -109,11 +109,12 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             groupUserInfos: groupUserInfos,
         });
     };
-    ///处理已经输入数据
-    reportDataOp.handelMachineDailyReportData = function (entitys, inputSign) {
-        var url = urlPrefix + 'DisposeMultitermDailyReportdDatas';
+    ///处理机台输入分摊工时数据
+    reportDataOp.handleMachineDailyReportDatas = function (entitys, workerLookMachineSumTime, workerNoProductionSumTime) {
+        var url = urlPrefix + 'HandleMachineDailyReportDatas';
         return ajaxService.postData(url, {
-            inputSign: inputSign,
+            workerLookMachineSumTime: workerLookMachineSumTime,
+            workerNoProductionSumTime:workerNoProductionSumTime,
             entitys: entitys,
         });
     };
@@ -576,10 +577,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         }
         return "";
     };
+    var nowdate = new Date(new Date().setDate(new Date().getDate() - 1));
     var uiVM = {
         Department: null,
         ClassType: '白班',
-        InPutDate: null,
+        InPutDate: nowdate,
         OrderId: null,
         ProductId: null,
         ProductName: null,
@@ -633,7 +635,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmManager.classType = "晚班";
             else vmManager.classType = "白班";
         },
-        inPutDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+        inPutDate: new Date(),
         productionFlowShow: true,
         putInDataProcessesName: null,
         //始化
@@ -720,17 +722,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         productionFlowDatasSet: [],//工序信息
         productionFlowDatasSouce: [],//工序信息
         departmentMasterDatas: [],
-        ///日期发生变化
-        changeInPutDate: function () {
-            uiVM.InPutDate = vmManager.inPutDate;
-        },
+ 
+       
         //选择部门
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (datas) {
                 vmManager.erpOrderInfoDatasSet = [];
                 vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatasSet = datas.haveDispatchOrderDatas;
-
                 vmManager.departmentMasterDatas = datas.departmentMasterDatas;
+              
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
                 // if (erpDatas.length > 0)
                 ///   vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
@@ -740,7 +740,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         putInDatas: function (item) {
             uiVM.OrderId = item.OrderId;
             uiVM.ProductId = item.ProductId;
-            uiVM.InPutDate = vmManager.inPutDate;
             uiVM.ProductName = item.ProductName;
             uiVM.ProductSpec = item.ProductSpec;
             uiVM.OrderQuantity = item.ProduceNumber - item.PutInStoreNumber;
@@ -774,16 +773,13 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         //在数据查找相应的信息
         selectProcesses: function (info) {
             ///先暂时这样设置  后面可以根据机台编号 得到他设置的时间
-            if (info.ProcessesType == "机台")
-            uiVM.MachineSetProductionTime = 12;
+            if (info.ProcessesType == "机台") uiVM.MachineSetProductionTime = 12;
             uiVM.ProcessesIndex = info.ProcessesIndex;
             uiVM.ProcessesName = info.ProcessesName;
             uiVM.ProcessesType = info.ProcessesType;
             uiVM.StandardProductionTime = info.StandardProductionTime;
             vmManager.inspectionDataGatherType = info.InputType;
-            console.log(info);
             uiVM.StandardProductionTimeType = info.StandardProductionTimeType;
-
             if (uiVM.TodayProductionCount != 0 && uiVM.TodayProductionCount != null && uiVM.TodayProductionCount != '' && vmManager.inputMultitermSelect)
             { focusSetter.saveAlldataFocus = true }
             else
@@ -802,11 +798,14 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.ProcessesType = item.ProcessesType;
                 uiVM.StandardProductionTime = item.StandardProductionTime;
                 uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
-                vmManager.havePutInData = [];
-                uiVM.OpSign = leeDataHandler.dataOpMode.add;
                 uiVM.WorkerId = null;
                 uiVM.WorkerName = null;
+                uiVM.WorkerProductionTime = 0;
+                uiVM.WorkerNoProductionTime = 0;
+                uiVM.WorkerNoProductionReason = null;
                 vmManager.findProcesses();
+                vmManager.havePutInData = [];
+                uiVM.OpSign = leeDataHandler.dataOpMode.add;
                 focusSetter.workerIdFocus = true;
             }
             //展示输入界面
@@ -845,6 +844,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             uiVM = item;
             uiVM.OpSign = leeDataHandler.dataOpMode.edit;
             $scope.vm = uiVM;
+            if (item.ProcessesType == '机台')
+                vmMMachineInPut.showMachineDialog();
         },
         //删除录入个人日报表数据
         deleteUserInputInfo: function (item) {
@@ -853,7 +854,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     item.opSign = leeDataHandler.dataOpMode.delete;
                     $scope.searchPromise = dReportDataOpService.saveDailyReportData(item).then(function (opresult) {
                         if (opresult.Result) {
-                            leeHelper.delWithId(vmManager.havePutInData, item);
+                            leeHelper.remove(vmManager.havePutInData, item);
                             vmManager.getProductionFlowDatas(item.ProductName, item.OrderId);
                         }
                     });
@@ -1025,6 +1026,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     var machineDialog = $scope.machineDialog = leePopups.dialog();
     var vmMMachineInPut = {
         isConfirmMachineInputData: false,
+        workerLookMachineProductionTime: null,
+        workerNoLookMachineProductionTime: null,
         putInDatasSet: [],
         handleDatas: [],
         ///
@@ -1057,7 +1060,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     leeDataHandler.dataOperate.add(operate, isValid, function () {
                         leeHelper.setUserData(uiVM);
                         uiVM.Department = vmManager.department;
-                        uiVM.InPutDate = vmManager.inPutDate;
                         var inputMahcineVm = _.clone(uiVM);
                         if (vmMMachineInPut.inputInfoIsValid()) {
                             inputMahcineVm.id = leeHelper.newGuid();
@@ -1081,18 +1083,16 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         ///删除已经输入的机台信息
         deleteInputMachineVm: function (item) {
-            console.log(item);
             leeHelper.remove(vmMMachineInPut.handleDatas, item);
             vmMMachineInPut.handleHavePutIntData(vmMMachineInPut.handleDatas);
-        },
-        machinePutInInfo: {
-
         },
         ///显示机台输入 machineDialog
         showMachineDialog: function () {
             $scope.promise = dReportDataOpService.loadUnProductionConfigDicData(leeLoginUser.organization.B, "UnProductionConfig").then(function (datas) {
                 unProductionCodeTreeSet.setTreeDataset(datas);
             });
+            vmMMachineInPut.workerLookMachineProductionTime = uiVM.WorkerProductionTime;
+            vmMMachineInPut.workerNoLookMachineProductionTime = uiVM.WorkerNoProductionTime;
             if (vmMMachineInPut.inputInfoIsValid()) {
                 machineDialog.show();
                 focusSetter.machineIdFocus = true;
@@ -1124,9 +1124,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             };
             return true;
         },
-
-     
-
         ///固定单头（人员录入信息）
         confirmWorkerInputInfoEnter: function ($event) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
@@ -1155,13 +1152,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         /// 输入完成处理分摊数据
         handleHavePutIntData: function (datasSource) {
             vmMMachineInPut.handleDatas = [];
-            dReportDataOpService.handelMachineDailyReportData(datasSource, "机台").then(function (datas) { 
+            dReportDataOpService.handleMachineDailyReportDatas(datasSource, vmMMachineInPut.workerLookMachineProductionTime, vmMMachineInPut.workerNoLookMachineProductionTime).then(function (datas) {
                 vmMMachineInPut.handleDatas = datas
             });
-        },
-        ///修改调整数据
-        changeMachineInfo: function (item) {
-            console.log(item);
         },
     };
     $scope.vmMMachineInPut = vmMMachineInPut;
@@ -1174,14 +1167,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         else {
             operate.saveSingleData(isValid);
         };
+        vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
     };
     ///机台录入保存数据
     operate.saveMachineDatas = function (isValid) {
-        console.log(vmMMachineInPut.handleDatas);
-        _.forEach(vmMMachineInPut.handleDatas, function (m) {
-          m.InPutDate=ChangeDateFormat(m.InPutDate);
-        });
-        console.log(vmMMachineInPut.handleDatas);
         $scope.searchPromise = dReportDataOpService.saveMachineDailyReportDatas(vmMMachineInPut.handleDatas).then(function (datasResult) {
             if (datasResult.opResult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.opResult);
@@ -1196,6 +1185,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmMMachineInPut.clearDatas();
                 machineDialog.close();
                 vmManager.putInDisplay = false;
+                vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
             };
         });
     };

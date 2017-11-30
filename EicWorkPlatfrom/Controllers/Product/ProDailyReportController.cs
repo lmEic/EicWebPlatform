@@ -360,11 +360,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="inputSign"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult DisposeMultitermDailyReportdDatas(List<DailyProductionReportModel> entitys, string inputSign)
+        public JsonResult HandleMachineDailyReportDatas(List<DailyProductionReportModel> entitys, double workerLookMachineSumTime, double workerNoProductionSumTime)
         {
-
-
-            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.DisposeMultitermDailyReportdDatas(entitys, inputSign);
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.DisposeDailyReportdMachineDatas(entitys, workerLookMachineSumTime, workerNoProductionSumTime);
             return Json(datas);
         }
 
