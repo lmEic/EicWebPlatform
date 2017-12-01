@@ -11,5 +11,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+        public ActionResult ProAskLeaveManage()
+        {
+            return View();
+        }
     }
 }
