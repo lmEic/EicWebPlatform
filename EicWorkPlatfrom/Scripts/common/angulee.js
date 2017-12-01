@@ -111,6 +111,33 @@ var leeDataHandler = (function () {
             if (cancelfn !== undefined) {
                 cancelfn();
             }
+        },
+        //从客户端创建数据项,并插入到内存数据集合中
+        createDataItemFromClient: function (dataitem, dbDataset) {
+            leeHelper.setObjectGuid(dataitem);//创建唯一标志
+            leeHelper.setObjectClentSign(dataitem);//设置客户端创建对象标志
+            if (dataitem.OpSign !== undefined)
+                dataitem.OpSign = leeDataOpMode.add;//设置数据处理标志
+            leeHelper.insertWithId(dbDataset, dataitem);
+        },
+        //从客户端删除数据，先看数据项是不是服务器端的，如果是，将操作标志位删除
+        //反之，则直接从内存集合中删除
+        removeDataItemFromClient: function (dataitem, dbDataset, handler) {
+            if (!_.isObject(dataitem)) return;
+            if (!_.isArray(dbDataset)) return;
+
+            var isExist = leeHelper.isExist(dbDataset, dataitem);
+            if (isExist.exist) {
+                if (leeHelper.isServerObject(dataitem)) {
+                    if (isExist.item.OpSign !== undefined)
+                        isExist.item.OpSign = leeDataHandler.dataOpMode.delete;
+                }
+                else {
+                    leeHelper.remove(dbDataset, dataitem);
+                }
+                if (_.isFunction(handler))
+                    handler();
+            }
         }
     };
     ///数据存储
@@ -340,7 +367,12 @@ var leeHelper = (function () {
         isExist: function (ary, item) {
             if (!Array.isArray(ary)) return false;
             var data = _.findWhere(ary, { Id: item.Id });
-            return data !== undefined;
+            return {
+                ///是否存在，True为存在，false：为不存在
+                exist: data !== undefined,
+                ///存储的项
+                item: data
+            };
         },
         ///在数组指定位置插入项
         insert: function (ary, index, item) {
