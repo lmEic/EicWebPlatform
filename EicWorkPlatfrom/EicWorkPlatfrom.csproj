@@ -1427,7 +1427,6 @@
     <Content Include="Views\DailyReport\ProStationConfig.cshtml" />
     <Content Include="Views\CommonTpl\ModuleLayoutIndexTpl.cshtml" />
     <Content Include="Views\ProEmployee\RegistWorkerInfo.cshtml" />
-    <Content Include="Views\ProEmployee\ProWorOverkHoursManage.cshtml" />
     <Content Include="Views\ProEmployee\ProAskLeaveManage.cshtml" />
     <Content Include="Views\HrArchivesManage\HrEmployeeDataInput.cshtml" />
     <Content Include="Views\CommonTpl\InfoMsgModalTpl.cshtml" />
@@ -1538,6 +1537,9 @@
     <Content Include="Views\ProDailyReport\DReportUnproductionSet.cshtml" />
     <Content Include="Views\ProRedoProductArea\DRRedoInput.cshtml" />
     <Content Include="Views\HrGeneralAffairsManage\GaMealReportManage.cshtml" />
+    <Content Include="Views\Product\ProAskLeaveManage.cshtml" />
+    <Content Include="Views\ProEmployee\ProClassManage.cshtml" />
+    <Content Include="Views\ProEmployee\WorkHoursManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
