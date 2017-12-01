@@ -13,7 +13,7 @@
                         <span class="caret"></span>
                     </button>
                     <label>日期:</label>
-                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.InPutDate"
+                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.InPutDate" 
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <label>白晚班:</label>
@@ -179,7 +179,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
                                                         <ul class="list-group" style="overflow-y:auto; max-height:150px;">
-                                                            <li class="list-group-item" style="cursor:pointer;" ng-click="vmManager.showPutInForm(item)"
+                                                            <li class="list-group-item" style="cursor:pointer;" ng-click="vmManager.selectProcesses(item)"
                                                                 ng-repeat="item in vmManager.productionFlowDatasSouce track by $index" data-title="序名：{{item.ProcessesIndex}}" data-bs-tooltip>
                                                                 <i class="fa fa-user"></i>
                                                                 <span class="label label-primary">工序号：{{item.ProcessesIndex}}</span>|
@@ -944,6 +944,7 @@
                                 <label class="control-label">规格:<span class="label label-default">{{vm.ProductSpec}}</span></label>
                                 <label class="control-label" title="{{vm.WorkerId}}">姓名:<span class="label label-primary">{{vm.WorkerName}}</span> </label>
                                 <label class="control-label">出勤时数:<span class="label label-success">{{vm.WorkerProductionTime}}</span></label>
+                                <label class="control-label">日期:<span class="label label-primary"> {{vm.InPutDate}}</span> </label>
                             </div>
                         </content>
                         <content dialog-content>
@@ -985,7 +986,7 @@
                                                 </button>
                                                 <div class="dropdown-menu" role="menu">
                                                     <ul class="list-group" style="overflow-y:auto; max-height:150px;">
-                                                        <li class="list-group-item" style="cursor:pointer;" ng-click="vmManager.showPutInForm(item)"
+                                                        <li class="list-group-item" style="cursor:pointer;" ng-click="vmManager.selectProcesses(item)"
                                                             ng-repeat="item in vmMMachineInPut.machineProductionFlowDatasSouce  track by $index" data-title="序名：{{item.ProcessesIndex}}" data-bs-tooltip>
                                                             <i class="fa fa-user"></i>
                                                             <span class="label label-primary">工序号：{{item.ProcessesIndex}}</span>|
@@ -1078,10 +1079,7 @@
                                                 <td>{{item.MachineUnproductiveTime}}</td>
                                                 <td>{{item.MachineUnproductiveReason}}</td>
                                                 <td>{{item.MachineProductionBadCount}}</td>
-                                                <td>
-                                                    <button class="btn btn-xs btn-primary" ng-click="vmMMachineInPut.changeMachineInfo(item)" title="修改">
-                                                        修改
-                                                    </button><button class="btn btn-xs btn-danger" ng-click="vmMMachineInPut.deleteInputMachineVm(item)" title="删除">
+                                                <td><button class="btn btn-xs btn-danger" ng-click="vmMMachineInPut.deleteInputMachineVm(item)" title="删除">
                                                         删除
                                                     </button>
                                                 </td>

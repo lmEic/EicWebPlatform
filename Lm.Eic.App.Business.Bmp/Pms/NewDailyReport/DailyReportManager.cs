@@ -211,25 +211,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         }
 
         /// <summary>
-        /// 处理日报表数据反回到界中去
+        /// 处理机台输入分摊日报表数据返回
         /// </summary>
         /// <param name="datas"></param>
         /// <param name="disposeSign"></param>
         /// <returns></returns>
-        public List<DailyProductionReportModel> DisposeMultitermDailyReportdDatas(List<DailyProductionReportModel> datas, string disposeSign)
+        public List<DailyProductionReportModel> DisposeDailyReportdMachineDatas(List<DailyProductionReportModel> datas, double workerLookMachineSumTime,double workerNoProductionSumTime)
         {
             List<DailyProductionReportModel> DailyReportList = new List<DailyProductionReportModel>();
             DailyProductionReportModel newModel = null;
             if (datas != null)
             {
-                double workerLookMachineSumTime = datas.FirstOrDefault().WorkerProductionTime;
-                double sumProductCount = datas.FirstOrDefault().MachineProductionCount;
-                double sumProductBadCount = datas.FirstOrDefault().MachineUnproductiveTime;
                 double machineRunSumTime = datas.Sum(e => e.MachineProductionTime);
-                double sumNoProductionTime = datas.Sum(e => e.WorkerNoProductionTime);
-                double sumWorkerProductionTime = datas.Sum(e => e.WorkerProductionTime);
-                if (sumWorkerProductionTime == 0 || machineRunSumTime == 0)
-                    return DailyReportList;
+                
                 // 人员投入工时 分摊到每个工单上  依据 出勤时数=（人员工时/ 机台生产总时间）* 当前机台生产时间
                 // WorkerProductionTime= （WorkerProductionTime/ MachineProductionTimeSum） *MachineProductionTime
                 datas.ForEach(e =>
@@ -237,22 +231,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     newModel = new DailyProductionReportModel();
                     OOMaper.Mapper<DailyProductionReportModel, DailyProductionReportModel>(e, newModel);
                     newModel.InPutDate = e.InPutDate.ToDate();
+                    ///人工生产产量 ==机台生产产量
                     newModel.TodayProductionCount = e.MachineProductionCount;
+                    /// 人工不良产量= 机台不良产量
                     newModel.TodayBadProductCount = e.MachineProductionBadCount;
-                    newModel.GetProductionTime = Math.Round(e.MachineProductionCount * e.StandardProductionTime / 3600, 2);
-                    if (disposeSign == "机台")
+                    ///计算人员的标准工时
+                   if(e.MachineProductionCount!=0&& e.StandardProductionTime!=0)
+                        newModel.GetProductionTime = Math.Round(e.MachineProductionCount * e.StandardProductionTime / 3600, 2);
+                    /// 机台录入分摊人工工时
+                    if (machineRunSumTime != 0)
                     {
-                        /// 机台录入分摊人工工时
                         newModel.WorkerProductionTime = Math.Round((workerLookMachineSumTime / machineRunSumTime) * e.MachineProductionTime, 2);
-                        newModel.MachineUnproductiveTime = e.MachineSetProductionTime - e.MachineProductionTime;
+                        newModel.WorkerNoProductionTime = Math.Round((workerNoProductionSumTime / machineRunSumTime) * e.MachineProductionTime, 2);
                     }
-                    else
-                    {
-                        /// 团队录入分摊数量
-                        newModel.TodayProductionCount = Math.Round((sumProductCount / sumWorkerProductionTime) * e.WorkerProductionTime, 2, MidpointRounding.AwayFromZero);
-                        if (sumNoProductionTime != 0)
-                            newModel.TodayBadProductCount = Math.Round((sumProductBadCount / sumNoProductionTime) * e.WorkerNoProductionTime, 2, MidpointRounding.AwayFromZero);
-                    }
+                    newModel.MachineUnproductiveTime = e.MachineSetProductionTime - e.MachineProductionTime;    
                     if (!DailyReportList.Contains(newModel))
                         DailyReportList.Add(newModel);
                 });
