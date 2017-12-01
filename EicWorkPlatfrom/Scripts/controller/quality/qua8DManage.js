@@ -313,7 +313,6 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
     }
     //初始化原型
     var initVM = _.clone(uiVm);
-
     var participantInfo = $scope.participantInfo = {
         Applicant: null,//申请人,
         Confirmor: null,//确认人
@@ -469,8 +468,6 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             });
         });
     }
-
-
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
         var user = leeLoginUser;
