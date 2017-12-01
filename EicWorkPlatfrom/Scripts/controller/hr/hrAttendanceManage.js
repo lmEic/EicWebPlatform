@@ -410,7 +410,7 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
     });
 });
 //请假设置管理
-hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
+hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, $filter, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
     var askLeaveVM = {
         Id: null,
         IsServer: false,//是否是从服务器端获取的数据标志
@@ -439,7 +439,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         year: null,
         month: null,
         yearMonth: null,
-        dateFrom: new Date(),//请假其实日期
+        dateFrom: new Date(),//请假起始日期
         dateTo: new Date(),//请假结束日期
         leaveType: '事假',
     };
@@ -461,7 +461,6 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         setData: function (weekDay, askLeaveItem) {
             var dataItem = _.clone(askLeaveVM);
             leeHelper.copyVm(askLeaveItem, dataItem);
-
             var timeResgions = dataItem.LeaveTimeRegion.split('-');
             if (timeResgions.length == 2) {
                 var timeStart = timeResgions[0];
@@ -474,9 +473,9 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             vmManager.putData(vmManager.askLeaveDatas, dataItem);//插入到批量处理的数据集合中
             vmManager.putData(weekDay.askLeaveDatas, dataItem);
         },
-        setAskLeaveDatas: function () {
+        setAskLeaveDatas: function () {    
             if (vmManager.workerInfo !== null) {
-                vmManager.askLeaveDatas = [];
+                vmManager.askLeaveDatas = [];           
                 hrDataOpService.getAskLeaveDataAbout(vmManager.workerInfo.WorkerId, queryVM.yearMonth).then(function (datas) {
                     if (angular.isArray(datas)) {
                         angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
@@ -571,7 +570,6 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
 
     //业务逻辑操作对象
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
-
     operate.saveAll = function () {
         hrDataOpService.handleAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
@@ -598,12 +596,12 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
 hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal,$filter, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
     ///ui视图模型
     var uiVM = {
-        WorkerId: null,//
-        WorkerName: null,//    
-        WorkoverType: null,//
-        WorkClassType: null,//
-        WorkDate: null,//
-        WorkOverHours: null,//
+        WorkerId: null,
+        WorkerName: null,  
+        WorkoverType: null,
+        WorkClassType: null,
+        WorkDate: null,
+        WorkOverHours: null,
         Remark: null,
         DepartmentText: null,       
         WorkStatus: '在职',
