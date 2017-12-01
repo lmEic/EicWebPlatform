@@ -11,5 +11,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+       
     }
 }
