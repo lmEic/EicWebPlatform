@@ -550,6 +550,7 @@
     <Content Include="Scripts\controller\hr\hrAttendanceManage.js" />
     <Content Include="Scripts\controller\product\proBoard.js" />
     <Content Include="Scripts\controller\product\proDailyReport.js" />
+    <Content Include="Scripts\controller\product\proEmployeeManage.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
     <Content Include="Scripts\controller\quality\qua8DManage.js" />
@@ -1426,9 +1427,8 @@
     <Content Include="Views\DailyReport\ProStationConfig.cshtml" />
     <Content Include="Views\CommonTpl\ModuleLayoutIndexTpl.cshtml" />
     <Content Include="Views\ProEmployee\RegistWorkerInfo.cshtml" />
-    <Content Include="Views\ProEmployee\ProStationManage.cshtml" />
-    <Content Include="Views\ProEmployee\ProClassManage.cshtml" />
-    <Content Include="Views\ProEmployee\WorkHoursManage.cshtml" />
+    <Content Include="Views\ProEmployee\ProWorOverkHoursManage.cshtml" />
+    <Content Include="Views\ProEmployee\ProAskLeaveManage.cshtml" />
     <Content Include="Views\HrArchivesManage\HrEmployeeDataInput.cshtml" />
     <Content Include="Views\CommonTpl\InfoMsgModalTpl.cshtml" />
     <Content Include="Views\CommonTpl\DeleteModalTpl.cshtml" />

@@ -1855,9 +1855,13 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             employeeMealDialog.show();
         },
         removeEmployeeMealRecord: function (item) {
-            var dataitem = item.bsData;
-            leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
-                delete item.bsData;
+            leePopups.inquire("温馨提醒", "删除后数据将不存在，您确认要继续此操作吗？", function () {
+                $scope.$apply(function () {
+                    var dataitem = item.bsData;
+                    leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
+                        delete item.bsData;
+                    });
+                });
             });
         },
         confirmEdit: function () {
