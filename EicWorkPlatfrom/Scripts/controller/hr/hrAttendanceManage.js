@@ -1812,7 +1812,8 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         dateTo: new Date(),//请假结束日期
     };
     var vmManager = {
-        activeTab: 'initTab',
+        activeYGTab: 'initYGTab',
+        activeLGTab: 'initLGTab',
         calendar: null,
         //数据存储集合
         dbDataSet: [],
@@ -1822,17 +1823,46 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             });
         },
         department: null,
+        workerInfo: null,
+        //设置干部报餐数据
+        setLeaderMealReportDatas: function () {
+            if (vmManager.workerInfo !== null) {
+                //vmManager.askLeaveDatas = [];
+                //hrDataOpService.getAskLeaveDataAbout(vmManager.workerInfo.WorkerId, queryVM.yearMonth).then(function (datas) {
+                //    if (angular.isArray(datas)) {
+                //        angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
+                //            angular.forEach(weekItem.WeekDays, function (weekDay) {
+                //                var askLeaveDatas = _.where(datas, { Day: parseInt(weekDay.Day) });
+                //                if (askLeaveDatas !== undefined && askLeaveDatas.length > 0) {
+                //                    weekDay.askLeaveDatas = [];
+                //                    //这一天是否有多条请假记录
+                //                    if (angular.isArray(askLeaveDatas) && askLeaveDatas.length > 1) {
+                //                        angular.forEach(askLeaveDatas, function (askLeaveItem) {
+                //                            askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
+                //                            vmManager.setData(weekDay, askLeaveItem);
+                //                        })
+                //                    }
+                //                    else {
+                //                        var askLeaveItem = askLeaveDatas[0];
+                //                        askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
+                //                        vmManager.setData(weekDay, askLeaveItem);
+                //                    }
+                //                }
+                //            });
+                //        });
+                //    }
+                //});
+            }
+        },
         //报餐类型
         reportMealType: '员工餐',
         organizationUnits: [{ code: 'EIC', text: "企业讯息中心" }],
         selectReportMealType: function (mode) {
             vmManager.reportMealType = mode;
-            vmManager.activeTab = 'initTab';
+            vmManager.activeLGTab = 'initLGTab';
+            vmManager.activeYGTab = 'initYGTab';
         },
-
-        //创建员工报餐记录
-        createEmployeeMealRecord: function (item) {
-            var dataitem = _.clone(initVM);
+        createEmployeeMealModel(dataitem) {
             dataitem.Department = vmManager.department;
             dataitem.WorkerId = "000000";
             dataitem.WorkerName = "111111";
@@ -1841,11 +1871,14 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             dataitem.CountOfLunch = 0;
             dataitem.CountOfMidnight = 0;
             dataitem.CountOfSupper = 0;
+            return dataitem;
+        },
+        //创建员工报餐记录
+        createEmployeeMealRecord: function (item) {
 
+            var dataitem = _.clone(initVM);
+            dataitem = vmManager.createEmployeeMealModel(dataitem);
             leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
-
-            console.log(vmManager.dbDataSet);
-
             //业务数据
             item.bsData = dataitem;
             vmManager.editEmployeeMealRecord(item);
@@ -1855,9 +1888,16 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             employeeMealDialog.show();
         },
         removeEmployeeMealRecord: function (item) {
-            var dataitem = item.bsData;
-            leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
-                delete item.bsData;
+            leePopups.confirm("温馨提醒", "删除后数据将不存在，您确认要继续此操作吗？", function () {
+                $scope.$apply(function () {
+                    var dataitem = item.bsData;
+                    leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
+                        delete item.bsData;
+
+
+                        console.log(vmManager.dbDataSet);
+                    });
+                });
             });
         },
         confirmEdit: function () {

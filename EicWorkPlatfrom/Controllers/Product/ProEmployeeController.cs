@@ -16,7 +16,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
-
+        #region WorkerInfo
         /// <summary>
         /// 人员信息管理
         /// </summary>
@@ -53,32 +53,26 @@ namespace EicWorkPlatfrom.Controllers.Product
             var result = ArchiveService.ProWorkerManager.RegistUser(worker);
             return Json(result);
         }
+        #endregion
 
-        /// <summary>
-        /// 所在站别管理
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult ProStationManage()
+
+        #region 考勤管理
+
+        #region 加班管理
+        public ActionResult ProWorOverkHoursManage()
         {
             return View();
         }
+        #endregion
 
-        /// <summary>
-        /// 生产班别管理
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult ProClassManage()
+
+        #region 请假管理
+        public ActionResult ProAskLeaveManage()
         {
             return View();
         }
+        #endregion
 
-        /// <summary>
-        /// 出勤管理
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult WorkHoursManage()
-        {
-            return View();
-        }
+        #endregion
     }
 }
