@@ -1057,7 +1057,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 {".jpeg","image/jpeg"},
                 {".jpg","application/x-jpg"},
             };
-            string extentionName = Path.GetExtension(fileName);
+            /// 大小转换 全转化为小写
+            string extentionName = Path.GetExtension(fileName).ToLower();
             return dicContentType[extentionName];
         }
         /// <summary>
