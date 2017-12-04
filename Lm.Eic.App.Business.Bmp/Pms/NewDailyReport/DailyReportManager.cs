@@ -12,25 +12,17 @@ using Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
+   /// <summary>
+   /// 日报表管理工厂
+   /// </summary>
     public class DailyProductionReportManager
     {
         /// <summary>
-        /// 产品生产工艺设置
+        /// 产品标准工时工艺设置
         /// </summary>
         public StandardProductionFlowManager ProductionFlowSet
         {
             get { return OBulider.BuildInstance<StandardProductionFlowManager>(); }
-        }
-        /// <summary>
-        /// 生产日报订单分配管理
-        /// </summary>
-        public ProductOrderDispatchManager ProductOrderDispatch
-        {
-            get { return OBulider.BuildInstance<ProductOrderDispatchManager>(); }
-        }
-        public DailyReportManager DailyReport
-        {
-            get { return OBulider.BuildInstance<DailyReportManager>(); }
         }
         /// <summary>
         /// 日报表生产编码管理
@@ -39,7 +31,131 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyProductionCodeConfigManager>(); }
         }
+        /// <summary>
+        /// 生产日报订单分配管理
+        /// </summary>
+        public ProductOrderDispatchManager ProductOrderDispatch
+        {
+            get { return OBulider.BuildInstance<ProductOrderDispatchManager>(); }
+        }
+     
+        
+        /// <summary>
+        /// 日报表表管理
+        /// </summary>
+        public DailyReportManager DailyReport
+        {
+            get { return OBulider.BuildInstance<DailyReportManager>(); }
+        }
+      
     }
+
+
+
+
+    /// <summary>
+    ///  产品标准工时工艺设置管理
+    /// </summary>
+    public class StandardProductionFlowManager
+    {
+        /// <summary>
+        /// 获取产品工艺
+        /// </summary>
+        /// <param name="dto">数据传输对象 品名和部门是必须的</param>
+        /// <returns></returns>
+        public List<StandardProductionFlowModel> GetProductFlowInfoBy(QueryDailyProductReportDto dto)
+        {
+            return DailyReportCrudFactory.ProductionFlowCrud.FindBy(dto);
+        }
+
+        /// <summary>
+        /// 导入工序列表
+        /// </summary>
+        /// <param name="documentPatch">Excel文档路径</param>
+        /// <returns></returns>
+        public List<StandardProductionFlowModel> ImportProductFlowListBy(string documentPatch)
+        {
+            return documentPatch.GetEntitiesFromExcel<StandardProductionFlowModel>();
+        }
+        /// <summary>
+        /// 获取工序Excel模板
+        /// </summary>
+        /// <param name="documentPath"></param>
+        /// <returns></returns>
+        public DownLoadFileModel GetProductFlowTemplate(string siteRootPath, string documentPath, string fileName)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            return dlfm.CreateInstance
+                 (siteRootPath.GetDownLoadFilePath(documentPath),
+                 fileName.GetDownLoadContentType(),
+                  fileName);
+        }
+        /// <summary>
+        /// 存储数据表
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult StoreModelList(List<StandardProductionFlowModel> modelList)
+        {
+            return  (modelList.Count > 0)?
+                DailyReportCrudFactory.ProductionFlowCrud.AddProductFlowModelList(modelList):
+                OpResult.SetErrorResult("列表不能为空！");
+        }
+        public OpResult StoreProductFlow(StandardProductionFlowModel model)
+        {
+            return DailyReportCrudFactory.ProductionFlowCrud.Store(model, true);
+        }
+        public OpResult DeleteSingleProcessesFlow(string productName, string processesName)
+        {
+            return DailyReportCrudFactory.ProductionFlowCrud.DeleteSingleProductFlow(productName, processesName);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="productName"></param>
+        /// <returns></returns>
+        public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department)
+        {
+            ///从得到部门已分配的工单  并且有效 
+            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配", "True");
+            List<ProductFlowSummaryVm> flowSummaryVms = new List<ProductFlowSummaryVm>();
+            List<string> productNamelist = new List<string>();
+            ProductFlowSummaryVm flowSummaryVm = null;
+            if (productionOrderIdInfo.Count > 0)
+            {
+                productionOrderIdInfo.ForEach(m =>
+                {
+                    flowSummaryVm = DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDateBy(m.ProductName);
+                    if (flowSummaryVm == null) flowSummaryVm = new ProductFlowSummaryVm();
+                    flowSummaryVm.ProductName = m.ProductName;
+                    flowSummaryVm.ProductId = m.ProductId;
+                    if (!productNamelist.Contains(flowSummaryVm.ProductName))
+                    {
+                        flowSummaryVms.Add(flowSummaryVm);
+                        productNamelist.Add(m.ProductName);
+                    }
+                });
+            }
+            return flowSummaryVms;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="productName"></param>
+        /// <returns></returns>
+
+        public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department, string productName)
+        {
+            return DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDatesBy(department, productName);
+        }
+
+    }
+
+    /// <summary>
+    /// 工单分配管理
+    /// </summary>
     public class ProductOrderDispatchManager
     {
         /// <summary>
@@ -47,15 +163,26 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
+        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus, string isValid = null)
+        {
+            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, dicpatchStatus, isValid );
+        }
+        /// <summary>
+        /// 得到部门工单
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="isVirtualOrderId">是否为虚以的工单</param>
+        /// <returns></returns>
+        public List<ProductOrderDispatchModel> GetDispatchOrderDataBy(string department, int isVirtualOrderId)
+        {
+            return DailyReportCrudFactory.ProductOrderDispatch.GetDepartmentDispatchOrderDataBy(department,  isVirtualOrderId);
+        }
 
-        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus)
-        {
-            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, dicpatchStatus);
-        }
-        public List<ProductOrderDispatchModel> GetVirtualOrderDataBy(string department)
-        {
-            return DailyReportCrudFactory.ProductOrderDispatch.GetVirtualOrderDataBy(department);
-        }
+        /// <summary>
+        /// 得到部门需要分配的工单 并更新处理分配工单列表数据
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
         public List<ProductOrderDispatchModel> GetNeedDispatchOrderBy(string department)
         {
             DateTime getDate =DateTime.Now.Date.ToDate();
@@ -66,11 +193,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             ///今日生产已确认分配的订单
 
             if (erpInProductiondatas == null || erpInProductiondatas.Count == 0) return returndatas;
+            ///以ERP中在制工单为主线  
             erpInProductiondatas.ForEach(e =>
             {
                 model = new ProductOrderDispatchModel();
                 OOMaper.Mapper<ProductionOrderIdInfo, ProductOrderDispatchModel>(e, model);
-                ////如果订单在数据库中不存在
+                ////如果订单不在分配的数据库中表中，添加新的，
                 var haveDispatchOrder = DailyReportCrudFactory.ProductOrderDispatch.GetOrderInfoBy(e.OrderId);
                 if (haveDispatchOrder == null)
                 {
@@ -79,6 +207,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     model.DicpatchStatus = "未分配";
                     model.IsValid = "false";
                 }
+                ///如果存在 更新其完工状态   判断其有效时间
                 else
                 {
                     model = haveDispatchOrder;
@@ -91,29 +220,29 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 if (!returndatas.Contains(model))
                     returndatas.Add(model);
             });
+            /// 更新 ERP中  （不再是“在制”）已完工工单
             TreatmentNoProductOrderId(department, returndatas);
             return returndatas.OrderByDescending(e => e.OrderId).ToList();
         }
         /// <summary>
-        /// 
+        /// 依据工单号模糊查询 工单信息
         /// </summary>
-        /// <param name="orderId"></param>
+        /// <param name="orderId">工单号</param>
         /// <returns></returns>
-        public List<ProductOrderDispatchModel> GetQueryOrderBy(string orderId)
+        public List<ProductOrderDispatchModel> GetLikeQueryOrderDataBy(string orderId)
         {
         
             List<ProductOrderDispatchModel> returndatas = new List<ProductOrderDispatchModel>();
             ProductOrderDispatchModel model = null;
             ///ERP在制生产订单
-            var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(orderId);
+            var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetLikeQueryProductionOrderInfoBy(orderId);
             ///今日生产已确认分配的订单
-
             if (erpInProductiondatas == null || erpInProductiondatas.Count == 0) return returndatas;
             erpInProductiondatas.ForEach(e =>
             {
                 model = new ProductOrderDispatchModel();
                 OOMaper.Mapper<ProductionOrderIdInfo, ProductOrderDispatchModel>(e, model);
-                ////如果订单在数据库中不存在
+                ///如果订单在数据库中不存在
                 var haveDispatchOrder = DailyReportCrudFactory.ProductOrderDispatch.GetOrderInfoBy(e.OrderId);
                 if (haveDispatchOrder == null)
                 {
@@ -130,13 +259,23 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             return returndatas.OrderByDescending(e => e.OrderId).ToList();
         }
         /// <summary>
-        /// 处理已经分配的但是完工的订单
+        /// 保存订单数据
         /// </summary>
-        /// <param name="todayHaveDispatchProductionOrderDatas"></param>
-        /// <param name="erpInProductiondatas"></param>
-        public void TreatmentNoProductOrderId(string department, List<ProductOrderDispatchModel> erpInProductiondatas)
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreOrderDispatchData(ProductOrderDispatchModel model)
         {
-            var todayHaveDispatchProductionOrderDatas = DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
+            return DailyReportCrudFactory.ProductOrderDispatch.Store(model, true);
+        }
+        /// <summary>
+        /// 处理已经分配的  但是（不再是“在制”）已完工的订单
+        /// </summary>
+        /// <param name="todayHaveDispatchProductionOrderDatas">ERP在制工单</param>
+        /// <param name="erpInProductiondatas"></param>
+        void TreatmentNoProductOrderId(string department, List<ProductOrderDispatchModel> erpInProductiondatas)
+        {
+            ///查询出部门已分配工单，未失效的工单
+            var todayHaveDispatchProductionOrderDatas = DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配", "True");
             if (todayHaveDispatchProductionOrderDatas == null || todayHaveDispatchProductionOrderDatas.Count == 0) return;
             todayHaveDispatchProductionOrderDatas.ForEach(e =>
             {
@@ -151,17 +290,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 }
             });
         }
-        /// <summary>
-        /// 保存订单数据
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult StoreOrderDispatchData(ProductOrderDispatchModel model)
-        {
-            return DailyReportCrudFactory.ProductOrderDispatch.Store(model, true);
-        }
     }
 
+    /// <summary>
+    /// 日报表管理
+    /// </summary>
     public class DailyReportManager
     {
         public OpResult StoreDailyReport(DailyProductionReportModel model)
