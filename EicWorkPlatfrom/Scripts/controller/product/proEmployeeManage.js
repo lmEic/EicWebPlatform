@@ -22,6 +22,18 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
             worker: worker
         });
     };
+    //获取请假类别
+    dataAccess.getLeaveTypesConfigs = function () {
+        var url = urlPrefix+'GetLeaveTypesConfigs';
+        return ajaxService.getData(url, {});
+    };
+    //保存请假数据
+    dataAccess.storeLeaveAskManagerDatas = function (model) {
+        var url = urlPrefix+'StoreLeaveAskManagerDatas';
+        return ajaxService.postData(url, {
+            model: model
+        })
+    };
 
     return dataAccess;
 })
@@ -129,4 +141,133 @@ proEmployeeModule.controller('proUserRegistCtrl', function ($scope, dataDicConfi
             vmManager.postType = 0;
         }
     };
+});
+proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter, dataDicConfigTreeSet, connDataOpService, proEmployeeDataService, $modal) {
+    var uiVM = {
+        WorkerId: null,
+        WorkerName: null,
+        Department: null,
+        LeaveType: null,
+        LeaveHours: 0,
+        LeaveApplyDate: new Date().toDateString(),
+        LeaveAskDate: new Date().toDateString(),
+        LeaveMemo: null,
+        LeaveTimerStart: new Date( 00, 00),
+        LeaveTimerEnd: new Date( 00, 00),
+        LeaveState: null,
+        OpDate: null,
+        OpTime: null,
+        OpPerson: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        Id_Key: 0
+    }
+    $scope.vm = uiVM;
+    var originalVM = _.clone(uiVM);
+    var dialog = $scope.dialog = leePopups.dialog();
+    var queryFields = {
+        workerId: null,
+        department: null
+    }
+    $scope.query = queryFields;
+    var vmManager  = {
+        activeTab: 'initTab',
+        isLocal: true,
+        init: function () {
+            uiVM = _.clone(originalVM);
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVM;
+
+        },
+        del: function () {
+            uiVM = _.clone(originalVM);
+            uiVM.OpSign = leeDataHandler.dataOpMode.delete;
+            $scope.vm = uiVM;
+
+        },
+        isSingle: true,
+        searchedWorkers: [],
+        getWorkerInfo: function () {
+            if (uiVM.WorkerId === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
+            if (uiVM.WorkerId.length >= strLen) {
+                vmManager.searchedWorkers = [];
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {
+                    if (datas.length > 0) {
+                        vmManager.searchedWorkers = datas;
+                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.isSingle = true;
+                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                        }
+                        else {
+                            vmManager.isSingle = false;
+                        }
+                    }
+                    else {
+                        vmManager.selectWorker(null);
+                    }
+                });
+            }
+        },
+        selectWorker: function (worker) {
+            if (worker !== null) {
+                uiVM.WorkerName = worker.Name;
+                uiVM.WorkerId = worker.WorkerId;
+                uiVM.Department = worker.Department;
+            }
+            else {
+                uiVM.Department = null;
+            }
+        },
+        leaveTypes: [],
+        datasource: [],
+
+
+
+
+    };
+    $scope.vmManager = vmManager;
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+    //请假类别
+    $scope.promise = proEmployeeDataService.getLeaveTypesConfigs().then(function (datas) {   
+        var leaveTypes = _.where(datas, {
+            ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType"
+        });
+        if (leaveTypes !== undefined) {
+            angular.forEach(leaveTypes, function (item) {       
+                vmManager.leaveTypes.push({
+                    name: item.DataNodeText, text: item.DataNodeText
+                });
+            });
+        }
+    });
+
+    operate.saveAll = function (isValid) {    
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            alert("hello");
+            proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result)
+                    {
+                        var mode = _.clone(uiVM)
+                        model.Id_Key == opresult.Id_Key;
+                        if (mode.OpSign === leeDataHandler.dataOpMode.add)
+                        {
+                            vmManager.datasource.push(mode);
+                        }
+                        vmManager.init();
+                        dialog.close();
+                    }
+                })
+            })
+        })
+
+    };
+    //更新
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+        })
+    };
+
+
 });
