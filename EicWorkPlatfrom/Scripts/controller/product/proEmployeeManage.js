@@ -240,7 +240,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
 
     operate.saveAll = function (isValid) {    
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            alert("hello");
+            alert(uiVM.WorkerId);
             proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result)
