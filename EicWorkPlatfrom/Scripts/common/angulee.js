@@ -80,7 +80,7 @@ var leeDataHandler = (function () {
         },
         ///显示信息
         displayMessage: function (opstatus, opresult, message) {
-            if (message == undefined) {
+            if (message === undefined) {
                 opstatus.message = opresult.Message;
             }
             else {
