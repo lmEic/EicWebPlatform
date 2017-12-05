@@ -10,6 +10,7 @@ using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -233,7 +234,20 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(result);
         }
-
+        /// <summary>
+        /// 下载8D归档文件
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <param name="stepId"></param>
+        /// <param name="fileProperty"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult Load8dDownLoadDarchivingFile(string reportId, int stepId, string fileProperty)
+        {
+           // DownLoadFileModel dlfm = InspectionService.DataGatherManager.FqcDataGather.GetFqcDatasDownLoadFileModel(SiteRootPath, orderId, orderIdNumber, inspectionItem);
+            DownLoadFileModel dlfm = null;
+            return this.DownLoadFile(dlfm);
+        }
         #endregion
 
 
