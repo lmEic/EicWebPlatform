@@ -1570,7 +1570,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         dataItem.classType = vmManager.classType;
         leeHelper.setUserData(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
-
             if (opResult.Result) {
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList(dataItem);

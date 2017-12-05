@@ -474,8 +474,8 @@ namespace EicWorkPlatfrom.Controllers
                 ///除掉根目录
                 gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
-            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
-            return Json(datas);
+            var opResult = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
+            return Json(opResult);
         }
         /// <summary>
         ///  orderId, orderIdNumber

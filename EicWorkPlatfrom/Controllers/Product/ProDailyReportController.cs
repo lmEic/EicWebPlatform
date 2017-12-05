@@ -209,11 +209,11 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 case 1:
                     var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(queryString);
-                    var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetVirtualOrderDataBy(queryString);
+                    var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetDispatchOrderDataBy(queryString,1);
                     var datas = new { erpOrderDatas, virtualOrderDatas };
                     return DateJsonResult(datas);
                 case 2:
-                    var data = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetQueryOrderBy(queryString);
+                    var data = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetLikeQueryOrderDataBy(queryString);
                     return DateJsonResult(data);
                 default: 
                     return DateJsonResult("操作类型不对");
@@ -250,7 +250,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetInProductionOrderDatas(string department)
         {
-            var haveDispatchOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配");
+            var haveDispatchOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配","True");
             ///由部门信息得对应所有师傅
             var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = department,PostType= "技术类" }, 6);
             var datas = new { haveDispatchOrderDatas, departmentMasterDatas };

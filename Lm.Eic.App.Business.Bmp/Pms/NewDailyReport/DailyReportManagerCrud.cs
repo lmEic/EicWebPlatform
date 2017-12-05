@@ -85,14 +85,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             try
             {
                 OpResult result = OpResult.SetSuccessResult("数据初始操作!", true);
-                // SetFixFieldValue(modelList, OpMode.Add);
-                //处理内部内容 UPS　UPS处理
-                modelList.ForEach((m) =>
-                {
-                    if (result.Result)
-                        result = Store(m);
-                });
-
+                ///只要有一个保存失败 后面的数所也不用操作
+                modelList.ForEach((m) => {  if (result.Result)  result = Store(m); });
+                ///返回最后一个操作的结果
                 return result;
             }
             catch (Exception ex)
@@ -117,11 +112,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(StandardProductionFlowModel model)
         {
-            //生成组合键值
+            ///生成组合键值  如果有模穴数 则关键字添加模穴数
             if (model.MouldId != null)
                 model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProcessesName, model.MouldId);
             else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProcessesName);
-
+           ///   计算UPS值　也UPS的转化
             if (model.StandardProductionTimeType == "UPH")
             {
                 model.UPH = model.StandardProductionTime;
@@ -135,7 +130,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             //此工艺是否已经存在
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetErrorResult("此数据已经添加!");
-
             return irep.Insert(model).ToOpResult(OpContext);
         }
         /// <summary>
@@ -177,20 +171,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据部门查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1").ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == qryDto.IsValid).ToList();
                     case 2: //依据产品品名查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProcessesIndex).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == qryDto.IsValid && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProcessesIndex).ToList();
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.OpDate == inputDate).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == qryDto.IsValid && m.OpDate == inputDate).ToList();
                     case 4: //依据工艺名称查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName && m.ProcessesName == qryDto.ProcessesName).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == qryDto.IsValid && m.ProductName == qryDto.ProductName && m.ProcessesName == qryDto.ProcessesName).ToList();
                     case 5: //依据工单单号查询
                         {
                             var orderDetails = MocService.OrderManage.GetOrderDetails(qryDto.OrderId);
                             if (orderDetails != null)
                                 qryDto.ProductName = orderDetails.ProductName;
-                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == "1" && m.ProductName == qryDto.ProductName).ToList();
+                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.IsValid == qryDto.IsValid && m.ProductName == qryDto.ProductName).ToList();
                         }
                     default:
                         return new List<StandardProductionFlowModel>();
@@ -310,26 +304,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         #endregion
         /// <summary>
         /// 获得当前已经分配的订单
-        /// 1.要有效，2有效期 大于当前日期 
         /// </summary>
         /// <param name="department">部门</param>
+        /// <param name="dicpatchStatus">分配状态状态</param>
+        /// <param name="isValid">是否有效</param>
         /// <returns></returns>
-
-        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus)
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus, string isValid=null)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department && e.DicpatchStatus == dicpatchStatus).OrderBy(e => e.OrderId).ToList();
+            return  isValid == null?
+            irep.Entities.Where(e => e.ProductionDepartment == department && e.DicpatchStatus == dicpatchStatus).OrderBy(e => e.OrderId).ToList():
+            irep.Entities.Where(e => e.ProductionDepartment == department && e.DicpatchStatus == dicpatchStatus && e.IsValid== isValid).OrderBy(e => e.OrderId).ToList();
         }
-        internal List<ProductOrderDispatchModel> GetVirtualOrderDataBy(string department)
+        internal List<ProductOrderDispatchModel> GetDepartmentDispatchOrderDataBy(string department,int isVirtualOrderId=1)
         {
             /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsVirtualOrderId == 1).OrderBy(e => e.OrderId).ToList();
-        }
-
-        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
-        {
-            /// 1.要有效
-            return irep.Entities.Where(e => e.ProductionDepartment == department).ToList();
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsVirtualOrderId == isVirtualOrderId).OrderBy(e => e.OrderId).ToList();
         }
         internal ProductOrderDispatchModel GetOrderInfoBy(string orderid)
         {
