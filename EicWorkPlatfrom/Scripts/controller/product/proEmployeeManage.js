@@ -34,7 +34,6 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
             model: model
         })
     };
-
     return dataAccess;
 })
 //人员注册管理器
