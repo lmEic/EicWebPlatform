@@ -58,7 +58,9 @@ proEmployeeModule.controller('proUserRegistCtrl', function ($scope, dataDicConfi
                 }
             }
         },
+
         searchWorker: function ($event) {
+
             if ($event.keyCode === 13) {
                 $scope.promise = proEmployeeDataService.GetWorkerBy(vmManager.WorkerId).then(function (user) {
                     if (angular.isObject(user)) {

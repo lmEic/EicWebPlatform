@@ -65,7 +65,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         #region 考勤管理
 
         #region 加班管理
-        public ActionResult ProWorOverkHoursManage()
+        public ActionResult ProWorkOverHoursManage()
         {
             return View();
         }

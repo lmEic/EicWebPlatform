@@ -80,7 +80,7 @@ var leeDataHandler = (function () {
         },
         ///显示信息
         displayMessage: function (opstatus, opresult, message) {
-            if (message == undefined) {
+            if (message === undefined) {
                 opstatus.message = opresult.Message;
             }
             else {
@@ -374,6 +374,15 @@ var leeHelper = (function () {
                 ///存储的项
                 item: data
             };
+        },
+        ///根据某一属性值，查找指定的项
+        findItem: function (ary, predicateCondition) {
+            if (!_.isArray(ary)) return null;
+            if (!_.isObject(predicateCondition)) return null;
+            var data = _.findWhere(ary, predicateCondition);
+            if (_.isUndefined(data))
+                return null;
+            return data;
         },
         ///在数组指定位置插入项
         insert: function (ary, index, item) {

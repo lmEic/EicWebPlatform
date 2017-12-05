@@ -582,4 +582,17 @@ qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
     };
     $scope.vmManager = vmManager;
 
+    var editManager = $scope.editManager = {
+        ///下载文件
+        loadFile: function (item) {
+
+            var loadUrl = "/QuaInspectionManage/LoadFqcDatasDownLoadFile?OrderId=" + item.OrderId + "&OrderIdNumber=" + item.OrderIdNumber + "&InspectionItem=" + item.InspectionItem;
+            return loadUrl;
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.FileName);
+        }
+    };
+
 });

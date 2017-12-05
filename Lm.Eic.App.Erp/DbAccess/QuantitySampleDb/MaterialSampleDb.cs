@@ -266,7 +266,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         }
 
 
-        public List<ProductionOrderIdInfo> GetProductionOrderIdInfoBy(string orderId)
+        public List<ProductionOrderIdInfo> GetLikeQueryProductionOrderInfoBy(string orderId)
         {
             List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
             ProductionOrderIdInfo OrderIdData = null;

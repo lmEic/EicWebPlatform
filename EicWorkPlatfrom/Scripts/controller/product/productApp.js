@@ -51,8 +51,8 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         templateUrl: 'ProEmployee/ProAskLeaveManage'
     })
     //加班管理
-    .state('proWorOverkHoursManage', {
-        templateUrl: 'ProEmployee/ProWorOverkHoursManage'
+    .state('proWorkOverHoursManage', {
+        templateUrl: 'ProEmployee/ProWorkOverHoursManage'
     })
     //-------------看板管理-------------------
     .state('jumperWireBoard', {//线材看板管理
