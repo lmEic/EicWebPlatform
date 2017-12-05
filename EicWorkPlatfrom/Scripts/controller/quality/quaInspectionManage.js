@@ -1570,7 +1570,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         dataItem.classType = vmManager.classType;
         leeHelper.setUserData(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
-
             if (opResult.Result) {
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList(dataItem);
@@ -1753,20 +1752,6 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
                 //console.log(vmManager.detailDatas);
             })
         },
-
-        ////获取详细数据
-        //getDetailDatas: function (item) {
-        //    vmManager.currentItem = item;
-        //    qualityInspectionDataOpService.getInspectionFormDetailOfFqcDatas(item.OrderId, item.OrderIdNumber).then(function (datas) {
-        //        angular.forEach(datas, function (item) {
-        //            var dataItems = item.InspectionItemDatas.split(",");
-        //            item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
-        //        })
-        //        vmManager.detailDatas = datas;
-        //        console.log(vmManager.detailDatas);
-        //        vmManager.isShowDetailWindow = true;
-        //    })
-        //},
 
         //获取详细数据
         getDetailDatas: function (item) {

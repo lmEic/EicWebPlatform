@@ -577,7 +577,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         }
         return "";
     };
-    var nowdate = new Date(new Date().setDate(new Date().getDate() - 1));
+    var nowdate =new Date();
+    nowdate.setDate(nowdate.getDate() -1);
     var uiVM = {
         Department: null,
         ClassType: '白班',

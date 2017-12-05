@@ -25,7 +25,7 @@
                 <form role="form" name="departmentSetForm" novalidate class="form-horizontal">
                     <fieldset>
                         <div class="form-group">
-                            <label for="parentDataNodeText" class="col-md-2 control-label">大类别:</label>
+                            <label for="parentDataNodeText" class="col-md-2 control-label">父类别名称:</label>
                             <div class="col-md-4">
                                 <input name="parentDataNodeText" class="form-control" ng-model="vm.ParentDataNodeText" required />
                                 <div class="error-messages" ng-messages="departmentSetForm.parentDataNodeText.$error" ng-show="operate.showValidation">
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="dataNodeName" class="col-md-2 control-label">非生产编码</label>
+                            <label for="dataNodeName" class="col-md-2 control-label">子类别编码:</label>
                             <div class="col-md-4">
                                 <input name="dataNodeName" ng-model="vm.DataNodeName" class="form-control" required />
                                 <div class="error-messages" ng-messages="departmentSetForm.dataNodeName.$error" ng-show="operate.showValidation">
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="dataNodeText" class="col-md-2 control-label">非生产名称</label>
+                            <label for="dataNodeText" class="col-md-2 control-label">子类别名称:</label>
                             <div class="col-md-4">
                                 <input name="dataNodeText" ng-model="vm.DataNodeText" class="form-control" required />
                                 <div class="error-messages" ng-messages="departmentSetForm.dataNodeText.$error" ng-show="operate.showValidation">
@@ -52,13 +52,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="displayOrder" class="col-md-2 control-label">显示顺序</label>
+                            <label for="displayOrder" class="col-md-2 control-label">显示顺序:</label>
                             <div class="col-md-4">
                                 <input name="displayOrder" type="number" ng-model="vm.DisplayOrder" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="memo" class="col-md-2 control-label">备注</label>
+                            <label for="memo" class="col-md-2 control-label">备注说明:</label>
                             <div class="col-md-4">
                                 <textarea rows="3" name="memo" ng-model="vm.Memo" class="form-control" />
                             </div>

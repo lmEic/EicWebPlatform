@@ -474,8 +474,8 @@ namespace EicWorkPlatfrom.Controllers
                 ///除掉根目录
                 gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
-            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
-            return Json(datas);
+            var opResult = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
+            return Json(opResult);
         }
         /// <summary>
         ///  orderId, orderIdNumber
@@ -490,6 +490,14 @@ namespace EicWorkPlatfrom.Controllers
             return Json(opResult);
         }
 
+        #endregion
+
+
+        #region IPQC
+        public ActionResult InspectionDataGatheringOfIPQC()
+        {
+            return View();
+        }
         #endregion
         #endregion
 
@@ -673,6 +681,13 @@ namespace EicWorkPlatfrom.Controllers
         {
             DownLoadFileModel dlfm = InspectionService.DataGatherManager.FqcDataGather.GetFqcDatasDownLoadFileModel(SiteRootPath, orderId, orderIdNumber, inspectionItem);
             return this.DownLoadFile(dlfm);
+        }
+        #endregion
+
+        #region ipqc 检验单管理
+        public ActionResult InspectionFormManageOfIpqc()
+        {
+            return View();
         }
         #endregion
         #endregion

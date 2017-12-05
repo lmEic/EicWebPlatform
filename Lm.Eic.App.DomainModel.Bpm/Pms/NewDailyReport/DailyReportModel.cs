@@ -1001,6 +1001,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { if (orderId != value) { orderId = value; } }
             get { return orderId; }
         }
+
+
+        string _isValid = "1";
+        /// <summary>
+        /// 判断是否有效
+        /// </summary>
+         public string IsValid {
+            set { if (_isValid != value) { _isValid = value; } }
+            get { return _isValid; }
+        }
+
+        /// <summary>
+        /// 搜寻模式
+        /// </summary>
         private int searchMode = 0;
         /// <summary>
         /// 搜索模式
@@ -1019,6 +1033,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         public double WorkerProductionTime { set; get; }
         public double WorkerNoProductionTime { set; get; }
         public string WorkerNoProductionReason { set; get; }
+        public int  GetProductionTime { set; get; }
     }
     /// <summary>
     /// 产品工艺概述模型

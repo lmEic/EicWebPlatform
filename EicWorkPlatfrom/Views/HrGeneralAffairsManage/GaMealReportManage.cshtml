@@ -56,9 +56,6 @@
                         </div>
                     </form>
                 </div>
-                @*<div class="col-md-2">
-
-                    </div>*@
             </div>
             <div class="bs-callout bs-callout-info">
                 <div ng-if="vmManager.reportMealType==='员工餐'">
@@ -181,15 +178,15 @@
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div ng-if="item.Day!==''">
-                                                        <div class="bs-callout bs-callout-default" title="{{item.bsData.WorkerName}}">
+                                                        <div title="{{item.bsData.WorkerName}}" style="border-left:2px solid #c4bdbd;padding-left:2px;">
                                                             <span>
-                                                                中餐：<span ng-if="!item.bsData.CountOfLunch>0"><i class="fa fa-square-o"></i></span>
-                                                                <span class="text-success" ng-if="item.bsData.CountOfLunch>0"><i class="fa fa-check-square"></i></span>
+                                                                中餐：<span class="text-primary" ng-if="!item.bsData.CountOfLunch>0" ng-click="vmManager.reportLeaderMealRecord(item,'中',true)"><i class="fa fa-square-o"></i></span>
+                                                                <span class="text-success" ng-if="item.bsData.CountOfLunch>0" ng-click="vmManager.reportLeaderMealRecord(item,'中',false)"><i class="fa fa-check-square"></i></span>
                                                             </span>
                                                             <br />
                                                             <span>
-                                                                晚餐：<span ng-if="!item.bsData.CountOfSupper>0"><i class="fa fa-square-o"></i></span>
-                                                                <span class="text-success" ng-if="item.bsData.CountOfSupper>0"><i class="fa fa-check-square"></i></span>
+                                                                晚餐：<span class="text-primary" ng-if="!item.bsData.CountOfSupper>0" ng-click="vmManager.reportLeaderMealRecord(item,'晚',true)"><i class="fa fa-square-o"></i></span>
+                                                                <span class="text-success" ng-if="item.bsData.CountOfSupper>0" ng-click="vmManager.reportLeaderMealRecord(item,'晚',false)"><i class="fa fa-check-square"></i></span>
                                                             </span>
                                                         </div>
                                                     </div>
