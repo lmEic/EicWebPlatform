@@ -1540,6 +1540,8 @@
     <Content Include="Views\Product\ProAskLeaveManage.cshtml" />
     <Content Include="Views\ProEmployee\ProClassManage.cshtml" />
     <Content Include="Views\ProEmployee\WorkHoursManage.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionDataGatheringOfIPQC.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionFormManageOfIpqc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

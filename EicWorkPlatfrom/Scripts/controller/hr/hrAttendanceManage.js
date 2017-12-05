@@ -1875,11 +1875,17 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         //创建员工报餐记录
         createEmployeeMealRecord: function (item) {
-
             var dataitem = _.clone(initVM);
             dataitem = vmManager.createEmployeeMealModel(dataitem);
-            leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
-            //业务数据
+            var existItem = leeHelper.findItem(vmManager.dbDataSet, { Department: dataitem.Department, ReportDay: dataitem.ReportDay });
+            if (existItem !== null) {
+                dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+                existItem = dataitem;
+            }
+            else {
+                leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+            }
+            //绑定业务数据
             item.bsData = dataitem;
             vmManager.editEmployeeMealRecord(item);
         },
@@ -1894,7 +1900,6 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                     leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
                         delete item.bsData;
 
-
                         console.log(vmManager.dbDataSet);
                     });
                 });
@@ -1902,7 +1907,25 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         confirmEdit: function () {
             employeeMealDialog.close();
+
+            console.log(vmManager.dbDataSet);
         },
+        //登记陆干餐记录
+        reportLeaderMealRecord: function (item, mealTime, isReported) {
+            var dataitem;
+            if (_.isUndefined(item.bsData)) {
+                item.bsData = dataitem = _.clone(mealReportVM);
+            }
+            else {
+                dataitem = item.bsData;
+            }
+            if (mealTime == "中") {
+                dataitem.CountOfLunch = isReported ? 1 : 0;
+            }
+            if (mealTime === "晚") {
+                dataitem.CountOfSupper = isReported ? 1 : 0;
+            }
+        }
     };
     $scope.vmManager = vmManager;
 

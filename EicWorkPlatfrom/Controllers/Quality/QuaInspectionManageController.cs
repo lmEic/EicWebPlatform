@@ -491,6 +491,14 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion
+
+
+        #region IPQC
+        public ActionResult InspectionDataGatheringOfIPQC()
+        {
+            return View();
+        }
+        #endregion
         #endregion
 
         #region 检验单管理
@@ -673,6 +681,13 @@ namespace EicWorkPlatfrom.Controllers
         {
             DownLoadFileModel dlfm = InspectionService.DataGatherManager.FqcDataGather.GetFqcDatasDownLoadFileModel(SiteRootPath, orderId, orderIdNumber, inspectionItem);
             return this.DownLoadFile(dlfm);
+        }
+        #endregion
+
+        #region ipqc 检验单管理
+        public ActionResult InspectionFormManageOfIpqc()
+        {
+            return View();
         }
         #endregion
         #endregion
