@@ -15,6 +15,8 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
+using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.LeaveAsk;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -115,6 +117,12 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<InternalContactFormModel> InternalContactForm { get; set; }
         public DbSet<WfFormCheckFlowModel> FormCheckFlow { get; set; }
         #endregion
+
+        #region 请假管理
+        public DbSet<LeaveAskModels> LeaveAsk { get; set; }
+      
+        #endregion
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -201,6 +209,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             #region 电子签核管理
             modelBuilder.Configurations.Add(new InternalContactFormModelMapping());
             modelBuilder.Configurations.Add(new WfFormCheckFlowModelMapping());
+            #endregion
+
+            #region 请假管理
+            modelBuilder.Configurations.Add(new LeaveAskMapping());
             #endregion
         }
     }
