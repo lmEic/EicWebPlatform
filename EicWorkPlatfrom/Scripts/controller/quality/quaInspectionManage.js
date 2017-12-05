@@ -1753,20 +1753,6 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             })
         },
 
-        ////获取详细数据
-        //getDetailDatas: function (item) {
-        //    vmManager.currentItem = item;
-        //    qualityInspectionDataOpService.getInspectionFormDetailOfFqcDatas(item.OrderId, item.OrderIdNumber).then(function (datas) {
-        //        angular.forEach(datas, function (item) {
-        //            var dataItems = item.InspectionItemDatas.split(",");
-        //            item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
-        //        })
-        //        vmManager.detailDatas = datas;
-        //        console.log(vmManager.detailDatas);
-        //        vmManager.isShowDetailWindow = true;
-        //    })
-        //},
-
         //获取详细数据
         getDetailDatas: function (item) {
             vmManager.currentItem = item;
