@@ -572,12 +572,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 //日报录入
 productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报录入视图模型
-    function ChangeDateFormat(val) {
-        if (val != null) {
-            return new Date(parseInt(val.replace("/Date(", "").replace(")/", "").split("+")[0])).pattern("yyyy-MM-dd");
-        }
-        return "";
-    };
+ 
     var nowdate =new Date();
     nowdate.setDate(nowdate.getDate() -1);
     var uiVM = {
@@ -1172,13 +1167,13 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     };
     ///机台录入保存数据
     operate.saveMachineDatas = function (isValid) {
-        _.forEach(vmMMachineInPut.handleDatas, function (e) {  e.InPutDate = ChangeDateFormat(e.InPutDate); });
+        _.forEach(vmMMachineInPut.handleDatas, function (e) {  e.InPutDate =leeHelper.formatServerDate(e.InPutDate); });
         $scope.searchPromise = dReportDataOpService.saveMachineDailyReportDatas(vmMMachineInPut.handleDatas).then(function (datasResult) {
             if (datasResult.opResult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.opResult);
                 angular.forEach(datasResult.entitys, function (m) {
                     if (m.OpSign == leeDataHandler.dataOpMode.add) {
-                        m.InPutDate = ChangeDateFormat(m.InPutDate);
+                        m.InPutDate = leeHelper.formatServerDate(m.InPutDate);
                         vmManager.havePutInData.push(m);
                     }
                 });
@@ -1203,7 +1198,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.opResult);
                     angular.forEach(datasResult.dataslist, function (m) {
                         if (m.OpSign == leeDataHandler.dataOpMode.add) {
-                            m.InPutDate = ChangeDateFormat(m.InPutDate);
+                            m.InPutDate = leeHelper.formatServerDate(m.InPutDate);
                             vmManager.havePutInData.push(m);
                         }
                     });
@@ -1232,7 +1227,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 if (opResult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
                     if (opResult.Entity.OpSign == leeDataHandler.dataOpMode.add) {
-                        opResult.Entity.InPutDate = ChangeDateFormat(opResult.Entity.InPutDate);
+                        opResult.Entity.InPutDate =leeHelper.formatServerDate(opResult.Entity.InPutDate);
                         vmManager.havePutInData.push(opResult.Entity);
                         vmManager.continueSaveInit();
                         // vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
@@ -1307,12 +1302,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
 /// 生产订单分派
 productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报分派录入视图模型
-    function ChangeDateFormat(val) {
-        if (val != null) {
-            return new Date(parseInt(val.replace("/Date(", "").replace(")/", "").split("+")[0])).pattern("yyyy-MM-dd");
-        }
-        return "";
-    };
+ 
     var uiVm = {
         OrderId: null,
         ProductionDepartment: null,
@@ -1436,8 +1426,8 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var orderid = opresult.Entity.OrderId;
-                        opresult.Entity.ValidDate = ChangeDateFormat(opresult.Entity.ValidDate);
-                        opresult.Entity.ProductionDate = ChangeDateFormat(opresult.Entity.ProductionDate);
+                        opresult.Entity.ValidDate = leeHelper.formatServerDate(opresult.Entity.ValidDate);
+                        opresult.Entity.ProductionDate = leeHelper.formatServerDate(opresult.Entity.ProductionDate);
                         var findItem = _.findWhere(vmManager.erpOrderInfoDatas, { OrderId: orderid });
                         leeHelper.copyVm(opresult.Entity, findItem);
                         dialog.close();
@@ -1456,8 +1446,8 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var orderid = opresult.Entity.OrderId;
-                        opresult.Entity.ValidDate = ChangeDateFormat(opresult.Entity.ValidDate);
-                        opresult.Entity.ProductionDate = ChangeDateFormat(opresult.Entity.ProductionDate);
+                        opresult.Entity.ValidDate = leeHelper.formatServerDate(opresult.Entity.ValidDate);
+                        opresult.Entity.ProductionDate = leeHelper.formatServerDate(opresult.Entity.ProductionDate);
                         var findItem = _.findWhere(vmManager.virtualOrderDatas, { OrderId: orderid });
                         if (_.isUndefined(findItem)) { vmManager.virtualOrderDatas.push(opresult.Entity) }
                         else {
