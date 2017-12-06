@@ -48,6 +48,13 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     }
                 }
             });
+            scope.$watch('year', function () {
+                if (!angular.isUndefined(scope.year)) {
+                    if (angular.isFunction(scope.changed)) {
+                        scope.changed();
+                    }
+                }
+            });
         }
     };
 })
@@ -499,7 +506,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
-//enlargePic指令名称，写在需要用到的地方img中即可实现放大图片  
+//enlargePic指令名称，写在需要用到的地方img中即可实现放大图片
 .directive('enlargePic', function () {
     return {
         restrict: "AE",

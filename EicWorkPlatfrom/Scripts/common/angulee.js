@@ -673,6 +673,13 @@ var leeHelper = (function () {
             if (_.isUndefined(obj.isServer)) return false;
             return obj.isServer;
         },
+        //将从服务器端传来的日期格式化短日期格式
+        formatServerDate(serverDate) {
+            if (serverDate != null) {
+                return new Date(parseInt(serverDate.replace("/Date(", "").replace(")/", "").split("+")[0])).pattern("yyyy-MM-dd");
+            }
+            return "";
+        }
     };
 })();
 // 弹出框助手
