@@ -63,6 +63,14 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
         });
     };
 
+    //存储报餐数据信息
+    hr.storeReportMealDatas = function (reportMealDatas) {
+        var url = generalAffairsUrl + "StoreReportMealDatas";
+        return ajaxService.postData(url, {
+            reportMealDatas: reportMealDatas
+        });
+    };
+
     //自动检测考勤异常数据
     hr.autoCheckExceptionSlotData = function (yearMonth) {
         var url = attendUrl + "AutoCheckExceptionSlotData";
@@ -1872,7 +1880,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         //设置日期数据
         setDateData(item, dataitem) {
             dataitem.YearMonth = queryVM.yearMonth;
-            dataitem.ReportDay = day;
+            dataitem.ReportDay = queryVM.year + "-" + (parseInt(queryVM.month) >= 10 ? queryVM.month : "0" + queryVM.month) + "-" + (parseInt(item.Day) >= 10 ? item.Day : "0" + item.Day);
             dataitem.ReportDayOfWeek = item.ChineseDayOfWeek;
         },
         createEmployeeMealModel(dataitem) {
@@ -1985,6 +1993,13 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
+    operate.saveAll = function () {
+        hrDataOpService.storeReportMealDatas(vmManager.dbDataSet).then(function (opResult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                vmManager.initCalendarDatas();
+            });
+        });
+    };
 
 
     //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {

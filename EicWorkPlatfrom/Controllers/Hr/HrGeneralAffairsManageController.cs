@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
-
+using System.Collections.Generic;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -75,6 +75,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public ActionResult GaMealReportManage()
         {
             return View();
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreReportMealDatas(List<MealReportManageModel> reportMealDatas)
+        {
+
+            var result = 0;
+
+            return Json(result);
         }
         #endregion
     }

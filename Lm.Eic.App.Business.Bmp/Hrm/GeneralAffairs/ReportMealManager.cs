@@ -19,10 +19,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     public class ReportMealManager
     {
         #region method
-        //public OpResult Store(IList<MealReportManageModel> entities)
-        //{
-
-        //}
+        public OpResult Store(IList<MealReportManageModel> entities)
+        {
+            try
+            {
+                if (entities == null || entities.Count == 0) return OpResult.SetErrorResult("没有要存储的数据！");
+                bool result = true;
+                foreach (var m in entities)
+                {
+                    result = result && GeneralAffairsFactory.ReportMealStore.Store(m).Result;
+                    if (!result) break;
+                }
+                return OpResult.SetResult(result ? "存储数据成功" : "存储数据失败", result);
+            }
+            catch (System.Exception ex)
+            {
+                return ex.ExOpResult();
+            }
+        }
         #endregion
     }
 
@@ -32,9 +46,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
 
         }
+
         #region store method
-
-
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, this.Add);
