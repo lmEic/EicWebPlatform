@@ -1822,6 +1822,13 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                 vmManager.calendar = datas;
             });
         },
+        initCalendarDatas: function () {
+            angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
+                angular.forEach(weekItem.WeekDays, function (weekDay) {
+                    delete weekDay.bsData;
+                });
+            });
+        },
         department: null,
         workerInfo: null,
         //设置干部报餐数据
@@ -1861,6 +1868,8 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.reportMealType = mode;
             vmManager.activeLGTab = 'initLGTab';
             vmManager.activeYGTab = 'initYGTab';
+            vmManager.dbDataSet = [];
+            vmManager.initCalendarDatas();
         },
         createEmployeeMealModel(dataitem) {
             dataitem.Department = vmManager.department;
@@ -1910,11 +1919,28 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
 
             console.log(vmManager.dbDataSet);
         },
+        createLeaderMealModel(dataitem) {
+            dataitem.WorkerId = vmManager.workerInfo.WorkerId;
+            dataitem.WorkerName = vmManager.workerInfo.Name;
+            dataitem.Department = vmManager.workerInfo.Department;
+            dataitem.WorkerType = vmManager.reportMealType;
+            dataitem.CountOfBreakfast = 0;
+            dataitem.CountOfLunch = 0;
+            dataitem.CountOfMidnight = 0;
+            dataitem.CountOfSupper = 0;
+            return dataitem;
+        },
         //登记陆干餐记录
         reportLeaderMealRecord: function (item, mealTime, isReported) {
+            if (vmManager.workerInfo === null) {
+                leePopups.alert("请先输入作业工号！", 2);
+                return;
+            }
             var dataitem;
             if (_.isUndefined(item.bsData)) {
-                item.bsData = dataitem = _.clone(mealReportVM);
+                dataitem = vmManager.createLeaderMealModel(_.clone(mealReportVM));
+                leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+                item.bsData = dataitem;
             }
             else {
                 dataitem = item.bsData;
@@ -1925,6 +1951,29 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             if (mealTime === "晚") {
                 dataitem.CountOfSupper = isReported ? 1 : 0;
             }
+
+            var existItem = leeHelper.findItem(vmManager.dbDataSet, { WorkerId: dataitem.WorkerId, ReportDay: dataitem.ReportDay });
+            if (existItem != null) {
+                if (dataitem.CountOfLunch === 0 && dataitem.CountOfSupper === 0) {
+                    if (leeHelper.isServerObject(dataitem)) {
+                        existItem.OpSign = leeDataHandler.dataOpMode.delete;
+                    }
+                    else {
+                        leeHelper.remove(vmManager.dbDataSet, existItem);
+                    }
+                }
+                else {
+                    dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+                    existItem = dataitem;
+                }
+            }
+            else {
+                if (dataitem.CountOfLunch !== 0 && dataitem.CountOfSupper !== 0) {
+                    leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+                }
+            }
+
+            console.log(vmManager.dbDataSet);
         }
     };
     $scope.vmManager = vmManager;

@@ -77,6 +77,7 @@
     <Compile Include="Hrm\Archives\WorkerManager.cs" />
     <Compile Include="Hrm\Attendance\AttendAskLeaveManager.cs" />
     <Compile Include="Hrm\Attendance\AttendCrudFactory.cs" />
+    <Compile Include="Hrm\GeneralAffairs\ReportMealManager.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursFactory.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursManager.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursService.cs" />
