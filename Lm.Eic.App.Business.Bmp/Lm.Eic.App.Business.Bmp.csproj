@@ -108,6 +108,9 @@
     <Compile Include="Pms\DailyReport\InputManager.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportCrud.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportManager.cs" />
+    <Compile Include="Pms\LeaveAsk\LeaveAskFactory.cs" />
+    <Compile Include="Pms\LeaveAsk\LeaveAskManager.cs" />
+    <Compile Include="Pms\LeaveAsk\LeaveAskService.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportConfig\MachineInfoManager.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportConfig\DailyProductionCodeConfigManager.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportManager.cs" />

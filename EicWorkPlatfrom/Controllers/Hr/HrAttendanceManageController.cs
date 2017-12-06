@@ -361,20 +361,17 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             try
             {
-                var opresult = WorkOverHoursService.WorkOverHoursManager.StoreWorkOverHours(model);
-                return Json(opresult);
+              var opresult = WorkOverHoursService.WorkOverHoursManager.StoreWorkOverHours(model);
+              return Json(opresult);
             }
             catch (Exception ex)
             {
-
-                throw new System.Exception(ex.Message);
+              throw new System.Exception(ex.Message);
             }
         }
-
         [NoAuthenCheck]
         public ContentResult GetDepartment(string datanodeName)
-        {
-            
+        {          
             try
             {
                 var  datas = PmConfigService.DataDicManager.GetConfigDataDepartment("Organization", "HrBaseInfoManage", datanodeName);
@@ -389,10 +386,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
             }
 
         }
-
-
-
-
         #endregion
     }
 }

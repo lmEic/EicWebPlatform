@@ -1,7 +1,14 @@
 ﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.App.Business.Bmp.Pms.LeaveAsk;
 using Lm.Eic.App.Business.Mes.Optical.Authen;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
+//using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAskManager;
 using Lm.Eic.Framework.Authenticate.Business;
+using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.Framework.ProductMaster.Model;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -66,11 +73,42 @@ namespace EicWorkPlatfrom.Controllers.Product
         #endregion
 
 
+
         #region 请假管理
         public ActionResult ProAskLeaveManage()
         {
             return View();
         }
+        /// <summary>
+        /// 获取请假类别
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public  JsonResult GetLeaveTypesConfigs()
+
+        {
+            List<ConfigDataDictionaryModel> leaveConfigTypes = PmConfigService.DataDicManager.LoadConfigDatasBy("AttendanceConfig", "AskForLeaveType");
+            return Json(leaveConfigTypes, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreLeaveAskManagerDatas(LeaveAskModels models)
+        {
+            try
+            {
+                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(models);
+                
+                return Json(opresult);
+            }
+            catch (System.Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+
+        }
+        
         #endregion
 
         #endregion

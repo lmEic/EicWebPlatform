@@ -126,7 +126,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             {
                 productionOrderIdInfo.ForEach(m =>
                 {
-                    flowSummaryVm = DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDateBy(m.ProductName);
+                    flowSummaryVm = DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDateBy(department, m.ProductName);
                     if (flowSummaryVm == null) flowSummaryVm = new ProductFlowSummaryVm();
                     flowSummaryVm.ProductName = m.ProductName;
                     flowSummaryVm.ProductId = m.ProductId;
@@ -163,7 +163,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus, string isValid = null)
+        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, string dicpatchStatus, string isValid)
         {
             return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, dicpatchStatus, isValid );
         }
@@ -277,7 +277,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             ///查询出部门已分配工单，未失效的工单
             var todayHaveDispatchProductionOrderDatas = DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配", "True");
             if (todayHaveDispatchProductionOrderDatas == null || todayHaveDispatchProductionOrderDatas.Count == 0) return;
-            todayHaveDispatchProductionOrderDatas.ForEach(e =>
+            ///除掉虚以的工单
+            var datas = todayHaveDispatchProductionOrderDatas.Where(e => e.IsVirtualOrderId == 0).ToList();
+            if (datas == null || datas.Count == 0) return;
+            datas.ForEach(e =>
             {
                 ///如果工单不在ERP中的在制工单中 那么此分配的工单失效 状态变为已经完工 如果是虚拟工单不用改变
                 var dates = erpInProductiondatas.FirstOrDefault(f => f.OrderId == e.OrderId && e.IsVirtualOrderId == 0);

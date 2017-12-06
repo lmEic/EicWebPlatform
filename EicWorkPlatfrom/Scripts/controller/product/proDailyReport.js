@@ -1076,15 +1076,12 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 };
             };
         },
-        ///修改已经输入的机台
-        changeInputMachineVm: function (item) {
-            // var machinevminfo = _.clone(item);
-            console.log(item);
-           // uiVM = item;
-        },
+       
         ///删除已经输入的机台信息
         deleteInputMachineVm: function (item) {
             leeHelper.remove(vmMMachineInPut.handleDatas, item);
+            var machineInfo = _.find(vmMMachineInPut.putInDatasSet, function (u) { return u.MachineId == item.MachineId })
+            leeHelper.remove(vmMMachineInPut.putInDatasSet, machineInfo);
             vmMMachineInPut.handleHavePutIntData(vmMMachineInPut.handleDatas);
         },
         ///显示机台输入 machineDialog
@@ -1172,6 +1169,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     };
     ///机台录入保存数据
     operate.saveMachineDatas = function (isValid) {
+        _.forEach(vmMMachineInPut.handleDatas, function (e) {  e.InPutDate = ChangeDateFormat(e.InPutDate); });
         $scope.searchPromise = dReportDataOpService.saveMachineDailyReportDatas(vmMMachineInPut.handleDatas).then(function (datasResult) {
             if (datasResult.opResult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.opResult);
