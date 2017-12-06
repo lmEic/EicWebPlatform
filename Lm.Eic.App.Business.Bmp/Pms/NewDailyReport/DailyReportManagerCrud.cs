@@ -205,9 +205,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return irep.GetProductFlowSummaryDatasBy(department, productName);
         }
-        public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string productName)
+        public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string department, string productName)
         {
-            return irep.GetProductFlowSummaryDataBy(productName);
+            return irep.GetProductFlowSummaryDataBy(department, productName);
         }
 
 
