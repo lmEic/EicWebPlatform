@@ -154,6 +154,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     ///工艺标准工时视图模型
     var uiVM = {
         Department: null,
+        DepartmentText: null,
         ProductId: null,
         ProductName: null,
         ProcessesIndex: 0,
