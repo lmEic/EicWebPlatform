@@ -744,7 +744,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             uiVM.ProductId = item.ProductId;
             uiVM.ProductName = item.ProductName;
             uiVM.ProductSpec = item.ProductSpec;
-            uiVM.OrderQuantity = item.ProduceNumber - item.PutInStoreNumber;
+            uiVM.OrderQuantity = item.ProduceNumber;
             vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
             vmManager.queryActiveTab = 'qryFolwProcessTab';
         },
@@ -819,6 +819,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             vmManager.putInDatas(item);
             vmManager.showputInDisplay();
         },
+        ///
+       
         //显示明细
         showPutInDetail: function (item) {
             vmManager.putInDataProcessesName = item.ProcessesName;
@@ -1217,6 +1219,12 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             leePopups.alert("生产时超出");
             return;
         }
+        if (uiVM.TodayProductionCount != 0 && uiVM.StandardProductionTime != 0 && uiVM.WorkerProductionTime != 0) {
+            if (uiVM.TodayProductionCount / uiVM.StandardProductionTime > uiVM.WorkerProductionTime * 1.6) {
+                leePopups.alert("得到工时超出生产工时1.6陪");
+                return;
+            };
+        };
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
         leeDataHandler.dataOperate.add(operate, isValid, function () {
