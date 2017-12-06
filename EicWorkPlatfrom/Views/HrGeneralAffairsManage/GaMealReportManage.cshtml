@@ -59,7 +59,7 @@
                     </form>
                 </div>
             </div>
-            <div class="bs-callout bs-callout-info">
+            <div class="bs-callout bs-callout-info" cg-busy="{promise:promise}">
                 <div ng-if="vmManager.reportMealType==='员工餐'">
                     <div bs-tabs bs-active-pane="vmManager.activeYGTab">
                         <div bs-pane data-title="业务视图" data-name="initYGTab">
@@ -67,7 +67,7 @@
                                 <thead>
                                     <tr>
                                         <th ng-repeat="headerItem in vmManager.calendar.WeekDays" class="text-center info">
-                                            {{headerItem.Day}}
+                                            {{headerItem.Day}}({{headerItem.ChineseDayOfWeek}})
                                         </th>
                                     </tr>
                                 </thead>
@@ -156,7 +156,7 @@
                                 <thead>
                                     <tr>
                                         <th ng-repeat="headerItem in vmManager.calendar.WeekDays" class="text-center info">
-                                            {{headerItem.Day}}
+                                            {{headerItem.Day}}({{headerItem.ChineseDayOfWeek}})
                                         </th>
                                     </tr>
                                 </thead>

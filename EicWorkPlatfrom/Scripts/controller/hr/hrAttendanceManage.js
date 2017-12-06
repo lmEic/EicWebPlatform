@@ -1807,9 +1807,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     var queryVM = $scope.qryvm = {
         year: null,
         month: null,
-        yearMonth: null,
-        dateFrom: new Date(),//请假其实日期
-        dateTo: new Date(),//请假结束日期
+        yearMonth: null
     };
     var vmManager = {
         activeYGTab: 'initYGTab',
@@ -1871,6 +1869,12 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.dbDataSet = [];
             vmManager.initCalendarDatas();
         },
+        //设置日期数据
+        setDateData(item, dataitem) {
+            dataitem.YearMonth = queryVM.yearMonth;
+            dataitem.ReportDay = day;
+            dataitem.ReportDayOfWeek = item.ChineseDayOfWeek;
+        },
         createEmployeeMealModel(dataitem) {
             dataitem.Department = vmManager.department;
             dataitem.WorkerId = "000000";
@@ -1886,6 +1890,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         createEmployeeMealRecord: function (item) {
             var dataitem = _.clone(initVM);
             dataitem = vmManager.createEmployeeMealModel(dataitem);
+            vmManager.setDateData(item, dataitem);
             var existItem = leeHelper.findItem(vmManager.dbDataSet, { Department: dataitem.Department, ReportDay: dataitem.ReportDay });
             if (existItem !== null) {
                 dataitem.OpSign = leeDataHandler.dataOpMode.edit;
@@ -1908,16 +1913,12 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                     var dataitem = item.bsData;
                     leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
                         delete item.bsData;
-
-                        console.log(vmManager.dbDataSet);
                     });
                 });
             });
         },
         confirmEdit: function () {
             employeeMealDialog.close();
-
-            console.log(vmManager.dbDataSet);
         },
         createLeaderMealModel(dataitem) {
             dataitem.WorkerId = vmManager.workerInfo.WorkerId;
@@ -1939,6 +1940,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             var dataitem;
             if (_.isUndefined(item.bsData)) {
                 dataitem = vmManager.createLeaderMealModel(_.clone(mealReportVM));
+                vmManager.setDateData(item, dataitem);
                 leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
                 item.bsData = dataitem;
             }
