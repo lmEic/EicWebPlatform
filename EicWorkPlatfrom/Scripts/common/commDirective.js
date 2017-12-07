@@ -864,6 +864,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     connDataOpService.getWorkersBy(scope.workerId).then(function (workerDatas) {
                         if (angular.isArray(workerDatas) && workerDatas.length > 0) {
                             scope.worker = workerDatas[0];
+                            scope.workerId = null;
                         }
                     });
                 }

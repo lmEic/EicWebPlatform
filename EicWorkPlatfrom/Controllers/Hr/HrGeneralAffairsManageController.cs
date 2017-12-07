@@ -80,11 +80,17 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public JsonResult StoreReportMealDatas(List<MealReportManageModel> reportMealDatas)
         {
-
-            var result = 0;
-
+            var result = GeneralAffairsService.ReportMealManager.Store(reportMealDatas);
             return Json(result);
         }
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetReportMealDatas(string reportType, string yearMonth, string department = null, string workerId = null)
+        {
+            var datas = GeneralAffairsService.ReportMealManager.GetReportMealDatas(reportType, yearMonth, department, workerId);
+            return DateJsonResult(datas);
+        }
+
         #endregion
     }
 }

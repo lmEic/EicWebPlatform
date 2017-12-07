@@ -6,7 +6,7 @@
         <div class="bs-callout bs-callout-default">
             <div class="row">
                 <div class="col-md-12">
-                    <form class="form-inline">
+                    <form class="form-inline" onkeypress="if (event.keyCode === 13) return false;">
                         <div class="form-group">
                             <div class="btn-group">
                                 <button type="button" ng-class="{true:'btn btn-warning',false:'btn btn-default'}[vmManager.reportMealType==='员工餐']"
@@ -28,10 +28,7 @@
                                  title-visible="true"></div>
                         </div>
                         <div class="form-group">
-                            <div class="input-group" ng-if="vmManager.reportMealType==='员工餐'">
-                                <div class="input-group-addon">
-                                    <label>部门：</label>
-                                </div>
+                            <div class="input-group">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-primary" ng-model="vmManager.department"
                                             data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
@@ -42,15 +39,15 @@
                             </div>
                         </div>
                         <div class="form-group" ng-if="vmManager.reportMealType==='陆干餐'">
-                            <label class="control-label">作业工号</label>
+                            <label class="control-label">工号</label>
                             <span yl-workerid-input data-changed="vmManager.setLeaderMealReportDatas()"
                                   data-worker="vmManager.workerInfo"></span>
                             <span style="margin-top:5px;margin-bottom:1px;padding-bottom:3px;padding-left:3px;padding-right:3px;
                                           border-radius:3px;border-bottom-style:groove;" ng-if="vmManager.workerInfo">
-                                <label>工号</label><span class="label label-info">{{vmManager.workerInfo.WorkerId}}</span>
-                                <label>姓名</label><span class="label label-success">{{vmManager.workerInfo.Name}}</span>
-                                <label>部门</label><span class="label label-warning">{{vmManager.workerInfo.Department}}</span>
-                                <label>岗位</label><span class="label label-primary">{{vmManager.workerInfo.Post}}</span>
+                                <span title="工号" class="label label-info">{{vmManager.workerInfo.WorkerId}}</span>
+                                <span title="姓名" class="label label-success">{{vmManager.workerInfo.Name}}</span>
+                                <span title="部门" class="label label-warning">{{vmManager.workerInfo.Department}}</span>
+                                <span title="岗位" class="label label-primary">{{vmManager.workerInfo.Post}}</span>
                             </span>
                         </div>
                         <div class="form-group" ng-if="vmManager.dbDataSet.length>0">
