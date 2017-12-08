@@ -1201,10 +1201,12 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             return;
         }
         if (uiVM.TodayProductionCount != 0 && uiVM.StandardProductionTime != 0 && uiVM.WorkerProductionTime != 0) {
-            if (uiVM.TodayProductionCount / uiVM.StandardProductionTime > uiVM.WorkerProductionTime * 1.6) {
+            var getTime =(uiVM.TodayProductionCount * uiVM.StandardProductionTime / 3600).toFixed(2);
+            if (getTime > (uiVM.WorkerProductionTime * 1.6)) {
                 leePopups.alert("得到工时超出生产工时1.6陪");
                 return;
             };
+            uiVM.GetProductionTime = getTime;
         };
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
