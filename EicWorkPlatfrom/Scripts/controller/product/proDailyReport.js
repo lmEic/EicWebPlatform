@@ -233,30 +233,14 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
            { value: "PT1", label: "成型课" }],
         ///输入类型
         inputTypes: [
-           { id: "A", text: "A" },
-                { id: "B", text: "B" },
-           { id: "E", text: "E" },
-            { id: "F", text: "F" },
-            { id: "G", text: "G" },
+           { id: "A", text: "有工时，计生产" },
+                { id: "B", text: "无工时，计生产" },
+           { id: "E", text: "无工时，不计生产" },
+            { id: "F", text: "有工时，不计生产" },
+         
         ],
-        //输入类型改变
-        changeInputType: function () {
-            if (uiVM.InputType === 'E') {
-                uiVM.ProcessesName = '过称';
-                vmManager.isShowProductionTime = false;
-            };
-            if (uiVM.InputType === 'F') {
-                uiVM.ProcessesName = '修不良';
-                vmManager.isShowProductionTime = false;
-            };
-            if (uiVM.InputType === 'G') {
-                uiVM.ProcessesName = '其它';
-                vmManager.isShowProductionTime = false;
-            };
-            if (uiVM.InputType === 'A') {
-                uiVM.ProcessesName = '';
-                vmManager.isShowProductionTime = true;
-            };
+        selectInputType: function (item) {
+            uiVM.InputType = item.id;
         },
         //工时类别
         standardProductionTimeTypes: [
@@ -264,8 +248,12 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                 { id: "UPS", text: "UPS" }],
         //工艺类别
         processesTypes: [
-            { id: "人工", text: "人工" },
-            { id: "机台", text: "机台" }],
+            { id: "人工", text: "人工工时" },
+            { id: "机台", text: "机台运行" }],
+     
+        selectProcessesType: function (item) {
+            uiVM.ProcessesType = item.id;
+        },
         editDatasSummyset: [],
         editDatasSummysetsource: [],
         standardHoursCount: null,
@@ -360,15 +348,10 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                 vmManager.editDatasSummysetsource = datas;
             });
         },
-        ///是否显示输入机台信息
-        changeIsShowMachine: function () {
-            if ($scope.vm.ProcessesType === "机台") {
-                vmManager.isShowMachine = true;
-            }
-            else { vmManager.isShowMachine = false; }
-        },
+      
         ///changeDepartment
         changeDepartment: function () {
+            
             $scope.promise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 0).then(function (datas) {
                 vmManager.editDatasSummyset = [];
                 vmManager.editDatasSummyset = datas;
@@ -572,7 +555,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 //日报录入
 productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报录入视图模型
- 
     var nowdate =new Date();
     nowdate.setDate(nowdate.getDate() -1);
     var uiVM = {
@@ -719,8 +701,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         productionFlowDatasSet: [],//工序信息
         productionFlowDatasSouce: [],//工序信息
         departmentMasterDatas: [],
- 
-       
         //选择部门
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (datas) {
@@ -832,6 +812,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             });
             vmManager.queryActiveTab = 'qryUserInfoTab';
         },
+
         showputInDisplay: function () {
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }
@@ -1077,10 +1058,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
        
         ///删除已经输入的机台信息
         deleteInputMachineVm: function (item) {
-            leeHelper.remove(vmMMachineInPut.handleDatas, item);
-            var machineInfo = _.find(vmMMachineInPut.putInDatasSet, function (u) { return u.MachineId == item.MachineId })
-            leeHelper.remove(vmMMachineInPut.putInDatasSet, machineInfo);
-            vmMMachineInPut.handleHavePutIntData(vmMMachineInPut.handleDatas);
+            leePopups.confirm("删除提示", "您确定要删除此数据吗？", function () {
+                $scope.$apply(function () {
+                    leeHelper.remove(vmMMachineInPut.handleDatas, item);
+                    var machineInfo = _.find(vmMMachineInPut.putInDatasSet, function (u) { return u.MachineId == item.MachineId })
+                    leeHelper.remove(vmMMachineInPut.putInDatasSet, machineInfo);
+                    vmMMachineInPut.handleHavePutIntData(vmMMachineInPut.handleDatas);
+                   
+                });
+            });
         },
         ///显示机台输入 machineDialog
         showMachineDialog: function () {
@@ -1253,6 +1239,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         workerIdFocus: false,
         workerIdsFocus: false,
         orderIdFocus: false,
+     
         //生产工时
         workerProductionTimeFocus: false,
         getProdutionTimeFocus: false,
@@ -1417,6 +1404,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
     };
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveDispatchData = function (isValid) {

@@ -65,7 +65,7 @@
                                         <th>工单单号</th>
                                         <th>产品品名</th>
                                         <th>产品规格</th>
-                                        <th>工单产数</th>
+                                        <th>需生产产数</th>
                                         <th>预计开工日期</th>
                                         <th>预计完工日期</th>
                                         <th>ERP状态</th>
@@ -77,7 +77,7 @@
                                         <td>{{item.OrderId}}</td>
                                         <td>{{item.ProductName}}</td>
                                         <td>{{item.ProductSpec}}</td>
-                                        <td>{{item.ProduceNumber}}</td>
+                                        <td>{{item.ProduceNumber - item.PutInStoreNumber}}</td>
                                         <td>{{item.ProductionDate}}</td>
                                         <td>{{item.ValidDate}}</td>
                                         <td title="{{item.IsValid}}">
