@@ -2,7 +2,7 @@
 using Lm.Eic.App.Business.Bmp.Pms.LeaveAsk;
 using Lm.Eic.App.Business.Mes.Optical.Authen;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-//using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAskManager;
+using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
 using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model;
@@ -84,14 +84,15 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [NoAuthenCheck]
         public  JsonResult GetLeaveTypesConfigs()
-
         {
+          
+            
             List<ConfigDataDictionaryModel> leaveConfigTypes = PmConfigService.DataDicManager.LoadConfigDatasBy("AttendanceConfig", "AskForLeaveType");
             return Json(leaveConfigTypes, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         [NoAuthenCheck]
-        public JsonResult StoreLeaveAskManagerDatas(LeaveAskModels models)
+        public JsonResult StoreLeaveAskManagerDatas(LeaveAskManagerModels models)
         {
             try
             {

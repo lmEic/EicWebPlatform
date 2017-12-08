@@ -119,7 +119,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         #endregion
 
         #region 请假管理
-        public DbSet<LeaveAskModels> LeaveAsk { get; set; }
+        public DbSet<LeaveAskManagerModels> LeaveAsk { get; set; }
       
         #endregion
 

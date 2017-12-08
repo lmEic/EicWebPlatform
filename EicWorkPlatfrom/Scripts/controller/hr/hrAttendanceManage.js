@@ -742,6 +742,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         cancelEdit: function (item) {
             item.pheditting = false;
             item.isEdittingWorkerId = false;
+            item.isEdittingOverType = false;
+            item.isEdittingClassType = false;
             item.wkhing = false;
             item.wkhing1 = false;
             item.wkhing2 = false;
@@ -782,7 +784,13 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
             vmManager.edittingRow.WorkClassType = $scope.vm.WorkClassType;
             vmManager.edittingRow.isEdittingClassType = false;
         },
-        editOverHours: function (item) {
+        editOverHours: function (item) {       
+            item.pheditting = false;
+            item.isEdittingWorkerId = false;
+            item.isEdittingOverType = false;
+            item.isEdittingClassType = false;
+            item.wkhing2 = false;
+            item.wkhing1 = false;
             item.wkhing = true;
             vmManager.getCurrentRow(item);
             var dataitem = _.clone(item);
@@ -800,7 +808,13 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         },
         //编辑部门
         editdepartmentText: function (item) {
-            item.wkhing2 = true;
+            item.pheditting = false;
+            item.isEdittingWorkerId = false;
+            item.isEdittingOverType = false;
+            item.isEdittingClassType = false;       
+            item.wkhing = false;//时数
+            item.wkhing1 = false;//备注
+            item.wkhing2 = true;//部门
             vmManager.getCurrentRow(item);
             var dataitem = _.clone(item);
             dataitem.OpSign = leeDataHandler.dataOpMode.edit;
@@ -812,7 +826,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 vmManager.edittingRowIndex = item.rowindex;
                 vmManager.edittingRow = item;
                 item.wkhing2 = true;
-                focusSetter['departmentText'] = true;
+                focusSetter['departmentTextFocus'] = true;
             }
 
         },
@@ -822,12 +836,10 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing2 = false });
                 leeHelper.copyVm(item, uiVM);
                 $scope.vm = uiVM;
-
                 vmManager.edittingRowIndex = item.rowindex;
                 vmManager.edittingRow = item;
                 item.wkhing2 = true;
-
-                focusSetter['departmentText'] = true;
+                focusSetter['departmentTextFocus'] = true;
             }
         },
         editNextdepartmentText: function ($event, item) {
@@ -852,6 +864,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         },
         //编辑注备
         editremark: function (item) {
+            item.pheditting = false;
+            item.isEdittingWorkerId = false;
+            item.isEdittingOverType = false;
+            item.isEdittingClassType = false;
+            item.wkhing2 = false;
+            item.wkhing = false;
             item.wkhing1 = true;
             vmManager.getCurrentRow(item);
             var dataitem = _.clone(item);
@@ -864,7 +882,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 vmManager.edittingRowIndex = item.rowindex;
                 vmManager.edittingRow = item;
                 item.wkhing1 = true;
-                focusSetter['remark'] = true;
+                focusSetter['remarkFocus'] = true;
             }
         },
         editworkremark: function (item) {
@@ -873,12 +891,10 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing1 = false });
                 leeHelper.copyVm(item, uiVM);
                 $scope.vm = uiVM;
-
                 vmManager.edittingRowIndex = item.rowindex;
                 vmManager.edittingRow = item;
                 item.wkhing1 = true;
-
-                focusSetter['remark'] = true;
+                focusSetter['remarkFocus'] = true;
             }
         },
         editNextremark: function ($event, item) {
@@ -1011,6 +1027,13 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         },
         //快速查找员工
         getWorkName: function () {
+            //构建索引号
+            var rindex = 1;
+            angular.forEach(datas, function (item) {
+                item.rowindex = rindex;
+                rindex += 1;
+            });
+
             var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
 
             if (qryItem != null) {
@@ -1072,13 +1095,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         //编辑加班时数
         editworkOverHours: function (item) {
             if (item !== undefined && item !== null) {
-
+               
                 angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing = false });
                 leeHelper.copyVm(item, uiVM);
-                $scope.vm = uiVM;
-
+                $scope.vm = uiVM;              
                 vmManager.edittingRowIndex = item.rowindex;
-                vmManager.edittingRow = item;
+                vmManager.edittingRow = item;           
                 item.wkhing = true;
                 focusSetter['workeroverFocus'] = true;
             }
@@ -1087,7 +1109,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         editNextworkOverHours: function ($event, item) {
             if ($event.keyCode === 13 || $event.keyCode === 9) {
                 //累计时数
-
+               
                 $scope.vm.WorkDate = item.WorkDate;
                 tempVm.workOverCount = 0;
                 angular.forEach(vmManager.dataSets, function (row) {
@@ -1309,8 +1331,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
     //焦点设置
     var focusSetter = {
         workeroverFocus: false,
-        remark: false,
-        departmentText: false,
+        remarkFocus: false,
+        departmentTextFocus: false,
         //移动焦点到指定对象
         moveFocusTo: function ($event, elPreName, elNextName) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {

@@ -8,12 +8,12 @@ using System.Text;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.LeaveAsk
 {
-    public interface ILeaveAskManagerRepository : IRepository<LeaveAskModels>
+    public interface ILeaveAskManagerRepository : IRepository<LeaveAskManagerModels>
     {
 
 
     }
-  public  class LeaveAskRepository:BpmRepositoryBase<LeaveAskModels>, ILeaveAskManagerRepository
+  public  class LeaveAskRepository:BpmRepositoryBase<LeaveAskManagerModels>, ILeaveAskManagerRepository
     {
 
 
