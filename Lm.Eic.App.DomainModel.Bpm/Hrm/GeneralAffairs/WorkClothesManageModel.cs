@@ -166,7 +166,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs
         }
         #endregion Model
     }
-
     /// <summary>
     ///报餐管理模型
     /// </summary>
@@ -257,6 +256,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs
             set { _reportday = value; }
             get { return _reportday; }
         }
+        private int _reportdayat;
+        /// <summary>
+        ///报餐日历
+        /// </summary>
+        public int ReportDayAt
+        {
+            set { _reportdayat = value; }
+            get { return _reportdayat; }
+        }
         private string _reportdayofweek;
         /// <summary>
         ///星期
@@ -331,5 +339,4 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs
         }
         #endregion Model
     }
-
 }

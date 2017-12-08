@@ -5,6 +5,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -19,10 +20,29 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     public class ReportMealManager
     {
         #region method
-        //public OpResult Store(IList<MealReportManageModel> entities)
-        //{
+        public OpResult Store(IList<MealReportManageModel> entities)
+        {
+            try
+            {
+                if (entities == null || entities.Count == 0) return OpResult.SetErrorResult("没有要存储的数据！");
+                bool result = true;
+                foreach (var m in entities)
+                {
+                    result = result && GeneralAffairsFactory.ReportMealStore.Store(m).Result;
+                    if (!result) break;
+                }
+                return OpResult.SetResult(result ? "存储数据成功" : "存储数据失败", result);
+            }
+            catch (System.Exception ex)
+            {
+                return ex.ExOpResult();
+            }
+        }
 
-        //}
+        public List<MealReportManageModel> GetReportMealDatas(string reportType, string yearMonth, string department = null, string workerId = null)
+        {
+            return GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(reportType, yearMonth, department, workerId);
+        }
         #endregion
     }
 
@@ -32,9 +52,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
 
         }
+
         #region store method
-
-
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, this.Add);
@@ -44,15 +63,19 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
         private OpResult Add(MealReportManageModel entity)
         {
-            if (!this.irep.IsExist(e => e.Department == entity.Department && e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay))
+            entity.ReportTime = DateTime.Now;
+            var existItem = this.irep.FirstOfDefault(e => e.Department == entity.Department && e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay);
+            if (existItem == null)
             {
                 return this.irep.Insert(entity).ToOpResult_Add(this.OpContext);
             }
+            entity.Id_Key = existItem.Id_Key;
             return this.Update(entity);
         }
         private OpResult Update(MealReportManageModel entity)
         {
-            return this.irep.Update(f => f.Id_Key == entity.Id_Key, entity).ToOpResult_Eidt(this.OpContext);
+            entity.ReportTime = DateTime.Now;
+            return this.irep.Update(e => e.Id_Key == entity.Id_Key, entity).ToOpResult_Eidt(this.OpContext);
         }
 
         private OpResult Delete(MealReportManageModel entity)
@@ -62,7 +85,23 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         #endregion
 
         #region query method
-
+        internal List<MealReportManageModel> GetReportMealDatas(string reportType, string yearMonth, string department = null, string workerId = null)
+        {
+            Expression<Func<MealReportManageModel, bool>> predicate = null;
+            if (string.IsNullOrEmpty(workerId))
+            {
+                predicate = e => e.WorkerType == reportType && e.YearMonth == yearMonth && e.Department == department;
+            }
+            else if (string.IsNullOrEmpty(workerId) && string.IsNullOrEmpty(department))
+            {
+                predicate = e => e.WorkerType == reportType && e.YearMonth == yearMonth;
+            }
+            else
+            {
+                predicate = e => e.WorkerType == reportType && e.YearMonth == yearMonth && e.Department == department && e.WorkerId == workerId;
+            }
+            return this.irep.Entities.Where(predicate).ToList();
+        }
         #endregion
 
     }
