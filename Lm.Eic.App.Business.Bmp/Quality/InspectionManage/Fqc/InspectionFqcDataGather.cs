@@ -28,27 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             return defaultValue;
         }
-        /// <summary>
-        ///  依条件   加载所有的测试项目
-        /// </summary>
-        /// <param name="materialId"></param>
-        /// <returns></returns>
-        public List<InspectionFqcItemConfigModel> GetFqcNeedInspectionItemDatas(string materialId)
-        {
-            try
-            {
-                if (!BufferInspectionItemDatas.Keys.Contains(materialId))
-                    BufferInspectionItemDatas.Add(materialId, InspectionManagerCrudFactory.FqcItemConfigCrud.FindFqcInspectionItemConfigDatasBy(materialId));
-                return BufferInspectionItemDatas[materialId];
-
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw new Exception(ex.InnerException.Message);
-            }
-
-        }
+       
 
         #endregion
 
@@ -128,8 +108,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 var orderMaterialInfo = orderMaterialInfoList[0];
                 /// 如果生成的数据大于 总数 则反回空
                 if (sampleCount <= 0 || sampleCount > orderMaterialInfo.ProduceNumber) return returnDatas;
-                ///得到需要检验的项目
-                var fqcNeedInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
+                ///得到需要检验的项目(h)
+                var fqcNeedInspectionsItemdatas = InspectionManagerCrudFactory.FqcItemConfigCrud.FindFqcInspectionItemConfigDatasBy(orderMaterialInfo.ProductID);
 
                 if (fqcNeedInspectionsItemdatas == null || fqcNeedInspectionsItemdatas.Count <= 0) return returnDatas;
 
@@ -339,7 +319,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
                 InspectionItemDataSummaryVM model = null;
                 var orderMaterialInfo = this.GetPuroductSupplierInfo(orderId).FirstOrDefault();
-                var needInspectionItems = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
+                var needInspectionItems = InspectionManagerCrudFactory.FqcItemConfigCrud.FindFqcInspectionItemConfigDatasBy(orderMaterialInfo.ProductID);
                 /// 从配置中获配置信息
                 fqcHaveInspectionDatas.ForEach(m =>
                 {

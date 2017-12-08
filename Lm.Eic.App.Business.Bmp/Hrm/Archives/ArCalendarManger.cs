@@ -192,7 +192,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 WeekDayModel day = null;
                 for (int w = 0; w <= 6; w++)
                 {
-                    day = new WeekDayModel() { Id = w };
+                    day = new WeekDayModel() { Id = w, ChineseDayOfWeek = monthCalendar.WeekDays.FirstOrDefault(e => e.Id == w).ChineseDayOfWeek };
                     var m = weekDatas.FirstOrDefault(e => e.CalendarWeek == w);
                     if (m != null)
                     {
@@ -299,14 +299,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             get
             {
                 return new List<WeekDayModel>() {
-                    new WeekDayModel() { Id=-1, Day="Week" },
-                    new WeekDayModel() { Id=0,Day="Sun" },
-                    new WeekDayModel() { Id=1,Day="Mon" },
-                    new WeekDayModel() { Id=2,Day="Tue" },
-                    new WeekDayModel() { Id=3,Day="Wed" },
-                    new WeekDayModel() { Id=4,Day="Thu" },
-                    new WeekDayModel() { Id=5,Day="Fri" },
-                    new WeekDayModel() { Id=6,Day="Sat" }
+                    new WeekDayModel() { Id=-1, Day="Week",ChineseDayOfWeek="周" },
+                    new WeekDayModel() { Id=0,Day="Sun",ChineseDayOfWeek="日" },
+                    new WeekDayModel() { Id=1,Day="Mon",ChineseDayOfWeek="一" },
+                    new WeekDayModel() { Id=2,Day="Tue",ChineseDayOfWeek="二"},
+                    new WeekDayModel() { Id=3,Day="Wed",ChineseDayOfWeek="三" },
+                    new WeekDayModel() { Id=4,Day="Thu",ChineseDayOfWeek="四"},
+                    new WeekDayModel() { Id=5,Day="Fri",ChineseDayOfWeek="五"},
+                    new WeekDayModel() { Id=6,Day="Sat",ChineseDayOfWeek="六"}
                 };
             }
         }
@@ -332,6 +332,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     {
         public int Id { get; set; }
         public string Day { get; set; }
+        /// <summary>
+        /// 中国文化的星期几
+        /// </summary>
+        public string ChineseDayOfWeek { get; set; }
+        /// <summary>
+        /// 中国文化的天数
+        /// </summary>
         public string ChineseCalendar { get; set; }
         /// <summary>
         /// 日期背景色

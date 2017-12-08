@@ -192,26 +192,29 @@
                                             </div>
                                         </div>
                                     </div>
+                                 
                                     @*A类  产量，生产工时，非生产工时，得到工时（计算）*@
                                     <div ng-if="vmManager.inspectionDataGatherType==='A'">
                                         <div class="well" style="overflow:hidden;background:#C0C0C0; color:#000000">
-                                            @*产量*@
+                                           
                                             <div class="form-group">
+                                                @*生产数量*@
                                                 <label for="todayProductionCount" class="col-md-2 control-label">生产数量</label>
                                                 <div class="col-md-4">
                                                     <input type="number" name="todayProductionCount" class="form-control"
                                                            focus-if="focus.todayProductionCountFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'processesIndexFocus','workerProductionTimeFocus')"
+                                                           ng-keydown="focus.moveFocusNext($event,'workerProductionTimeFocus')"
                                                            ng-model="vm.TodayProductionCount" required />
                                                     <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-if="formDailyProductionReport.todayProductionCount.$touched">
                                                         <small ng-message="required">录入生产数量不能为空</small>
                                                     </div>
                                                 </div>
+                                                @*生产工时*@
                                                 <label for="workerProductionTime" class="col-md-2 control-label">生产工时</label>
                                                 <div class="col-md-4">
                                                     <input name="workerProductionTime" type="number" class="form-control"
                                                            focus-if="focus.workerProductionTimeFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'todayProductionCountFocus','workerNoProductionTimeFocus')"
+                                                           ng-keydown="focus.moveFocusNext($event,'todayBadProductCountFocus')"
                                                            ng-minlength="0"
                                                            ng-maxlength="24"
                                                            ng-model="vm.WorkerProductionTime" required />
@@ -222,36 +225,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            @*非生产工时信息*@
+                                       
                                             <div class="form-group">
-                                                <label for="workerNoProductionTimeFocus" class="col-md-2 control-label">非生产工时</label>
-                                                <div class="col-md-4">
-                                                    <input name="workerNoProductionTimeFocus" type="number" class="form-control"
-                                                           focus-if="focus.workerNoProductionTimeFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'workerProductionTimeFocus','todayBadProductCountFocus')"
-                                                           ng-model="vm.WorkerNoProductionTime" />
-                                                </div>
+                                                @*不良数量*@
                                                 <label for="todayBadProductCount" class="col-md-2 control-label">不良数量</label>
                                                 <div class="col-md-4">
                                                     <input type="number" class="form-control" ng-model="vm.TodayBadProductCount"
                                                            focus-if="focus.todayBadProductCountFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'workerNoProductionTimeFocus','saveAlldataFocus')" />
+                                                           ng-keydown="focus.moveFocusNext($event,'saveAlldataFocus')" />
                                                 </div>
-                                            </div>
-
-                                            @*备注*@
-                                            <div class="form-group" ng-if="vm.WorkerNoProductionTime>0">
-                                                <label for="workerNoProductionReason" class="col-md-2 control-label">非生产原因</label>
-                                                <div class="col-md-6">
-                                                    <textarea name="remark"
-                                                              focus-if="focus.workerNoProductionReason" focus-setter
-                                                              rows="1" cols="4" class="form-control" ng-model="vm.WorkerNoProductionReason" />
-                                                </div>
-                                            </div>
-                                            @*备注*@
-                                            <div class="form-group">
+                                                @*备注*@
                                                 <label for="remark" class="col-md-2 control-label">备注</label>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <textarea name="remark"
                                                               focus-if="focus.remarkFocus" focus-setter
                                                               rows="1" cols="4" class="form-control" ng-model="vm.Field1" />
@@ -262,7 +247,7 @@
                                     @*B类  所得工时、生产工时*@
                                     <div ng-if="vmManager.inspectionDataGatherType==='B'">
                                         <div class="well" style="overflow:hidden;background:#C0C0C0; color:#000000">
-                                            @*所得工时、生产工时*@
+                                         
                                             <div class="form-group">
                                                 @*录入产量*@
                                                   <div class="col-md-4">
@@ -270,7 +255,7 @@
                                                         <span class="input-group-addon">生产量:</span>
                                                         <input type="number" name="todayProductionCount" class="form-control"
                                                                focus-if="focus.todayProductionCountFocus" focus-setter
-                                                               ng-keydown="focus.changeEnter($event,'processesIndexFocus','workerProductionTimeFocus')"
+                                                               ng-keydown="focus. moveFocusNext($event,'workerProductionTimeFocus')"
                                                                ng-model="vm.TodayProductionCount" required />
                                                         <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-show="operate.showValidation">
                                                             <small ng-message="required">录入工序不能为空</small>
@@ -283,7 +268,7 @@
                                                         <span class="input-group-addon">生产工时:</span>
                                                         <input name="workerProductionTime" type="number" class="form-control"
                                                                focus-if="focus.workerProductionTimeFocus" focus-setter
-                                                               ng-keydown="focus.changeEnter($event,'processesIndexFocus','getProdutionTimeFocus')"
+                                                               ng-keydown="focus.moveFocusNext($event,'getProdutionTimeFocus')"
                                                                ng-minlength="0"
                                                                ng-maxlength="24"
                                                                ng-model="vm.WorkerProductionTime" required />
@@ -297,18 +282,16 @@
                                                 </div>
                                                 @*所得工时*@ 
                                                 <div class="col-md-4">
-                                                        <div class="input-group">
+                                                     <div class="input-group">
                                                             <span class="input-group-addon">得到工时:</span>
                                                             <input type="number" name="getProductionTime" class="form-control"
                                                                    focus-if="focus.getProdutionTimeFocus" focus-setter
-                                                                   ng-keydown="focus.changeEnter($event,'workerProductionTimeFocus','saveAlldataFocus')"
+                                                                   ng-keydown="focus. moveFocusNext($event,'saveAlldataFocus')"
                                                                    ng-model="vm.GetProductionTime" required />
                                                             <div class="error-messages" ng-messages="formDailyProductionReport.getProductionTime.$error" ng-show="operate.showValidation">
                                                                 <small ng-message="required">得到工时不能为空</small>
                                                             </div>
                                                         </div>
-
-                                                  
                                                 </div>
                                             </div>
                                             @*备注*@
@@ -322,36 +305,36 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @*E类  所得工时、生产工时*@
+                                    @*E类 属非生产  工时、生产工时*@
                                     <div ng-if="vmManager.inspectionDataGatherType==='E'">
                                         <div class="well" style="overflow:hidden;background:#C0C0C0; color:#000000">
                                             @*所得工时、生产工时*@
                                             <div class="form-group">
-                                                @*生产工时*@
-                                                <label for="workerProductionTime" class="col-md-2 control-label">生产工时</label>
+                                                @*非生产工时*@
+                                                <label for="workerProductionTime" class="col-md-2 control-label">非生产工时：</label>
                                                 <div class="col-md-4">
                                                     <input name="workerProductionTime" type="number" class="form-control"
                                                            focus-if="focus.workerProductionTimeFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'processesIndexFocus','getProdutionTimeFocus')"
+                                                           ng-keydown="focus. moveFocusNext($event,'getProdutionTimeFocus')"
                                                            ng-minlength="0"
                                                            ng-maxlength="24"
-                                                           ng-model="vm.WorkerProductionTime" required />
-                                                    <p ng-show="formDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
-                                                    <p ng-show="formDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
-                                                    <div class="error-messages" ng-messages="formDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
+                                                           ng-model="vm.WorkerNoProductionTime" required />
+                                                    <p ng-show="formDailyProductionReport.workerNoProductionTime.$error.minlength">too short.</p>
+                                                    <p ng-show="formDailyProductionReport.workerNoProductionTime.$error.maxlength">too long.</p>
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.workerNoProductionTime.$error" ng-show="operate.showValidation">
 
-                                                        <small ng-message="required">录入生产工时不能为空</small>
+                                                        <small ng-message="required">录入非生产工时不能为空</small>
                                                     </div>
                                                 </div>
-                                                @*所得工时*@
-                                                <label for="getProductionTime" class="col-md-2 control-label">所得工时</label>
-                                                <div class="col-md-4">
+                                                @*非生产所得工时*@
+                                                <label for="getProductionTime" class="col-md-3 control-label">非生产所得工时</label>
+                                                <div class="col-md-3">
                                                     <input type="number" name="getProductionTime" class="form-control"
                                                            focus-if="focus.getProdutionTimeFocus" focus-setter
-                                                           ng-keydown="focus.changeEnter($event,'workerProductionTimeFocus','saveAlldataFocus')"
+                                                           ng-keydown="focus. moveFocusNext($event,'saveAlldataFocus')"
                                                            ng-model="vm.GetProductionTime" required />
                                                     <div class="error-messages" ng-messages="formDailyProductionReport.getProductionTime.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">录入工序不能为空</small>
+                                                        <small ng-message="required">录入非生产所得工时不能为空</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -362,6 +345,56 @@
                                                     <textarea name="remark"
                                                               focus-if="focus.remarkFocus" focus-setter
                                                               rows="1" cols="4" class="form-control" ng-model="vm.Field5" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*F类  产量，非生产工时，得到工时（计算）*@
+                                    <div ng-if="vmManager.inspectionDataGatherType==='F'">
+                                        <div class="well" style="overflow:hidden;background:#C0C0C0; color:#000000">
+
+                                            <div class="form-group">
+                                                @*生产数量*@
+                                                <label for="todayProductionCount" class="col-md-2 control-label">非生产数量</label>
+                                                <div class="col-md-4">
+                                                    <input type="number" name="todayProductionCount" class="form-control"
+                                                           focus-if="focus.todayProductionCountFocus" focus-setter
+                                                           ng-keydown="focus. moveFocusNext($event,'workerNoProductionTimeFocus')"
+                                                           ng-model="vm.TodayProductionCount" required />
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.todayProductionCount.$error" ng-if="formDailyProductionReport.todayProductionCount.$touched">
+                                                        <small ng-message="required">录入生产数量不能为空</small>
+                                                    </div>
+                                                </div>
+                                                @*非生产工时*@
+                                                <label for="workerProductionTime" class="col-md-2 control-label">非生产工时</label>
+                                                <div class="col-md-4">
+                                                    <input name="workerNoProductionTime" type="number" class="form-control"
+                                                           focus-if="focus.workerNoProductionTimeFocus" focus-setter
+                                                           ng-keydown="focus. moveFocusNext($event,'todayBadProductCountFocus')"
+                                                           ng-minlength="0"
+                                                           ng-maxlength="24"
+                                                           ng-model="vm.workerNoProductionTime" required />
+                                                    <p ng-if="formDailyProductionReport.workerNoProductionTime.$error.minlength">too short.</p>
+                                                    <p ng-if="formDailyProductionReport.workerNoProductionTime.$error.maxlength">too long.</p>
+                                                    <div class="error-messages" ng-messages="formDailyProductionReport.workerNoProductionTime.$error" ng-if="formDailyProductionReport.workerProductionTime.$touched">
+                                                        <small ng-message="required">录入非生产工时不能为空</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @*不良数量*@
+                                                <label for="todayBadProductCount" class="col-md-2 control-label">不良数量</label>
+                                                <div class="col-md-4">
+                                                    <input type="number" class="form-control" ng-model="vm.TodayBadProductCount"
+                                                           focus-if="focus.todayBadProductCountFocus" focus-setter
+                                                           ng-keydown="focus. moveFocusNext($event,'saveAlldataFocus')" />
+                                                </div>
+                                                @*备注*@
+                                                <label for="remark" class="col-md-2 control-label">备注</label>
+                                                <div class="col-md-4">
+                                                    <textarea name="remark"
+                                                              focus-if="focus.remarkFocus" focus-setter
+                                                              rows="1" cols="4" class="form-control" ng-model="vm.Field1" />
                                                 </div>
                                             </div>
                                         </div>
@@ -1025,7 +1058,7 @@
                                     <div class="col-md-6" ng-if="vm.MachineSetProductionTime-vm.MachineProductionTime>0">
                                         <div class="input-group">
                                             <span class="input-group-addon">非生产原因:</span>
-                                            <input type="text" name="machineUnproductiveReason"
+                                            <input type="text" name="machineUnproductiveReason" ng-readonly="true"
                                                    focus-if="focus.machineUnproductiveReasonFocus" focus-setter
                                                    ng-keydown="focus.moveFocusNext($event,'machineProductionBadCountFocus')"
                                                    rows="2" class="form-control" ng-model="vm.MachineUnproductiveReason" required />

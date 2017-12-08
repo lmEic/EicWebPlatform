@@ -23,6 +23,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _department = value; }
             get { return _department; }
         }
+        private string _departmentText;
+        /// <summary>
+        ///部门说明文本
+        /// </summary>
+        public string DepartmentText
+        {
+            set { _departmentText = value; }
+            get { return _departmentText; }
+        }
         private string _productid;
         /// <summary>
         ///品号

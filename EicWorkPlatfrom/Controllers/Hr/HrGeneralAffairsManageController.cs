@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
-
+using System.Collections.Generic;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -76,6 +76,21 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreReportMealDatas(List<MealReportManageModel> reportMealDatas)
+        {
+            var result = GeneralAffairsService.ReportMealManager.Store(reportMealDatas);
+            return Json(result);
+        }
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetReportMealDatas(string reportType, string yearMonth, string department = null, string workerId = null)
+        {
+            var datas = GeneralAffairsService.ReportMealManager.GetReportMealDatas(reportType, yearMonth, department, workerId);
+            return DateJsonResult(datas);
+        }
+
         #endregion
     }
 }

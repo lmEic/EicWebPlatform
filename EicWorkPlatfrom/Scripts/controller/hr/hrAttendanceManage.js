@@ -63,6 +63,23 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
         });
     };
 
+    //存储报餐数据信息
+    hr.storeReportMealDatas = function (reportMealDatas) {
+        var url = generalAffairsUrl + "StoreReportMealDatas";
+        return ajaxService.postData(url, {
+            reportMealDatas: reportMealDatas
+        });
+    };
+    //获取报餐数据
+    hr.getReportMealDatas = function (reportType, yearMonth, department, workerId) {
+        var url = generalAffairsUrl + 'GetReportMealDatas';
+        return ajaxService.getData(url, {
+            reportType: reportType,
+            yearMonth: yearMonth,
+            department: department,
+            workerId: workerId,
+        });
+    };
     //自动检测考勤异常数据
     hr.autoCheckExceptionSlotData = function (yearMonth) {
         var url = attendUrl + "AutoCheckExceptionSlotData";
@@ -1789,6 +1806,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         CountOfSupper: 0,
         CountOfMidnight: 0,
         ReportDay: null,
+        ReportDayAt: 0,
         ReportDayOfWeek: null,
         ReportTime: null,
         YearMonth: null,
@@ -1803,13 +1821,17 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     //初始化模型
     var initVM = _.clone(mealReportVM);
 
+    $scope.$watch('vmManager.department', function () {
+        if (vmManager.department !== null) {
+            vmManager.selectDepartment();
+        }
+    });
+
     //查询字段视图
     var queryVM = $scope.qryvm = {
         year: null,
         month: null,
-        yearMonth: null,
-        dateFrom: new Date(),//请假其实日期
-        dateTo: new Date(),//请假结束日期
+        yearMonth: null
     };
     var vmManager = {
         activeYGTab: 'initYGTab',
@@ -1817,53 +1839,100 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         calendar: null,
         //数据存储集合
         dbDataSet: [],
+        bindingServerDatasToUI: function (datas) {
+            if (angular.isArray(datas) && datas.length > 0) {
+                angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
+                    angular.forEach(weekItem.WeekDays, function (weekDay) {
+                        var reportMealData = leeHelper.findItem(datas, { ReportDayAt: parseInt(weekDay.Day) });
+                        if (reportMealData !== null) {
+                            leeDataHandler.dataOperate.initDataItemFromServer(reportMealData, vmManager.dbDataSet);
+                            weekDay.bsData = reportMealData;
+                        }
+                    });
+                });
+            }
+            else {
+                vmManager.initCalendarDatas();
+            }
+        },
+        getReportMealDatas: function (department, workerId, handler) {
+            $scope.promise = hrDataOpService.getReportMealDatas(vmManager.reportMealType, queryVM.yearMonth, department, workerId).then(function (datas) {
+                vmManager.dbDataSet = [];
+                if (_.isFunction(handler)) {
+                    handler(datas);
+                }
+            });
+        },
+        setLeaderMealReportDatas: function () {
+            if (!vmManager.validateDepartment()) return;
+            if (vmManager.workerInfo !== null) {
+                vmManager.getReportMealDatas(vmManager.department, vmManager.workerInfo.WorkerId, function (datas) {
+                    vmManager.bindingServerDatasToUI(datas);
+                });
+            }
+        },
         loadCalendarDatas: function () {
             $scope.promise = connDataOpService.getCalendarDatas(queryVM.year, queryVM.month).then(function (datas) {
                 vmManager.calendar = datas;
             });
         },
+        initCalendarDatas: function () {
+            angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
+                angular.forEach(weekItem.WeekDays, function (weekDay) {
+                    delete weekDay.bsData;
+                });
+            });
+            vmManager.dbDataSet = [];
+        },
         department: null,
-        workerInfo: null,
-        //设置干部报餐数据
-        setLeaderMealReportDatas: function () {
-            if (vmManager.workerInfo !== null) {
-                //vmManager.askLeaveDatas = [];
-                //hrDataOpService.getAskLeaveDataAbout(vmManager.workerInfo.WorkerId, queryVM.yearMonth).then(function (datas) {
-                //    if (angular.isArray(datas)) {
-                //        angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
-                //            angular.forEach(weekItem.WeekDays, function (weekDay) {
-                //                var askLeaveDatas = _.where(datas, { Day: parseInt(weekDay.Day) });
-                //                if (askLeaveDatas !== undefined && askLeaveDatas.length > 0) {
-                //                    weekDay.askLeaveDatas = [];
-                //                    //这一天是否有多条请假记录
-                //                    if (angular.isArray(askLeaveDatas) && askLeaveDatas.length > 1) {
-                //                        angular.forEach(askLeaveDatas, function (askLeaveItem) {
-                //                            askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
-                //                            vmManager.setData(weekDay, askLeaveItem);
-                //                        })
-                //                    }
-                //                    else {
-                //                        var askLeaveItem = askLeaveDatas[0];
-                //                        askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
-                //                        vmManager.setData(weekDay, askLeaveItem);
-                //                    }
-                //                }
-                //            });
-                //        });
-                //    }
-                //});
+        selectDepartment: function () {
+            if (!vmManager.validateDepartment()) return;
+            vmManager.dbDataSet = [];
+            if (vmManager.reportMealType === "员工餐") {
+                vmManager.getReportMealDatas(vmManager.department, null, function (datas) {
+                    vmManager.bindingServerDatasToUI(datas);
+                });
+            }
+            else {
+                vmManager.getReportMealDatas(vmManager.department, null, function (datas) {
+                    vmManager.dbDataSet = datas;
+                });
             }
         },
+        workerInfo: null,
         //报餐类型
         reportMealType: '员工餐',
-        organizationUnits: [{ code: 'EIC', text: "企业讯息中心" }],
+        organizationUnits: [{ code: '企业讯息中心', text: "企业讯息中心" }, { code: '企业自动化中心', text: "企业自动化中心" }],
+        validateDepartment: function () {
+            if (vmManager.department == null || vmManager.department === undefined) {
+                leePopups.alert("请勿忘记选择部门！", 2);
+                return false;
+            }
+            return true;
+        },
         selectReportMealType: function (mode) {
             vmManager.reportMealType = mode;
             vmManager.activeLGTab = 'initLGTab';
             vmManager.activeYGTab = 'initYGTab';
+            vmManager.workerInfo = null;
+            vmManager.initCalendarDatas();
+        },
+        //验证是否可以操作
+        validateCanOperate: function () {
+            if (!vmManager.validateDepartment()) return false;
+
+            return true;
+        },
+        //设置附加数据，比如日期，人员信息
+        setAttachData(item, dataitem) {
+            dataitem.YearMonth = queryVM.yearMonth;
+            dataitem.ReportDay = queryVM.year + "-" + (parseInt(queryVM.month) >= 10 ? queryVM.month : "0" + queryVM.month) + "-" + (parseInt(item.Day) >= 10 ? item.Day : "0" + item.Day);
+            dataitem.ReportDayAt = item.Day;
+            dataitem.ReportDayOfWeek = item.ChineseDayOfWeek;
+            leeHelper.setUserData(dataitem);
+            dataitem.Department = vmManager.department;
         },
         createEmployeeMealModel(dataitem) {
-            dataitem.Department = vmManager.department;
             dataitem.WorkerId = "000000";
             dataitem.WorkerName = "111111";
             dataitem.WorkerType = vmManager.reportMealType;
@@ -1875,8 +1944,10 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         //创建员工报餐记录
         createEmployeeMealRecord: function (item) {
+            if (!vmManager.validateCanOperate()) return;
             var dataitem = _.clone(initVM);
             dataitem = vmManager.createEmployeeMealModel(dataitem);
+            vmManager.setAttachData(item, dataitem);
             var existItem = leeHelper.findItem(vmManager.dbDataSet, { Department: dataitem.Department, ReportDay: dataitem.ReportDay });
             if (existItem !== null) {
                 dataitem.OpSign = leeDataHandler.dataOpMode.edit;
@@ -1899,22 +1970,36 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                     var dataitem = item.bsData;
                     leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
                         delete item.bsData;
-
-                        console.log(vmManager.dbDataSet);
                     });
                 });
             });
         },
         confirmEdit: function () {
             employeeMealDialog.close();
-
-            console.log(vmManager.dbDataSet);
+        },
+        createLeaderMealModel(dataitem) {
+            dataitem.WorkerId = vmManager.workerInfo.WorkerId;
+            dataitem.WorkerName = vmManager.workerInfo.Name;
+            dataitem.WorkerType = vmManager.reportMealType;
+            dataitem.CountOfBreakfast = 0;
+            dataitem.CountOfLunch = 0;
+            dataitem.CountOfMidnight = 0;
+            dataitem.CountOfSupper = 0;
+            return dataitem;
         },
         //登记陆干餐记录
         reportLeaderMealRecord: function (item, mealTime, isReported) {
+            if (!vmManager.validateCanOperate()) return;
+            if (vmManager.workerInfo === null) {
+                leePopups.alert("请先输入作业工号！", 2);
+                return;
+            }
             var dataitem;
             if (_.isUndefined(item.bsData)) {
-                item.bsData = dataitem = _.clone(mealReportVM);
+                dataitem = vmManager.createLeaderMealModel(_.clone(mealReportVM));
+                vmManager.setAttachData(item, dataitem);
+                leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+                item.bsData = dataitem;
             }
             else {
                 dataitem = item.bsData;
@@ -1925,6 +2010,30 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             if (mealTime === "晚") {
                 dataitem.CountOfSupper = isReported ? 1 : 0;
             }
+
+            var existItem = leeHelper.findItem(vmManager.dbDataSet, { WorkerId: dataitem.WorkerId, ReportDay: dataitem.ReportDay });
+            if (existItem != null) {
+                if (dataitem.CountOfLunch === 0 && dataitem.CountOfSupper === 0) {
+                    if (leeHelper.isServerObject(dataitem)) {
+                        existItem.OpSign = leeDataHandler.dataOpMode.delete;
+                    }
+                    else {
+                        leeHelper.remove(vmManager.dbDataSet, existItem);
+                    }
+                }
+                else {
+                    if (leeHelper.isServerObject(dataitem))
+                        dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+                    existItem = dataitem;
+                }
+            }
+            else {
+                if (dataitem.CountOfLunch !== 0 && dataitem.CountOfSupper !== 0) {
+                    leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+                }
+            }
+
+            console.log(vmManager.dbDataSet);
         }
     };
     $scope.vmManager = vmManager;
@@ -1934,6 +2043,14 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
+    operate.saveAll = function () {
+        if (vmManager.dbDataSet.length === 0) return;
+        hrDataOpService.storeReportMealDatas(vmManager.dbDataSet).then(function (opResult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                vmManager.initCalendarDatas();
+            });
+        });
+    };
 
 
     //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {

@@ -120,6 +120,14 @@ var leeDataHandler = (function () {
                 dataitem.OpSign = leeDataOpMode.add;//设置数据处理标志
             leeHelper.insertWithId(dbDataset, dataitem);
         },
+        //初始化服务器端的数据，并加入到集合中
+        initDataItemFromServer: function (dataitem, dbDataset) {
+            leeHelper.setObjectGuid(dataitem);//创建唯一标志
+            leeHelper.setObjectServerSign(dataitem);//设置客户端创建对象标志
+            if (dataitem.OpSign !== undefined)
+                dataitem.OpSign = leeDataOpMode.none;//设置数据处理标志
+            leeHelper.insertWithId(dbDataset, dataitem);
+        },
         //从客户端删除数据，先看数据项是不是服务器端的，如果是，将操作标志位删除
         //反之，则直接从内存集合中删除
         removeDataItemFromClient: function (dataitem, dbDataset, handler) {
@@ -491,6 +499,14 @@ var leeHelper = (function () {
                     uiVm.Department = user.department;
                 }
             }
+            else {
+                if (uiVm.OpPerson !== undefined) {
+                    uiVm.OpPerson = "softOp";
+                }
+                if (uiVm.Department !== undefined) {
+                    uiVm.Department = "softDep";
+                }
+            }
         },
         //获取用户组织信息
         getUserOrganization: function () {
@@ -673,6 +689,13 @@ var leeHelper = (function () {
             if (_.isUndefined(obj.isServer)) return false;
             return obj.isServer;
         },
+        //将从服务器端传来的日期格式化短日期格式
+        formatServerDate(serverDate) {
+            if (serverDate != null) {
+                return new Date(parseInt(serverDate.replace("/Date(", "").replace(")/", "").split("+")[0])).pattern("yyyy-MM-dd");
+            }
+            return "";
+        }
     };
 })();
 // 弹出框助手
