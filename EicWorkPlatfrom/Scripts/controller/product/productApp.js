@@ -13,6 +13,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var redoUrlPrefix = leeHelper.controllers.redoProduct + "/";
     //工单Url前缀
     var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
+    var ProAskLeaveUrlPrefix=leeHelper.controllers.leaveAsk+"/"
     //--------------生产日报-------------------------
     $stateProvider.state('dReportFlowSet', {
         //生产工艺设定

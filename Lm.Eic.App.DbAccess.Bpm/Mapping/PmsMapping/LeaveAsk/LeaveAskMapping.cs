@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.LeaveAsk
 {
-   public class LeaveAskMapping:EntityTypeConfiguration<LeaveAskModels>
+   public class LeaveAskMapping:EntityTypeConfiguration<LeaveAskManagerModels>
     {
         public LeaveAskMapping()
         {

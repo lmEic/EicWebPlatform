@@ -6,6 +6,8 @@ var proEmployeeModule = angular.module('bpm.productApp');
 proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
     var dataAccess = {};
     var urlPrefix = '/ProEmployee/';
+   // var AskleaveurlPrefix = '/' + leeHelper.controllers.leaveAsk + '/';
+
 
     dataAccess.getWorkers = function () {
         return ajaxService.getData(urlPrefix + 'GetWorkers', {});
@@ -32,7 +34,7 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
         var url = urlPrefix+'StoreLeaveAskManagerDatas';
         return ajaxService.postData(url, {
             model: model
-        })
+        });
     };
     return dataAccess;
 })
@@ -141,32 +143,32 @@ proEmployeeModule.controller('proUserRegistCtrl', function ($scope, dataDicConfi
         }
     };
 });
-proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter, dataDicConfigTreeSet, connDataOpService, proEmployeeDataService, $modal) {
+proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, proEmployeeDataService) {
     var uiVM = {
         WorkerId: null,
         WorkerName: null,
         Department: null,
-        LeaveType: null,
-        LeaveHours: 0,
-        LeaveApplyDate: new Date().toDateString(),
-        LeaveAskDate: new Date().toDateString(),
-        LeaveMemo: null,
-        LeaveTimerStart: new Date( 00, 00),
-        LeaveTimerEnd: new Date( 00, 00),
-        LeaveState: null,
-        OpDate: null,
-        OpTime: null,
-        OpPerson: null,
+       // LeaveType: null,
+        //LeaveHours: 2,
+        //LeaveApplyDate: new Date().toDateString(),
+        //LeaveAskDate: new Date().toDateString(),
+        //LeaveMemo: '123',
+        //LeaveTimerStart: '15:00',
+        //LeaveTimerEnd: '16:00',
+        //LeaveState: 'OK',
+        //OpDate: null,
+        //OpTime: null,
+        //OpPerson: null,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
-    }
+    };
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {
         workerId: null,
         department: null
-    }
+    };
     $scope.query = queryFields;
     var vmManager  = {
         activeTab: 'initTab',
@@ -225,7 +227,8 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
 
     };
     $scope.vmManager = vmManager;
-    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
     //请假类别
     $scope.promise = proEmployeeDataService.getLeaveTypesConfigs().then(function (datas) {   
         var leaveTypes = _.where(datas, {
@@ -239,33 +242,31 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             });
         }
     });
-
-    operate.saveAll = function (isValid) {    
+    operate.saveAll = function (isValid) { 
+        alert(uiVM.LeaveType);
+       
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            alert("hello");
             proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    if (opresult.Result)
-                    {
+                    if (opresult.Result) {
                         var mode = _.clone(uiVM)
-                        model.Id_Key == opresult.Id_Key;
-                        if (mode.OpSign === leeDataHandler.dataOpMode.add)
-                        {
+                        mode.Id_Key === opresult.Id_Key;
+                        if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
-                        }
+                        }                     
                         vmManager.init();
-                        dialog.close();
+                        dialog.close();                    
                     }
-                })
-            })
-        })
+                });
+            });
+        });
 
     };
     //更新
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
-        })
+        });
     };
 
 
