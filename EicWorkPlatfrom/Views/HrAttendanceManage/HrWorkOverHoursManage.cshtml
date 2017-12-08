@@ -71,9 +71,9 @@
                             </tr>
                         </thead>
                         <tbody>                    
-                            <tr ng-repeat="item in vmManager.dataSets |filter:vmManager.qryWorkName track by $index" ng-click="vmManager.getCurrentRow(item)">
+                            <tr ng-repeat="item in vmManager.dataSets track by $index" ng-click="vmManager.getCurrentRow(item)">
                                 <td ng-bind="$index+1"></td>
-                                @*工具按钮*@
+                                @*工具按钮   |filter:vmManager.qryWorkName*@
                                 <td class="text-center">
                                     <button type="button" class="btn btn btn-danger" ng-show="item.editting"
                                             data-animation="am-flip-x" data-placement="right"
@@ -90,7 +90,6 @@
                                             </li>
                                         </ul>
                                     </div>
-
                                     <button type="button" class="btn btn-xs btn-primary" ng-hide="item.editting"
                                             data-animation="am-flip-x" data-placement="right"
                                             bs-dropdown aria-haspopup="true" aria-expanded="false">
@@ -130,12 +129,11 @@
                                 <td title="双击可修改" ng-dblclick="vmManager.editdepartmentText(item)">
                                     <span ng-hide="item.wkhing2">{{item.DepartmentText}}</span>
                                     <input ng-model="vm.DepartmentText" ng-keydown="vmManager.inputdepartmentText($event,item)"
-                                           focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
+                                           focus-if="focus.departmentTextFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入部门" ng-show="item.wkhing2" />
 
                                 </td>
-
-                               
+                                          
                                 <td>{{item.WorkDate}}</td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editClassType(item)">
                                     <span ng-hide="item.isEdittingClassType">{{item.WorkClassType}}</span>
@@ -147,16 +145,16 @@
                                 </td>
                                 <td>{{item.WorkerId}}</td>
                                 <td>{{item.WorkerName}}</td>
-                                <td title="双击可修改" ng-dblclick="vmManager.editOverHours(item)" >
+                                <td title="双击可修改" ng-dblclick="vmManager.editOverHours(item)">
                                     <span ng-hide="item.wkhing">{{item.WorkOverHours}}</span>
                                     <input ng-model="vm.WorkOverHours" ng-keydown="vmManager.inputWorkOverHours($event,item)"
                                            focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入时数" ng-show="item.wkhing" />
-                                </td>
+                                </td>                        
                                 <td title="双击可修改" ng-dblclick="vmManager.editremark(item)" >
                                     <span ng-hide="item.wkhing1">{{item.Remark}}</span>
                                     <input ng-model="vm.Remark" ng-keydown="vmManager.inputremark($event,item)"
-                                           focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
+                                           focus-if="focus.remarkFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入备注" ng-show="item.wkhing1" />
                                   
                                 </td>

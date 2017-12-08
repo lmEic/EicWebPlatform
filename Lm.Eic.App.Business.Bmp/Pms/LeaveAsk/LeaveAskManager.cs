@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
         /// </summary>
         /// <param name="models"></param>
         /// <returns></returns>
-        public OpResult StoreLeaveAskDatas(LeaveAskModels models)
+        public OpResult StoreLeaveAskDatas(LeaveAskManagerModels models)
         {
             try
             {
