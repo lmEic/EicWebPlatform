@@ -104,7 +104,6 @@
                                             <li role="presentation">
                                                 <a href="#" ng-click="vmManager.copyAndPaste(item)" title="复制行"><i class="fa fa-clipboard"></i>复制行</a>
                                             </li>
-
                                             <li role="presentation">
                                                 <a href="#" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除行</a>
                                             </li>
@@ -114,7 +113,6 @@
                                         </ul>
                                     </div>
                                 </td>
-
                                 <td title="双击可修改" ng-dblclick="vmManager.editOverType(item)">
                                     <span ng-hide="item.isEdittingOverType">{{item.WorkoverType}}</span>
                                     <button type="button" class="btn btn-xs btn-primary" ng-model="vm.WorkoverType" data-html="1" data-placeholder="加班类型"
