@@ -13,7 +13,8 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var redoUrlPrefix = leeHelper.controllers.redoProduct + "/";
     //工单Url前缀
     var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
-    var ProAskLeaveUrlPrefix=leeHelper.controllers.leaveAsk+"/"
+    //人员管理
+    var proEmployeeUrlPrefix = leeHelper.controllers.proEmployee+ "/"
     //--------------生产日报-------------------------
     $stateProvider.state('dReportFlowSet', {
         //生产工艺设定
@@ -45,15 +46,15 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     })
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {
-        templateUrl: 'ProEmployee/RegistWorkerInfo'
+        templateUrl: proEmployeeUrlPrefix+'RegistWorkerInfo'
     })
     //请假管理
     .state('proAskLeaveManage', {
-        templateUrl: 'ProEmployee/ProAskLeaveManage'
+        templateUrl: proEmployeeUrlPrefix +'ProAskLeaveManage'
     })
     //加班管理
     .state('proWorkOverHoursManage', {
-        templateUrl: 'ProEmployee/ProWorkOverHoursManage'
+        templateUrl: proEmployeeUrlPrefix +'ProWorkOverHoursManage'
     })
     //-------------看板管理-------------------
     .state('jumperWireBoard', {//线材看板管理

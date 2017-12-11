@@ -5,8 +5,8 @@
 var proEmployeeModule = angular.module('bpm.productApp');
 proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
     var dataAccess = {};
-    var urlPrefix = '/ProEmployee/';
-   // var AskleaveurlPrefix = '/' + leeHelper.controllers.leaveAsk + '/';
+    var urlPrefix = '/' + leeHelper.controllers.proEmployee+'/';
+  
 
 
     dataAccess.getWorkers = function () {
@@ -31,7 +31,7 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
     };
     //保存请假数据
     dataAccess.storeLeaveAskManagerDatas = function (model) {
-        var url = urlPrefix+'StoreLeaveAskManagerDatas';
+        var url = urlPrefix +'StoreLeaveAskManagerDatas';
         return ajaxService.postData(url, {
             model: model
         });
@@ -148,17 +148,17 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
         WorkerId: null,
         WorkerName: null,
         Department: null,
-       // LeaveType: null,
-        //LeaveHours: 2,
-        //LeaveApplyDate: new Date().toDateString(),
-        //LeaveAskDate: new Date().toDateString(),
-        //LeaveMemo: '123',
-        //LeaveTimerStart: '15:00',
-        //LeaveTimerEnd: '16:00',
-        //LeaveState: 'OK',
-        //OpDate: null,
-        //OpTime: null,
-        //OpPerson: null,
+        LeaveType: null,
+        LeaveHours: null,
+        LeaveApplyDate: new Date().toDateString(),
+        LeaveAskDate: new Date().toDateString(),
+        LeaveMemo: null,
+        LeaveTimerStart: null,
+        LeaveTimerEnd: null,
+        LeaveState:null,
+        OpDate: null,
+        OpTime: null,
+        OpPerson: null,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
     };
@@ -170,7 +170,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
         department: null
     };
     $scope.query = queryFields;
-    var vmManager  = {
+    var vmManager = {
         activeTab: 'initTab',
         isLocal: true,
         init: function () {
@@ -221,46 +221,41 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
         },
         leaveTypes: [],
         datasource: [],
-
-
-
-
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     //请假类别
-    $scope.promise = proEmployeeDataService.getLeaveTypesConfigs().then(function (datas) {   
+    $scope.promise = proEmployeeDataService.getLeaveTypesConfigs().then(function (datas) {
         var leaveTypes = _.where(datas, {
             ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType"
         });
         if (leaveTypes !== undefined) {
-            angular.forEach(leaveTypes, function (item) {       
+            angular.forEach(leaveTypes, function (item) {
                 vmManager.leaveTypes.push({
                     name: item.DataNodeText, text: item.DataNodeText
                 });
             });
         }
     });
-    operate.saveAll = function (isValid) { 
-        alert(uiVM.LeaveType);
-       
+    operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var mode = _.clone(uiVM)
-                        mode.Id_Key === opresult.Id_Key;
+                        mode.Id_Key == opresult.Id_Key;
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
-                        }                     
+                        }
+                        // vmManager.searchBy();
                         vmManager.init();
-                        dialog.close();                    
+                        dialog.close();
+
                     }
                 });
             });
         });
-
     };
     //更新
     operate.refresh = function () {
@@ -268,6 +263,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
             vmManager.init();
         });
     };
+
 
 
 });
