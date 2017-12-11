@@ -1043,15 +1043,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
             return rowItem;
         },
         //快速查找员工
-        getWorkName: function () {
-                  
+        getWorkName: function () {                
             var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
-
             if (qryItem != null) {
                 vmManager.editworkOverHours(qryItem);
                 vmManager.qryWorkName = null;
             }
-
         },
 
         //加载部门信息
