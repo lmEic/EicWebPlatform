@@ -272,7 +272,7 @@ var leeHelper = (function () {
         //日报管理
         dailyReport: 'ProDailyReport',
         //人员管理
-        leaveAsk:'proEmployeeManage',
+        proEmployee:'ProEmployee',
         //重工制程处理
         redoProduct: 'ProRedoProductArea',
         //工单管理

@@ -1,16 +1,18 @@
-﻿
-<div class="bs-callout bs-callout-info" ng-controller="proAskLeaveManagerCtrl">
-    <div class="panel panel-primary">
-        <div bs-tabs bs-active-pane="vmManager.activeTab"cg-busy="{promise:promise}" >
+﻿<div class="panel panel-primary" ng-controller="proAskLeaveManagerCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>请假管理</h6>
+    </div>
+    <div class="panel-body" cg-busy="{promise:promise}">
+        <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
             <div bs-pane data-title="请假登记" data-name="initTab">
                 <div class="row">
                     <div class="col-md-6">
-                        <form role="form" name="LeaveFrm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">                         
+                        <form role="form" name="LeaveFrm" novalidate class="form-horizontal">
                             <div class="form-group">
                                 <label for="workerId" class="col-md-2 control-label">工号</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <input name="workerId" class="form-control" ng-model="vm.WorkerId" placeholder="请输入您工号" ng-change="vmManager.getWorkerInfo()" required data-ensure-user-exist />
+                                        <input name="workerId" class="form-control" ng-model="vm.WorkerId" placeholder="请输入您工号" ng-change="vmManager.getWorkerInfo()" data-ensure-user-exist required />
                                         <div class="error-messages" ng-messages="LeaveFrm.workerId.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">工号不能为空</small>
                                         </div>
@@ -47,13 +49,13 @@
                             </div>
 
                             <div class="form-group">
-                                @*<label for="leaveApplyDate" class="col-md-2 control-label">申请日期</label>
+                                <label for="leaveApplyDate" class="col-md-2 control-label">申请日期</label>
                                 <div class="col-md-4">
                                     <input type="date" name="leaveApplyDate" class="form-control" ng-model="vm.LeaveApplyDate" placeholder="申请日期" format-date required />
                                     <div class="error-messages" ng-messages="LeaveFrm.leaveApplyDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">申请日期不能为空</small>
                                     </div>
-                                </div>*@
+                                </div>
                                 <label for="department" class="col-md-2 control-label">部门</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
@@ -79,20 +81,20 @@
                                                     data-bs-options="item.name as item.text for item in vmManager.leaveTypes" data-bs-select>
                                                 选择请假类别<span class="caret"></span>
                                             </button>
-                                        </span> 
-                                    </div>                                                             
+                                        </span>
+                                    </div>
                                 </div>
-                                @*<label for="leaveHours" class="col-md-2 control-label">时数(H)</label>
+                                <label for="leaveHours" class="col-md-2 control-label">时数(H)</label>
                                 <div class="col-md-4">
                                     <input type="number" name="leaveHours" class="form-control" ng-model="vm.LeaveHours" required />
                                     <div class="error-messages" ng-messages="LeaveFrm.leaveHours.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">请假时数不能为空</small>
                                     </div>
 
-                                </div>*@
+                                </div>
                             </div>
 
-                            @*<div class="form-group">
+                            <div class="form-group">
                                 <label for="leaveTimerDate" class="col-md-2 control-label">请假日期</label>
                                 <div class="col-md-4">
                                     <input type="date" name="leaveTimerDate" class="form-control" ng-model="vm.LeaveAskDate" placeholder="请假时间" format-date required />
@@ -114,14 +116,14 @@
                                                ng-model="vm.LeaveTimerEnd" required data-arrow-behavior="picker" />
                                     </div>
                                 </div>
-                            </div>*@
+                            </div>
 
-                            @*<div class="form-group">
+                            <div class="form-group">
                               <label for="leaveMemo" class="col-md-2 control-label">请假事由</label>
                                 <div class="col-md-10">
                                     <textarea rows="5" name="problemDesc" class="form-control" ng-model="vm.LeaveMemo" placeholder="请假事由" />
                                 </div>
-                            </div>*@                      
+                            </div>
                             <hr />
                             <div class="alert alert-info ">
                                 <div class="row">
@@ -146,5 +148,8 @@
 
             </div>
         </div>
+
+        
+        
     </div>
 </div>

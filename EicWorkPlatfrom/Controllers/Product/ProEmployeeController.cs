@@ -58,6 +58,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var result = ArchiveService.ProWorkerManager.RegistUser(worker);
             return Json(result);
+
         }
         #endregion
 
@@ -84,27 +85,26 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [NoAuthenCheck]
         public  JsonResult GetLeaveTypesConfigs()
-        {
-          
-            
+        {               
             List<ConfigDataDictionaryModel> leaveConfigTypes = PmConfigService.DataDicManager.LoadConfigDatasBy("AttendanceConfig", "AskForLeaveType");
             return Json(leaveConfigTypes, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         [NoAuthenCheck]
-        public JsonResult StoreLeaveAskManagerDatas(LeaveAskManagerModels models)
+        public JsonResult StoreLeaveAskManagerDatas(LeaveAskManagerModels model)
         {
-            try
-            {
-                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(models);
-                
+           try
+           {
+                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
+
                 return Json(opresult);
-            }
+           }
             catch (System.Exception ex)
-            {
+           {
 
                 throw new Exception(ex.Message);
-            }
+           }
 
 
         }
