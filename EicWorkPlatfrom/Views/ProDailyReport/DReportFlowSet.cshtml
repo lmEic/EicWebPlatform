@@ -217,7 +217,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <span class="input-group-addon">是否入总工时</span>
+                                            <span class="input-group-addon">是否记入总工时</span>
                                             <button type="button" name="isSum" class="btn btn-primary" ng-model="vm.IsSum"
                                                     data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="是"
                                                     data-bs-options="item.id as item.text for item in vmManager.IsOrNotDatas" data-bs-select></button>
@@ -252,7 +252,7 @@
                                     </div>
                                 </div>
                                 @*标准工时 工时类别*@
-                                <div class="form-group" ng-show="vmManager.isShowProductionTime===true">
+                                <div class="form-group" ng-show="vm.InputType=='A'||vm.InputType=='F'">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <span class="input-group-addon">标准工时</span>
@@ -305,7 +305,6 @@
                                                    focus-if="focus.mouldNameFocus" focus-setter
                                                    ng-model="vm.MouldName" />
                                         </div>
-
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
@@ -331,8 +330,7 @@
                             </fieldset>
                             <div class="alert alert-info">
                                 <div class="row">
-                                    <div class="col-md-2">
-                                    </div>
+                                    <div class="col-md-2"/>
                                     <div class="col-md-10">
                                         <button class="btn btn-primary" id="confirmSave"
                                                 ng-click="operate.confirmSave(formProductionFlow.$valid)">

@@ -166,7 +166,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         IsVisualization: 0,
         IsValid: 1,
         StandardProductionTimeType: 'UPS',
-        StandardProductionTime: null,
+        StandardProductionTime: 0,
         ProductCoefficient: 0,
         UPH: null,
         UPS: null,
@@ -586,7 +586,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         MachinePersonRatio: 0,
         MachineProductionTime: 0,
         MachineUnproductiveTime: 0,
-        MachineUnproductiveReason: '无订单',
+        MachineUnproductiveReason: null,
         MachineSetProductionTime: 0,
         MachineProductionCount: 0,
         MachineProductionBadCount: 0,
@@ -635,7 +635,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
             focusSetter.workerIdFocus = true;
             $scope.vm = uiVM;
-
         },
         ///选择部门
         departments: [
@@ -1201,13 +1200,26 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             return;
         }
         if (uiVM.TodayProductionCount != 0 && uiVM.StandardProductionTime != 0 && uiVM.WorkerProductionTime != 0) {
-            var getTime =(uiVM.TodayProductionCount * uiVM.StandardProductionTime / 3600).toFixed(2);
-            if (getTime > (uiVM.WorkerProductionTime * 1.6)) {
-                leePopups.alert("得到工时超出生产工时1.6陪");
-                return;
-            };
+            var getTime = (uiVM.TodayProductionCount * uiVM.StandardProductionTime / 3600).toFixed(2);
             uiVM.GetProductionTime = getTime;
-        };
+            if (getTime >= (uiVM.WorkerProductionTime * 1.6)) {
+                leePopups.confirm("错误提示", "您得到工时已经超出 【生产工时60%】",
+                    function () {
+                        $scope.$apply(function () {
+                            save(isValid);
+                        })
+                    },
+                    function () {
+                        $scope.$apply(function () {
+                            return;
+                        })
+                    });
+            }
+            else  save(isValid);
+        }
+        else save(isValid);
+    };
+    var save = function (isValid) {
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
         leeDataHandler.dataOperate.add(operate, isValid, function () {
@@ -1215,16 +1227,17 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 if (opResult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
                     if (opResult.Entity.OpSign == leeDataHandler.dataOpMode.add) {
-                        opResult.Entity.InPutDate =leeHelper.formatServerDate(opResult.Entity.InPutDate);
+                        opResult.Entity.InPutDate = leeHelper.formatServerDate(opResult.Entity.InPutDate);
                         vmManager.havePutInData.push(opResult.Entity);
                         vmManager.continueSaveInit();
-                        // vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
+                        //vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
                     }
                     vmManager.showputInDisplay();
                 }
             });
         });
     };
+  
     //取消
     operate.refresh = function () {
         vmManager.putInDisplay = false;
