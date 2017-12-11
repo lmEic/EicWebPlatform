@@ -23,7 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
 
 
     }
-    internal class LeaveAskCrud:CrudBase<LeaveAskModels,ILeaveAskManagerRepository>
+    internal class LeaveAskCrud:CrudBase<LeaveAskManagerModels,ILeaveAskManagerRepository>
     {
         public LeaveAskCrud() : base(new LeaveAskRepository(), "请假管理")
         { }
@@ -35,17 +35,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
             this.AddOpItem(OpMode.Delete, DeleteLeaveAsk);
         }
 
-        private OpResult DeleteLeaveAsk(LeaveAskModels model)
+        private OpResult DeleteLeaveAsk(LeaveAskManagerModels model)
         {
-            return irep.Delete(e => e.WorkerId == model.WorkerId && e.LeaveAskDate == model.LeaveAskDate).ToOpResult_Delete(OpContext);
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EditLeaveAsk(LeaveAskModels model)
+        private OpResult EditLeaveAsk(LeaveAskManagerModels model)
         {
             return irep.Update(k => k.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddLeaveAsk(LeaveAskModels model)
+        private OpResult AddLeaveAsk(LeaveAskManagerModels model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }

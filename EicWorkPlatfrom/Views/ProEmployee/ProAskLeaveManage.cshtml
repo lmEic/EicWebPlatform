@@ -5,10 +5,7 @@
             <div bs-pane data-title="请假登记" data-name="initTab">
                 <div class="row">
                     <div class="col-md-6">
-                        <form role="form" name="LeaveFrm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-                            @*<i class="glyphicon glyphicon-flag"></i><a class="label label-pill label label-primary" ng-bind="vm.WorkerId"></a>
-                                <i class="glyphicon glyphicon-user"></i><a class="label label-pill label label-success" ng-bind="vm.WorkerName" title="姓名"></a>
-                                <i class="glyphicon glyphicon-home"></i><a class="label label-pill label label-warning" ng-bind="vm.Department" title="部门"></a>*@
+                        <form role="form" name="LeaveFrm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">                         
                             <div class="form-group">
                                 <label for="workerId" class="col-md-2 control-label">工号</label>
                                 <div class="col-md-4">
@@ -50,13 +47,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="leaveApplyDate" class="col-md-2 control-label">申请日期</label>
+                                @*<label for="leaveApplyDate" class="col-md-2 control-label">申请日期</label>
                                 <div class="col-md-4">
                                     <input type="date" name="leaveApplyDate" class="form-control" ng-model="vm.LeaveApplyDate" placeholder="申请日期" format-date required />
                                     <div class="error-messages" ng-messages="LeaveFrm.leaveApplyDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">申请日期不能为空</small>
                                     </div>
-                                </div>
+                                </div>*@
                                 <label for="department" class="col-md-2 control-label">部门</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
@@ -85,17 +82,17 @@
                                         </span> 
                                     </div>                                                             
                                 </div>
-                                <label for="leaveHours" class="col-md-2 control-label">时数(H)</label>
+                                @*<label for="leaveHours" class="col-md-2 control-label">时数(H)</label>
                                 <div class="col-md-4">
                                     <input type="number" name="leaveHours" class="form-control" ng-model="vm.LeaveHours" required />
                                     <div class="error-messages" ng-messages="LeaveFrm.leaveHours.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">请假时数不能为空</small>
                                     </div>
 
-                                </div>
+                                </div>*@
                             </div>
 
-                            <div class="form-group">
+                            @*<div class="form-group">
                                 <label for="leaveTimerDate" class="col-md-2 control-label">请假日期</label>
                                 <div class="col-md-4">
                                     <input type="date" name="leaveTimerDate" class="form-control" ng-model="vm.LeaveAskDate" placeholder="请假时间" format-date required />
@@ -117,15 +114,15 @@
                                                ng-model="vm.LeaveTimerEnd" required data-arrow-behavior="picker" />
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
 
-                            <div class="form-group">
+                            @*<div class="form-group">
                               <label for="leaveMemo" class="col-md-2 control-label">请假事由</label>
                                 <div class="col-md-10">
                                     <textarea rows="5" name="problemDesc" class="form-control" ng-model="vm.LeaveMemo" placeholder="请假事由" />
                                 </div>
-                            </div>                      
-                            <div class="h-split"/>
+                            </div>*@                      
+                            <hr />
                             <div class="alert alert-info ">
                                 <div class="row">
                                     <div class="col-md-2">
