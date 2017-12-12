@@ -16,7 +16,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
         /// <summary>
         /// 请假管理工厂
         /// </summary>
-        internal static LeaveAskCrud LeaveAskCrud
+        public static LeaveAskCrud LeaveAskCrud
         {
             get { return OBulider.BuildInstance<LeaveAskCrud>(); }
         }

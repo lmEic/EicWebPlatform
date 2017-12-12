@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
             catch (Exception ex)
             {
 
-                throw new Exception(ex.Message);
+                return ex.ExOpResult();
             }
         }
 

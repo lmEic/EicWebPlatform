@@ -1043,16 +1043,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
             return rowItem;
         },
         //快速查找员工
-        getWorkName: function () {
-            //构建索引号
-            var rindex = 1;
-            angular.forEach(datas, function (item) {
-                item.rowindex = rindex;
-                rindex += 1;
-            });
-
+        getWorkName: function () {                
             var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
-
             if (qryItem != null) {
                 vmManager.editworkOverHours(qryItem);
                 vmManager.qryWorkName = null;
