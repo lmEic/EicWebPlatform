@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -94,13 +97,10 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <Fakes Include="Fakes\Lm.Eic.App.Business.Attendance.fakes" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lm.Eic.App.Business.Attendance\Lm.Eic.App.Business.Attendance.csproj">
-      <Project>{95fe66b6-3bbe-460c-9912-c2915c6edb57}</Project>
-      <Name>Lm.Eic.App.Business.Attendance</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Lm.Eic.App.Business.Bmp\Lm.Eic.App.Business.Bmp.csproj">
       <Project>{1862d746-c559-415f-b220-0c5dc1250f2f}</Project>
       <Name>Lm.Eic.App.Business.Bmp</Name>
