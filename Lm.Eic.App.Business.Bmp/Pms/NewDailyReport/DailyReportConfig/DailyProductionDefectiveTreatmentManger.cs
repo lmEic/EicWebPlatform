@@ -9,6 +9,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
 {
   public  class DailyProductionDefectiveTreatmentManger
     {
+
+
         /// <summary>
         /// 存储数据
         /// </summary>
