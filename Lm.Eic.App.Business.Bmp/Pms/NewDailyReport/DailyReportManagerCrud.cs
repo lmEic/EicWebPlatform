@@ -45,6 +45,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyProductionCodeConfigCrud>(); }
         }
+        /// <summary>
+        /// 不良制程处理
+        /// </summary>
+        public static DailyProductionDefectiveTreatmentCrud ProductionDefectiveTreatment
+        {
+            get { return OBulider.BuildInstance<DailyProductionDefectiveTreatmentCrud>(); }
+        }
     }
     /// <summary>
     /// 生产工序CRUD
@@ -480,7 +487,53 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
 
     }
+    /// <summary>
+    /// 不良制程处理
+    /// </summary>
+    internal class DailyProductionDefectiveTreatmentCrud:CrudBase<DailyProductionDefectiveTreatmentModel, IProductionDefectiveTreatmentRepository>
+    {
+        public DailyProductionDefectiveTreatmentCrud():base(new ProductionDefectiveTreatmentRepository(),"不良制程处理")
+        { }
+        #region 
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(DailyProductionDefectiveTreatmentModel model)
+        {
+            //
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(DailyProductionDefectiveTreatmentModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(DailyProductionDefectiveTreatmentModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+       #endregion
 
+    }
 }
 
 

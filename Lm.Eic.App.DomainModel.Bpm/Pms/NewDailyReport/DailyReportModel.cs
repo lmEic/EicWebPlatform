@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
 {
+    #region  SeverConnetDataModel
     /// <summary>
     ///产品标准工艺流程模型
     /// </summary>
@@ -954,7 +955,183 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     }
 
 
-    #region  
+    /// <summary>
+    ///制成不良处理
+    /// </summary>
+    [Serializable]
+    public partial class DailyProductionDefectiveTreatmentModel
+    {
+        public DailyProductionDefectiveTreatmentModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _orderid;
+        /// <summary>
+        ///重工的工单
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        private string _productname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string ProductName
+        {
+            set { _productname = value; }
+            get { return _productname; }
+        }
+        private string _productspec;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string ProductSpec
+        {
+            set { _productspec = value; }
+            get { return _productspec; }
+        }
+        private string _processesname;
+        /// <summary>
+        ///重工工艺
+        /// </summary>
+        public string ProcessesName
+        {
+            set { _processesname = value; }
+            get { return _processesname; }
+        }
+        private int _productinputnumber;
+        /// <summary>
+        ///生产数量
+        /// </summary>
+        public int ProductInPutNumber
+        {
+            set { _productinputnumber = value; }
+            get { return _productinputnumber; }
+        }
+        private int _badnumber;
+        /// <summary>
+        ///不良数
+        /// </summary>
+        public int BadNumber
+        {
+            set { _badnumber = value; }
+            get { return _badnumber; }
+        }
+        private string _baddescription;
+        /// <summary>
+        ///不良描述
+        /// </summary>
+        public string BadDescription
+        {
+            set { _baddescription = value; }
+            get { return _baddescription; }
+        }
+        private string _badreason;
+        /// <summary>
+        ///不良原因
+        /// </summary>
+        public string BadReason
+        {
+            set { _badreason = value; }
+            get { return _badreason; }
+        }
+        private string _scraptreatmentnumber;
+        /// <summary>
+        ///处理数量
+        /// </summary>
+        public string ScrapTreatmentNumber
+        {
+            set { _scraptreatmentnumber = value; }
+            get { return _scraptreatmentnumber; }
+        }
+        private string _responsibleattributionclass;
+        /// <summary>
+        ///处理类别
+        /// </summary>
+        public string ResponsibleAttributionClass
+        {
+            set { _responsibleattributionclass = value; }
+            get { return _responsibleattributionclass; }
+        }
+        private string _responsibleperson;
+        /// <summary>
+        ///责任人
+        /// </summary>
+        public string ResponsiblePerson
+        {
+            set { _responsibleperson = value; }
+            get { return _responsibleperson; }
+        }
+        private string _treatmentmethod;
+        /// <summary>
+        ///处理方式
+        /// </summary>
+        public string TreatmentMethod
+        {
+            set { _treatmentmethod = value; }
+            get { return _treatmentmethod; }
+        }
+        private string _treatmentperson;
+        /// <summary>
+        ///处理人
+        /// </summary>
+        public string TreatmentPerson
+        {
+            set { _treatmentperson = value; }
+            get { return _treatmentperson; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+    #endregion
+
+
+    #region   OpHandleVmModel
     /// <summary>
     /// 查询操作Model
     /// </summary>

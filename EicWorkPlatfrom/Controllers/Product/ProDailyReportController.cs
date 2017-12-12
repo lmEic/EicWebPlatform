@@ -23,13 +23,14 @@ namespace EicWorkPlatfrom.Controllers.Product
             return View();
         }
 
-        #region Date Report Hours Set method
+        #region Date Report Hours Set method 
         public ActionResult DReportHoursSet()
         {
             return View();
         }
         #endregion
 
+      
         #region DReportBadReasonSet 不良原因配置
         public ActionResult DReportBadReasonSet()
         {
@@ -37,6 +38,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
+
+       
         #region DReportUnproductionSet 非生产原因配置
         public ActionResult DReportUnproductionSet()
         {
@@ -57,6 +60,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
+       
+        
         #region report Flow Set set method  生产工艺录入
         public ActionResult DReportFlowSet()
         {

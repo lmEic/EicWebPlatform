@@ -1631,6 +1631,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             { value: "MS10", label: "制十课" },
             { value: "PT1", label: "成型课" }],
         fqcDepartments: [
+        { label: "全部", value: "全部" },
         { value: "制一课", label: "制一课" },
         { value: "制二课", label: "制二课" },
          { value: "制三课", label: "制三课" },
@@ -1646,7 +1647,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         formStatus: "全部",
         selectedDepartment: "",
         selectedFqcDepartment: "",
-        formStatuses: [{ label: "全部", value: "全部" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
+        formStatuses: [{ label: "全部", value: "全部" }, { label: "未抽检", value: "未抽检" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         editErpWindowWidth: "100%",
         isShowDetailWindow: false,

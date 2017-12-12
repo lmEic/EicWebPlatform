@@ -3,6 +3,7 @@
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 var proEmployeeModule = angular.module('bpm.productApp');
+//人员管理器工厂
 proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
     var dataAccess = {};
     var urlPrefix = '/ProEmployee/';
@@ -143,6 +144,7 @@ proEmployeeModule.controller('proUserRegistCtrl', function ($scope, dataDicConfi
         }
     };
 });
+//人员离职管理器
 proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, proEmployeeDataService) {
     var uiVM = {
         WorkerId: null,

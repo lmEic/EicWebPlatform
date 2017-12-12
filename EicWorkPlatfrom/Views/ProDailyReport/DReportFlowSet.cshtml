@@ -88,6 +88,7 @@
                                 <tr class="info">
                                     <th>工艺编号</th>
                                     <th>工艺名称</th>
+                                    <th ng-show="vm.MouldId.length>0" >模具编号</th>
                                     <th>工艺类别</th>
                                     <th>标准工时</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
@@ -97,7 +98,8 @@
                                 <tr ng-repeat="item in vmManager.editDataSet track by $index">
                                     <td>{{item.ProcessesIndex}}</td>
                                     <td>{{item.ProcessesName}}</td>
-                                    <td>{{item.ProcessesType}}</td>
+                                    <td ng-show="vm.MouldId.length>0">{{item.MouldId}}</td>
+                                    <td >{{item.ProcessesType}}</td>
                                     <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
                                     <td>
                                         <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="编辑">

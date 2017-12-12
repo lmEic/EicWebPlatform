@@ -162,6 +162,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new DailyProductionReportMapping());
             //非生产代码
             modelBuilder.Configurations.Add(new ProductionCodeConfigMapping());
+            //不良制程处理单
+            modelBuilder.Configurations.Add(new DailyProductionDefectiveTreatmentModelMapping());
 
             #endregion
 

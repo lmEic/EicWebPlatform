@@ -60,6 +60,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
             this.ToTable("Pms_DailyProductionCodeConfig");
         }
     }
+
+    /// <summary>
+    ///   日报表不良处理----DailyProductionDefectiveTreatmentModel
+    /// </summary>
+    public class DailyProductionDefectiveTreatmentModelMapping : EntityTypeConfiguration<DailyProductionDefectiveTreatmentModel>
+    {
+        public DailyProductionDefectiveTreatmentModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DailyProductionDefectiveTreatment");
+        }
+    }
 }
 
 
