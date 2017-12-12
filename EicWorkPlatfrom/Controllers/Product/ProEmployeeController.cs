@@ -1,5 +1,4 @@
 ﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
-using Lm.Eic.App.Business.Bmp.Pms.LeaveAsk;
 using Lm.Eic.App.Business.Mes.Optical.Authen;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
@@ -62,7 +61,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
-
         #region 考勤管理
 
         #region 加班管理
@@ -96,8 +94,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
            try
            {
-                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
-
+                //var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
+                var opresult = "";
                 return Json(opresult);
            }
             catch (System.Exception ex)
