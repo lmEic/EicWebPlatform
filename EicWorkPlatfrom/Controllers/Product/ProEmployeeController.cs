@@ -114,13 +114,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetLeaveAskManagerDatas(string workerId,string department,int mode)
         {
-            var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
-            {
-                WorkerId = workerId,
-                Department=department,
-                SearchMode=mode     
-            });
-           
+            //// var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
+            // {
+            //     WorkerId = workerId,
+            //     Department=department,
+            //     SearchMode=mode     
+            // });
+            var datas = "";
             return DateJsonResult(datas);
 
         }
