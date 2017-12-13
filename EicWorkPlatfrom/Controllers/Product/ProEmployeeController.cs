@@ -87,7 +87,11 @@ namespace EicWorkPlatfrom.Controllers.Product
             List<ConfigDataDictionaryModel> leaveConfigTypes = PmConfigService.DataDicManager.LoadConfigDatasBy("AttendanceConfig", "AskForLeaveType");
             return Json(leaveConfigTypes, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 保存请假数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreLeaveAskManagerDatas(LeaveAskManagerModels model)
@@ -106,7 +110,40 @@ namespace EicWorkPlatfrom.Controllers.Product
 
 
         }
-        
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetLeaveAskManagerDatas(string workerId,string department,int mode)
+        {
+            var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
+            {
+                WorkerId = workerId,
+                Department=department,
+                SearchMode=mode     
+            });
+           
+            return DateJsonResult(datas);
+
+        }
+
+        [NoAuthenCheck]
+        public ContentResult GetDepartment(string datanodeName)
+        {
+            try
+            {
+                var datas = PmConfigService.DataDicManager.GetConfigDataDepartment("Organization", "HrBaseInfoManage", datanodeName);
+
+                return DateJsonResult(datas);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
         #endregion
 
         #endregion

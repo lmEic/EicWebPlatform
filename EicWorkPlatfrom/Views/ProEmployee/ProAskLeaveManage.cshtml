@@ -2,12 +2,12 @@
     <div class="panel-heading">
         <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>请假管理</h6>
     </div>
-    <div class="panel-body" cg-busy="{promise:promise}">
-        <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
-            <div bs-pane data-title="请假登记" data-name="initTab">
-                <div class="row">
-                    <div class="col-md-6">
+    <div class="panel-body">
+       <div bs-tabs bs-active-pane="vmManager.activeTab">        
+           <div class="row">
+               <div class="col-md-6">
                         <form role="form" name="LeaveFrm" novalidate class="form-horizontal">
+
                             <div class="form-group">
                                 <label for="workerId" class="col-md-2 control-label">工号</label>
                                 <div class="col-md-4">
@@ -102,10 +102,11 @@
                                         <small ng-message="required">请假日期不能为空</small>
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <input id="leaveTimerStartIn" name="leaveTimerStart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
-                                               ng-model="vm.LeaveTimerStart" data-length="1" data-minute-step="1"
+                                               ng-model="vmManager.workTimeStart" data-length="1" data-minute-step="1"
                                                required data-arrow-behavior="picker" />
 
                                         <div class="input-group-addon">
@@ -113,9 +114,31 @@
                                         </div>
                                         <input id="leaveTimerEndIn" name="leaveTimerStart" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
                                                bs-timepicker data-time-format="HH:mm"
-                                               ng-model="vm.LeaveTimerEnd" required data-arrow-behavior="picker" />
+                                               ng-model="vmManager.workTimeEnd" required data-arrow-behavior="picker" />
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leaveState" class="col-md-2 control-label">请假状态</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="leaveState" class="form-control" ng-model="vm.LeaveState" placeholder="请选请假状态" required />
+                                        <div class="error-messages" ng-messages="LeaveFrm.leaveState.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">请假状态不能为空</small>
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-model="vm.LeaveState"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择状态"
+                                                    data-bs-options="item.id as item.text for item in vmManager.leaveStats" data-bs-select>
+                                                请选状态<span class="caret"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                               
+
                             </div>
 
                             <div class="form-group">
@@ -140,16 +163,235 @@
 
 
                         </form>
+                    </div> 
+               
+               <div class="col-md-6">
+                   <div class="bs-callout bs-callout-info">                                          
+                       <form class="form-inline">
+                           <div class="form-group">
+                            <select class="form-control" ng-model="vmManager.selectDepartment" >
+                               <option >请选择部门</option>
+                               <option ng-repeat="item in vmManager.DepartmentDatas"value={{item.DataNodeText}}>{{item.DataNodeText}}</option>
+                                </select>
+                             </div>
+                           <div class="form-group">
+                               <label>工号</label>
+                               <input type="text" class="form-control" ng-model="query.workerId" placeholder="输入员工工号后回车" ng-keypress="vmManager.getLeaveAskManagerDatas(1)" />                        
+                           </div>
+                       </form>
+                   
+                      <div class="h-split" />
+                       <div class="table-responsive">
+                           <table class="table table-condensed table-hover"  style="table-layout:fixed;">
+                               <colgroup>
+                                   <col width="18" />
+                                   <col width="25" />
+                                   <col width="50" />
+                                   <col width="50" />
+                                   <col width="30" />
+                                   <col width="30" />
+                                   <col width="40"/>
+                                   
+                               </colgroup>
+                               <thead>
+                                   <tr class="active">
+                                       <th>序号</th>
+                                       <th>姓名</th>
+                                       <th>开始日期</th>
+                                       <th>结束日期</th>
+                                       <th>时数(H)</th>
+                                       <th>状态</th>
+                                       <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                     
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr ng-repeat="item in vmManager.searchDatas track by $index">
+                                       <td><span class="badge" ng-bind="$index+1"></span></td>
+                                       <td ng-bind="item.WorkerName"></td>
+                                       <td ng-bind="item.LeaveTimerStart"></td>
+                                       <td ng-bind="item.LeaveTimerEnd"></td>
+                                       <td ng-bind="item.LeaveHours"></td>
+                                       <td ng-bind="item.LeaveState"></td>
+                                       <td>
+                                           <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
+                                           <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
+                                       </td>
+                                       
+                                   </tr>
+                               </tbody>
+                           </table>
+                           <div ng-if="vmManager.datasource.length>0"
+                                yl-pagination
+                                data-dataset="vmManager.searchDatas"
+                                data-datasource="vmManager.datasource">
+                           </div>
+
+                       </div>
+
+
+                  </div>
+             </div>                               
+          </div>         
+       </div>  
+        
+
+        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">用户编辑</i>
+            </content>
+            <content dialog-content style="width:100%;">
+                <form role="form" name="LeaveFrm" novalidate class="form-horizontal">
+                    <div class="form-group">
+                        <label for="workerId" class="col-md-2 control-label">工号</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input name="workerId" class="form-control" ng-model="vm.WorkerId" placeholder="请输入您工号" ng-change="vmManager.getWorkerInfo()" data-ensure-user-exist required />
+                                <div class="error-messages" ng-messages="LeaveFrm.workerId.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">工号不能为空</small>
+                                </div>
+                                <div class="input-group-addon" ng-show="vmManager.isSingle">
+                                    <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.Name}}</label>
+                                </div>
+                                <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                    <button type="button" class="btn btn-primary"
+                                            data-animation="am-flip-x"
+                                            bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                        <span class="fa fa-chevron-circle-down"></span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <ul class="list-group">
+                                            <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                                                ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                <i class="fa fa-user"></i>
+                                                <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                <span>姓名：{{worker.Name}}</span>|
+                                                <span>部门：{{worker.Department}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="name" class="col-md-2 control-label">姓名</label>
+                        <div class="col-md-4">
+                            <input type="text" name="workername" class="form-control" ng-model="vm.WorkerName" placeholder="员工姓名" readonly required />
+                            <div class="error-messages" ng-messages="LeaveFrm.workername.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">姓名不能为空</small>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div bs-pane data-title="请假查询" data-name="queryTab">
+                    <div class="form-group">
+                        <label for="leaveApplyDate" class="col-md-2 control-label">申请日期</label>
+                        <div class="col-md-4">
+                            <input type="date" name="leaveApplyDate" class="form-control" ng-model="vm.LeaveApplyDate" placeholder="申请日期" format-date required />
+                            <div class="error-messages" ng-messages="LeaveFrm.leaveApplyDate.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">申请日期不能为空</small>
+                            </div>
+                        </div>
+                        <label for="department" class="col-md-2 control-label">部门</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input name="department" class="form-control" ng-model="vm.Department" placeholder="部门名称" readonly required />
+                                <div class="error-messages" ng-messages="LeaveFrm.department.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">部门不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            </div>
-        </div>
+                    <div class="form-group">
+                        <label for="leaveType" class="col-md-2 control-label">请假类别</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input name="leaveType" class="form-control" ng-model="vm.LeaveType" placeholder="请选假类别" required />
+                                <div class="error-messages" ng-messages="LeaveFrm.leaveType.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">假别名称不能为空</small>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" ng-model="vm.LeaveType"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择假别"
+                                            data-bs-options="item.name as item.text for item in vmManager.leaveTypes" data-bs-select>
+                                        选择请假类别<span class="caret"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <label for="leaveHours" class="col-md-2 control-label">时数(H)</label>
+                        <div class="col-md-4">
+                            <input type="number" name="leaveHours" class="form-control" ng-model="vm.LeaveHours" required />
+                            <div class="error-messages" ng-messages="LeaveFrm.leaveHours.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">请假时数不能为空</small>
+                            </div>
 
-        
-        
-    </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="leaveTimerStart" class="col-md-2 control-label">开始日期</label>
+                        <div class="col-md-4">
+                            <input type="text" name="leaveTimerStart" class="form-control" ng-model="vm.LeaveTimerStart" placeholder="开始日期" required />
+                            <div class="error-messages" ng-messages="LeaveFrm.leaveTimerStart.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">请假日期不能为空</small>
+                            </div>
+                        </div>
+                        <label for="leaveTimerEnd" class="col-md-2 control-label">结束日期</label>
+                        <div class="col-md-4">
+                            <input type="text" name="leaveTimerEnd" class="form-control" ng-model="vm.LeaveTimerEnd" placeholder="结束日期" required />
+                            <div class="error-messages" ng-messages="LeaveFrm.leaveTimerEnd.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">请假日期不能为空</small>
+                            </div>
+                        </div>
+
+                      
+                    </div>
+
+                    <div class="form-group">
+                        <label for="leaveState" class="col-md-2 control-label">请假状态</label>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input name="leaveState" class="form-control" ng-model="vm.LeaveState" placeholder="请选请假状态" required />
+                                <div class="error-messages" ng-messages="LeaveFrm.leaveState.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">请假状态不能为空</small>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" ng-model="vm.LeaveState"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择状态"
+                                            data-bs-options="item.id as item.text for item in vmManager.leaveStats" data-bs-select>
+                                        请选状态<span class="caret"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="leaveMemo" class="col-md-2 control-label">请假事由</label>
+                        <div class="col-md-10">
+                            <textarea rows="5" name="problemDesc" class="form-control" ng-model="vm.LeaveMemo" placeholder="请假事由" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="alert alert-info ">
+                        <div class="row">
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-10 col-lg-offset-4">
+                                <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(LeaveFrm.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
+                                <span yl-operatemsg-board></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </content>
+
+        </dialog>
+   </div>
 </div>

@@ -49,5 +49,33 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
+
+        /// <summary>
+        /// 1、按部门查询
+        /// </summary>
+        /// <param name="Dto"></param>
+        /// <returns></returns>
+        internal List<LeaveAskManagerModels>FindBy(LeaveAskManagerModelDto Dto)
+        {
+            if (Dto == null) return new List<LeaveAskManagerModels>();
+            try
+            {
+                switch (Dto.SearchMode)
+                {
+                    case 1:
+                    return irep.Entities.Where(k => k.WorkerId == Dto.WorkerId && k.Department==Dto.Department).ToList();
+                        
+                    default:
+                        return new List<LeaveAskManagerModels>();                      
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
     }
 }
