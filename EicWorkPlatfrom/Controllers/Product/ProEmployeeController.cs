@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.App.Business.Bmp.Pms.LeaveAsk;
 using Lm.Eic.App.Business.Mes.Optical.Authen;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
@@ -61,6 +62,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
+
         #region 考勤管理
 
         #region 加班管理
@@ -98,8 +100,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
            try
            {
-                //var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
-                var opresult = "";
+                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
+
+             
                 return Json(opresult);
            }
             catch (System.Exception ex)
@@ -114,13 +117,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetLeaveAskManagerDatas(string workerId,string department,int mode)
         {
-            //// var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
-            // {
-            //     WorkerId = workerId,
-            //     Department=department,
-            //     SearchMode=mode     
-            // });
-            var datas = "";
+            var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
+            {
+                WorkerId = workerId,
+                Department=department,
+                SearchMode=mode     
+            });
+           
             return DateJsonResult(datas);
 
         }
