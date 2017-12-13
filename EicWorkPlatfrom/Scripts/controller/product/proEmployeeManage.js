@@ -36,6 +36,23 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
             model: model
         });
     };
+    //查询请假数据
+    dataAccess.getLeaveAskManagerData = function (workerId,department,mode) {
+        var url = urlPrefix + 'GetLeaveAskManagerDatas';
+        return ajaxService.getData(url, {
+            workerId: workerId,
+            department:department,
+            mode: mode
+        });
+
+    };
+    //加载部门
+    dataAccess.getDepartment = function (dataNodeName) {
+        var url = urlPrefix + 'GetDepartment';
+        return ajaxService.getData(url, {
+            dataNodeName:dataNodeName
+        })
+    }
     return dataAccess;
 })
 //人员注册管理器
@@ -60,7 +77,6 @@ proEmployeeModule.controller('proUserRegistCtrl', function ($scope, dataDicConfi
                 }
             }
         },
-
         searchWorker: function ($event) {
 
             if ($event.keyCode === 13) {
@@ -143,22 +159,23 @@ proEmployeeModule.controller('proUserRegistCtrl', function ($scope, dataDicConfi
         }
     };
 });
-proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, proEmployeeDataService) {
+proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter,dataDicConfigTreeSet, connDataOpService, proEmployeeDataService) {
     var uiVM = {
         WorkerId: null,
         WorkerName: null,
         Department: null,
         LeaveType: null,
         LeaveHours: null,
-        LeaveApplyDate: new Date().toDateString(),
-        LeaveAskDate: new Date().toDateString(),
+        LeaveApplyDate: null,
+        LeaveAskDate: null,
         LeaveMemo: null,
         LeaveTimerStart: null,
         LeaveTimerEnd: null,
-        LeaveState:null,
+        LeaveState: '未填写',
+        ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
         OpDate: null,
         OpTime: null,
-        OpPerson: null,
+        OpPerson:leeDataHandler.dataStorage.getLoginedUser().userName,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
     };
@@ -166,11 +183,10 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
     var originalVM = _.clone(uiVM);
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {
-        workerId: null,
-        department: null
+        workerId: null     
     };
     $scope.query = queryFields;
-    var vmManager = {
+    var vmManager = {  
         activeTab: 'initTab',
         isLocal: true,
         init: function () {
@@ -220,7 +236,41 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
             }
         },
         leaveTypes: [],
+        leaveDepartment:[],
         datasource: [],
+        searchDatas:[],
+        workTimeStart: new Date(00, 00, 00),
+        workTimeEnd: new Date(00, 00, 00),  
+        leaveStats: [{ id: '未填写', text: '未填写' }, { id: '己填写', text: "己填写" }],
+        selectDepartment: null,
+        DepartmentDatas:[],
+        //拼接时间
+        SetDate: function ()
+        {             
+            if (uiVM.LeaveApplyDate == null && uiVM.LeaveAskDate == null) { leePopups.alert("亲！您未选择请假日期"); return; }        
+            var workStart =uiVM.LeaveApplyDate+" "+vmManager.workTimeStart.pattern("HH:mm");
+            var workEnd = uiVM.LeaveAskDate + " "+vmManager.workTimeEnd.pattern("HH:mm");
+            uiVM.LeaveTimerStart = workStart;
+            uiVM.LeaveTimerEnd = workEnd;         
+        },
+        //查询请假数据
+        getLeaveAskManagerDatas: function (mode) {      
+            vmManager.searchDatas = [];  
+            vmManager.datasource = [];
+            var datas = proEmployeeDataService.getLeaveAskManagerData(queryFields.workerId,vmManager.selectDepartment, mode).then(function (datas) {
+                vmManager.searchDatas = datas;
+                vmManager.datasource = datas;
+            });
+        },   
+        //加载部门
+        getDepartments: function () {
+            vmManager.DepartmentDatas = [];
+            $scope.searchPromise= proEmployeeDataService.getDepartment(uiVM.ParentDataNodeText).then(function (datas) {
+                vmManager.DepartmentDatas = datas;
+            });
+          
+               
+        }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -232,14 +282,43 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
         });
         if (leaveTypes !== undefined) {
             angular.forEach(leaveTypes, function (item) {
+              
                 vmManager.leaveTypes.push({
                     name: item.DataNodeText, text: item.DataNodeText
                 });
             });
         }
-    });
+    }); 
+    //编辑
+    operate.editItem = function (item) {
+        item.OpSign = leeDataHandler.dataOpMode.edit;
+        $scope.vm = uiVM = item;
+        dialog.show();
+    },
+    //删除      
+    operate.deleteItem = function (item) {
+            vmManager.delItem = item;
+            $scope.vm = uiVM = item;
+            operate.deleteDialog();
+    }
+    operate.deleteDialog = function () {
+        leePopups.confirm("删除提示", "是否确定删除吗？", function () {
+            uiVM.OpSign = leeDataHandler.dataOpMode.delete;
+            proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) { 
+                        vmManager.getLeaveAskManagerDatas(1);
+                        vmManager.del();
+                    }
+                })
+            })       
+        });
+    }  
+    //保存
     operate.saveAll = function (isValid) {
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
+        vmManager.SetDate(); 
+        if (uiVM.LeaveHours < 0) { leePopups.alert("亲！您填写时数不能为负数"); return; }
+        leeDataHandler.dataOperate.add(operate, isValid, function () {       
             proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
@@ -263,7 +342,5 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, dataDic
             vmManager.init();
         });
     };
-
-
-
+    vmManager.getDepartments();
 });

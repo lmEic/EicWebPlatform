@@ -28,6 +28,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
                 return ex.ExOpResult();
             }
         }
+        /// <summary>
+        /// 查询请假数据
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public List<LeaveAskManagerModels>FindByWorkerId(LeaveAskManagerModelDto Dto)
+        {
+            return LeaveAskFactory.LeaveAskCrud.FindBy(Dto);
+        }
 
 
     }
