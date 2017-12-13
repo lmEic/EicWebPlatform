@@ -102,6 +102,7 @@ namespace EicWorkPlatfrom.Controllers.Product
            {
                 var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
 
+             
                 return Json(opresult);
            }
             catch (System.Exception ex)
