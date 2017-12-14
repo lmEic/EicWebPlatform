@@ -185,9 +185,11 @@
                               <i class="fa fa-search-plus"></i>查询
                           </button>
                       </div>
+                      
                       <div class="form-group">
-                          <input id="findworkName" type="text" ng-model="vmManager.FindWorkName" class="form-control" placeholder="快速查找"/>
+                          <input id="findworkName" type="text" ng-model="vmManager.FindWorkName" class="form-control" placeholder="快速查找" />
                       </div>
+
                   </form>
                 
               </div>
@@ -242,6 +244,7 @@
                               <td ng-bind="item.Remark"></td>
                               <td ng-bind="item.WorkStatus"></td>                         
                               <td>
+                                  <button class="btn btn-xs btn-primary" ng-click="operate.addItem(item) " title="添加"><i class="glyphicon glyphicon-plus"></i></button>
                                   <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
                                   <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
                               </td>

@@ -1225,6 +1225,24 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         vmManager.BackgroundIndexFirst = item.rowindex1;
         dialog.show();
     };
+    operate.addItem = function (item) {     
+        item.OpSign = leeDataHandler.dataOpMode.add;
+        $scope.vm = uiVM = item;
+        vmManager.workDayDate = item.WorkDate;
+        vmManager.workNightDate = item.WorkDate;
+        vmManager.BackgroundIndexFirst = item.rowindex1;
+        dialog.show();
+        //构建索引号
+        vmManager.getWorkOverHoursDatas(1);
+        var rindex = 0;
+        angular.forEach(vmManager.searchDatas, function (item) {
+            item.rowindex1 = rindex;
+            rindex += 1;
+
+        });
+
+        
+    }
     //后台保存
     operate.editALL = function (isValid) {
         uiVM.BackgroundIndex = vmManager.BackgroundIndexFirst;
@@ -1239,7 +1257,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                         }
                         vmManager.init();
                         dialog.close();
-                        vmManager.getWorkOverHoursDatas(1);
+                        vmManager.getWorkOverHoursDatas();
                     }
                 })
             })
@@ -1323,6 +1341,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
             });
         });
     };
+
+
     //焦点设置
     var focusSetter = {
         workeroverFocus: false,
