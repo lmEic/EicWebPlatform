@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.App.Business.Bmp.Pms.LeaveAsk;
 using Lm.Eic.App.Business.Mes.Optical.Authen;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
@@ -61,6 +62,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
+
         #region 考勤管理
 
         #region 加班管理
@@ -87,15 +89,20 @@ namespace EicWorkPlatfrom.Controllers.Product
             List<ConfigDataDictionaryModel> leaveConfigTypes = PmConfigService.DataDicManager.LoadConfigDatasBy("AttendanceConfig", "AskForLeaveType");
             return Json(leaveConfigTypes, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 保存请假数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreLeaveAskManagerDatas(LeaveAskManagerModels model)
         {
            try
            {
-                //var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
-                var opresult = "";
+                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
+
+             
                 return Json(opresult);
            }
             catch (System.Exception ex)
@@ -106,7 +113,40 @@ namespace EicWorkPlatfrom.Controllers.Product
 
 
         }
-        
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetLeaveAskManagerDatas(string workerId,string department,int mode)
+        {
+            var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
+            {
+                WorkerId = workerId,
+                Department=department,
+                SearchMode=mode     
+            });
+           
+            return DateJsonResult(datas);
+
+        }
+
+        [NoAuthenCheck]
+        public ContentResult GetDepartment(string datanodeName)
+        {
+            try
+            {
+                var datas = PmConfigService.DataDicManager.GetConfigDataDepartment("Organization", "HrBaseInfoManage", datanodeName);
+
+                return DateJsonResult(datas);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
         #endregion
 
         #endregion

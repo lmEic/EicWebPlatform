@@ -10,6 +10,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk
     {
         public LeaveAskManagerModels()
         { }
+        private string _parentDataNodeText;
+        /// <summary>
+        /// 部级代码
+        /// </summary>
+        public string ParentDataNodeText
+        {
+            set { _parentDataNodeText = value; }
+            get { return _parentDataNodeText; }
+        }
         private string _workerId;
         /// <summary>
         /// 工号
@@ -141,6 +150,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk
             set { _id_key = value; }
             get { return _id_key; }
         }
+
 
     }
 }
