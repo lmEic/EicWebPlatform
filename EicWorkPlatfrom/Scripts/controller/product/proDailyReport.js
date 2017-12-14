@@ -1714,10 +1714,29 @@ productModule.controller("DailyProductionReportPT1Ctrl", function ($scope, dataD
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
         },
-        datasets: [{ MachineId: '60T-1', }, { MachineId: '60T-2', }],
+        datasource:[],
+        datasets: [
+            { MachineId: '35T', },
+            { MachineId: '60T-1', },
+            { MachineId: '60T-2', },
+            { MachineId: '90T', },
+            { MachineId: '50T-1', },
+            { MachineId: '50T-2', },
+            { MachineId: '100T', },
+            { MachineId: '80T-1', },
+            { MachineId: '80T-2', },
+            { MachineId: '80T-3', },
+            { MachineId: '80T-4', },
+            { MachineId: '80T-5', },
+            { MachineId: '80T-6', },
+            { MachineId: '130T-1', },
+            { MachineId: '130T-2', },
+
+        ],
         ///选择部门
         departments: [
-           { value: "PT1", label: "成型课" }, { value: "PT1", label: "注塑课" }],
+           { value: "PT1", label: "成型课" },
+           { value: "PT1", label: "注塑课" }],
        
         searchedWorkers: [],
         processesInfos: [],

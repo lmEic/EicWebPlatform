@@ -280,7 +280,7 @@
                                     </div>
                                 </div>
                                 @*人机配比 磨具编号*@
-                                <div class="form-group" ng-show="vm.ProcessesType === '机台'">
+                                <div class="form-group" ng-show="vm.ProcessesType === '机台'&& vmManager.department=='PT1'">
                                     <div class="col-md-6">
                                         <div class="input-group">
                                             <span class="input-group-addon">人机配比</span>
@@ -299,7 +299,7 @@
                                     </div>
                                 </div>
                                 @*磨具名称  模穴数 *@
-                                <div class="form-group" ng-show="vm.ProcessesType === '机台'">
+                                <div class="form-group" ng-show="vm.ProcessesType === '机台'&& vmManager.department=='PT1'">
                                     <div class="col-md-6">
                                         <div class="input-group ">
                                             <span class="input-group-addon">机器名称</span>

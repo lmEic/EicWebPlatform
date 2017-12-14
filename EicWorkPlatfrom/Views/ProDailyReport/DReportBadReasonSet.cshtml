@@ -16,10 +16,9 @@
                     <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.InPutDate"
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
-                    <label>查询:</label>
                     <button class="btn btn-success "
                             ng-click="vmManager.classTypeChange()">
-                        {{vmManager.classType}}
+                        载入信息
                     </button>
                 </form>
             </div>
@@ -68,7 +67,7 @@
                             </td>
                             <td>
                                 <button class="btn btn-success "
-                                        ng-click="vmManager.classTypeChange()"> {{item.ClassType}}
+                                        ng-click="vmManager.classTypeChange()">{{item.ClassType}}
                                 </button>
                             </td>
                             <td>
