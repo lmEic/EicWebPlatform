@@ -73,6 +73,20 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
             this.ToTable("Pms_DailyProductionDefectiveTreatment");
         }
     }
+
+    /// <summary>
+    ///ReportsMachineModel
+    /// </summary>
+    public class ReportsMachineModelMapping : EntityTypeConfiguration<ReportsMachineModel>
+    {
+        public ReportsMachineModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DailyReportsMachine");
+        }
+    }
+
 }
 
 

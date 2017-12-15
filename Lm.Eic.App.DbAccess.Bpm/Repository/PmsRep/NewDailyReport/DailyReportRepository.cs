@@ -137,4 +137,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
     public class ProductionDefectiveTreatmentRepository : BpmRepositoryBase<DailyProductionDefectiveTreatmentModel>, IProductionDefectiveTreatmentRepository
     { }
 
+
+    /// <summary>
+    /// 不良处理程序
+    /// </summary>
+    public interface IReportsMachineRepository : IRepository<ReportsMachineModel> { }
+    /// <summary>
+    ///不良处理程序
+    /// </summary>
+    public class ReportsMachineRepository : BpmRepositoryBase<ReportsMachineModel>, IReportsMachineRepository
+    { }
+
 }

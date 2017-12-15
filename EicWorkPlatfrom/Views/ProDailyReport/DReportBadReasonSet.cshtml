@@ -17,13 +17,13 @@
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <button class="btn btn-success "
-                            ng-click="vmManager.classTypeChange()">
+                            ng-click="vmManager.loadDaialyDatas(vm.InPutDate)">
                         载入信息
                     </button>
                 </form>
             </div>
         </div>
-        <div class="well " cg-busy="{promise:searchPromise}" style="padding:10px;overflow-y:scroll;min-height:380px;max-height:680px;">
+        <div class="well " cg-busy="{promise:searchPromise}" style="padding:10px;overflow-y:scroll;min-height:380px;max-height:680px;width :auto">
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -32,12 +32,13 @@
                             <th>工单信息</th>
                             <th>生产信息</th>
                             <th>人员信息</th>
-                            <th>备注</th>
+                            <th>班别</th>
                             <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                           
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in vmManager.datasets track by $index">
+                        <tr id="tab" ng-repeat="item in vmManager.datasets track by $index">
                             <td>
                                 <span class="label label-default" title="机台编号">{{item.MachineId}}</span>
                                 <span class="label label-primary" title="机台名称">{{item.MachineIdName}}</span>
@@ -70,10 +71,24 @@
                                         ng-click="vmManager.classTypeChange()">{{item.ClassType}}
                                 </button>
                             </td>
-                            <td>
-                                <button>添加</button>/<button>删除</button>
+                            <td class="text-center">
+                                @*工具按钮*@
+                                <button type="button" class="btn btn-xs btn-success"
+                                        data-animation="am-flip-x" data-placement="right"
+                                        bs-dropdown aria-haspopup="true" aria-expanded="false" style="height :auto;width :auto">
+                                    <span class="fa fa-indent" title="新增"></span>
+                                </button>
+                                <div class="dropdown-menu" role="menu">
+                                    <ul class="nav nav-pills" role="tablist">
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.insertNewRow(this,item)" title="插入行"><i class="fa fa-pencil"></i>插入</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.removeRow(this,item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
-                            <td>{{item.Field4}}</td>
                         </tr>
                     </tbody>
                 </table>

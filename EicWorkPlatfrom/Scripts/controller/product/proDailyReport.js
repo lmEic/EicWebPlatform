@@ -135,8 +135,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             aboutCategory: aboutCategory,
         });
     };
-
-
+    ///保存非生产配置原因
     reportDataOp.saveConfigDicData = function (vm, oldVm, opType) {
         var url = urlPrefix + "SaveUnProductionConfigDicData";
         return ajaxService.postData(url, {
@@ -145,7 +144,13 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             oldModel: oldVm
         });
     };
-
+   /////////--------------------------------生技课生产日报表-----------------------
+    reportDataOp.loadPT1MachineInfo = function (department) {
+        var url = urlPrefix + "LoadPt1MachineInfo";
+        return ajaxService.getData(url, {
+            department: department,
+        });
+    };
     ///--------------
     return reportDataOp;
 });
@@ -1716,28 +1721,66 @@ productModule.controller("DailyProductionReportPT1Ctrl", function ($scope, dataD
         },
         datasource:[],
         datasets: [
-            { MachineId: '35T', },
-            { MachineId: '60T-1', },
-            { MachineId: '60T-2', },
-            { MachineId: '90T', },
-            { MachineId: '50T-1', },
-            { MachineId: '50T-2', },
-            { MachineId: '100T', },
-            { MachineId: '80T-1', },
-            { MachineId: '80T-2', },
-            { MachineId: '80T-3', },
-            { MachineId: '80T-4', },
-            { MachineId: '80T-5', },
-            { MachineId: '80T-6', },
-            { MachineId: '130T-1', },
-            { MachineId: '130T-2', },
+            { MachineId: '35T', rowindex:1 },
+            { MachineId: '60T-1', rowindex: 2 },
+            { MachineId: '60T-2', rowindex: 3 },
+            { MachineId: '90T', rowindex: 4},
+            { MachineId: '50T-1', rowindex: 5 },
+            { MachineId: '50T-2', rowindex: 6 },
+            { MachineId: '100T', rowindex: 7 },
+            { MachineId: '80T-1', rowindex: 8 },
+            { MachineId: '80T-2', rowindex: 9 },
+            { MachineId: '80T-3', rowindex: 10 },
+            { MachineId: '80T-4', rowindex: 11 },
+            { MachineId: '80T-5', rowindex: 12 },
+            { MachineId: '80T-6', rowindex: 13 },
+            { MachineId: '130T-1', rowindex: 14 },
+            { MachineId: '130T-2', rowindex: 15 },
 
         ],
         ///选择部门
         departments: [
            { value: "PT1", label: "成型课" },
            { value: "PT1", label: "注塑课" }],
-       
+        // 创建一列数据
+        createRowItem: function () {
+            var vm = _.clone(initVM);
+            uiVM = _.clone(vm);
+            $scope.vm = uiVM;
+            vm.DailyReportDate = vmManager.InputDate;
+            vm.rowindex = vmManager.edittingRowIndex;
+            vm.editting = true;
+            vm.isMachineMode = false;
+
+            $scope.vm.OrderId = orderIdPre[vmManager.department];
+            vmManager.edittingRow = vm;
+            return vm;
+        },
+        //插入某一行
+        insertNewRow: function (tab, item) {
+            var rowindex = item.rowindex;
+            var vm = _.clone(item);
+            vm.rowindex = rowindex + 1;
+            leeHelper.insert(vmManager.datasets, rowindex, vm);
+            var index = 1;
+            //重新更改行的索引
+            angular.forEach(vmManager.datasets, function (row) {
+                row.rowindex = index;
+                index += 1;
+            })
+        },
+        //删除行
+        removeRow: function (tab, item) {
+            leeHelper.remove(vmManager.datasets, item);
+        },
+        //载入初始机台的据数信息
+        loadDaialyDatas: function (queryDate) {
+            console.log(queryDate);
+            vmManager.datasets = [];
+            $scope.promise = dReportDataOpService.loadPT1MachineInfo(vmManager.department).then(function (datas) {
+                vmManager.datasource = vmManager.datasets = datas;
+            });
+        },
         searchedWorkers: [],
         processesInfos: [],
         workerId: null,
