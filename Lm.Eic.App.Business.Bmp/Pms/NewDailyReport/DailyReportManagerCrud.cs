@@ -52,6 +52,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyProductionDefectiveTreatmentCrud>(); }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static DailyReportsMachineCrud DailyReportsMachine
+        {
+            get { return OBulider.BuildInstance<DailyReportsMachineCrud>(); }
+        }
     }
     /// <summary>
     /// 生产工序CRUD
@@ -533,6 +540,64 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         }
        #endregion
 
+    }
+
+
+    /// <summary>
+    /// 不良制程处理
+    /// </summary>
+    internal class DailyReportsMachineCrud : CrudBase<ReportsMachineModel, IReportsMachineRepository>
+    {
+        public DailyReportsMachineCrud() : base(new ReportsMachineRepository(), "机台信息")
+        { }
+        #region  CRUD
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(ReportsMachineModel model)
+        {
+            //
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(ReportsMachineModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(ReportsMachineModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+        #endregion
+
+
+        #region  find
+
+        public List<ReportsMachineModel> GetMachineDatas(string department)
+        {
+            return irep.Entities.Where(e => e.Department == department).ToList();
+        }
+
+        #endregion
     }
 }
 

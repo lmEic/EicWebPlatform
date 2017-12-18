@@ -57,9 +57,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
     }
 
-
-
-
     /// <summary>
     ///  产品标准工时工艺设置管理
     /// </summary>
@@ -435,6 +432,25 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             var datas = DailyReportCrudFactory.DailyProductionReport.GetWorkerDailyDatasBy(workerId);
             if (datas == null) return null;
             return datas.FirstOrDefault();
+        }
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="department"></param>
+       /// <returns></returns>
+        public List<DailyProductionReportModel> getPt1ReportData(string department)
+        {
+            List<DailyProductionReportModel> datas = new List<DailyProductionReportModel>();
+            DailyProductionReportModel newModel = null;
+            var machineInfos = DailyReportCrudFactory.DailyReportsMachine.GetMachineDatas(department);
+            if (machineInfos == null) return datas;
+            machineInfos.ForEach(e => {
+
+                newModel = new DailyProductionReportModel();
+                OOMaper.Mapper<ReportsMachineModel, DailyProductionReportModel>(e, newModel);
+                datas.Add(newModel);
+            });
+            return datas;
         }
     }
 }

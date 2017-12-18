@@ -1128,6 +1128,158 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
+
+
+    /// <summary>
+    ///机台信息模块
+    /// </summary>
+    [Serializable]
+    public partial class ReportsMachineModel
+    {
+        public ReportsMachineModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _machineid;
+        /// <summary>
+        ///机台编号
+        /// </summary>
+        public string MachineId
+        {
+            set { _machineid = value; }
+            get { return _machineid; }
+        }
+        private string _machinecode;
+        /// <summary>
+        ///机台代码
+        /// </summary>
+        public string MachineCode
+        {
+            set { _machinecode = value; }
+            get { return _machinecode; }
+        }
+        private string _machinename;
+        /// <summary>
+        ///机台名称
+        /// </summary>
+        public string MachineName
+        {
+            set { _machinename = value; }
+            get { return _machinename; }
+        }
+        private string _machinespec;
+        /// <summary>
+        ///机台规格
+        /// </summary>
+        public string MachineSpec
+        {
+            set { _machinespec = value; }
+            get { return _machinespec; }
+        }
+        private int _machinerunsethournumber;
+        /// <summary>
+        ///运用设置时间
+        /// </summary>
+        public int MachineRunSetHourNumber
+        {
+            set { _machinerunsethournumber = value; }
+            get { return _machinerunsethournumber; }
+        }
+        private string _machinemanufactureid;
+        /// <summary>
+        ///财务编号
+        /// </summary>
+        public string MachineManufactureId
+        {
+            set { _machinemanufactureid = value; }
+            get { return _machinemanufactureid; }
+        }
+        private string _machinepreserver;
+        /// <summary>
+        ///机台维护人
+        /// </summary>
+        public string MachinePreserver
+        {
+            set { _machinepreserver = value; }
+            get { return _machinepreserver; }
+        }
+        private DateTime _purchasedate;
+        /// <summary>
+        ///采购日期
+        /// </summary>
+        public DateTime PurchaseDate
+        {
+            set { _purchasedate = value; }
+            get { return _purchasedate; }
+        }
+        private string _state;
+        /// <summary>
+        ///使用状态
+        /// </summary>
+        public string State
+        {
+            set { _state = value; }
+            get { return _state; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+
+
+
     #endregion
 
 

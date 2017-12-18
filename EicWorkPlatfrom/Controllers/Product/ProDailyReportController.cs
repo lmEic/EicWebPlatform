@@ -36,10 +36,21 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
+        /// <summary>
+        /// 载入生技课的数据 LoadPt1MachineInfo
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult LoadPt1MachineInfo(string department)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
+            return DateJsonResult(datas);
+        }
         #endregion
 
 
-       
+
         #region DReportUnproductionSet 非生产原因配置
         public ActionResult DReportUnproductionSet()
         {
