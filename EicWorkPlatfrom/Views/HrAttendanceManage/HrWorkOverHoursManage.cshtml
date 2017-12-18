@@ -132,9 +132,7 @@
                                     <input ng-model="vm.DepartmentText" ng-keydown="vmManager.inputdepartmentText($event,item)"
                                            focus-if="focus.departmentTextFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入部门" ng-show="item.wkhing2" />
-
-                                </td>
-                                          
+                                </td>                                        
                                 <td>{{item.WorkDate}}</td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editClassType(item)">
                                     <span ng-hide="item.isEdittingClassType">{{item.WorkClassType}}</span>
