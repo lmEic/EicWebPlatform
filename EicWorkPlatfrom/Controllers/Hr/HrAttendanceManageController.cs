@@ -280,8 +280,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             var result = WorkOverHoursService.WorkOverHoursManager.HandleWorkOverHoursDatas(workOverHours);
             return Json(result);
-
-
         }
         /// <summary>
         /// 导入EXCEL数据到DataSets
@@ -373,6 +371,29 @@ namespace EicWorkPlatfrom.Controllers.Hr
 
                 return DateJsonResult(datas);
 
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+        /// <summary>
+        /// 批量删除后台数据
+        /// </summary>
+        /// <param name="departmentText"></param>
+        /// <param name="workDate"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult HandlDeleteWorkOverHoursDt(string departmentText,DateTime workDate)
+        {
+          
+            try
+            {
+                var opresult = WorkOverHoursService.WorkOverHoursManager.HandleDeleteWorkOverHours(departmentText, workDate);
+                return Json(opresult);
             }
             catch (Exception ex)
             {

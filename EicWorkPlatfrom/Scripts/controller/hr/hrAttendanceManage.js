@@ -189,6 +189,14 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
 
         })
     }
+    //批量删除后台数据
+    hr.handlDeleteWorkOverHoursDt = function (departmentText, workDate) {
+        var url = attendUrl + 'HandlDeleteWorkOverHoursDt';
+        return ajaxService.postData(url, {
+            departmentText: departmentText,
+            workDate:workDate
+        })
+    }
     return hr;
 });
 //-----------考勤业务管理-----------------------
@@ -610,8 +618,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         WorkDayTime: null,
         WorkNightTime: null,
         ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
-        BackgroundIndex: null,
-       
+        BackgroundIndex: null,     
         OpPerson: leeDataHandler.dataStorage.getLoginedUser().userName,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null,
@@ -1267,7 +1274,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         vmManager.workNightDate = item.WorkDate;
         dialog.show();
     };
-
     //后台编辑
     operate.editItem = function (item) {
 
@@ -1329,6 +1335,23 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         $scope.vm = uiVM = item;
         operate.deleteDialog();
     }
+    //后台批量删除  
+    operate.handleDel = function () { 
+        if (vmManager.searchDatas.length == 0||vmManager.searchDatas==null) {leePopups.alert("亲，没有要删除的信息！"); return;}
+        leePopups.confirm("删除提示", "是否确定删除吗？", function () {               
+            hrDataOpService.handlDeleteWorkOverHoursDt(vmManager.selectDepartment,qryDto.workDate).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        vmManager.getWorkOverHoursDatas();
+                       // vmManager.del();
+                    }
+                })
+            })
+            vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
+        });
+
+    }
+
     //关闭窗口
     operate.updateItem = function (item) {
         tempVm.workOverCount = 0;
@@ -1378,7 +1401,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 operate.saveAll();
             });
         },
-        operate.deleteDialog = function () {
+        operate.deleteDialog = function ()
+        {
             leePopups.confirm("删除提示", "是否确定删除吗？", function () {
                 uiVM.OpSign = leeDataHandler.dataOpMode.delete;
                 hrDataOpService.storeWorkOverHoursDt(uiVM).then(function (opresult) {
