@@ -326,11 +326,9 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                         mode.Id_Key == opresult.Id_Key;
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
-                        }
-                        // vmManager.searchBy();
+                        }                   
                         vmManager.init();
                         dialog.close();
-
                     }
                 });
             });
