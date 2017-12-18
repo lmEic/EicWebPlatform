@@ -82,7 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         /// <param name="workOverHourss"></param>
         /// <returns></returns>
        public OpResult HandleWorkOverHoursDatas(List<WorkOverHoursMangeModels>workOverHourss)
-        {
+       {
             if(workOverHourss==null)return OpResult.SetErrorResult("列表不能为空");
             bool result = true;
             try
@@ -98,7 +98,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
             return OpResult.SetResult("批量保储数据成功！", result);
 
-        }
+       }
 
         /// <summary>
         /// 导入excel
@@ -191,6 +191,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="departmentText"></param>
+        /// <param name="workDate"></param>
+        /// <returns></returns>
+        public OpResult HandleDeleteWorkOverHours(string departmentText,DateTime workDate)
+        {
+            return WorkOverHoursFactory.WorkOverHoursCrud.HandleDeleteWorkOverHours(departmentText, workDate);
+        }
+
+
 
    }
 }
