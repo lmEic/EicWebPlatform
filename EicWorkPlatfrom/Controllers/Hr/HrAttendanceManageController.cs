@@ -1,20 +1,14 @@
 ﻿using System;
-using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
-using Lm.Eic.Framework.ProductMaster.Business.Config;
-using Lm.Eic.Framework.ProductMaster.Model;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
-using Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours;
 using System.Web;
 using System.IO;
-using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
-using Lm.Eic.App.Business.Bmp.Pms.NewDailyReport;
-using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
-using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
-using Lm.Eic.App.Business.Bmp.Hrm.Archives;
-using Lm.Eic.App.Erp.Bussiness.QuantityManage;
+using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
+using Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
+using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace EicWorkPlatfrom.Controllers.Hr
@@ -268,6 +262,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {    
             
            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText, workDate);
+       
             foreach (var item in datas)
             {
                 if(item.OpSign=="edit")

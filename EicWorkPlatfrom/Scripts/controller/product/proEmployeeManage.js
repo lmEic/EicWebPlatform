@@ -263,7 +263,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             });
         },   
         //加载部门
-        getDepartments: function () {
+        getDepartments: function () {          
             vmManager.DepartmentDatas = [];
             $scope.searchPromise= proEmployeeDataService.getDepartment(uiVM.ParentDataNodeText).then(function (datas) {
                 vmManager.DepartmentDatas = datas;
@@ -281,8 +281,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType"
         });
         if (leaveTypes !== undefined) {
-            angular.forEach(leaveTypes, function (item) {
-              
+            angular.forEach(leaveTypes, function (item) {           
                 vmManager.leaveTypes.push({
                     name: item.DataNodeText, text: item.DataNodeText
                 });
@@ -326,11 +325,9 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                         mode.Id_Key == opresult.Id_Key;
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
-                        }
-                        // vmManager.searchBy();
+                        }                   
                         vmManager.init();
                         dialog.close();
-
                     }
                 });
             });

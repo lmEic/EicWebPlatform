@@ -129,9 +129,7 @@
                                     <input ng-model="vm.DepartmentText" ng-keydown="vmManager.inputdepartmentText($event,item)"
                                            focus-if="focus.departmentTextFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入部门" ng-show="item.wkhing2" />
-
-                                </td>
-                                          
+                                </td>                                        
                                 <td>{{item.WorkDate}}</td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editClassType(item)">
                                     <span ng-hide="item.isEdittingClassType">{{item.WorkClassType}}</span>
@@ -141,7 +139,12 @@
                                         晚班<span class="caret"></span>
                                     </button>
                                 </td>
-                                <td>{{item.WorkerId}}</td>
+                                <td title="双击可修改" ng-dblclick="vmManager.editId(item)">
+                                    <span ng-hide="item.wkhing3">{{item.WorkerId}}</span>
+                                    <input ng-model="vm.WorkerId" ng-keydown="vmManager.inputId($event,item)"ng-change="vmManager.getWorkerInfo()"
+                                           focus-if="focus.workerIdFocus" focus-setter style="width:70px;" onfocus="this.select()"
+                                           placeholder="请输入工号" ng-show="item.wkhing3" />
+                                </td>
                                 <td>{{item.WorkerName}}</td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editOverHours(item)">
                                     <span ng-hide="item.wkhing">{{item.WorkOverHours}}</span>
@@ -153,10 +156,8 @@
                                     <span ng-hide="item.wkhing1">{{item.Remark}}</span>
                                     <input ng-model="vm.Remark" ng-keydown="vmManager.inputremark($event,item)"
                                            focus-if="focus.remarkFocus" focus-setter style="width:70px;" onfocus="this.select()"
-                                           placeholder="请输入备注" ng-show="item.wkhing1" />
-                                  
-                                </td>
-                                                           
+                                           placeholder="请输入备注" ng-show="item.wkhing1" />                                 
+                                </td>                                                    
                             </tr>
                         </tbody>
                     </table>
@@ -169,7 +170,6 @@
             </div>
         </div>
     </div>
-
     <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="1.0" ps-container='editWindow' ps-click-outside="false">
       <div class="bs-callout bs-callout-info">
           <div class="row">
@@ -182,9 +182,11 @@
                               <i class="fa fa-search-plus"></i>查询
                           </button>
                       </div>
+                      
                       <div class="form-group">
-                          <input id="findworkName" type="text" ng-model="vmManager.FindWorkName" class="form-control" placeholder="快速查找"/>
+                          <input id="findworkName" type="text" ng-model="vmManager.FindWorkName" class="form-control" placeholder="快速查找" />
                       </div>
+
                   </form>
                 
               </div>
@@ -239,6 +241,7 @@
                               <td ng-bind="item.Remark"></td>
                               <td ng-bind="item.WorkStatus"></td>                         
                               <td>
+                                  <button class="btn btn-xs btn-primary" ng-click="operate.addItem(item) " title="添加"><i class="glyphicon glyphicon-plus"></i></button>
                                   <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
                                   <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
                               </td>
