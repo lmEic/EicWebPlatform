@@ -144,7 +144,7 @@
                                 </td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editId(item)">
                                     <span ng-hide="item.wkhing3">{{item.WorkerId}}</span>
-                                    <input ng-model="vm.WorkerId" ng-keydown="vmManager.inputId($event,item)"
+                                    <input ng-model="vm.WorkerId" ng-keydown="vmManager.inputId($event,item)"ng-change="vmManager.getWorkerInfo()"
                                            focus-if="focus.workerIdFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入工号" ng-show="item.wkhing3" />
                                 </td>

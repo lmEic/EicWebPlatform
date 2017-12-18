@@ -921,7 +921,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 vmManager.editNextremark($event, item);
             });
         },
-        //编辑工号
+        //编辑工号   
         editId: function (item) {
             item.pheditting = false;
             item.isEdittingWorkerId = false;
@@ -948,7 +948,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         },
         editworkerId: function (item) {
             if (item !== undefined && item !== null) {
-
                 angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing3 = false });
                 leeHelper.copyVm(item, uiVM);
                 $scope.vm = uiVM;
@@ -956,16 +955,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 vmManager.edittingRow = item;
                 item.wkhing3 = true;
                 focusSetter['workerIdFocus'] = true;
+                
             }
         },
         editNextId: function ($event, item) {
             if ($event.keyCode === 13 || $event.keyCode === 9) {
-                //累计时数
-              
-                //vmManager.selectWorker(item.WorkerId);
-                //item.WorkerName=worker.WorkerName
-                //alert(item.WorkerName);
-               
+                //累计时数                                        
                 leeHelper.copyVm($scope.vm, vmManager.edittingRow);
                 if (item.rowindex < vmManager.dataSets.length) {
                     vmManager.edittingRowIndex = item.rowindex + 1;
