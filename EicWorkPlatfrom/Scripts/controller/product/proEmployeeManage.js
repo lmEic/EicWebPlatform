@@ -281,8 +281,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType"
         });
         if (leaveTypes !== undefined) {
-            angular.forEach(leaveTypes, function (item) {
-              
+            angular.forEach(leaveTypes, function (item) {           
                 vmManager.leaveTypes.push({
                     name: item.DataNodeText, text: item.DataNodeText
                 });
