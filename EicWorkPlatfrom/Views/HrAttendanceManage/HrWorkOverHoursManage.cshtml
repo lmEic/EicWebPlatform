@@ -144,7 +144,14 @@
                                         晚班<span class="caret"></span>
                                     </button>
                                 </td>
-                                <td>{{item.WorkerId}}</td>
+                                <td title="双击可修改" ng-dblclick="vmManager.editId(item)">
+                                    <span ng-hide="item.wkhing3">{{item.WorkerId}}</span>
+                                    <input ng-model="vm.WorkerId" ng-keydown="vmManager.inputId($event,item)"
+                                           focus-if="focus.workerIdFocus" focus-setter style="width:70px;" onfocus="this.select()"
+                                           placeholder="请输入工号" ng-show="item.wkhing3" />
+
+
+                                </td>
                                 <td>{{item.WorkerName}}</td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editOverHours(item)">
                                     <span ng-hide="item.wkhing">{{item.WorkOverHours}}</span>
@@ -172,7 +179,6 @@
             </div>
         </div>
     </div>
-
     <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="1.0" ps-container='editWindow' ps-click-outside="false">
       <div class="bs-callout bs-callout-info">
           <div class="row">

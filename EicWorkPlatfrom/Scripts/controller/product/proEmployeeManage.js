@@ -263,7 +263,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             });
         },   
         //加载部门
-        getDepartments: function () {
+        getDepartments: function () {          
             vmManager.DepartmentDatas = [];
             $scope.searchPromise= proEmployeeDataService.getDepartment(uiVM.ParentDataNodeText).then(function (datas) {
                 vmManager.DepartmentDatas = datas;

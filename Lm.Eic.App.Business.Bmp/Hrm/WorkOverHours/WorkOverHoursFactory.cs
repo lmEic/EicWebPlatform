@@ -32,8 +32,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         { }
 
         protected override void AddCrudOpItems()
-        {
-          
+        {    
             this.AddOpItem(OpMode.Add, AddWorkOverHours);
             this.AddOpItem(OpMode.Edit, EditWorkOverHours);
             this.AddOpItem(OpMode.Delete, DeleteWorkOverHours);
