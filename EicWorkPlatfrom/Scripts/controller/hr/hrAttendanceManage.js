@@ -611,9 +611,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         WorkNightTime: null,
         ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
         BackgroundIndex: null,
-        // PostNature:null,
-
-        //OpDate: null,
+       
         OpPerson: leeDataHandler.dataStorage.getLoginedUser().userName,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null,
