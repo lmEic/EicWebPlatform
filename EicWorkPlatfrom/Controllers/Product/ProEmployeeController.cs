@@ -274,25 +274,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult HandlDeleteWorkOverHoursDt(string departmentText, DateTime workDate)
         {
-
             try
             {
-                var opresult = WorkOverHoursService.WorkOverHoursManager.HandleDeleteWorkOverHours(departmentText, workDate);
-                return Json(opresult);
+               var opresult = WorkOverHoursService.WorkOverHoursManager.HandleDeleteWorkOverHours(departmentText, workDate);
+               return Json(opresult);
             }
             catch (Exception ex)
             {
-
-                throw new Exception(ex.Message);
+               throw new Exception(ex.Message);
             }
 
         }
-
-    
-
+  
         #endregion
-
-
 
         #region 请假管理
         public ActionResult ProAskLeaveManage()
@@ -318,11 +312,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult StoreLeaveAskManagerDatas(LeaveAskManagerModels model)
         {
+           
            try
            {
-                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);
-
-             
+                var opresult = LeaveAskService.LeaveAskManager.StoreLeaveAskDatas(model);          
                 return Json(opresult);
            }
             catch (System.Exception ex)
@@ -347,26 +340,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             return DateJsonResult(datas);
 
         }
-
-        //[NoAuthenCheck]
-        //public ContentResult GetDepartment(string datanodeName)
-        //{
-        //    try
-        //    {
-        //        var datas = PmConfigService.DataDicManager.GetConfigDataDepartment("Organization", "HrBaseInfoManage", datanodeName);
-
-        //        return DateJsonResult(datas);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw new Exception(ex.Message);
-        //    }
-
-        //}
-
-
         #endregion
 
         #endregion

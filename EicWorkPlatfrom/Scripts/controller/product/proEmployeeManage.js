@@ -245,6 +245,7 @@ proEmployeeModule.controller('proUserRegistCtrl', function ($scope, dataDicConfi
         }
     };
 });
+//请假管理
 proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter,dataDicConfigTreeSet, connDataOpService, proEmployeeDataService) {
     var uiVM = {
         WorkerId: null,
@@ -273,7 +274,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
     };
     $scope.query = queryFields;
     var vmManager = {  
-        activeTab: 'initTab',
+       
         isLocal: true,
         init: function () {
             uiVM = _.clone(originalVM);
@@ -332,8 +333,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         DepartmentDatas:[],
         //拼接时间
         SetDate: function ()
-        {             
-            if (uiVM.LeaveApplyDate == null && uiVM.LeaveAskDate == null) { leePopups.alert("亲！您未选择请假日期"); return; }        
+        {                              
             var workStart =uiVM.LeaveApplyDate+" "+vmManager.workTimeStart.pattern("HH:mm");
             var workEnd = uiVM.LeaveAskDate + " "+vmManager.workTimeEnd.pattern("HH:mm");
             uiVM.LeaveTimerStart = workStart;
@@ -381,8 +381,9 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         dialog.show();
     },
     //删除      
-    operate.deleteItem = function (item) {
-            vmManager.delItem = item;
+        operate.deleteItem = function (item) {
+            item.OpSign = leeDataHandler.dataOpMode.delete;
+          //  vmManager.delItem = item;
             $scope.vm = uiVM = item;
             operate.deleteDialog();
     }
@@ -391,9 +392,10 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             uiVM.OpSign = leeDataHandler.dataOpMode.delete;
             proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    if (opresult.Result) { 
+                    if (opresult.Result) {                   
+                       vmManager.init();
                         vmManager.getLeaveAskManagerDatas(1);
-                        vmManager.del();
+                        deleteDialog.close();
                     }
                 })
             })       
@@ -402,6 +404,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
     //保存
     operate.saveAll = function (isValid) {
         vmManager.SetDate(); 
+        if (uiVM.LeaveApplyDate == null || uiVM.LeaveAskDate == null) { leePopups.alert("亲！您未选择请假日期"); return; }        
         if (uiVM.LeaveHours < 0) { leePopups.alert("亲！您填写时数不能为负数"); return; }
         leeDataHandler.dataOperate.add(operate, isValid, function () {       
             proEmployeeDataService.storeLeaveAskManagerDatas(uiVM).then(function (opresult) {
@@ -413,6 +416,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                             vmManager.datasource.push(mode);
                         }                   
                         vmManager.init();
+                        vmManager.getLeaveAskManagerDatas(1);
                         dialog.close();
                     }
                 });
