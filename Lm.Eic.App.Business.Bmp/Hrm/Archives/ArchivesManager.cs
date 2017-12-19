@@ -458,9 +458,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             else if (searchMode == 2)
             {
                 if (qryDto.WorkerId.IsNumber()) //如果为数字按工号查询 否则按姓名查询
-                    sqlWhere = string.Format("WorkerId='{0}' And WorkingStatus='在职'", qryDto.WorkerId);
+                    sqlWhere = string.Format("WorkerId='{0}' ", qryDto.WorkerId);
                 else
-                    sqlWhere = string.Format("Name='{0}' And WorkingStatus='在职'", qryDto.WorkerId);
+                    sqlWhere = string.Format("Name='{0}'", qryDto.WorkerId);
             }
             else if (searchMode == 3)
             {

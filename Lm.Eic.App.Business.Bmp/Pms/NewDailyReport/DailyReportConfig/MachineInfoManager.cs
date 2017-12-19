@@ -8,7 +8,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
 {
     public class MachineInfoManager
     {
-        public List<ReportsMachineModel> getDatas(string department)
+        public List<ReportsMachineModel> GetMachineDatas(string department)
         {
             return DailyReportCrudFactory.DailyReportsMachine.GetMachineDatas(department);
         }

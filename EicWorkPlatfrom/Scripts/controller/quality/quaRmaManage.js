@@ -181,12 +181,9 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 
     $scope.promise = rmaDataOpService.getCustomerShortNameDatas('ArchiveConfig', 'RmaCustomerShortName').then(function (datas) {
         vmManager.customerShortNames = [];
-        console.log(datas);
         angular.forEach(datas, function (dataitem) {
-            console.log(dataitem);
             vmManager.customerShortNames.push({ name: dataitem.DataNodeName, text: dataitem.DataNodeText, labelName: dataitem.labelName });
         });
-        console.log(vmManager.customerShortNames);
     });
 });
 //// 描述RMA登记

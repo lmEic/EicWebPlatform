@@ -23,14 +23,14 @@ namespace EicWorkPlatfrom.Controllers.Product
             return View();
         }
 
-        #region Date Report Hours Set method 
+        #region Date Report Hours Set method
         public ActionResult DReportHoursSet()
         {
             return View();
         }
         #endregion
 
-      
+
         #region DReportBadReasonSet 不良原因配置
         public ActionResult DReportBadReasonSet()
         {
@@ -44,15 +44,17 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult LoadPt1MachineInfo(string department)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
+            var Pt1ReportVmData = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
+            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = "MD", Post = "注塑师傅" }, 4);
+            var datas = new { Pt1ReportVmData, departmentMasterDatas };
             return DateJsonResult(datas);
         }
         #endregion
 
 
 
-        #region DReportUnproductionSet 非生产原因配置
-        public ActionResult DReportUnproductionSet()
+        #region DReportMachineSet 机台配置
+        public ActionResult DReportMachineSet()
         {
             return View();
         }
@@ -71,8 +73,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
-       
-        
+
+
         #region report Flow Set set method  生产工艺录入
         public ActionResult DReportFlowSet()
         {
@@ -90,9 +92,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             //工单没有用到
             //用品名得到多处数据 把数据转化为 ProductsFlowOverModel
-           var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(queryDto);
-           return Json(datas, JsonRequestBehavior.AllowGet);
-           // return DateJsonResult(datas);
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(queryDto);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+            // return DateJsonResult(datas);
         }
 
         /// <summary>
@@ -219,19 +221,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="queryString"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetOrderDispatchInfoDatas(string queryString, int  opType)
+        public ContentResult GetOrderDispatchInfoDatas(string queryString, int opType)
         {
             switch (opType)
             {
                 case 1:
                     var erpOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(queryString);
-                    var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetDispatchOrderDataBy(queryString,1);
+                    var virtualOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetDispatchOrderDataBy(queryString, 1);
                     var datas = new { erpOrderDatas, virtualOrderDatas };
                     return DateJsonResult(datas);
                 case 2:
                     var data = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetLikeQueryOrderDataBy(queryString);
                     return DateJsonResult(data);
-                default: 
+                default:
                     return DateJsonResult("操作类型不对");
             }
         }
@@ -266,9 +268,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetInProductionOrderDatas(string department)
         {
-            var haveDispatchOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配","True");
+            var haveDispatchOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, "已分配", "True");
             ///由部门信息得对应所有师傅
-            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = department,PostType= "技术类" }, 6);
+            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = department, PostType = "技术类" }, 6);
             var datas = new { haveDispatchOrderDatas, departmentMasterDatas };
             return DateJsonResult(datas);
         }
@@ -296,7 +298,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             return DateJsonResult(datas);
         }
 
-        
+
         /// <summary>
         ///得到日报录入的详细信息
         /// </summary>

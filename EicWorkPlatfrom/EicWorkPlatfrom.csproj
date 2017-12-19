@@ -1531,7 +1531,7 @@
     <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwMaterialBaseConfig.cshtml" />
     <Content Include="Views\TolManPowerTunnel\TolManpowerDisk.cshtml" />
-    <Content Include="Views\ProDailyReport\DReportBadReasonSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportMachineSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportUnproductionSet.cshtml" />
     <Content Include="Views\ProRedoProductArea\DRRedoInput.cshtml" />
     <Content Include="Views\HrGeneralAffairsManage\GaMealReportManage.cshtml" />

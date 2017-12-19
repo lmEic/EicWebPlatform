@@ -54,6 +54,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyProductionDefectiveTreatmentManger>(); }
         }
+        /// <summary>
+        /// 机台管理
+        /// </summary>
+       public MachineInfoManager MachineInfo
+        {
+            get { return OBulider.BuildInstance<MachineInfoManager>(); }
+        }
 
     }
 
@@ -438,16 +445,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
        /// </summary>
        /// <param name="department"></param>
        /// <returns></returns>
-        public List<DailyProductionReportModel> getPt1ReportData(string department)
+        public List<DailyPTProductVm> getPt1ReportData(string department)
         {
-            List<DailyProductionReportModel> datas = new List<DailyProductionReportModel>();
-            DailyProductionReportModel newModel = null;
+            List<DailyPTProductVm> datas = new List<DailyPTProductVm>();
+            DailyPTProductVm newModel = null;
             var machineInfos = DailyReportCrudFactory.DailyReportsMachine.GetMachineDatas(department);
             if (machineInfos == null) return datas;
             machineInfos.ForEach(e => {
 
-                newModel = new DailyProductionReportModel();
-                OOMaper.Mapper<ReportsMachineModel, DailyProductionReportModel>(e, newModel);
+                newModel = new DailyPTProductVm();
+                OOMaper.Mapper<ReportsMachineModel, DailyPTProductVm>(e, newModel);
+                newModel.ClassType = "白班";
                 datas.Add(newModel);
             });
             return datas;
