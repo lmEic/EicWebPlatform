@@ -45,6 +45,9 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         
         templateUrl: reportUrlPrefix + 'DRProductOrderDispatching'
     })
+
+
+
      //日报录入
     .state('dReportInput', {
        
@@ -55,8 +58,6 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 
         templateUrl: redoUrlPrefix + 'DRRedoInput'
     })
-
-
      //--------------人员管理--------------------------
     .state('registWorkerInfo', {
         templateUrl: 'ProEmployee/RegistWorkerInfo'

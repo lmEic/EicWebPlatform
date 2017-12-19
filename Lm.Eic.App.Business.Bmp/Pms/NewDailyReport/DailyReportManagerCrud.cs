@@ -53,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             get { return OBulider.BuildInstance<DailyProductionDefectiveTreatmentCrud>(); }
         }
         /// <summary>
-        /// 
+        /// 机台信息Crud
         /// </summary>
         public static DailyReportsMachineCrud DailyReportsMachine
         {
@@ -365,6 +365,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             ///日期格式 简化
             model.InPutDate = model.InPutDate.ToDate();
+            if (model.OrderId == null || model.OrderId == string.Empty) return OpResult.SetErrorResult(OpContext);
             if(model.StandardProductionTime != 0&& model.TodayProductionCount!=0)
                 model.GetProductionTime =Math.Round(model.TodayProductionCount * model.StandardProductionTime / 3600,2);
             //生成组合键值
@@ -544,7 +545,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
 
     /// <summary>
-    /// 不良制程处理
+    /// 日报表机台信息
     /// </summary>
     internal class DailyReportsMachineCrud : CrudBase<ReportsMachineModel, IReportsMachineRepository>
     {

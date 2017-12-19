@@ -44,7 +44,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult LoadPt1MachineInfo(string department)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
+            var Pt1ReportVmData = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
+            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = "MD", Post = "注塑师傅" }, 4);
+            var datas = new { Pt1ReportVmData, departmentMasterDatas };
             return DateJsonResult(datas);
         }
         #endregion
