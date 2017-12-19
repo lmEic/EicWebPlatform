@@ -32,13 +32,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         { }
 
         protected override void AddCrudOpItems()
-        {
-          
+        {    
             this.AddOpItem(OpMode.Add, AddWorkOverHours);
             this.AddOpItem(OpMode.Edit, EditWorkOverHours);
             this.AddOpItem(OpMode.Delete, DeleteWorkOverHours);
+           
         }
 
+       
         private OpResult DeleteWorkOverHours(WorkOverHoursMangeModels model)
         {
             return irep.Delete(e => e.WorkerId == model.WorkerId && e.WorkDate==model.WorkDate).ToOpResult_Delete(OpContext);
@@ -54,6 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
            
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
+       
 
         /// <summary>
         /// 1、按日期查 2、按部门查
@@ -118,10 +120,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             try
             {
                
-                    return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职"&& (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
-                    
-                
-               
+              return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职"&& (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
+                                          
             }
             catch (Exception ex)
             {
@@ -130,7 +130,19 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
             
         }
-       
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="workDate"></param>
+        /// <returns></returns>
+
+        internal OpResult HandleDeleteWorkOverHours(string departmentText, DateTime workDate)
+        {
+            return irep.Delete(e => e.DepartmentText == departmentText && e.WorkDate == workDate).ToOpResult_Delete(OpContext);
+        }
+
+
 
 
 

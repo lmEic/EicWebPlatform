@@ -92,9 +92,8 @@ namespace EicWorkPlatfrom.Controllers
             var matchRoles = new { user = user, userRoles = userRoles };
             return Json(matchRoles, JsonRequestBehavior.AllowGet);
         }
-
         [NoAuthenCheck]
-        [HttpPost]
+  
         public JsonResult AddUser(RegistUserModel user)
         {
             var result = AuthenService.UserManager.UserRegister.RegistUser(user);

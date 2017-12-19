@@ -1,7 +1,7 @@
 ﻿/// <reference path="../shippingApp.js" />
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive", 'angular-popups'])
+angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -18,31 +18,31 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     //重工制程前缀
     var redoUrlPrefix = leeHelper.controllers.redoProduct + "/";
 
-    
- 
+
+
     //--------------生产日报-------------------------
     //生产工艺设定
     $stateProvider.state('dReportFlowSet', {
-       
+
         templateUrl: reportUrlPrefix + 'DReportFlowSet'
     });
     //标准工时设定
     $stateProvider.state('dReportHoursSet', {
-     
+
         templateUrl: reportUrlPrefix + 'DReportHoursSet'
     });
     //非生产原因设定
     $stateProvider.state('dReportUnproductionSet', {
-       
+
         templateUrl: reportUrlPrefix + 'DReportUnproductionSet'
     });
-    //不良原因设定
-    $stateProvider.state('dReportBadReasonSet', {
-        templateUrl: reportUrlPrefix + 'DReportBadReasonSet'
+    //机台设定
+    $stateProvider.state('dReportMachineSet', {
+        templateUrl: reportUrlPrefix + 'DReportMachineSet'
     });
     //生产工单分派管理
     $stateProvider.state('dRProductOrderDispatching', {
-        
+
         templateUrl: reportUrlPrefix + 'DRProductOrderDispatching'
     })
 
@@ -50,7 +50,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 
      //日报录入
     .state('dReportInput', {
-       
+
         templateUrl: reportUrlPrefix + 'DReportInput'
     })
      //重工登记
