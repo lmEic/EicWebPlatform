@@ -126,21 +126,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(StandardProductionFlowModel model)
         {
-            ///生成组合键值  如果有模穴数 则关键字添加模穴数
-            if (model.MouldId != null)
-                model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProcessesName, model.MouldId);
-            else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProcessesName);
-           ///   计算UPS值　也UPS的转化
-            if (model.StandardProductionTimeType == "UPH")
-            {
-                model.UPH = model.StandardProductionTime;
-                model.UPS = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
-            }
-            else
-            {
-                model.UPH = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
-                model.UPS = model.StandardProductionTime;
-            }
+            model = HandleStoreModel(model);
             //此工艺是否已经存在
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetErrorResult("此数据已经添加!");
@@ -153,7 +139,33 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Edit(StandardProductionFlowModel model)
         {
+            model= HandleStoreModel(model);
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        /// <summary>
+        /// 加工处理数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private StandardProductionFlowModel HandleStoreModel(StandardProductionFlowModel model)
+        {
+            ///生成组合键值  如果有模穴数 则关键字添加模穴数
+            if (model.MouldId != null)
+                model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProcessesName, model.MouldId);
+            else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProcessesName);
+            ///   计算UPS值　也UPS的转化
+            if (model.StandardProductionTimeType == "UPH")
+            {
+                model.UPH = model.StandardProductionTime;
+                model.UPS = model.StandardProductionTime == 0 ? 0 : Math.Round(3600 / model.StandardProductionTime, 2);
+            }
+            else
+            {
+                model.UPH = model.StandardProductionTime == 0 ? 0 : Math.Round(3600 / model.StandardProductionTime, 0);
+                model.UPS = model.StandardProductionTime;
+            }
+            return model;
         }
 
         /// <summary>

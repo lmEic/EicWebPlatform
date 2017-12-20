@@ -664,25 +664,29 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 if (opData==1)  vmManager.searchedWorkers = [];
                 console.log(vmManager.departmentMasterDatas);
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerid).then(function (datas) {
+                      vmManager.searchedWorkers = datas;
+                      console.log(vmManager.searchedWorkers);
                     if (datas.length > 0) {
-                        vmManager.searchedWorkers = datas;
-                        console.log(vmManager.searchedWorkers);
-                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.searchedWorkers = datas;
+                            console.log(vmManager.searchedWorkers);
                             var mm = _.findWhere(vmManager.departments, { value: vmManager.department });
                             var userInfo = _.findWhere(vmManager.searchedWorkers, { Department: mm.label });
                             if (_.isUndefined(userInfo)) {
-                                userInfo = vmManager.searchedWorkers;
-                            };
-                            vmManager.isSingle = true;
-                            vmManager.selectWorker(userInfo[0], opData);
+                                if (vmManager.searchedWorkers.length == 1) {
+                                    vmManager.isSingle = true;
+                                    vmManager.selectWorker(vmManager.searchedWorkers[0], opData);
+                                }
+                                else vmManager.isSingle = false;
+                            }
+                            else {
+                                vmManager.isSingle = true;
+                                vmManager.selectWorker(userInfo, opData);
+                            }
                         }
                         else {
-                            vmManager.isSingle = false;
+                            vmManager.selectWorker(null);
                         }
-                    }
-                    else {
-                        vmManager.selectWorker(null);
-                    }
+                    
                 });
             }
         },

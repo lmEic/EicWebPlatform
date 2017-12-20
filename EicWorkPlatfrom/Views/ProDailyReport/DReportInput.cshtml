@@ -144,7 +144,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
                                                         <ul class="list-group">
-                                                            <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                                                            <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker,1)"
                                                                 ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
                                                                 <i class="fa fa-user"></i>
                                                                 <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
@@ -696,7 +696,7 @@
                                                                 </button>
                                                                 <div class="dropdown-menu" role="menu">
                                                                     <ul class="list-group">
-                                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker,1)"
                                                                             ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
                                                                             <i class="fa fa-user"></i>
                                                                             <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
@@ -1096,16 +1096,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @*非生产工时 *@
-                            @*<div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">非生产时:</span>
-                                    <input name="workerNoProductionTime" type="number" class="form-control"
-                                           focus-if="focus.workerNoProductionTimeFocus" focus-setter
-                                           ng-keydown="vmManagerMultiermUser.changeInPutNoProductionTime($event)"
-                                           ng-model="vmUser.WorkerNoProductionTime" />
-                                </div>
-                            </div>*@
                             @*非产工时原因 *@
                             <div class="form-group">
                                 <div class="input-group">
@@ -1349,7 +1339,7 @@
                                         <td>{{item.OrderNeedPutInNumber}}</td>
                                         <td>
                                             {{item.OrderHavePutInNumber}}
-                                            <a href="javascript:;" ng-click="vmManager.showPutInDetail(item)" ng-if="item.OrderHavePutInNumber>0 ||(item.InputType=='E')"> <i class="fa fa-th-list label-info"></i></a>
+                                            <a href="javascript:;" ng-click="vmManager.showPutInDetail(item)" ng-if="item.OrderHavePutInNumber>0 ||(item.InputType=='E')||(item.InputType=='B')"> <i class="fa fa-th-list label-info"></i></a>
                                         </td>
                                         <td>
                                             <span ng-if="(item.OrderNeedPutInNumber - item.OrderHavePutInNumber<=0)" style="color:#FF0000">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
