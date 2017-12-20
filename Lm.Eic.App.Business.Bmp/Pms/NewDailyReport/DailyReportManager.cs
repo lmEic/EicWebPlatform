@@ -440,11 +440,21 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             if (datas == null) return null;
             return datas.FirstOrDefault();
         }
-       /// <summary>
-       /// 
-       /// </summary>
-       /// <param name="department"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 得到机台信息
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public List<ReportsMachineModel> getMachineDatas(string department)
+        {
+           return  DailyReportCrudFactory.DailyReportsMachine.GetMachineDatas(department);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
         public List<DailyPTProductVm> getPt1ReportData(string department)
         {
             List<DailyPTProductVm> datas = new List<DailyPTProductVm>();

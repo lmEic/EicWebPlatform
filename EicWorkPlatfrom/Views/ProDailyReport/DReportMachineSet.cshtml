@@ -94,7 +94,7 @@
                                  <div class="input-group">
                                             <span class="input-group-addon">师傅:</span>
                                             <input name="workerId" class="form-control" ng-keypress="($event.which === 13)?vmManagerPT .getWorkerInfo(item):0"
-                                                   ng-model="item.MasterWorkerId"
+                                                   ng-model="vm.MasterWorkerId"
                                                    ng-keydown="focus.changeEnter($event,'workerIdFocus','processesIndexFocus')"
                                                    focus-if="focus.workerIdFocus" focus-setter
                                                    placeholder="输工号或姓名"
@@ -114,7 +114,7 @@
                                                 <div class="dropdown-menu" role="menu">
                                                     <ul class="list-group">
                                                         <li class="list-group-item" style="cursor:pointer" ng-click="vmManagerPT .selectWorker(worker,item,1)"
-                                                            ng-repeat="worker in vmManagerPT .mentMasterDatas track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                            ng-repeat="worker in  vmManagerPT.mentMasterDatas track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
                                                             <i class="fa fa-user"></i>
                                                             <span class="label label-primary">工号:{{worker.WorkerId}}</span>|
                                                             <span>姓名:{{worker.Name}}</span>

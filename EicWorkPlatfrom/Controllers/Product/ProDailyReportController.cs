@@ -31,34 +31,11 @@ namespace EicWorkPlatfrom.Controllers.Product
         #endregion
 
 
-        #region DReportBadReasonSet 不良原因配置
-        public ActionResult DReportBadReasonSet()
+        #region DReportUnProductionSet 非生产原因配置
+        public ActionResult DReportUnproductionSet()
         {
             return View();
         }
-
-        /// <summary>
-        /// 载入生技课的数据 LoadPt1MachineInfo
-        /// </summary>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public ContentResult LoadPt1MachineInfo(string department)
-        {
-            var Pt1ReportVmData = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
-            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = "MD", Post = "注塑师傅" }, 4);
-            var datas = new { Pt1ReportVmData, departmentMasterDatas };
-            return DateJsonResult(datas);
-        }
-        #endregion
-
-
-
-        #region DReportMachineSet 机台配置
-        public ActionResult DReportMachineSet()
-        {
-            return View();
-        }
-
         [NoAuthenCheck]
         public JsonResult LoadUnProductionConfigDicData(string department, string aboutCategory)
         {
@@ -70,6 +47,30 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var result = DailyProductionReportService.ProductionConfigManager.DailyProductionCodeConfig.Store(model, oldModel, opType);
             return Json(result);
+        }
+       
+        #endregion
+
+
+
+        #region DReportMachineSet 机台配置
+        public ActionResult DReportMachineSet()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 载入生技课的数据 LoadPt1MachineInfo
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult LoadPt1MachineInfo(string department)
+        {
+            //var Pt1ReportVmData = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
+            var machineData = DailyProductionReportService.ProductionConfigManager.DailyReport.getMachineDatas(department);
+            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = "MD", Post = "注塑师傅" }, 4);
+            var datas = new { machineData, departmentMasterDatas };
+            return DateJsonResult(datas);
         }
         #endregion
 
