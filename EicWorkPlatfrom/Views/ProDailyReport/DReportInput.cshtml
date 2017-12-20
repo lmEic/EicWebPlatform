@@ -20,10 +20,6 @@
                     <button class="btn btn-success "
                             ng-click="vmManager.classTypeChange()">{{vmManager.classType}}
                     </button>
-                    <button ng-if="vmManager.department=='PT1'"  class="btn btn-success "
-                            ng-click="vmManagerPT.loadDaialyDatas(vm.InPutDate)">
-                        载入信息
-                    </button>
                 </form>
             </div>
         </div>
@@ -119,7 +115,7 @@
                         @*单项录入*@
                         <div class="tab-pane fade in active" id="onlyProcessTab" style="padding:5px;background:#C0C0C0; color:#000000">
                             @*人工*@
-                            <form role="form" ng-show="vm.ProcessesType ==='人工'||vmManager.department==='PT1'&&vm.ProcessesType ==='机台'" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <form role="form" ng-show="vm.ProcessesType ==='人工'||(vmManager.department==='PT1'&&vm.ProcessesType ==='机台')" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                 @*人工录入*@
                                 <fieldset ng-if="vm.ProcessesType ==='人工'">
                                     @*工号人员信息*@
@@ -128,7 +124,8 @@
                                         <div class="col-md-5">
                                             <div class="input-group">
                                                 <input name="workerId" class="form-control"
-                                                       ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo(vm.WorkerId,1)"
+                                                       ng-model="vm.WorkerId" 
+                                                       ng-keypress="($event.which === 13)?vmManager.getWorkerInfo(vm.WorkerId,1):0"
                                                        ng-keydown="focus.changeEnter($event,'workerIdFocus','processesIndexFocus')"
                                                        focus-if="focus.workerIdFocus" focus-setter
                                                        placeholder="输工号或姓名"
@@ -642,7 +639,8 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon">机台师傅:</span>
                                                             <input name="masterWorkerId" class="form-control"
-                                                                   ng-model="vm.MasterWorkerId" ng-change="vmManager.getWorkerInfo(vm.WorkerId,2)"
+                                                                   ng-model="vm.MasterWorkerId" 
+                                                                   ng-keypress="($event.which === 13)?vmManager.getWorkerInfo(vm.WorkerId,2):0"
                                                                    ng-keydown="focus.changeEnter($event,'workerIdFocus')"
                                                                    focus-if="focus.masterWorkerIdFocus" focus-setter
                                                                    placeholder="输工号或姓名"
@@ -678,7 +676,8 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon">作业人员:</span>
                                                             <input name="workerId" class="form-control"
-                                                                   ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo(vm.WorkerId,1)"
+                                                                   ng-model="vm.WorkerId" 
+                                                                   ng-keypress="($event.which === 13)?vmManager.getWorkerInfo(vm.WorkerId,1):0"
                                                                    ng-keydown="focus.changeEnter($event,'masterWorkerIdFocus','workerProductionTimeFocus')"
                                                                    focus-if="focus.workerIdFocus" focus-setter
                                                                    placeholder="输工号或姓名"
@@ -840,7 +839,7 @@
                                                                 <span class="input-group-addon">生产人员:</span>
                                                                 <input name="workerIds" class="form-control"
                                                                        ng-model="vmUser.WorkerId"
-                                                                       ng-change="vmManagerMultiermUser.multiermGetWorkerInfo()"
+                                                                       ng-keypress="($event.which === 13)?vmManagerMultiermUser.multiermGetWorkerInfo():0"
                                                                        focus-if="focus.workerIdsFocus" focus-setter
                                                                        placeholder="输工号或姓名"
                                                                        data-ensure-user-exist required />
@@ -896,7 +895,7 @@
                                                                 <span class="input-group-addon">生产人员:</span>
                                                                 <input name="workerIds" class="form-control"
                                                                        ng-model="vmUser.WorkerId"
-                                                                       ng-change="vmManagerMultiermUser.multiermGetWorkerInfo()"
+                                                                       ng-keypress="($event.which === 13)?vmManagerMultiermUser.multiermGetWorkerInfo():0"
                                                                        focus-if="focus.workerIdsFocus" focus-setter
                                                                        placeholder="输工号或姓名"
                                                                        data-ensure-user-exist required />
@@ -1367,7 +1366,7 @@
                         </div>
                         <div bs-pane data-title="工艺明细" class="active" data-name="qryUserInfoTab">
                             <label>工序站别:<span class="label label-success">{{vmManager.putInDataProcessesName}}</span></label>
-                            <table  ng-if="vm.department!='PT1'&&vm.ProcessesType !='机台'"   class="table table-condensed table-bordered table-hover">
+                            <table  ng-if="(vm.Department!='PT1'&& vm.ProcessesType =='机台')|| vm.ProcessesType ==='人工'"   class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
                                         <th>工号</th>
@@ -1394,8 +1393,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-
-                            <table  ng-if="vm.department=='PT1'&&vm.ProcessesType =='机台'"  class="table table-condensed table-bordered table-hover">
+                            @**@
+                            <table  ng-if="vm.Department=='PT1'&& vm.ProcessesType =='机台'"  class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
                                         <th>机台号</th>
