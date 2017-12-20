@@ -3,9 +3,9 @@
         <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>请假管理</h6>
     </div>
     <div class="panel-body">
-       <div bs-tabs bs-active-pane="vmManager.activeTab">        
+       <div bs-tabs bs-active-pane>        
            <div class="row">
-               <div class="col-md-6">
+               <div class="col-md-6" id="1">
                         <form role="form" name="LeaveFrm" novalidate class="form-horizontal">
 
                             <div class="form-group">
@@ -153,7 +153,7 @@
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-10 col-lg-offset-4">
-                                        <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(LeaveFrm.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button id="btnsave_" class="btn btn-primary" ng-click="operate.saveAll(LeaveFrm.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
                                         <span yl-operatemsg-board></span>
                                     </div>
@@ -165,7 +165,7 @@
                         </form>
                     </div> 
                
-               <div class="col-md-6">
+               <div class="col-md-6" id="2">
                    <div class="bs-callout bs-callout-info">                                          
                        <form class="form-inline">
                            <div class="form-group">
@@ -214,8 +214,8 @@
                                        <td ng-bind="item.LeaveHours"></td>
                                        <td ng-bind="item.LeaveState"></td>
                                        <td>
-                                           <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
-                                           <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
+                                           <button id="editbtn" class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
+                                           <button id="deletebtn" class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
                                        </td>
                                        
                                    </tr>
@@ -226,10 +226,7 @@
                                 data-dataset="vmManager.searchDatas"
                                 data-datasource="vmManager.datasource">
                            </div>
-
                        </div>
-
-
                   </div>
              </div>                               
           </div>         
@@ -364,9 +361,6 @@
                                 </span>
                             </div>
                         </div>
-
-
-
                     </div>
 
                     <div class="form-group">
@@ -381,8 +375,8 @@
                             <div class="col-md-2">
                             </div>
                             <div class="col-md-10 col-lg-offset-4">
-                                <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(LeaveFrm.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
+                                <button id="savebtn" class="btn btn-primary" ng-click="operate.saveAll(LeaveFrm.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button  id="refreshbtn" class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
                                 <span yl-operatemsg-board></span>
                             </div>
                         </div>
