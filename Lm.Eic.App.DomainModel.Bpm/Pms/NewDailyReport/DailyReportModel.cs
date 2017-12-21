@@ -1229,6 +1229,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _state = value; }
             get { return _state; }
         }
+
+        private string _remarks;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Remarks
+        {
+            set { _remarks = value; }
+            get { return _remarks; }
+        }
+
+        
         private string _opperson;
         /// <summary>
         ///操作人
