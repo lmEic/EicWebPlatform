@@ -51,6 +51,7 @@ namespace EicWorkPlatfrom
                              url: "{controller}/{action}/{id}",
                              defaults: new { controller = "HR", action = "Index", id = UrlParameter.Optional }
                          );
+
             }
         }
     }
