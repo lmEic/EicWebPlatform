@@ -25,6 +25,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             try
             {
                 if (entities == null || entities.Count == 0) return OpResult.SetErrorResult("没有要存储的数据！");
+                string errMsg = string.Empty;
+                if (!CheckCanStoreRule(entities.ToList(), out errMsg))
+                {
+                    return OpResult.SetErrorResult(errMsg);
+                }
                 bool result = true;
                 foreach (var m in entities)
                 {
@@ -42,6 +47,31 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         public List<MealReportManageModel> GetReportMealDatas(string reportType, string yearMonth, string department = null, string workerId = null)
         {
             return GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(reportType, yearMonth, department, workerId);
+        }
+
+        private bool CheckCanStoreRule(List<MealReportManageModel> entities, out string msg)
+        {
+            msg = string.Empty;
+            DateTime now = DateTime.Now;
+            DateTime limitTime = new DateTime(now.Year, now.Month, now.Day, 16, 0, 0);
+            StringBuilder sbMsg = new StringBuilder();
+            entities.ForEach(m =>
+            {
+                if (m.OpSign == OpMode.Edit)
+                {
+                    if (m.ReportTime <= limitTime)
+                    {
+                        sbMsg.AppendLine(string.Format("工号：{0},姓名:{1}的报餐时间{2}已经超过指定修改时间{3}期限，数据已冻结，禁止修改！", m.WorkerId, m.WorkerName, m.ReportTime, limitTime));
+                    }
+                }
+            });
+            if (sbMsg.Length > 0)
+            {
+                sbMsg.AppendLine("本次数据操作失败！");
+                msg = sbMsg.ToString();
+                return false;
+            }
+            return true;
         }
         #endregion
     }
