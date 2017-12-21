@@ -60,12 +60,11 @@ namespace Lm.Eic.Framework.Authenticate.Repository
         /// <returns></returns>
         private static List<DepartmentModel> GetOrganizationUnitOfSameDepartment(DepartmentModel departmentModel)
         {
-            List<DepartmentModel> organizationUnits = new List<DepartmentModel>();
+            List<DepartmentModel> organizationUnits = new List<DepartmentModel>() { departmentModel };
             string parentNodeText = string.Empty;
             List<string> parentNodes = new List<string>() { "研发处", "行政处", "制造处" };
             if (parentNodes.Contains(departmentModel.ParentDepartmentText))
             {
-                organizationUnits.Add(departmentModel);
                 parentNodeText = departmentModel.DepartmentText;
             }
             else
