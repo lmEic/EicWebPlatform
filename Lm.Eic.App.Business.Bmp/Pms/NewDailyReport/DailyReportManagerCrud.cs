@@ -41,9 +41,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <summary>
         /// 非生产原因
         /// </summary>
-        public static DailyProductionCodeConfigCrud ProductionSeason
+        public static UnproductiveReasonConfigCrud UnproductiveSeason
         {
-            get { return OBulider.BuildInstance<DailyProductionCodeConfigCrud>(); }
+            get { return OBulider.BuildInstance<UnproductiveReasonConfigCrud>(); }
         }
         /// <summary>
         /// 不良制程处理
@@ -457,9 +457,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
     /// <summary>
     /// 生产代码配置表CRUD
     /// </summary>
-    internal class DailyProductionCodeConfigCrud : CrudBase<ProductionCodeConfigModel, IProductionCodeConfigRepository>
+    internal class UnproductiveReasonConfigCrud : CrudBase<UnproductiveReasonConfigModel, IUnproductiveReasonConfigRepository>
     {
-        public DailyProductionCodeConfigCrud() : base(new ProductionCodeConfigRepository(), "非生产代码编码")
+        public UnproductiveReasonConfigCrud() : base(new UnproductiveReasonConfigRepository(), "非生产代码编码")
         { }
         #region   Store
         protected override void AddCrudOpItems()
@@ -473,7 +473,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Add(ProductionCodeConfigModel model)
+        private OpResult Add(UnproductiveReasonConfigModel model)
         {
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
@@ -483,7 +483,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Edit(ProductionCodeConfigModel model)
+        private OpResult Edit(UnproductiveReasonConfigModel model)
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -492,7 +492,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Delete(ProductionCodeConfigModel model)
+        private OpResult Delete(UnproductiveReasonConfigModel model)
         {
             return (model.Id_Key > 0) ?
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
@@ -500,7 +500,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         }
         #endregion
 
-        public List<ProductionCodeConfigModel> GetProductionDictiotry(string aboutCategory, string department)
+        public List<UnproductiveReasonConfigModel> GetProductionDictiotry(string aboutCategory, string department)
         {
             return irep.Entities.Where(e => e.AboutCategory == aboutCategory && e.Department.Contains(department)).ToList();
         }

@@ -49,15 +49,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
         }
     }
     /// <summary>
-    ///DailyProductionReport 日报表生产编码配置
+    ///DailyUnproductiveReason 日报表非生产原因配置
     /// </summary>
-    public class ProductionCodeConfigMapping : EntityTypeConfiguration<ProductionCodeConfigModel>
+    public class DailyUnproductiveReasonMapping : EntityTypeConfiguration<UnproductiveReasonConfigModel>
     {
-        public ProductionCodeConfigMapping()
+        public DailyUnproductiveReasonMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_DailyProductionCodeConfig");
+            this.ToTable("Pms_DailyUnproductiveReason");
         }
     }
 

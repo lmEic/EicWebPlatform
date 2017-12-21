@@ -228,15 +228,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             { id: "1", text: "是" },
            { id: "0", text: "否" }],
         ///部门
-        departments: [
-           { value: "MS1", label: "制一课" },
-           { value: "MS2", label: "制二课" },
-            { value: "MS3", label: "制三课" },
-           { value: "MS5", label: "制五课" },
-           { value: "MS6", label: "制六课" },
-           { value: "MS7", label: "制七课" },
-           { value: "MS10", label: "制十课" },
-           { value: "PT1", label: "成型课" }],
+        departments:leeHelper.selectDepartment,
         ///输入类型
         inputTypes: [
            { id: "A", text: "有工时，计生产" },
@@ -642,15 +634,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             $scope.vm = uiVM;
         },
         ///选择部门
-        departments: [
-           { value: "MS1", label: "制一课" },
-           { value: "MS2", label: "制二课" },
-           { value: "MS3", label: "制三课" },
-           { value: "MS5", label: "制五课" },
-           { value: "MS6", label: "制六课" },
-           { value: "MS7", label: "制七课" },
-           { value: "MS10", label: "制十课" },
-           { value: "PT1", label: "成型课" }],
+        departments: leeHelper.selectDepartment,
         searchedWorkers: [],
         processesInfos: [],
         workerId: null,
@@ -685,7 +669,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         else {
                             vmManager.selectWorker(null);
                         }
-                    
                 });
             }
         },
@@ -1511,15 +1494,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
             });
         },
         department: leeLoginUser.department,
-        departments: [
-           { value: "MS1", label: "制一课" },
-           { value: "MS2", label: "制二课" },
-           { value: "MS3", label: "制三课" },
-           { value: "MS5", label: "制五课" },
-           { value: "MS6", label: "制六课" },
-           { value: "MS7", label: "制七课" },
-           { value: "MS10", label: "制十课" },
-           { value: "PT1", label: "成型课" }],
+        departments:leeHelper.selectDepartment,
         IsValids: [{ id: true, text: "启用" }, { id: false, text: "不启用" }],
         erpOrderInfoDatas: [],
         nowDate: new Date(),

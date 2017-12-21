@@ -27,9 +27,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <summary>
         /// 日报表生产编码管理
         /// </summary>
-        public DailyProductionCodeConfigManager DailyProductionCodeConfig
+        public UnproductiveReasonConfigManager UnproductiveReasonConfig
         {
-            get { return OBulider.BuildInstance<DailyProductionCodeConfigManager>(); }
+            get { return OBulider.BuildInstance<UnproductiveReasonConfigManager>(); }
         }
         /// <summary>
         /// 生产日报订单分配管理
