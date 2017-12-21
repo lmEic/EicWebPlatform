@@ -7,7 +7,6 @@
            <div class="row">
                <div class="col-md-6" id="1">
                         <form role="form" name="LeaveFrm" novalidate class="form-horizontal">
-
                             <div class="form-group">
                                 <label for="workerId" class="col-md-2 control-label">工号</label>
                                 <div class="col-md-4">
@@ -176,8 +175,19 @@
                              </div>
                            <div class="form-group">
                                <label>工号</label>
-                               <input type="text" class="form-control" ng-model="query.workerId" placeholder="输入员工工号后回车" ng-keypress="vmManager.getLeaveAskManagerDatas(1)" />                        
+                               <input id="queryWorkerId" type="text" class="form-control" ng-model="vm.WorkerId" placeholder="输入工号或姓名后回车" ng-change="vmManager.getWorkerInfo()" ng-keypress="vmManager.getLeaveAskManagerDatas(1)" />                        
                            </div>
+                           <div class="form-group">
+                               <div class="input-group">
+                                   <input name="leaveState" class="form-control" ng-model="vm.LeaveState" ng-keypress="vmManager.getLeaveAskManagerDatas(2)" />                
+                                   <span class="input-group-btn">
+                                       <button type="button" class="btn btn-primary" ng-model="vm.LeaveState"
+                                               data-html="1" data-multiple="0" data-placeholder="选择状态" data-animation="am-flip-x"
+                                               data-bs-options="leavestate.id as leavestate.text for leavestate in vmManager.leaveStates" data-bs-select></button>
+                                   </span>
+                               </div>
+                           </div>
+
                        </form>
                    
                       <div class="h-split" />

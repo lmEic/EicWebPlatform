@@ -11,6 +11,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk
    {
         public string WorkerId { get; set; }
         public string Department { get; set; }
+        public string LeaveSate { get; set; }
         private int _searchMode = 0;
         public int SearchMode
         {
