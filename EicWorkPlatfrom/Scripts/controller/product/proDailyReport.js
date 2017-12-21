@@ -646,7 +646,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         departments: [
            { value: "MS1", label: "制一课" },
            { value: "MS2", label: "制二课" },
-            { value: "MS3", label: "制三课" },
+           { value: "MS3", label: "制三课" },
            { value: "MS5", label: "制五课" },
            { value: "MS6", label: "制六课" },
            { value: "MS7", label: "制七课" },
@@ -664,19 +664,29 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 if (opData==1)  vmManager.searchedWorkers = [];
                 console.log(vmManager.departmentMasterDatas);
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerid).then(function (datas) {
+                      vmManager.searchedWorkers = datas;
+                      console.log(vmManager.searchedWorkers);
                     if (datas.length > 0) {
-                        vmManager.searchedWorkers = datas;
-                        if (vmManager.searchedWorkers.length === 1) {
-                            vmManager.isSingle = true;
-                            vmManager.selectWorker(vmManager.searchedWorkers[0],opData);
+                            vmManager.searchedWorkers = datas;
+                            console.log(vmManager.searchedWorkers);
+                            var mm = _.findWhere(vmManager.departments, { value: vmManager.department });
+                            var userInfo = _.findWhere(vmManager.searchedWorkers, { Department: mm.label });
+                            if (_.isUndefined(userInfo)) {
+                                if (vmManager.searchedWorkers.length == 1) {
+                                    vmManager.isSingle = true;
+                                    vmManager.selectWorker(vmManager.searchedWorkers[0], opData);
+                                }
+                                else vmManager.isSingle = false;
+                            }
+                            else {
+                                vmManager.isSingle = true;
+                                vmManager.selectWorker(userInfo, opData);
+                            }
                         }
                         else {
-                            vmManager.isSingle = false;
+                            vmManager.selectWorker(null);
                         }
-                    }
-                    else {
-                        vmManager.selectWorker(null);
-                    }
+                    
                 });
             }
         },
@@ -688,10 +698,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     uiVM.WorkerId = worker.WorkerId;
                 };
                 if (opData == 2) {
-                    console.log(worker);
                     uiVM.MasterName = worker.Name;
                     uiVM.MasterWorkerId = worker.WorkerId;
-                  
                 };
                 uiVM.Department = vmManager.department;
             }
@@ -814,7 +822,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         //显示明细
         showPutInDetail: function (item) {
-            uiVM.Department = item.department;
+            console.log(item);
+            uiVM.Department = item.Department;
             uiVM.ProcessesType = item.ProcessesType;
             vmManager.havePutInData = [];
             $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, item.OrderId, item.ProcessesName).then(function (dailyDatas) {
