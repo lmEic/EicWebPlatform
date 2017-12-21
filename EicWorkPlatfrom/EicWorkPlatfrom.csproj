@@ -371,9 +371,6 @@
     <Content Include="Content\ueditor\lang\zh-cn\images\music.png" />
     <Content Include="Content\ueditor\lang\zh-cn\images\upload.png" />
     <Content Include="Content\ueditor\lang\zh-cn\zh-cn.js" />
-    <Content Include="Content\ueditor\net\Bin\Newtonsoft.Json.dll" />
-    <Content Include="Content\ueditor\net\Bin\Newtonsoft.Json.pdb" />
-    <Content Include="Content\ueditor\net\Bin\Newtonsoft.Json.xml" />
     <Content Include="Content\ueditor\net\net.sln" />
     <Content Include="Content\ueditor\themes\default\css\ueditor.css" />
     <Content Include="Content\ueditor\themes\default\css\ueditor.min.css" />
@@ -1541,6 +1538,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\ueditor\net\Bin\" />
     <Folder Include="FileLibrary\PreviewFiles\" />
     <Folder Include="FileLibrary\ReportProblemHandleDataFile\" />
     <Folder Include="FileLibrary\WorkOverHours\" />

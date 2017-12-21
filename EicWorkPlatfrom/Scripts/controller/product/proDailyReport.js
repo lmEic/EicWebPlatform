@@ -614,11 +614,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         queryActiveTab: 'qryFolwProcessTab',
         putInDisplay: false,
         inPutMultiermUserInfoTable: false,
-        classType: '白班',
         classTypeChange:function(){
-            if (vmManager.classType === "白班")
-                vmManager.classType = "晚班";
-            else vmManager.classType = "白班";
+            if (uiVM.ClassType === "白班")
+                uiVM.ClassType = "晚班";
+            else uiVM.ClassType = "白班";
         },
         inPutDate: new Date(),
         productionFlowShow: true,
