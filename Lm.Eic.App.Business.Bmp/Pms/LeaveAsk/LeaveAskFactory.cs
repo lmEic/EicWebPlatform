@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
         }
 
         /// <summary>
-        /// 1、按部门查询
+        /// 1、按部门查询 2、按状态查询
         /// </summary>
         /// <param name="Dto"></param>
         /// <returns></returns>
@@ -64,7 +64,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
                 {
                     case 1:
                     return irep.Entities.Where(k => k.WorkerId == Dto.WorkerId && k.Department==Dto.Department).ToList();
-                        
+                    case 2:
+                        return irep.Entities.Where(k => k.LeaveState == Dto.LeaveSate && k.Department == Dto.Department).ToList();
+
                     default:
                         return new List<LeaveAskManagerModels>();                      
                 }

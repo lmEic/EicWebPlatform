@@ -7,7 +7,7 @@ namespace EicWorkPlatfrom
     {
         static AuthenCheckManager()
         {
-            IsCheck = true;
+            //IsCheck = true;
         }
         private static bool isCheck = false;
         /// <summary>
@@ -51,6 +51,7 @@ namespace EicWorkPlatfrom
                              url: "{controller}/{action}/{id}",
                              defaults: new { controller = "HR", action = "Index", id = UrlParameter.Optional }
                          );
+
             }
         }
     }

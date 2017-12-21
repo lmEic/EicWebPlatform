@@ -328,11 +328,12 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetLeaveAskManagerDatas(string workerId,string department,int mode)
+        public ContentResult GetLeaveAskManagerDatas(string workerId,string leaveSate,string department,int mode)
         {
             var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
             {
                 WorkerId = workerId,
+                LeaveSate=leaveSate,
                 Department=department,
                 SearchMode=mode     
             });

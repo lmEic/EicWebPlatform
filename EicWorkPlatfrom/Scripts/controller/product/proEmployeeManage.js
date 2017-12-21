@@ -38,10 +38,11 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
         });
     };
     //查询请假数据
-    dataAccess.getLeaveAskManagerData = function (workerId,department,mode) {
+    dataAccess.getLeaveAskManagerData = function (workerId,leaveSate,department,mode) {
         var url = urlPrefix + 'GetLeaveAskManagerDatas';
         return ajaxService.getData(url, {
             workerId: workerId,
+            leaveSate:leaveSate,
             department:department,
             mode: mode
         });
@@ -270,7 +271,8 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
     var originalVM = _.clone(uiVM);
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {
-        workerId: null     
+        workerId: null,
+        leaveSate:null
     };
     $scope.query = queryFields;
     var vmManager = {  
@@ -288,6 +290,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             $scope.vm = uiVM;
 
         },
+        leaveStates: [{ id: '己填写', text: '己填写' }, { id: '未填写', text: "未填写" }],
         isSingle: true,
         searchedWorkers: [],
         getWorkerInfo: function () {
@@ -340,14 +343,17 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             uiVM.LeaveTimerEnd = workEnd;         
         },
         //查询请假数据
-        getLeaveAskManagerDatas: function (mode) {      
+        getLeaveAskManagerDatas: function (mode) { 
+            queryFields.workerId = uiVM.WorkerId; 
+            queryFields.leaveSate = uiVM.LeaveState;
             vmManager.searchDatas = [];  
             vmManager.datasource = [];
-            var datas = proEmployeeDataService.getLeaveAskManagerData(queryFields.workerId,vmManager.selectDepartment, mode).then(function (datas) {
+            var datas = proEmployeeDataService.getLeaveAskManagerData(queryFields.workerId,queryFields.leaveSate,vmManager.selectDepartment, mode).then(function (datas) {
                 vmManager.searchDatas = datas;
                 vmManager.datasource = datas;
             });
-        },   
+        },  
+        
         //加载部门
         getDepartments: function () {          
             vmManager.DepartmentDatas = [];
