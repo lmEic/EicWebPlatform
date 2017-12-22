@@ -32,7 +32,7 @@ productModule.factory('mocDataOpService', function (ajaxService) {
 
     return mocDataOp;
 });
-
+//工单对比核对
 productModule.controller('checkOrderBillsCtrl', function ($scope,mocDataOpService,$modal) {
     var vmManager = {
         department: '589',

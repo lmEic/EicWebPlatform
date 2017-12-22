@@ -14,5 +14,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             get { return OBulider.BuildInstance<WorkerClothesManager>(); }
         }
+
+        /// <summary>
+        /// 报餐管理器
+        /// </summary>
+        public static ReportMealManager ReportMealManager
+        {
+            get { return OBulider.BuildInstance<ReportMealManager>(); }
+        }
     }
 }

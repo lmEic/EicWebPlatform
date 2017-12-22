@@ -63,6 +63,23 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
         });
     };
 
+    //存储报餐数据信息
+    hr.storeReportMealDatas = function (reportMealDatas) {
+        var url = generalAffairsUrl + "StoreReportMealDatas";
+        return ajaxService.postData(url, {
+            reportMealDatas: reportMealDatas
+        });
+    };
+    //获取报餐数据
+    hr.getReportMealDatas = function (reportType, yearMonth, department, workerId) {
+        var url = generalAffairsUrl + 'GetReportMealDatas';
+        return ajaxService.getData(url, {
+            reportType: reportType,
+            yearMonth: yearMonth,
+            department: department,
+            workerId: workerId,
+        });
+    };
     //自动检测考勤异常数据
     hr.autoCheckExceptionSlotData = function (yearMonth) {
         var url = attendUrl + "AutoCheckExceptionSlotData";
@@ -194,7 +211,7 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
         var url = attendUrl + 'HandlDeleteWorkOverHoursDt';
         return ajaxService.postData(url, {
             departmentText: departmentText,
-            workDate:workDate
+            workDate: workDate
         })
     }
     return hr;
@@ -618,7 +635,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         WorkDayTime: null,
         WorkNightTime: null,
         ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
-        BackgroundIndex: null,     
+        BackgroundIndex: null,
         OpPerson: leeDataHandler.dataStorage.getLoginedUser().userName,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null,
@@ -725,26 +742,26 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         //复制粘贴行
         copyAndPaste: function (item) {
             var vm = _.clone(item);
-            vmManager.dataSets.push(vm);        
+            vmManager.dataSets.push(vm);
             item.editting = false;
             var rowindex = item.rowindex;
             vmManager.edittingRowIndex = rowindex + 1;
-          
+
             var index = 1;
             //重新更改行的索引
             angular.forEach(vmManager.dataSets, function (row) {
                 row.rowindex = index;
                 index += 1;
             }),
-                //累计行数
-        
+            //累计行数
+
                 tempVm.tabCount = vmManager.dataSets.length;
             //累计时数
             tempVm.workOverCount = 0;
             angular.forEach(vmManager.dataSets, function (row) {
                 $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
             })
-       
+
         },
         //取消编辑
         cancelEdit: function (item) {
@@ -793,7 +810,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
             vmManager.edittingRow.WorkClassType = $scope.vm.WorkClassType;
             vmManager.edittingRow.isEdittingClassType = false;
         },
-        editOverHours: function (item) {       
+        editOverHours: function (item) {
             item.pheditting = false;
             item.isEdittingWorkerId = false;
             item.isEdittingOverType = false;
@@ -820,7 +837,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
             item.pheditting = false;
             item.isEdittingWorkerId = false;
             item.isEdittingOverType = false;
-            item.isEdittingClassType = false;       
+            item.isEdittingClassType = false;
             item.wkhing = false;//时数
             item.wkhing1 = false;//备注
             item.wkhing2 = true;//部门
@@ -926,7 +943,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 vmManager.editNextremark($event, item);
             });
         },
-        //编辑工号   
+        //编辑工号
         editId: function (item) {
             item.pheditting = false;
             item.isEdittingWorkerId = false;
@@ -949,7 +966,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 item.wkhing3 = true;
                 focusSetter['workerIdFocus'] = true;
             }
-           
+
         },
         editworkerId: function (item) {
             if (item !== undefined && item !== null) {
@@ -960,12 +977,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 vmManager.edittingRow = item;
                 item.wkhing3 = true;
                 focusSetter['workerIdFocus'] = true;
-                
+
             }
         },
         editNextId: function ($event, item) {
             if ($event.keyCode === 13 || $event.keyCode === 9) {
-                //累计时数                                        
+                //累计时数
                 leeHelper.copyVm($scope.vm, vmManager.edittingRow);
                 if (item.rowindex < vmManager.dataSets.length) {
                     vmManager.edittingRowIndex = item.rowindex + 1;
@@ -1094,14 +1111,11 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         },
         //快速查找员工
         getWorkName: function () {
-                  
             var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
-
             if (qryItem != null) {
                 vmManager.editworkOverHours(qryItem);
                 vmManager.qryWorkName = null;
             }
-
         },
 
         //加载部门信息
@@ -1151,19 +1165,19 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                         $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
                     })
                 })
-             
+
             }
 
         },
         //编辑加班时数
         editworkOverHours: function (item) {
             if (item !== undefined && item !== null) {
-               
+
                 angular.forEach(vmManager.dataSets, function (edititem) { edititem.wkhing = false });
                 leeHelper.copyVm(item, uiVM);
-                $scope.vm = uiVM;              
+                $scope.vm = uiVM;
                 vmManager.edittingRowIndex = item.rowindex;
-                vmManager.edittingRow = item;           
+                vmManager.edittingRow = item;
                 item.wkhing = true;
                 focusSetter['workeroverFocus'] = true;
             }
@@ -1172,7 +1186,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         editNextworkOverHours: function ($event, item) {
             if ($event.keyCode === 13 || $event.keyCode === 9) {
                 //累计时数
-               
+
                 $scope.vm.WorkDate = item.WorkDate;
                 tempVm.workOverCount = 0;
                 angular.forEach(vmManager.dataSets, function (row) {
@@ -1292,7 +1306,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         vmManager.BackgroundIndexFirst = item.rowindex1;
         dialog.show();
     };
-    operate.addItem = function (item) {     
+    operate.addItem = function (item) {
         //构建索引号
         vmManager.getWorkOverHoursDatas(1);
         var rindex = 0;
@@ -1306,7 +1320,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         vmManager.workDayDate = item.WorkDate;
         vmManager.workNightDate = item.WorkDate;
         vmManager.BackgroundIndexFirst = item.rowindex1;
-        dialog.show();       
+        dialog.show();
     }
     //后台保存
     operate.editALL = function (isValid) {
@@ -1335,15 +1349,15 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
         $scope.vm = uiVM = item;
         operate.deleteDialog();
     }
-    //后台批量删除  
-    operate.handleDel = function () { 
-        if (vmManager.searchDatas.length == 0||vmManager.searchDatas==null) {leePopups.alert("亲，没有要删除的信息！"); return;}
-        leePopups.confirm("删除提示", "是否确定删除吗？", function () {               
-            hrDataOpService.handlDeleteWorkOverHoursDt(vmManager.selectDepartment,qryDto.workDate).then(function (opresult) {
+    //后台批量删除
+    operate.handleDel = function () {
+        if (vmManager.searchDatas.length == 0 || vmManager.searchDatas == null) { leePopups.alert("亲，没有要删除的信息！"); return; }
+        leePopups.confirm("删除提示", "是否确定删除吗？", function () {
+            hrDataOpService.handlDeleteWorkOverHoursDt(vmManager.selectDepartment, qryDto.workDate).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         vmManager.getWorkOverHoursDatas();
-                       // vmManager.del();
+                        // vmManager.del();
                     }
                 })
             })
@@ -1401,8 +1415,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter
                 operate.saveAll();
             });
         },
-        operate.deleteDialog = function ()
-        {
+        operate.deleteDialog = function () {
             leePopups.confirm("删除提示", "是否确定删除吗？", function () {
                 uiVM.OpSign = leeDataHandler.dataOpMode.delete;
                 hrDataOpService.storeWorkOverHoursDt(uiVM).then(function (opresult) {
@@ -1910,6 +1923,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         CountOfSupper: 0,
         CountOfMidnight: 0,
         ReportDay: null,
+        ReportDayAt: 0,
         ReportDayOfWeek: null,
         ReportTime: null,
         YearMonth: null,
@@ -1924,67 +1938,143 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     //初始化模型
     var initVM = _.clone(mealReportVM);
 
+    $scope.$watch('vmManager.department', function () {
+        if (vmManager.department !== null) {
+            vmManager.selectDepartment();
+        }
+    });
+
     //查询字段视图
     var queryVM = $scope.qryvm = {
         year: null,
         month: null,
-        yearMonth: null,
-        dateFrom: new Date(),//请假其实日期
-        dateTo: new Date(),//请假结束日期
+        yearMonth: null
     };
     var vmManager = {
         activeYGTab: 'initYGTab',
         activeLGTab: 'initLGTab',
         calendar: null,
+        bindingDepartments: function () {
+            var departments;
+            var user = leeDataHandler.dataStorage.getLoginedUser();
+            if (_.isObject(user)) {
+                vmManager.organizationUnits = user.organizationUnits;
+            }
+        },
         //数据存储集合
         dbDataSet: [],
+        bindingServerDatasToUI: function (datas) {
+            if (angular.isArray(datas) && datas.length > 0) {
+                angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
+                    angular.forEach(weekItem.WeekDays, function (weekDay) {
+                        var reportMealData = leeHelper.findItem(datas, { ReportDayAt: parseInt(weekDay.Day) });
+                        if (reportMealData !== null) {
+                            leeDataHandler.dataOperate.initDataItemFromServer(reportMealData, vmManager.dbDataSet);
+                            weekDay.bsData = reportMealData;
+                        }
+                    });
+                });
+            }
+            else {
+                vmManager.initCalendarDatas();
+            }
+        },
+        getReportMealDatas: function (department, workerId, handler) {
+            $scope.promise = hrDataOpService.getReportMealDatas(vmManager.reportMealType, queryVM.yearMonth, department, workerId).then(function (datas) {
+                vmManager.dbDataSet = [];
+                if (_.isFunction(handler)) {
+                    handler(datas);
+                }
+            });
+        },
+        setLeaderMealReportDatas: function () {
+            if (!vmManager.validateDepartment()) return;
+            if (vmManager.workerInfo !== null) {
+                vmManager.getReportMealDatas(vmManager.department, vmManager.workerInfo.WorkerId, function (datas) {
+                    vmManager.bindingServerDatasToUI(datas);
+                });
+            }
+        },
         loadCalendarDatas: function () {
             $scope.promise = connDataOpService.getCalendarDatas(queryVM.year, queryVM.month).then(function (datas) {
                 vmManager.calendar = datas;
             });
         },
+        initCalendarDatas: function () {
+            angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
+                angular.forEach(weekItem.WeekDays, function (weekDay) {
+                    delete weekDay.bsData;
+                });
+            });
+            vmManager.dbDataSet = [];
+        },
         department: null,
-        workerInfo: null,
-        //设置干部报餐数据
-        setLeaderMealReportDatas: function () {
-            if (vmManager.workerInfo !== null) {
-                //vmManager.askLeaveDatas = [];
-                //hrDataOpService.getAskLeaveDataAbout(vmManager.workerInfo.WorkerId, queryVM.yearMonth).then(function (datas) {
-                //    if (angular.isArray(datas)) {
-                //        angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
-                //            angular.forEach(weekItem.WeekDays, function (weekDay) {
-                //                var askLeaveDatas = _.where(datas, { Day: parseInt(weekDay.Day) });
-                //                if (askLeaveDatas !== undefined && askLeaveDatas.length > 0) {
-                //                    weekDay.askLeaveDatas = [];
-                //                    //这一天是否有多条请假记录
-                //                    if (angular.isArray(askLeaveDatas) && askLeaveDatas.length > 1) {
-                //                        angular.forEach(askLeaveDatas, function (askLeaveItem) {
-                //                            askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
-                //                            vmManager.setData(weekDay, askLeaveItem);
-                //                        })
-                //                    }
-                //                    else {
-                //                        var askLeaveItem = askLeaveDatas[0];
-                //                        askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
-                //                        vmManager.setData(weekDay, askLeaveItem);
-                //                    }
-                //                }
-                //            });
-                //        });
-                //    }
-                //});
+        selectDepartment: function () {
+            if (!vmManager.validateDepartment()) return;
+            vmManager.dbDataSet = [];
+            if (vmManager.reportMealType === "员工餐") {
+                vmManager.getReportMealDatas(vmManager.department, null, function (datas) {
+                    vmManager.bindingServerDatasToUI(datas);
+                });
+            }
+            else {
+                vmManager.getReportMealDatas(vmManager.department, null, function (datas) {
+                    vmManager.dbDataSet = datas;
+                });
             }
         },
+        workerInfo: null,
         //报餐类型
         reportMealType: '员工餐',
-        organizationUnits: [{ code: 'EIC', text: "企业讯息中心" }],
+        organizationUnits: [],
+        validateDepartment: function () {
+            if (vmManager.department == null || vmManager.department === undefined) {
+                leePopups.alert("请勿忘记选择部门！", 2);
+                return false;
+            }
+            return true;
+        },
         selectReportMealType: function (mode) {
             vmManager.reportMealType = mode;
             vmManager.activeLGTab = 'initLGTab';
             vmManager.activeYGTab = 'initYGTab';
+            vmManager.workerInfo = null;
+            vmManager.initCalendarDatas();
+        },
+        //判定是否可以编辑，判定规则：只能修改昨天4点以后的数据
+        validateCanEdit: function (dataitem) {
+            if (leeHelper.isServerObject(dataitem)) {
+                dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+                var reportTime = new Date(dataitem.ReportTime);//报餐时间
+                var targetTime = new Date();
+                targetTime.setDate(targetTime.getDate() - 1);
+                var limitTime = new Date(targetTime.getFullYear(), targetTime.getMonth(), targetTime.getDate(), 16, 0, 0);
+                if (reportTime <= limitTime) {
+                    leePopups.alert("在昨天下午四点之前的所有报餐数据已经冻结，禁止修改", 2);
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            return true;
+        },
+        //验证是否可以操作
+        validateCanOperate: function () {
+            if (!vmManager.validateDepartment()) return false;
+
+            return true;
+        },
+        //设置附加数据，比如日期，人员信息
+        setAttachData(item, dataitem) {
+            dataitem.YearMonth = queryVM.yearMonth;
+            dataitem.ReportDay = queryVM.year + "-" + (parseInt(queryVM.month) >= 10 ? queryVM.month : "0" + queryVM.month) + "-" + (parseInt(item.Day) >= 10 ? item.Day : "0" + item.Day);
+            dataitem.ReportDayAt = item.Day;
+            dataitem.ReportDayOfWeek = item.ChineseDayOfWeek;
+            leeHelper.setUserData(dataitem);
+            dataitem.Department = vmManager.department;
         },
         createEmployeeMealModel(dataitem) {
-            dataitem.Department = vmManager.department;
             dataitem.WorkerId = "000000";
             dataitem.WorkerName = "111111";
             dataitem.WorkerType = vmManager.reportMealType;
@@ -1996,8 +2086,10 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         //创建员工报餐记录
         createEmployeeMealRecord: function (item) {
+            if (!vmManager.validateCanOperate()) return;
             var dataitem = _.clone(initVM);
             dataitem = vmManager.createEmployeeMealModel(dataitem);
+            vmManager.setAttachData(item, dataitem);
             var existItem = leeHelper.findItem(vmManager.dbDataSet, { Department: dataitem.Department, ReportDay: dataitem.ReportDay });
             if (existItem !== null) {
                 dataitem.OpSign = leeDataHandler.dataOpMode.edit;
@@ -2012,39 +2104,79 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         editEmployeeMealRecord: function (item) {
             $scope.vm = mealReportVM = item.bsData;
+            if (!vmManager.validateCanEdit(item.bsData)) return;
             employeeMealDialog.show();
         },
         removeEmployeeMealRecord: function (item) {
+            if (!vmManager.validateCanEdit(item.bsData)) return;
             leePopups.confirm("温馨提醒", "删除后数据将不存在，您确认要继续此操作吗？", function () {
                 $scope.$apply(function () {
                     var dataitem = item.bsData;
                     leeDataHandler.dataOperate.removeDataItemFromClient(dataitem, vmManager.dbDataSet, function () {
                         delete item.bsData;
-
-                        console.log(vmManager.dbDataSet);
                     });
                 });
             });
         },
         confirmEdit: function () {
             employeeMealDialog.close();
-
-            console.log(vmManager.dbDataSet);
+        },
+        createLeaderMealModel(dataitem) {
+            dataitem.WorkerId = vmManager.workerInfo.WorkerId;
+            dataitem.WorkerName = vmManager.workerInfo.Name;
+            dataitem.WorkerType = vmManager.reportMealType;
+            dataitem.CountOfBreakfast = 0;
+            dataitem.CountOfLunch = 0;
+            dataitem.CountOfMidnight = 0;
+            dataitem.CountOfSupper = 0;
+            return dataitem;
         },
         //登记陆干餐记录
         reportLeaderMealRecord: function (item, mealTime, isReported) {
+            if (!vmManager.validateCanOperate()) return;
+            if (vmManager.workerInfo === null) {
+                leePopups.alert("请先输入作业工号！", 2);
+                return;
+            }
             var dataitem;
             if (_.isUndefined(item.bsData)) {
-                item.bsData = dataitem = _.clone(mealReportVM);
+                dataitem = vmManager.createLeaderMealModel(_.clone(mealReportVM));
+                vmManager.setAttachData(item, dataitem);
+                leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+                item.bsData = dataitem;
             }
             else {
                 dataitem = item.bsData;
             }
+            if (!vmManager.validateCanEdit(item.bsData)) return;
+
             if (mealTime == "中") {
                 dataitem.CountOfLunch = isReported ? 1 : 0;
             }
             if (mealTime === "晚") {
                 dataitem.CountOfSupper = isReported ? 1 : 0;
+            }
+
+            var existItem = leeHelper.findItem(vmManager.dbDataSet, { WorkerId: dataitem.WorkerId, ReportDay: dataitem.ReportDay });
+            if (existItem != null) {
+                if (dataitem.CountOfLunch === 0 && dataitem.CountOfSupper === 0) {
+                    if (leeHelper.isServerObject(dataitem)) {
+                        existItem.OpSign = leeDataHandler.dataOpMode.delete;
+                    }
+                    else {
+                        leeHelper.remove(vmManager.dbDataSet, existItem);
+                    }
+                }
+                else {
+                    if (leeHelper.isServerObject(dataitem))
+                        dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+                    existItem = dataitem;
+                }
+            }
+            else {
+                if (dataitem.CountOfLunch !== 0 && dataitem.CountOfSupper !== 0) {
+                    leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
+                }
             }
         }
     };
@@ -2055,8 +2187,16 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
+    operate.saveAll = function () {
+        if (vmManager.dbDataSet.length === 0) return;
+        hrDataOpService.storeReportMealDatas(vmManager.dbDataSet).then(function (opResult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                vmManager.initCalendarDatas();
+            });
+        });
+    };
 
-
+    vmManager.bindingDepartments();
     //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
     //    departmentTreeSet.setTreeDataset(datas);
     //});

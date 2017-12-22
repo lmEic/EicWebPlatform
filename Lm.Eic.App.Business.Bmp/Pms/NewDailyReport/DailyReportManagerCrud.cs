@@ -41,9 +41,23 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <summary>
         /// 非生产原因
         /// </summary>
-        public static DailyProductionCodeConfigCrud ProductionSeason
+        public static UnproductiveReasonConfigCrud UnproductiveSeason
         {
-            get { return OBulider.BuildInstance<DailyProductionCodeConfigCrud>(); }
+            get { return OBulider.BuildInstance<UnproductiveReasonConfigCrud>(); }
+        }
+        /// <summary>
+        /// 不良制程处理
+        /// </summary>
+        public static DailyProductionDefectiveTreatmentCrud ProductionDefectiveTreatment
+        {
+            get { return OBulider.BuildInstance<DailyProductionDefectiveTreatmentCrud>(); }
+        }
+        /// <summary>
+        /// 机台信息Crud
+        /// </summary>
+        public static DailyReportsMachineCrud DailyReportsMachine
+        {
+            get { return OBulider.BuildInstance<DailyReportsMachineCrud>(); }
         }
     }
     /// <summary>
@@ -112,21 +126,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(StandardProductionFlowModel model)
         {
-            ///生成组合键值  如果有模穴数 则关键字添加模穴数
-            if (model.MouldId != null)
-                model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProcessesName, model.MouldId);
-            else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProcessesName);
-           ///   计算UPS值　也UPS的转化
-            if (model.StandardProductionTimeType == "UPH")
-            {
-                model.UPH = model.StandardProductionTime;
-                model.UPS = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
-            }
-            else
-            {
-                model.UPH = model.StandardProductionTime == 0 ? 0 : 3600 / model.StandardProductionTime;
-                model.UPS = model.StandardProductionTime;
-            }
+            model = HandleStoreModel(model);
             //此工艺是否已经存在
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetErrorResult("此数据已经添加!");
@@ -139,7 +139,33 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Edit(StandardProductionFlowModel model)
         {
+            model= HandleStoreModel(model);
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        /// <summary>
+        /// 加工处理数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private StandardProductionFlowModel HandleStoreModel(StandardProductionFlowModel model)
+        {
+            ///生成组合键值  如果有模穴数 则关键字添加模穴数
+            if (model.MouldId != null)
+                model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProcessesName, model.MouldId);
+            else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProcessesName);
+            ///   计算UPS值　也UPS的转化
+            if (model.StandardProductionTimeType == "UPH")
+            {
+                model.UPH = model.StandardProductionTime;
+                model.UPS = model.StandardProductionTime == 0 ? 0 : Math.Round(3600 / model.StandardProductionTime, 2);
+            }
+            else
+            {
+                model.UPH = model.StandardProductionTime == 0 ? 0 : Math.Round(3600 / model.StandardProductionTime, 0);
+                model.UPS = model.StandardProductionTime;
+            }
+            return model;
         }
 
         /// <summary>
@@ -205,9 +231,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return irep.GetProductFlowSummaryDatasBy(department, productName);
         }
-        public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string productName)
+        public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string department, string productName)
         {
-            return irep.GetProductFlowSummaryDataBy(productName);
+            return irep.GetProductFlowSummaryDataBy(department, productName);
         }
 
 
@@ -351,6 +377,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             ///日期格式 简化
             model.InPutDate = model.InPutDate.ToDate();
+            if (model.OrderId == null || model.OrderId == string.Empty) return OpResult.SetErrorResult(OpContext);
             if(model.StandardProductionTime != 0&& model.TodayProductionCount!=0)
                 model.GetProductionTime =Math.Round(model.TodayProductionCount * model.StandardProductionTime / 3600,2);
             //生成组合键值
@@ -430,9 +457,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
     /// <summary>
     /// 生产代码配置表CRUD
     /// </summary>
-    internal class DailyProductionCodeConfigCrud : CrudBase<ProductionCodeConfigModel, IProductionCodeConfigRepository>
+    internal class UnproductiveReasonConfigCrud : CrudBase<UnproductiveReasonConfigModel, IUnproductiveReasonConfigRepository>
     {
-        public DailyProductionCodeConfigCrud() : base(new ProductionCodeConfigRepository(), "非生产代码编码")
+        public UnproductiveReasonConfigCrud() : base(new UnproductiveReasonConfigRepository(), "非生产代码编码")
         { }
         #region   Store
         protected override void AddCrudOpItems()
@@ -446,7 +473,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Add(ProductionCodeConfigModel model)
+        private OpResult Add(UnproductiveReasonConfigModel model)
         {
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
@@ -456,7 +483,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Edit(ProductionCodeConfigModel model)
+        private OpResult Edit(UnproductiveReasonConfigModel model)
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -465,7 +492,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Delete(ProductionCodeConfigModel model)
+        private OpResult Delete(UnproductiveReasonConfigModel model)
         {
             return (model.Id_Key > 0) ?
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
@@ -473,14 +500,118 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         }
         #endregion
 
-        public List<ProductionCodeConfigModel> GetProductionDictiotry(string aboutCategory, string department)
+        public List<UnproductiveReasonConfigModel> GetProductionDictiotry(string aboutCategory, string department)
         {
             return irep.Entities.Where(e => e.AboutCategory == aboutCategory && e.Department.Contains(department)).ToList();
         }
 
 
     }
+    /// <summary>
+    /// 不良制程处理
+    /// </summary>
+    internal class DailyProductionDefectiveTreatmentCrud:CrudBase<DailyProductionDefectiveTreatmentModel, IProductionDefectiveTreatmentRepository>
+    {
+        public DailyProductionDefectiveTreatmentCrud():base(new ProductionDefectiveTreatmentRepository(),"不良制程处理")
+        { }
+        #region 
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(DailyProductionDefectiveTreatmentModel model)
+        {
+            //
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(DailyProductionDefectiveTreatmentModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(DailyProductionDefectiveTreatmentModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+       #endregion
 
+    }
+
+
+    /// <summary>
+    /// 日报表机台信息
+    /// </summary>
+    internal class DailyReportsMachineCrud : CrudBase<ReportsMachineModel, IReportsMachineRepository>
+    {
+        public DailyReportsMachineCrud() : base(new ReportsMachineRepository(), "机台信息")
+        { }
+        #region  CRUD
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(ReportsMachineModel model)
+        {
+            //
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(ReportsMachineModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(ReportsMachineModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+        #endregion
+
+
+        #region  find
+
+        public List<ReportsMachineModel> GetMachineDatas(string department)
+        {
+            return irep.Entities.Where(e => e.Department == department).ToList();
+        }
+
+        #endregion
+    }
 }
 
 

@@ -260,8 +260,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(DateTime dateFrom, DateTime dateTo, string selectedDepartment, string formStatus = null)
         {
-            if (formStatus == null || formStatus == "全部")
+            if ((formStatus == "全部")&& ( selectedDepartment != "全部"))
                 return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+           else
+                if(( selectedDepartment != "全部") && (formStatus == "全部"))
+                   return   irep.Entities.Where(e =>e.InspectionStatus == formStatus && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+                 else 
+                       if((selectedDepartment == "全部") && (formStatus == "全部"))
+                        return irep.Entities.Where(e => e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+                        else 
+                            if((selectedDepartment == "全部") && (formStatus != "全部"))
+                            return irep.Entities.Where(e => e.InspectionStatus == formStatus && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
             return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.InspectionStatus == formStatus && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
         }
         /// <summary>

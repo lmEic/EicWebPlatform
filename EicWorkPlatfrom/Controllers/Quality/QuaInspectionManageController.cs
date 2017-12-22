@@ -580,7 +580,7 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// FQC 查询 抽抽验状态
+        ///   FQC 查询 抽抽验状态
         /// </summary>
         /// <param name="selectedDepartment"></param>
         /// <param name="formStatus"></param>
@@ -595,7 +595,7 @@ namespace EicWorkPlatfrom.Controllers
             return DateJsonResult(Fqcdatas);
         }
         /// <summary>
-        /// 查询FQC中Erp订单检验信息
+        ///   查询FQC中Erp订单检验信息
         /// </summary>
         /// <param name="selectedDepartment">部门</param>
         /// <param name="dateFrom">起始日期</param>

@@ -77,6 +77,7 @@
     <Compile Include="Hrm\Archives\WorkerManager.cs" />
     <Compile Include="Hrm\Attendance\AttendAskLeaveManager.cs" />
     <Compile Include="Hrm\Attendance\AttendCrudFactory.cs" />
+    <Compile Include="Hrm\GeneralAffairs\ReportMealManager.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursFactory.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursManager.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursService.cs" />
@@ -107,9 +108,10 @@
     <Compile Include="Pms\DailyReport\InputManager.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportCrud.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportManager.cs" />
-    <Compile Include="Pms\ProEmployee\LeaveAsk\LeaveAskFactory.cs" />
-    <Compile Include="Pms\ProEmployee\LeaveAsk\LeaveAskManager.cs" />
-    <Compile Include="Pms\ProEmployee\LeaveAsk\LeaveAskService.cs" />
+    <Compile Include="Pms\LeaveAsk\LeaveAskFactory.cs" />
+    <Compile Include="Pms\LeaveAsk\LeaveAskManager.cs" />
+    <Compile Include="Pms\LeaveAsk\LeaveAskService.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportConfig\DailyProductionDefectiveTreatmentManger.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportConfig\MachineInfoManager.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportConfig\DailyProductionCodeConfigManager.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportManager.cs" />

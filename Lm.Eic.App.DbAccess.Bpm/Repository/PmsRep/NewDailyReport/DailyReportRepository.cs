@@ -24,14 +24,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        ProductFlowSummaryVm GetProductFlowSummaryDataBy(string productName);
+        ProductFlowSummaryVm GetProductFlowSummaryDataBy(string department, string productName);
     }
     /// <summary>
     ///标准生产工艺流程
     /// </summary>
     public class StandardProductionFlowRepository : BpmRepositoryBase<StandardProductionFlowModel>, IStandardProductionFlowRepository
     {
-        public ProductFlowSummaryVm GetProductFlowSummaryDataBy(string productName)
+        public ProductFlowSummaryVm GetProductFlowSummaryDataBy(string department, string productName)
         {
             try
             {
@@ -39,8 +39,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
                 sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
                 sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime* ProductCoefficient  WHEN 'UPH' THEN 3600* ProductCoefficient / StandardProductionTime ");
                 sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
-                sb.Append("FROM  Pms_StandardProductionFlow ");
-                sb.Append("WHERE(ProductName = '" + productName + "') AND (IsValid = 1) AND(IsSum = 1)");
+                sb.Append("FROM  Pms_DailyStandardProductionFlow ");
+                sb.Append("WHERE (Department = '" + department + "') And       (ProductName = '" + productName + "')  AND (IsValid = 1) AND(IsSum = 1)");
                 sb.Append("GROUP BY ProductName ");
                 string sqltext = sb.ToString();
                 return DbHelper.Bpm.LoadEntities<ProductFlowSummaryVm>(sqltext).ToList().FirstOrDefault();
@@ -65,7 +65,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
                 sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
                 sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime / 60 WHEN 'UPH' THEN 60 / StandardProductionTime ");
                 sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
-                sb.Append("FROM  Pms_StandardProductionFlow ");
+                sb.Append("FROM   Pms_DailyStandardProductionFlow  ");
                 sb.Append("WHERE(Department = '" + department + "') ");
                 if (productName != null && productName != string.Empty)
                 {
@@ -101,6 +101,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
 
 
 
+
+
     /// <summary>
     ///每天生产日报表 UnProductionReportModel
     /// </summary>
@@ -110,17 +112,40 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
     /// </summary>
     public class DailyProductionReportRepository : BpmRepositoryBase<DailyProductionReportModel>, IDailyProductionReportRepository
     { }
+
+
+
+
     /// <summary>
     /// 生产代码配置
     /// </summary>
-    public interface IProductionCodeConfigRepository : IRepository<ProductionCodeConfigModel> { }
+    public interface IUnproductiveReasonConfigRepository : IRepository<UnproductiveReasonConfigModel> { }
     /// <summary>
-    ///非生产日报表
+    ///生产代码配置
     /// </summary>
-    public class ProductionCodeConfigRepository : BpmRepositoryBase<ProductionCodeConfigModel>, IProductionCodeConfigRepository
+    public class UnproductiveReasonConfigRepository : BpmRepositoryBase<UnproductiveReasonConfigModel>, IUnproductiveReasonConfigRepository
     { }
 
 
+    /// <summary>
+    /// 不良处理程序
+    /// </summary>
+    public interface IProductionDefectiveTreatmentRepository : IRepository<DailyProductionDefectiveTreatmentModel> { }
+    /// <summary>
+    ///不良处理程序
+    /// </summary>
+    public class ProductionDefectiveTreatmentRepository : BpmRepositoryBase<DailyProductionDefectiveTreatmentModel>, IProductionDefectiveTreatmentRepository
+    { }
 
+
+    /// <summary>
+    /// 不良处理程序
+    /// </summary>
+    public interface IReportsMachineRepository : IRepository<ReportsMachineModel> { }
+    /// <summary>
+    ///不良处理程序
+    /// </summary>
+    public class ReportsMachineRepository : BpmRepositoryBase<ReportsMachineModel>, IReportsMachineRepository
+    { }
 
 }

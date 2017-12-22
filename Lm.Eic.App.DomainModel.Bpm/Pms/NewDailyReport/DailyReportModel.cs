@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
 {
+    #region  SeverConnetDataModel
     /// <summary>
     ///产品标准工艺流程模型
     /// </summary>
@@ -22,6 +23,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _department = value; }
             get { return _department; }
+        }
+        private string _departmentText;
+        /// <summary>
+        ///部门说明文本
+        /// </summary>
+        public string DepartmentText
+        {
+            set { _departmentText = value; }
+            get { return _departmentText; }
         }
         private string _productid;
         /// <summary>
@@ -810,9 +820,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     ///非生产代码模式
     /// </summary>
     [Serializable]
-    public partial class ProductionCodeConfigModel
+    public partial class UnproductiveReasonConfigModel
     {
-        public ProductionCodeConfigModel()
+        public UnproductiveReasonConfigModel()
         { }
         #region Model
         private string _department;
@@ -945,7 +955,347 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     }
 
 
-    #region  
+    /// <summary>
+    ///制成不良处理
+    /// </summary>
+    [Serializable]
+    public partial class DailyProductionDefectiveTreatmentModel
+    {
+        public DailyProductionDefectiveTreatmentModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _orderid;
+        /// <summary>
+        ///重工的工单
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        private string _productname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string ProductName
+        {
+            set { _productname = value; }
+            get { return _productname; }
+        }
+        private string _productspec;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string ProductSpec
+        {
+            set { _productspec = value; }
+            get { return _productspec; }
+        }
+        private string _processesname;
+        /// <summary>
+        ///重工工艺
+        /// </summary>
+        public string ProcessesName
+        {
+            set { _processesname = value; }
+            get { return _processesname; }
+        }
+        private int _productinputnumber;
+        /// <summary>
+        ///生产数量
+        /// </summary>
+        public int ProductInPutNumber
+        {
+            set { _productinputnumber = value; }
+            get { return _productinputnumber; }
+        }
+        private int _badnumber;
+        /// <summary>
+        ///不良数
+        /// </summary>
+        public int BadNumber
+        {
+            set { _badnumber = value; }
+            get { return _badnumber; }
+        }
+        private string _baddescription;
+        /// <summary>
+        ///不良描述
+        /// </summary>
+        public string BadDescription
+        {
+            set { _baddescription = value; }
+            get { return _baddescription; }
+        }
+        private string _badreason;
+        /// <summary>
+        ///不良原因
+        /// </summary>
+        public string BadReason
+        {
+            set { _badreason = value; }
+            get { return _badreason; }
+        }
+        private string _scraptreatmentnumber;
+        /// <summary>
+        ///处理数量
+        /// </summary>
+        public string ScrapTreatmentNumber
+        {
+            set { _scraptreatmentnumber = value; }
+            get { return _scraptreatmentnumber; }
+        }
+        private string _responsibleattributionclass;
+        /// <summary>
+        ///处理类别
+        /// </summary>
+        public string ResponsibleAttributionClass
+        {
+            set { _responsibleattributionclass = value; }
+            get { return _responsibleattributionclass; }
+        }
+        private string _responsibleperson;
+        /// <summary>
+        ///责任人
+        /// </summary>
+        public string ResponsiblePerson
+        {
+            set { _responsibleperson = value; }
+            get { return _responsibleperson; }
+        }
+        private string _treatmentmethod;
+        /// <summary>
+        ///处理方式
+        /// </summary>
+        public string TreatmentMethod
+        {
+            set { _treatmentmethod = value; }
+            get { return _treatmentmethod; }
+        }
+        private string _treatmentperson;
+        /// <summary>
+        ///处理人
+        /// </summary>
+        public string TreatmentPerson
+        {
+            set { _treatmentperson = value; }
+            get { return _treatmentperson; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+
+    /// <summary>
+    ///机台信息模块
+    /// </summary>
+    [Serializable]
+    public partial class ReportsMachineModel
+    {
+        public ReportsMachineModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _machineid;
+        /// <summary>
+        ///机台编号
+        /// </summary>
+        public string MachineId
+        {
+            set { _machineid = value; }
+            get { return _machineid; }
+        }
+        private string _machinecode;
+        /// <summary>
+        ///机台代码
+        /// </summary>
+        public string MachineCode
+        {
+            set { _machinecode = value; }
+            get { return _machinecode; }
+        }
+        private string _machinename;
+        /// <summary>
+        ///机台名称
+        /// </summary>
+        public string MachineName
+        {
+            set { _machinename = value; }
+            get { return _machinename; }
+        }
+        private string _machinespec;
+        /// <summary>
+        ///机台规格
+        /// </summary>
+        public string MachineSpec
+        {
+            set { _machinespec = value; }
+            get { return _machinespec; }
+        }
+        private int _machineSetProductionTime;
+        /// <summary>
+        ///运用设置时间
+        /// </summary>
+        public int MachineSetProductionTime
+        {
+            set { _machineSetProductionTime = value; }
+            get { return _machineSetProductionTime; }
+        }
+        private string _machinemanufactureid;
+        /// <summary>
+        ///财务编号
+        /// </summary>
+        public string MachineManufactureId
+        {
+            set { _machinemanufactureid = value; }
+            get { return _machinemanufactureid; }
+        }
+        private string _machinepreserver;
+        /// <summary>
+        ///机台维护人
+        /// </summary>
+        public string MachinePreserver
+        {
+            set { _machinepreserver = value; }
+            get { return _machinepreserver; }
+        }
+        private DateTime _purchasedate;
+        /// <summary>
+        ///采购日期
+        /// </summary>
+        public DateTime PurchaseDate
+        {
+            set { _purchasedate = value; }
+            get { return _purchasedate; }
+        }
+        private string _state;
+        /// <summary>
+        ///使用状态
+        /// </summary>
+        public string State
+        {
+            set { _state = value; }
+            get { return _state; }
+        }
+
+        private string _remarks;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Remarks
+        {
+            set { _remarks = value; }
+            get { return _remarks; }
+        }
+
+        
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+
+
+
+    #endregion
+
+
+    #region   OpHandleVmModel
     /// <summary>
     /// 查询操作Model
     /// </summary>
@@ -974,7 +1324,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
 
         string productName = string.Empty;
         /// <summary>
-        ///  产品名称
+        ///  产品名称 ProductName
         /// </summary>
         public string ProductName
         {
@@ -1279,6 +1629,411 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         /// </summary>
         public double OrderNeedPutInNumber { get; set; }
 
+    }
+
+
+    public class DailyPTProductVm
+    {
+        #region   Daily model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _classtype;
+        /// <summary>
+        ///班别
+        /// </summary>
+        public string ClassType
+        {
+            set { _classtype = value; }
+            get { return _classtype; }
+        }
+        private DateTime _inputdate;
+        /// <summary>
+        ///报表日期
+        /// </summary>
+        public DateTime InPutDate
+        {
+            set { _inputdate = value; }
+            get { return _inputdate; }
+        }
+        private string _orderid;
+        /// <summary>
+        ///订单号
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        private string _productid;
+        /// <summary>
+        ///品号
+        /// </summary>
+        public string ProductId
+        {
+            set { _productid = value; }
+            get { return _productid; }
+        }
+        private string _productname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string ProductName
+        {
+            set { _productname = value; }
+            get { return _productname; }
+        }
+        private string _productspec;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string ProductSpec
+        {
+            set { _productspec = value; }
+            get { return _productspec; }
+        }
+        private double _orderquantity;
+        /// <summary>
+        ///订单数量
+        /// </summary>
+        public double OrderQuantity
+        {
+            set { _orderquantity = value; }
+            get { return _orderquantity; }
+        }
+        private string _processestype;
+        /// <summary>
+        ///工序类别（人工/机台）
+        /// </summary>
+        public string ProcessesType
+        {
+            set { _processestype = value; }
+            get { return _processestype; }
+        }
+        private int _processesindex;
+        /// <summary>
+        ///生产工序号
+        /// </summary>
+        public int ProcessesIndex
+        {
+            set { _processesindex = value; }
+            get { return _processesindex; }
+        }
+        private string _processesname;
+        /// <summary>
+        ///工序名称
+        /// </summary>
+        public string ProcessesName
+        {
+            set { _processesname = value; }
+            get { return _processesname; }
+        }
+        private double _standardproductiontime;
+        /// <summary>
+        ///标准工时
+        /// </summary>
+        public double StandardProductionTime
+        {
+            set { _standardproductiontime = value; }
+            get { return _standardproductiontime; }
+        }
+        private string _workerid;
+        /// <summary>
+        ///作业员工号
+        /// </summary>
+        public string WorkerId
+        {
+            set { _workerid = value; }
+            get { return _workerid; }
+        }
+        private string _workername;
+        /// <summary>
+        ///作业员名称
+        /// </summary>
+        public string WorkerName
+        {
+            set { _workername = value; }
+            get { return _workername; }
+        }
+        private double _todayproductioncount;
+        /// <summary>
+        ///生产产量
+        /// </summary>
+        public double TodayProductionCount
+        {
+            set { _todayproductioncount = value; }
+            get { return _todayproductioncount; }
+        }
+        private double _todaybadproductcount;
+        /// <summary>
+        ///不良产量
+        /// </summary>
+        public double TodayBadProductCount
+        {
+            set { _todaybadproductcount = value; }
+            get { return _todaybadproductcount; }
+        }
+        private double _workerproductiontime;
+        /// <summary>
+        ///作业员生产工时
+        /// </summary>
+        public double WorkerProductionTime
+        {
+            set { _workerproductiontime = value; }
+            get { return _workerproductiontime; }
+        }
+        private double _getproductiontime;
+        /// <summary>
+        ///得到工时
+        /// </summary>
+        public double GetProductionTime
+        {
+            set { _getproductiontime = value; }
+            get
+            { return _getproductiontime; }
+        }
+        private double _workernoproductiontime;
+        /// <summary>
+        ///作业员非生产工时
+        /// </summary>
+        public double WorkerNoProductionTime
+        {
+            set { _workernoproductiontime = value; }
+            get { return _workernoproductiontime; }
+        }
+        private string _workernoproductionreason;
+        /// <summary>
+        ///作业员非生产原因
+        /// </summary>
+        public string WorkerNoProductionReason
+        {
+            set { _workernoproductionreason = value; }
+            get { return _workernoproductionreason; }
+        }
+        private string _masterworkerid;
+        /// <summary>
+        ///师傅工号
+        /// </summary>
+        public string MasterWorkerId
+        {
+            set { _masterworkerid = value; }
+            get { return _masterworkerid; }
+        }
+        private string _mastername;
+        /// <summary>
+        ///师傅名
+        /// </summary>
+        public string MasterName
+        {
+            set { _mastername = value; }
+            get { return _mastername; }
+        }
+        private string _machineid;
+        /// <summary>
+        ///机械编号
+        /// </summary>
+        public string MachineId
+        {
+            set { _machineid = value; }
+            get { return _machineid; }
+        }
+        private string _mouldid;
+        /// <summary>
+        ///模具编号
+        /// </summary>
+        public string MouldId
+        {
+            set { _mouldid = value; }
+            get { return _mouldid; }
+        }
+        private double _machinepersonratio;
+        /// <summary>
+        ///人机配比
+        /// </summary>
+        public double MachinePersonRatio
+        {
+            set { _machinepersonratio = value; }
+            get { return _machinepersonratio; }
+        }
+        private int _mouldholecount;
+        /// <summary>
+        ///模穴数
+        /// </summary>
+        public int MouldHoleCount
+        {
+            set { _mouldholecount = value; }
+            get { return _mouldholecount; }
+        }
+        private double _machinesetproductiontime;
+        /// <summary>
+        ///机械设置时数
+        /// </summary>
+        public double MachineSetProductionTime
+        {
+            set { _machinesetproductiontime = value; }
+            get { return _machinesetproductiontime; }
+        }
+        private double _machineproductiontime;
+        /// <summary>
+        ///机台生产时数
+        /// </summary>
+        public double MachineProductionTime
+        {
+            set { _machineproductiontime = value; }
+            get { return _machineproductiontime; }
+        }
+        private double _machineproductioncount;
+        /// <summary>
+        ///机台生产数量
+        /// </summary>
+        public double MachineProductionCount
+        {
+            set { _machineproductioncount = value; }
+            get { return _machineproductioncount; }
+        }
+        private double _machineunproductivetime;
+        /// <summary>
+        ///机台非生产工时
+        /// </summary>
+        public double MachineUnproductiveTime
+        {
+            set { _machineunproductivetime = value; }
+            get { return _machineunproductivetime; }
+        }
+        private string _machineunproductivereason;
+        /// <summary>
+        ///机台非生产原因
+        /// </summary>
+        public string MachineUnproductiveReason
+        {
+            set { _machineunproductivereason = value; }
+            get { return _machineunproductivereason; }
+        }
+        private double _machineproductionbadcount;
+        /// <summary>
+        ///机台不良数
+        /// </summary>
+        public double MachineProductionBadCount
+        {
+            set { _machineproductionbadcount = value; }
+            get { return _machineproductionbadcount; }
+        }
+        private string _field4;
+        /// <summary>
+        ///备用字4
+        /// </summary>
+        public string Field4
+        {
+            set { _field4 = value; }
+            get { return _field4; }
+        }
+        private string _field5;
+        /// <summary>
+        ///备用字5
+        /// </summary>
+        public string Field5
+        {
+            set { _field5 = value; }
+            get { return _field5; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+
+        #region  machine model
+        /// <summary>
+        ///机台代码
+        /// </summary>
+        public string MachineCode
+        {  set;  get; }
+     
+        /// <summary>
+        ///机台名称
+        /// </summary>
+        public string MachineName
+        {set; get; }
+       
+        /// <summary>
+        ///机台规格
+        /// </summary>
+        public string MachineSpec
+        {set; get; }
+       
+        /// <summary>
+        ///财务编号
+        /// </summary>
+        public string MachineManufactureId
+        { set;get;}
+       
+        /// <summary>
+        ///机台维护人
+        /// </summary>
+        public string MachinePreserver
+        { set; get; }
+       
+        /// <summary>
+        ///采购日期
+        /// </summary>
+        public DateTime PurchaseDate
+        { set;  get; }
+      
+        /// <summary>
+        ///使用状态
+        /// </summary>
+        public string State
+        {set; get; }
+
+
+        #endregion
     }
     #endregion
 }

@@ -17,7 +17,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_StandardProductionFlow");
+            this.ToTable("Pms_DailyStandardProductionFlow");
         }
     }
 
@@ -49,17 +49,44 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
         }
     }
     /// <summary>
-    ///DailyProductionReport 日报表生产编码配置
+    ///DailyUnproductiveReason 日报表非生产原因配置
     /// </summary>
-    public class ProductionCodeConfigMapping : EntityTypeConfiguration<ProductionCodeConfigModel>
+    public class DailyUnproductiveReasonMapping : EntityTypeConfiguration<UnproductiveReasonConfigModel>
     {
-        public ProductionCodeConfigMapping()
+        public DailyUnproductiveReasonMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_DailyProductionCodeConfig");
+            this.ToTable("Pms_DailyUnproductiveReason");
         }
     }
+
+    /// <summary>
+    ///   日报表不良处理----DailyProductionDefectiveTreatmentModel
+    /// </summary>
+    public class DailyProductionDefectiveTreatmentModelMapping : EntityTypeConfiguration<DailyProductionDefectiveTreatmentModel>
+    {
+        public DailyProductionDefectiveTreatmentModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DailyProductionDefectiveTreatment");
+        }
+    }
+
+    /// <summary>
+    ///ReportsMachineModel
+    /// </summary>
+    public class ReportsMachineModelMapping : EntityTypeConfiguration<ReportsMachineModel>
+    {
+        public ReportsMachineModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DailyReportsMachine");
+        }
+    }
+
 }
 
 

@@ -120,6 +120,14 @@ var leeDataHandler = (function () {
                 dataitem.OpSign = leeDataOpMode.add;//设置数据处理标志
             leeHelper.insertWithId(dbDataset, dataitem);
         },
+        //初始化服务器端的数据，并加入到集合中
+        initDataItemFromServer: function (dataitem, dbDataset) {
+            leeHelper.setObjectGuid(dataitem);//创建唯一标志
+            leeHelper.setObjectServerSign(dataitem);//设置客户端创建对象标志
+            if (dataitem.OpSign !== undefined)
+                dataitem.OpSign = leeDataOpMode.none;//设置数据处理标志
+            leeHelper.insertWithId(dbDataset, dataitem);
+        },
         //从客户端删除数据，先看数据项是不是服务器端的，如果是，将操作标志位删除
         //反之，则直接从内存集合中删除
         removeDataItemFromClient: function (dataitem, dbDataset, handler) {
@@ -300,6 +308,17 @@ var leeHelper = (function () {
         //智能隧道
         TolManPowerTunnel: 'TolManPowerTunnel'
     };
+    ///选择部门数据
+    var selectDepartments =
+        [{ value: "MS1", label: "制一课" },
+          { value: "MS2", label: "制二课" },
+          { value: "MS3", label: "制三课" },
+          { value: "MS5", label: "制五课" },
+          { value: "MS6", label: "制六课" },
+          { value: "MS7", label: "制七课" },
+          { value: "MS10", label: "制十课" },
+          { value: "PT1", label: "成型课" }]
+    ;
     return {
         ///控制器名称
         controllers: controllerNames,
@@ -493,6 +512,14 @@ var leeHelper = (function () {
                     uiVm.Department = user.department;
                 }
             }
+            else {
+                if (uiVm.OpPerson !== undefined) {
+                    uiVm.OpPerson = "softOp";
+                }
+                if (uiVm.Department !== undefined) {
+                    uiVm.Department = "softDep";
+                }
+            }
         },
         //获取用户组织信息
         getUserOrganization: function () {
@@ -675,6 +702,15 @@ var leeHelper = (function () {
             if (_.isUndefined(obj.isServer)) return false;
             return obj.isServer;
         },
+        //将从服务器端传来的日期格式化短日期格式
+        formatServerDate(serverDate) {
+            if (serverDate != null) {
+                return new Date(parseInt(serverDate.replace("/Date(", "").replace(")/", "").split("+")[0])).pattern("yyyy-MM-dd");
+            }
+            return "";
+        },
+        ///选择部门
+        selectDepartment:selectDepartments
     };
 })();
 // 弹出框助手
