@@ -88,7 +88,6 @@
                                 <tr class="info">
                                     <th>工艺编号</th>
                                     <th>工艺名称</th>
-                                    <th ng-show="vm.MouldId.length>0" >模具编号</th>
                                     <th>工艺类别</th>
                                     <th>标准工时</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
@@ -97,8 +96,7 @@
                             <tbody>
                                 <tr ng-repeat="item in vmManager.editDataSet track by $index">
                                     <td>{{item.ProcessesIndex}}</td>
-                                    <td>{{item.ProcessesName}}</td>
-                                    <td ng-show="vm.MouldId.length>0">{{item.MouldId}}</td>
+                                    <td>{{item.ProcessesName}}<i title="模具编号" ng-show="item.MouldId.length>0" >【{{item.MouldId}}】</i></td>
                                     <td >{{item.ProcessesType}}</td>
                                     <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
                                     <td>
@@ -264,11 +262,14 @@
                                             <div class="error-messages" ng-messages="formProductionFlow.standardProductionTime.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">标准工时不能为空</small>
                                             </div>
+                                            <span class="input-group-addon" ng-if="vm.StandardProductionTimeType=='UPS'">秒</span>
+                                            <span class="input-group-addon" ng-if="vm.StandardProductionTimeType=='UPH'">颗</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <span class="input-group-addon">工时类别 </span>
+                                            <span title="UPS是生产一个产品要多少秒，UPH是一小时生产多少个"
+                                                  class="input-group-addon">工时类别 </span>
                                             <button type="button" name="standardProductionTimeType" class="btn btn-primary" ng-model="vm.StandardProductionTimeType"
                                                     data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="UPS"
                                                     data-bs-options="item.id as item.text for item in vmManager.standardProductionTimeTypes" data-bs-select></button>
@@ -279,18 +280,19 @@
                                     </div>
                                 </div>
                                 @*人机配比 磨具编号*@
-                                <div class="form-group" ng-show="vm.ProcessesType === '机台'&& vmManager.department=='PT1'">
-                                    <div class="col-md-6">
+                                <div class="form-group" >
+                                    <div class="col-md-6" ng-show="vm.ProcessesType === '机台'">
                                         <div class="input-group">
                                             <span class="input-group-addon">人机配比</span>
-                                            <input type="number" name="machinePersonRatio" class="form-control"
+                                            <input  title="一个人可以看多少机的倒数"
+                                                   type="number" name="machinePersonRatio" class="form-control"
                                                    focus-if="focus.machinePersonRatioFocus" focus-setter
                                                    ng-model="vm.MachinePersonRatio" />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" ng-show="vm.ProcessesType === '机台'&& vmManager.department=='PT1'">
                                         <div class="input-group">
-                                            <span class="input-group-addon">机器编号</span>
+                                            <span class="input-group-addon">模具编号</span>
                                             <input name="mouldId" class="form-control"
                                                    focus-if="focus.mouldIdFocus" focus-setter
                                                    ng-model="vm.MouldId" />
@@ -301,7 +303,7 @@
                                 <div class="form-group" ng-show="vm.ProcessesType === '机台'&& vmManager.department=='PT1'">
                                     <div class="col-md-6">
                                         <div class="input-group ">
-                                            <span class="input-group-addon">机器名称</span>
+                                            <span class="input-group-addon">模具名称</span>
                                             <input name="mouldName" class="form-control"
                                                    focus-if="focus.mouldNameFocus" focus-setter
                                                    ng-model="vm.MouldName" />
