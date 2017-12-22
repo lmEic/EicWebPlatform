@@ -161,7 +161,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             //每天生产日报表
             modelBuilder.Configurations.Add(new DailyProductionReportMapping());
             //非生产代码
-            modelBuilder.Configurations.Add(new ProductionCodeConfigMapping());
+            modelBuilder.Configurations.Add(new DailyUnproductiveReasonMapping());
             //不良制程处理单
             modelBuilder.Configurations.Add(new DailyProductionDefectiveTreatmentModelMapping());
             //机台信息表

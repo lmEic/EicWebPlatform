@@ -65,7 +65,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
                 sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
                 sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime / 60 WHEN 'UPH' THEN 60 / StandardProductionTime ");
                 sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
-                sb.Append("FROM  Pms_StandardProductionFlow ");
+                sb.Append("FROM   Pms_DailyStandardProductionFlow  ");
                 sb.Append("WHERE(Department = '" + department + "') ");
                 if (productName != null && productName != string.Empty)
                 {
@@ -119,11 +119,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
     /// <summary>
     /// 生产代码配置
     /// </summary>
-    public interface IProductionCodeConfigRepository : IRepository<ProductionCodeConfigModel> { }
+    public interface IUnproductiveReasonConfigRepository : IRepository<UnproductiveReasonConfigModel> { }
     /// <summary>
     ///生产代码配置
     /// </summary>
-    public class ProductionCodeConfigRepository : BpmRepositoryBase<ProductionCodeConfigModel>, IProductionCodeConfigRepository
+    public class UnproductiveReasonConfigRepository : BpmRepositoryBase<UnproductiveReasonConfigModel>, IUnproductiveReasonConfigRepository
     { }
 
 

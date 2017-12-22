@@ -820,9 +820,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     ///非生产代码模式
     /// </summary>
     [Serializable]
-    public partial class ProductionCodeConfigModel
+    public partial class UnproductiveReasonConfigModel
     {
-        public ProductionCodeConfigModel()
+        public UnproductiveReasonConfigModel()
         { }
         #region Model
         private string _department;

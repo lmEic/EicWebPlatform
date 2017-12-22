@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
 {
-    public class DailyProductionCodeConfigManager
+    public class UnproductiveReasonConfigManager
     {
-        public List<ProductionCodeConfigModel> GetProductionDictiotry(string aboutCategory, string department)
+        public List<UnproductiveReasonConfigModel> GetProductionDictiotry(string aboutCategory, string department)
         {
-            return DailyReportCrudFactory.ProductionSeason.GetProductionDictiotry(aboutCategory, department);
+            return DailyReportCrudFactory.UnproductiveSeason.GetProductionDictiotry(aboutCategory, department);
         }
-        public OpResult Store(ProductionCodeConfigModel entity, ProductionCodeConfigModel oldEntity, string opType)
+        public OpResult Store(UnproductiveReasonConfigModel entity, UnproductiveReasonConfigModel oldEntity, string opType)
         {
             //OpResult result = OpResult.SetSuccessResult("待进行操作", false);
             //if (opType == "add")
@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
             //{
             //    result = Update(entity, oldEntity);
             //}
-            return DailyReportCrudFactory.ProductionSeason.Store(entity,true);
+            return DailyReportCrudFactory.UnproductiveSeason.Store(entity,true);
         }
     }
 }

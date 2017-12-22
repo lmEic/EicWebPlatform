@@ -39,13 +39,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult LoadUnProductionConfigDicData(string department, string aboutCategory)
         {
-            var modules = DailyProductionReportService.ProductionConfigManager.DailyProductionCodeConfig.GetProductionDictiotry(aboutCategory, department);
+            var modules = DailyProductionReportService.ProductionConfigManager.UnproductiveReasonConfig.GetProductionDictiotry(aboutCategory, department);
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult SaveUnProductionConfigDicData(ProductionCodeConfigModel model, ProductionCodeConfigModel oldModel, string opType)
+        public JsonResult SaveUnProductionConfigDicData(UnproductiveReasonConfigModel model, UnproductiveReasonConfigModel oldModel, string opType)
         {
-            var result = DailyProductionReportService.ProductionConfigManager.DailyProductionCodeConfig.Store(model, oldModel, opType);
+            var result = DailyProductionReportService.ProductionConfigManager.UnproductiveReasonConfig.Store(model, oldModel, opType);
             return Json(result);
         }
        
