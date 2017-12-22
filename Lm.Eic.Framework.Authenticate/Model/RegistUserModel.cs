@@ -357,5 +357,11 @@ namespace Lm.Eic.Framework.Authenticate.Model
         public string DepartmentText { get; set; }
 
         public string ParentDepartmentText { get; set; }
+        /// <summary>
+        /// 是否是自身部门
+        /// True：则包含自己所在单位和上级单位
+        /// False:则包含与自己平级的单位和上级单位
+        /// </summary>
+        public bool IsSelf { get; set; }
     }
 }
