@@ -446,6 +446,8 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
     };
    // vmManager.getDepartments();
     vmManager.bindingDepartments();
+
+
 });
 //加班管理
 proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter, proEmployeeDataService, dataDicConfigTreeSet, connDataOpService) {
