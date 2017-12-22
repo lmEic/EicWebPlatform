@@ -53,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             msg = string.Empty;
             DateTime now = DateTime.Now;
-            DateTime limitTime = new DateTime(now.Year, now.Month, now.Day, 16, 0, 0);
+            DateTime limitTime = new DateTime(now.Year, now.Month, now.AddDays(-1).Day, 16, 0, 0);
             StringBuilder sbMsg = new StringBuilder();
             entities.ForEach(m =>
             {
