@@ -365,6 +365,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 vmManager.DepartmentDatas = datas;
             });                  
         },
+        //加载部门
          bindingDepartments: function () {
             var departments;
             var user = leeDataHandler.dataStorage.getLoginedUser();
