@@ -269,6 +269,13 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
     };
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
+
+    $scope.$watch('vmManager.department', function () {
+        if (vmManager.department !== null) {
+            vmManager.selectDepartment();
+        }
+    });
+
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {
         workerId: null,
@@ -282,13 +289,11 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVM;
-
         },
         del: function () {
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.delete;
             $scope.vm = uiVM;
-
         },
         leaveStates: [{ id: '己填写', text: '己填写' }, { id: '未填写', text: "未填写" }],
         isSingle: true,
@@ -333,7 +338,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         workTimeEnd: new Date(00, 00, 00),  
         leaveStats: [{ id: '未填写', text: '未填写' }, { id: '己填写', text: "己填写" }],
         selectDepartment: null,
-        DepartmentDatas:[],
+        DepartmentDatas: [],      
         //拼接时间
         SetDate: function ()
         {                              
@@ -352,17 +357,22 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 vmManager.searchDatas = datas;
                 vmManager.datasource = datas;
             });
-        },  
-        
+        },         
         //加载部门
         getDepartments: function () {          
             vmManager.DepartmentDatas = [];
             $scope.searchPromise= proEmployeeDataService.getDepartment(uiVM.ParentDataNodeText).then(function (datas) {
                 vmManager.DepartmentDatas = datas;
-            });
-          
-               
-        }
+            });                  
+        },    
+         bindingDepartments: function () {
+            var departments;
+            var user = leeDataHandler.dataStorage.getLoginedUser();
+            if (_.isObject(user)) {
+                vmManager.organizationUnits = user.organizationUnits;
+            }
+
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -437,7 +447,10 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             vmManager.init();
         });
     };
-    vmManager.getDepartments();
+   // vmManager.getDepartments();
+    vmManager.bindingDepartments();
+
+
 });
 //加班管理
 proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter, proEmployeeDataService, dataDicConfigTreeSet, connDataOpService) {
