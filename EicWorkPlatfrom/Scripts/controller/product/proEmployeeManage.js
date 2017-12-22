@@ -963,6 +963,15 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 vmManager.DepartmentDatas = datas;
             })
         },
+
+        bindingDepartments: function () {
+            var departments;
+            var user = leeDataHandler.dataStorage.getLoginedUser();
+            if (_.isObject(user)) {
+                vmManager.organizationUnits = user.organizationUnits;
+            }
+
+        },
         //载入模板
         getWorkOverHoursModes: function () {
             vmManager.dataSets = [];
@@ -1301,7 +1310,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
     };
     $scope.focus = focusSetter;
 
-    vmManager.getDepartment();
+   // vmManager.getDepartment();
+    vmManager.bindingDepartments();
 
 
 
