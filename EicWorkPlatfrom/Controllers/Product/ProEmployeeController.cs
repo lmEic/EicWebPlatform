@@ -96,7 +96,6 @@ namespace EicWorkPlatfrom.Controllers.Product
                 QryDate = qrydate,
                 DepartmentText = departmentText,
                 ParentDataNodeText = departmentText,
-
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
