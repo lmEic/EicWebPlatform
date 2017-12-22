@@ -53,15 +53,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             msg = string.Empty;
             DateTime now = DateTime.Now;
-            DateTime limitTime = new DateTime(now.Year, now.Month, now.AddDays(-1).Day, 16, 0, 0);
+            int nowday = now.Day;
+            DateTime targetTime = new DateTime(now.Year, now.Month, now.Day, 16, 0, 0);
+
             StringBuilder sbMsg = new StringBuilder();
             entities.ForEach(m =>
             {
                 if (m.OpSign == OpMode.Edit)
                 {
-                    if (m.ReportTime <= limitTime)
+                    if (now > targetTime)
                     {
-                        sbMsg.AppendLine(string.Format("工号：{0},姓名:{1}的报餐时间{2}已经超过指定修改时间{3}期限，数据已冻结，禁止修改！", m.WorkerId, m.WorkerName, m.ReportTime, limitTime));
+                        nowday = now.AddDays(1).Day;
+                    }
+                    if (m.ReportDayAt < nowday)
+                    {
+                        sbMsg.AppendLine(string.Format("工号：{0},姓名:{1}的报餐时间{2}已经超过指定时间期限，数据已冻结，禁止修改！", m.WorkerId, m.WorkerName, m.ReportDay));
                     }
                 }
             });
