@@ -338,9 +338,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         workTimeEnd: new Date(00, 00, 00),  
         leaveStats: [{ id: '未填写', text: '未填写' }, { id: '己填写', text: "己填写" }],
         selectDepartment: null,
-        DepartmentDatas: [],
-     
-      
+        DepartmentDatas: [],      
         //拼接时间
         SetDate: function ()
         {                              
@@ -378,9 +376,6 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
-   
-
     //请假类别
     $scope.promise = proEmployeeDataService.getLeaveTypesConfigs().then(function (datas) {
         var leaveTypes = _.where(datas, {
