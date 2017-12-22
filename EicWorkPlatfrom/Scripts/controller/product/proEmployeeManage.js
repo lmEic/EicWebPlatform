@@ -389,6 +389,8 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 });
             });
         }
+
+
     }); 
     //编辑
     operate.editItem = function (item) {

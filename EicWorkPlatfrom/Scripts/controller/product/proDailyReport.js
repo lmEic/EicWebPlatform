@@ -173,11 +173,11 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         IsValid: 1,
         StandardProductionTimeType: 'UPS',
         StandardProductionTime: 0,
-        ProductCoefficient: 0,
+        ProductCoefficient: 1,
         UPH: null,
         UPS: null,
         ProductionTimeVersionID: 1,
-        MachinePersonRatio: 0,
+        MachinePersonRatio: 1,
         MouldId: null,
         MouldName: null,
         MouldHoleCount: 0,
@@ -1319,6 +1319,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
            mentMasterDatas: [],
 
            isSingle: false,//是否显示人员
+           isMasterSingle :false,
            ///得到用户信息
            getWorkerInfo: function (workerId,selectInt) {
                if (workerId === undefined) return;
@@ -1329,7 +1330,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                        if (datas.length > 0) {
                            vmManagerPT.searchedWorkers = datas;
                            if (vmManagerPT.searchedWorkers.length === 1) {
-                               vmManagerPT.isSingle = true;
                                if (selectInt === 1)  vmManagerPT.selectWorker(vmManagerPT.searchedWorkers[0]);
                                if (selectInt === 2)
                                {
@@ -1342,6 +1342,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                            }
                            else {
                                vmManagerPT.isSingle = false;
+                               vmManagerPT.isMasterSingle = false;
                            }
                        }
                        else {
@@ -1353,14 +1354,17 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
            ///录入工号附值  selectWorker
            selectWorker: function (worker) {
                if (worker !== null) {
+                   vmManagerPT.isSingle = true;
                        uiVM.WorkerName = worker.Name;
                        uiVM.WorkerId = worker.WorkerId;
                        focus.workerProductionTimeFocus=true
                }
            },
+           ///selectMasterWorker
            selectMasterWorker:function(worker)
            {
                if (worker !== null) {
+                   vmManagerPT.isMasterSingle = true;
                        uiVM.MasterName = worker.Name;
                        uiVM.MasterWorkerId = worker.WorkerId;
                        focus.workerIdFocus = true;

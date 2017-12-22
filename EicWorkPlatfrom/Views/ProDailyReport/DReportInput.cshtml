@@ -490,6 +490,7 @@
                                                     <input type="number" class="form-control" ng-model="vm.TodayBadProductCount"
                                                            focus-if="focus.todayBadProductCountFocus" focus-setter
                                                            ng-keydown="focus.moveFocusNext($event,'masterWorkerIdFocus')" />
+                                                    <span title="得到工时" class="input-group-addon">{{vm.TodayProductionCount*vm.StandardProductionTime/3600}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -506,7 +507,7 @@
                                                     <div class="error-messages" ng-messages="formDailyProductionReport.masterWorkerId.$error" ng-show="operate.showValidation">
                                                         <small ng-message="required">工号不能为空</small>
                                                     </div>
-                                                    <div class="input-group-addon" ng-show="vmManagerPT.isSingle">
+                                                    <div class="input-group-addon" ng-show="vmManagerPT.isMasterSingle">
                                                         <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.MasterName}}</label>
                                                     </div>
                                                     <div class="input-group-btn">
@@ -568,7 +569,7 @@
                                         </div>
                                         <div class="form-group">
                                             @*出勤时数*@
-                                            <label class="col-md-2 control-label">看机时数:</label>
+                                            <label class="col-md-2 control-label">运行时数:</label>
                                             <div class="col-md-4">
                                                 <div class="input-group">
                                                     <input name="workerProductionTime" type="number" class="form-control"
@@ -579,10 +580,11 @@
                                                            ng-model="vm.WorkerProductionTime" required />
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
+                                                    <span title="相等于人员看机时数" class="input-group-addon">时</span>
                                                 </div>
                                             </div>
                                             @*机台工作时数*@
-                                            <label class="col-md-2 control-label">机台停机是时间:</label>
+                                            <label class="col-md-2 control-label">停机时数:</label>
                                             <div class="col-md-4">
                                                 <div class="input-group">
                                                     <input name="workerProductionTime" type="number" class="form-control"
@@ -593,6 +595,7 @@
                                                            ng-model="vm.MachineUnproductiveTime" required />
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
                                                     <p ng-show="formMultitermDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
+                                                    <span title="相等于人员非生时数" class="input-group-addon">时</span>
                                                 </div>
                                             </div>
                                         </div>

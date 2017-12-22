@@ -233,7 +233,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         }
         public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string department, string productName)
         {
+            var datas = irep.Entities.Where(e => e.Department == department && e.ProcessesName == productName).ToList();
+
             return irep.GetProductFlowSummaryDataBy(department, productName);
+
         }
 
 
