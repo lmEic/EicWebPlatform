@@ -183,6 +183,7 @@
             </div>
         </div>
     </div>
+
     <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="1.0" ps-container='editWindow' ps-click-outside="false">
         <div class="bs-callout bs-callout-info">
             <div class="row">
@@ -214,9 +215,9 @@
             <div class="h-split"></div>
             <div class="well" cg-busy="{promise:searchPromise}">
                 <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
-                    <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
+                    <table class="table table-striped table-hover" style="table-layout:fixed;">
                         <colgroup>
-                            <col width="40" />
+                            <col width="30" />
                             <col width="50" />
                             <col width="70" />
                             <col width="60" />
@@ -245,7 +246,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.searchDatas|filter:vmManager.FindWorkName  track by $index">
-                                <td ng-bind="$index+1"></td>
+                                <td><span class="badge-success" ng-bind="$index+1"></span></td>
                                 <td ng-bind="item.WorkoverType"></td>
                                 <td ng-bind="item.DepartmentText"></td>
                                 <td ng-bind="item.WorkDate"></td>
@@ -310,11 +311,13 @@
                         <col width="40" />
                         <col width="40" />
                         <col width="40" />
+                        <col width="40" />
                         <col width="90" />
                     </colgroup>
                     <thead>
                         <tr class="info">
                             <th>序号</th>
+                            <th>加班日期</th>
                             <th>加班类型</th>
                             <th>工号</th>
                             <th>姓名</th>
@@ -324,7 +327,8 @@
                     </thead>
                     <tbody>
                         <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index">
-                            <td ng-bind="$index+1"></td>
+                            <td ><span class="badge" ng-bind="$index+1"></span></td>
+                            <td ng-bind="item.WorkDate"></td>
                             <td ng-bind="item.WorkoverType"></td>
                             <td ng-bind="item.WorkerId"></td>
                             <td ng-bind="item.WorkerName"></td>
