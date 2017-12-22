@@ -371,6 +371,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             if (_.isObject(user)) {
                 vmManager.organizationUnits = user.organizationUnits;
             }
+
         },
     };
     $scope.vmManager = vmManager;
