@@ -282,13 +282,11 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVM;
-
         },
         del: function () {
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.delete;
             $scope.vm = uiVM;
-
         },
         leaveStates: [{ id: '己填写', text: '己填写' }, { id: '未填写', text: "未填写" }],
         isSingle: true,
@@ -352,8 +350,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 vmManager.searchDatas = datas;
                 vmManager.datasource = datas;
             });
-        },  
-        
+        },         
         //加载部门
         getDepartments: function () {          
             vmManager.DepartmentDatas = [];
