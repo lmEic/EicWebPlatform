@@ -34,48 +34,54 @@ namespace Lm.Eic.Framework.Authenticate.Repository
             {
                 if (loginUser.PersonalPicture != null)
                     loginUser.HeadPortrait = "data:image/jpg;base64," + Convert.ToBase64String(loginUser.PersonalPicture);
-
-                var department = GetDepartment(loginUser.Department);
+                var departmentDataSource = GetDepartments();
+                var department = departmentDataSource.FirstOrDefault(e => e.DepartmentNode == loginUser.Department);
                 if (department != null)
                 {
                     loginUser.DepartmentText = department.DepartmentText;
                     loginUser.ParentDepartmentText = department.ParentDepartmentText;
-                    loginUser.OrganizationUnits = GetOrganizationUnitOfSameDepartment(department);
+                    loginUser.OrganizationUnits = GetOrganizationUnitOfSameDepartment(department, departmentDataSource);
                 }
 
             }
             return loginUser;
         }
 
-
-        private static DepartmentModel GetDepartment(string departmentCode)
+        private static List<DepartmentModel> GetDepartments()
         {
-            string sql = string.Format("Select Top 1 DataNodeName As DepartmentNode,DataNodeText As DepartmentText,ParentDataNodeText As ParentDepartmentText from  Config_DataDictionary where DataNodeName='{0}'", departmentCode);
-            return DbHelper.LmProductMaster.LoadEntities<DepartmentModel>(sql).FirstOrDefault();
+            string sql = "Select DataNodeName As DepartmentNode,DataNodeText As DepartmentText,ParentDataNodeText As ParentDepartmentText from  Config_DataDictionary where TreeModuleKey='Organization' order by DisplayOrder";
+            return DbHelper.LmProductMaster.LoadEntities<DepartmentModel>(sql);
         }
         /// <summary>
         /// 获取同一个部门的所有单位
         /// </summary>
         /// <param name="parentDepartmentText"></param>
         /// <returns></returns>
-        private static List<DepartmentModel> GetOrganizationUnitOfSameDepartment(DepartmentModel departmentModel)
+        private static List<DepartmentModel> GetOrganizationUnitOfSameDepartment(DepartmentModel departmentModel, List<DepartmentModel> dataSource)
         {
-            List<DepartmentModel> organizationUnits = new List<DepartmentModel>() { departmentModel };
+            List<DepartmentModel> organizationUnits = new List<DepartmentModel>();
             string parentNodeText = string.Empty;
             List<string> parentNodes = new List<string>() { "研发处", "行政处", "制造处" };
             if (parentNodes.Contains(departmentModel.ParentDepartmentText))
             {
                 parentNodeText = departmentModel.DepartmentText;
+                departmentModel.IsSelf = true;
+                organizationUnits.Add(departmentModel);
             }
             else
             {
                 parentNodeText = departmentModel.ParentDepartmentText;
+                var m = dataSource.FirstOrDefault(e => e.DepartmentText == departmentModel.ParentDepartmentText);
+                m.IsSelf = true;
+                organizationUnits.Add(m);
             }
-
-            string sql = string.Format("Select DataNodeName As DepartmentNode,DataNodeText As DepartmentText,ParentDataNodeText As ParentDepartmentText from  Config_DataDictionary where ParentDataNodeText='{0}' Order By DisplayOrder", parentNodeText);
-            var datas = DbHelper.LmProductMaster.LoadEntities<DepartmentModel>(sql);
+            var datas = dataSource.FindAll(f => f.ParentDepartmentText == parentNodeText);
             if (datas != null && datas.Count > 0)
-                organizationUnits.AddRange(datas);
+                datas.ForEach(d =>
+                {
+                    d.IsSelf = d.DepartmentText == departmentModel.DepartmentText ? true : false;
+                    organizationUnits.Add(d);
+                });
             return organizationUnits;
         }
     }
