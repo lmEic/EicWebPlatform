@@ -21,7 +21,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             get { return OBulider.BuildInstance<ArcalendarCurd>(); }
         }
-
+        public CalendarModel CreatNewCalendarModel(DateTime day)
+        {
+            var getCalendar= new ChineseCalendar(day);
+            CalendarModel carendarModel = new CalendarModel()
+            {
+               CalendarDate = day,
+               CalendarMonth=day.Month,
+               CalendarYear=day.Year,
+               CalendarDay=day.Day.ToString(),
+               CalendarWeek=getCalendar.WeekDayInt,
+               DateColor= getCalendar.DateColor,
+               DateProperty=getCalendar.DateProperty,
+               ChineseCalendar = getCalendar.ChineseDayString,
+               NowMonthWeekNumber =getCalendar.NowMonthWeekNumber,
+               YearWeekNumber=getCalendar.YearWeekNumber,
+               Title="",
+            };
+            return carendarModel;
+        }
 
         public List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
         {
@@ -166,7 +184,36 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         public List<CalendarModel> FindCalendarDateDatasBy(int nowYear, int nowMonth)
         {
-            return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
+            int vMax = DateTime.DaysInMonth(nowYear, nowMonth);
+            List<CalendarModel> datas = irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
+            if(datas!=null&& datas.Count>0) return datas;
+            for (int i = 1; i < vMax; i++)
+            {
+                DateTime d1 = new DateTime(nowYear,  nowMonth, i);
+                var model = CreatNewCalendarModel(d1);
+                datas.Add(model);
+                Store(model);
+            }
+            return datas;
+        }
+        public CalendarModel CreatNewCalendarModel(DateTime day)
+        {
+            var getCalendar = new ChineseCalendar(day);
+            CalendarModel carendarModel = new CalendarModel()
+            {
+                CalendarDate = day,
+                CalendarMonth = day.Month,
+                CalendarYear = day.Year,
+                CalendarDay = day.Day.ToString(),
+                CalendarWeek = getCalendar.WeekDayInt,
+                DateColor = getCalendar.DateColor,
+                DateProperty = getCalendar.DateProperty,
+                ChineseCalendar = getCalendar.ChineseDayString,
+                NowMonthWeekNumber = getCalendar.NowMonthWeekNumber,
+                YearWeekNumber = getCalendar.YearWeekNumber,
+                Title = "",
+            };
+            return carendarModel;
         }
         /// <summary>
         /// 获取月日历模型
@@ -272,7 +319,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         private static string GetchineseCalendar(DateTime date)
         {
             return new ChineseCalendar(date).ChineseDayString;

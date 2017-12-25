@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -285,7 +286,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         #region 内部变量
         private DateTime _date;
         private DateTime _datetime;
-
+        private int _nowMonthWeekNumber;
+        private int _yearWeekNumber;
+        private string _dateProperty;
         private int _cYear;
         private int _cMonth;
         private int _cDay;
@@ -377,7 +380,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             new SolarHolidayStruct(7, 1, 0, "建党节"),
             new SolarHolidayStruct(8, 1, 0, "建军节"), 
             new SolarHolidayStruct(9, 10, 0, "教师节"),
-            new SolarHolidayStruct(10, 1, 1, "国庆节"), 
+            new SolarHolidayStruct(10, 1, 3, "国庆节"), 
             new SolarHolidayStruct(12, 24, 0, "平安夜"), 
             new SolarHolidayStruct(12, 25, 0, "圣诞节")
            };
@@ -385,10 +388,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 
         #region 按农历计算的节日
         private static LunarHolidayStruct[] lHolidayInfo = new LunarHolidayStruct[]{
-            new LunarHolidayStruct(1, 1, 1, "春节"), 
-            new LunarHolidayStruct(1, 15, 0, "元宵节"), 
-            new LunarHolidayStruct(5, 5, 0, "端午节"),
-            new LunarHolidayStruct(8, 15, 0, "中秋节"), 
+            new LunarHolidayStruct(1, 1, 3, "春节"),
+            new LunarHolidayStruct(1, 15, 0, "元宵节"),
+            new LunarHolidayStruct(4, 4, 3, "清明节"),
+            new LunarHolidayStruct(5, 5, 1, "端午节"),
+            new LunarHolidayStruct(8, 15, 1, "中秋节"), 
             new LunarHolidayStruct(9, 9, 0, "重阳节"), 
             new LunarHolidayStruct(12, 8, 0, "腊八节"),
             new LunarHolidayStruct(12, 23, 0, "小年"),
@@ -464,6 +468,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                 offset = offset - temp;
                 if (offset <= 0) break;
             }
+            // 当月的第几周
+            _nowMonthWeekNumber = _date.Day / 7 + (_date.Day % 7 == 0 ? 0 : 1);
+
+            //当年的第几周
+            GregorianCalendar gc = new GregorianCalendar();
+            _yearWeekNumber = gc.GetWeekOfYear(_date, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+
 
             offset = offset + temp;
             _cMonth = i;
@@ -989,6 +1000,76 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                     default:
                         return "星期六";
                 }
+            }
+        }
+        /// <summary>
+        /// 当前月份的周次
+        /// </summary>
+        public int NowMonthWeekNumber
+        {
+            get { return _nowMonthWeekNumber; }
+        }
+        public int YearWeekNumber
+        {
+            get { return _yearWeekNumber; }
+        }
+        /// <summary>
+        /// 周几的数字
+        /// </summary>
+        public int WeekDayInt
+        {
+            get
+            {
+                switch (_date.DayOfWeek)
+                {
+                    case DayOfWeek.Sunday:
+                        return 0;
+                    case DayOfWeek.Monday:
+                        return 1;
+                    case DayOfWeek.Tuesday:
+                        return 2;
+                    case DayOfWeek.Wednesday:
+                        return 3;
+                    case DayOfWeek.Thursday:
+                        return 4;
+                    case DayOfWeek.Friday:
+                        return 5;
+                    case DayOfWeek.Saturday:
+                        return 6;
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 休息日为red 其它的Whtie
+        /// </summary>
+        public string DateColor
+        {
+            get
+            {
+                if (WeekDayInt == 0 || WeekDayInt == 6)
+                    return "red";
+                if(ChineseCalendarHoliday!=string.Empty)
+                    return "violet";
+                else return "white";
+
+
+            }
+        }
+        /// <summary>
+        /// 是否正常上班 还是休息日
+        /// </summary>
+        public string DateProperty
+        {
+            get
+            {
+                if (WeekDayInt == 0 || WeekDayInt == 6)
+                    return "正常";
+                if (ChineseCalendarHoliday != string.Empty)
+                    return "法定假日";
+                else return "星期六日";
             }
         }
         #endregion
