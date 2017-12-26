@@ -498,8 +498,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 
             //当年的第几周
             GregorianCalendar gc = new GregorianCalendar();
-            _yearWeekNumber = gc.GetWeekOfYear(_date, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
-
+            _yearWeekNumber = gc.GetWeekOfYear(_date, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
 
             offset = offset + temp;
             _cMonth = i;
@@ -509,7 +508,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         {
             get
             {
-             
                 List<DateTime> allIsRecessDate = new List<DateTime>();
                 foreach (LunarHolidayStruct lh in lHolidayInfo)
                 {

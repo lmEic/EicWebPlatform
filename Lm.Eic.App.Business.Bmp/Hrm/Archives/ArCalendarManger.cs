@@ -127,7 +127,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             int vMax = DateTime.DaysInMonth(nowYear, nowMonth);
             List<CalendarModel> datas = irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
             if(datas!=null&& datas.Count>0) return datas;
-            for (int i = 1; i < vMax; i++)
+            for (int i = 1; i <= vMax; i++)
             {
                 DateTime dt = new DateTime(nowYear,  nowMonth, i);
                 var model = CreatNewCalendarModel(dt);
