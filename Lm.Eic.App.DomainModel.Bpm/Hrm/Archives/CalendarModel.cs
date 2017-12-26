@@ -235,39 +235,50 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     public class ChineseCalendar
     {
         #region 内部结构
+
+        /// <summary>
+        /// 阳历的节假日
+        /// </summary>
         private struct SolarHolidayStruct
         {
-            public int Month;
-            public int Day;
+            public int Month;// 月份
+            public int Day;//日期
+            public int StartDay;//假期起始天
             public int Recess; //假期长度
-            public string HolidayName;
-            public SolarHolidayStruct(int month, int day, int recess, string name)
+            public string HolidayName;//假期名称
+            public SolarHolidayStruct(int month, int day, int startDay, int recess, string name)
             {
                 Month = month;
                 Day = day;
+                StartDay = startDay;
                 Recess = recess;
                 HolidayName = name;
             }
         }
 
-
-      
+        /// <summary>
+        /// 农历节假日
+        /// </summary>
         private struct LunarHolidayStruct
         {
-            public int Month;
-            public int Day;
-            public int Recess;
-            public string HolidayName;
+            public int Month;// 月份
+            public int Day;//日期
+            public int StartDay;//假期起始天
+            public int Recess; //假期长度
+            public string HolidayName;//假期名称
 
-            public LunarHolidayStruct(int month, int day, int recess, string name)
+            public LunarHolidayStruct(int month, int day,  int startDay, int recess, string name)
             {
                 Month = month;
                 Day = day;
+                StartDay = startDay;
                 Recess = recess;
                 HolidayName = name;
             }
         }
-
+        /// <summary>
+        /// 星期六日的休息日
+        /// </summary>
         private struct WeekHolidayStruct
         {
             public int Month;
@@ -309,6 +320,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         private const string HZNum = "零一二三四五六七八九";
         private const int AnimalStartYear = 1900; //1900年为鼠年
         private static DateTime ChineseConstellationReferDay = new DateTime(2007, 9, 13);//28星宿参考值,本日为角
+        private static ChineseLunisolarCalendar calendar = new ChineseLunisolarCalendar();
+        private static GregorianCalendar GetGc()
+        {
+            GregorianCalendar gc = new GregorianCalendar();
+            return gc;
+        }
         #endregion
 
         #region 阴历数据
@@ -337,19 +354,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                 0x07954,0x06AA0,0x0AD50,0x05B52,0x04B60,0x0A6E6,0x0A4E0,0x0D260,0x0EA65,0x0D530,
                 0x05AA0,0x076A3,0x096D0,0x04BD7,0x04AD0,0x0A4D0,0x1D0B6,0x0D250,0x0D520,0x0DD45,
                 0x0B5A0,0x056D0,0x055B2,0x049B0,0x0A577,0x0A4B0,0x0AA50,0x1B255,0x06D20,0x0ADA0,
-                0x14B63        
+                0x14B63
                 };
 
         #endregion
 
         #region 二十四节气
-        private static string[] _lunarHolidayName = 
-                    { 
-                    "小寒", "大寒", "立春", "雨水", 
-                    "惊蛰", "春分", "清明", "谷雨", 
-                    "立夏", "小满", "芒种", "夏至", 
-                    "小暑", "大暑", "立秋", "处暑", 
-                    "白露", "秋分", "寒露", "霜降", 
+        private static string[] _lunarHolidayName =
+                    {
+                    "小寒", "大寒", "立春", "雨水",
+                    "惊蛰", "春分", "清明", "谷雨",
+                    "立夏", "小满", "芒种", "夏至",
+                    "小暑", "大暑", "立秋", "处暑",
+                    "白露", "秋分", "寒露", "霜降",
                     "立冬", "小雪", "大雪", "冬至"
                     };
         #endregion
@@ -371,33 +388,39 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         #endregion
 
         #region 按公历计算的节日
+        /// <summary>
+        /// 按公历计算的节日
+        /// </summary>
         private static SolarHolidayStruct[] sHolidayInfo = new SolarHolidayStruct[]{
-            new SolarHolidayStruct(1,1,1, "元旦"),
-            new SolarHolidayStruct(2,14,0, "情人节"),
-            new SolarHolidayStruct(3,8,0, "妇女节"), 
-            new SolarHolidayStruct(3,12,0, "植树节"), 
-            new SolarHolidayStruct(4,1,0, "愚人节"),
-            new SolarHolidayStruct(5,1,1, "劳动节"),
-            new SolarHolidayStruct(5,4,0, "青年节"), 
-            new SolarHolidayStruct(7,1,0, "建党节"),
-            new SolarHolidayStruct(8,1,0, "建军节"), 
-            new SolarHolidayStruct(9,10,0, "教师节"),
-            new SolarHolidayStruct(10,1,3, "国庆节"), 
-            new SolarHolidayStruct(12,24,0, "平安夜"), 
-            new SolarHolidayStruct(12,25,0, "圣诞节")
+            new SolarHolidayStruct(1,1,1,1, "元旦"),
+            new SolarHolidayStruct(2,14,14,0,"情人节"),
+            new SolarHolidayStruct(3,8,8,0, "妇女节"),
+            new SolarHolidayStruct(3,12,12,0, "植树节"),
+            new SolarHolidayStruct(4,1,1,0, "愚人节"),
+            new SolarHolidayStruct(5,1,1,1, "劳动节"),
+            new SolarHolidayStruct(5,4,4,0, "青年节"),
+            new SolarHolidayStruct(7,1,1,0, "建党节"),
+            new SolarHolidayStruct(8,1,1,0, "建军节"),
+            new SolarHolidayStruct(9,10,10,0, "教师节"),
+            new SolarHolidayStruct(10,1,1,3, "国庆节"),
+            new SolarHolidayStruct(12,24,24,0, "平安夜"),
+            new SolarHolidayStruct(12,25,25,0, "圣诞节")
            };
         #endregion
 
         #region 按农历计算的节日
+        /// <summary>
+        ///  按农历计算的节日
+        /// </summary>
         private static LunarHolidayStruct[] lHolidayInfo = new LunarHolidayStruct[]{
-            new LunarHolidayStruct(1,1,3, "春节"),
-            new LunarHolidayStruct(1,15,1, "元宵节"),
-            new LunarHolidayStruct(4,4,3, "清明节"),
-            new LunarHolidayStruct(5,5,1, "端午节"),
-            new LunarHolidayStruct(8,15,1, "中秋节"), 
-            new LunarHolidayStruct(9,9,0, "重阳节"), 
-            new LunarHolidayStruct(12,8,0, "腊八节"),
-            new LunarHolidayStruct(12,23,0, "小年"),
+            new LunarHolidayStruct(1,1,1,3, "春节"),
+            new LunarHolidayStruct(1,15,15,0, "元宵节"),
+            new LunarHolidayStruct(4,4,4,3, "清明节"),
+            new LunarHolidayStruct(5,5,5,1, "端午节"),
+            new LunarHolidayStruct(8,15,15,1, "中秋节"),
+            new LunarHolidayStruct(9,9,9,0, "重阳节"),
+            new LunarHolidayStruct(12,8,8,0, "腊八节"),
+            new LunarHolidayStruct(12,23,23,0, "小年"),
             //new LunarHolidayStruct(12, 30, 0, "除夕")  //注意除夕需要其它方法进行计算
         };
         #endregion
@@ -481,6 +504,31 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             offset = offset + temp;
             _cMonth = i;
             _cDay = offset;
+        }
+        private   List<DateTime> IsRecessDate
+        {
+            get
+            {
+             
+                List<DateTime> allIsRecessDate = new List<DateTime>();
+                foreach (LunarHolidayStruct lh in lHolidayInfo)
+                {
+                        for (int i = 0; i < lh.Recess; i++)
+                        {  DateTime lhdd = calendar.ToDateTime(_date.Year, lh.Month, lh.StartDay + i , 0, 0, 0, 0).Date; 
+                            if (!allIsRecessDate.Contains(lhdd))  allIsRecessDate.Add(lhdd);
+                        }
+                }
+                foreach (SolarHolidayStruct sh in sHolidayInfo)
+                {
+                  for (int i =0; i < sh.Recess; i++)
+                        {
+                           DateTime shdd = new DateTime(_date.Year, sh.Month, sh.StartDay + i);
+                            if (!allIsRecessDate.Contains(shdd))  allIsRecessDate.Add(shdd);
+                        }
+                }
+                return allIsRecessDate;
+            }
+          
         }
         #endregion
 
@@ -905,15 +953,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                 {
                     foreach (LunarHolidayStruct lh in lHolidayInfo)
                     {
-                        if ((lh.Month == this._cMonth) && (lh.Day == this._cDay))
+                        if ((lh.Month == this._cMonth  &&lh.Day==this._cDay))
                         {
-
                             tempStr = lh.HolidayName;
-                            break;
-
+                            break;  
                         }
                     }
-
                     //对除夕进行特别处理
                     if (this._cMonth == 12)
                     {
@@ -940,13 +985,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             get
             {
                 string tempStr =string.Empty;
-
                 foreach (SolarHolidayStruct sh in sHolidayInfo)
                 {
-                    if ((sh.Month == _date.Month) && (sh.Day == _date.Day))
+                    if (sh.Month==_date.Month && sh.Day==  _date.Day)
                     {
-                        tempStr = sh.HolidayName;
-                        break;
+                       tempStr = sh.HolidayName; 
+                       break;
                     }
                 }
                 return tempStr;
@@ -1090,15 +1134,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                     _dateProperty = "星期六日";
                     return "red";
                 }
-                if (ChineseCalendarHoliday != string.Empty)
-                {
-                    _dateProperty = "法定假日";
-                    return "#29B8CB";
-                }
                 else
                 {
-                    _dateProperty = "正常";
-                    return "white";
+                    if (IsRecessDate.Contains(_date))
+                    {
+                        _dateProperty = "法定假日";
+                        return "#29B8CB";
+                    }
+                    else
+                    {
+                        _dateProperty = "正常";
+                        return "white";
+                    }
+                       
                 }
             }
         }

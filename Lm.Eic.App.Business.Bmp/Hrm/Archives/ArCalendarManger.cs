@@ -111,44 +111,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 if (irep.IsExist(e => e.CalendarDate == model.CalendarDate))
                     return EditReportAttendece(model);
               return  irep.Insert(model).ToOpResult_Add("行事历操作成功");
-                //int i = 0;
-                //string year = model.CalendarYear.ToString("0000");
-                //if (irep.IsExist(e => e.CalendarYear == model.CalendarYear))
-                //    return OpResult.SetErrorResult(year + "年行事历已经存在");
-                //DateTime beginDate = DateTime.Parse(year + "-01-01");
-                //DateTime endDate = DateTime.Parse(year + "-12-31");
-                //List<DateTime> adlldate = new List<DateTime>();
-                //while (beginDate <= endDate)
-                //{
-                //    adlldate.Add(beginDate);
-                //    beginDate = beginDate.AddDays(1);
-                //}
-                //adlldate.ForEach(d =>
-                //{
-                //    string dateProperty = GetDateProperty((int)d.DayOfWeek);
-                //    var newModel = new CalendarModel()
-                //    {
-                //        CalendarDate = d,
-                //        CalendarDay = d.Day.ToString(),
-                //        CalendarMonth = d.Month,
-                //        CalendarYear = d.Year,
-                //        CalendarWeek = (int)d.DayOfWeek,
-                //        NowMonthWeekNumber = GetDateWeekBy(d),
-                //        ChineseCalendar = GetchineseCalendar(d),
-                //        Title = "",
-                //        DateProperty = dateProperty,
-                //        DateColor = CalendarColor(dateProperty),
-                //        YearWeekNumber = GetWeekOfYear(d, true),
-                //        OpDate = DateTime.Now.Date,
-                //        OpSign = "add",
-                //        OpTime = DateTime.Now
-                //    };
-                //    i += irep.Insert(newModel);
-                //});
-
-                //if (i == 365)
-                //    return i.ToOpResult(OpContext + "一年日行事历操作成功");
-                //else return i.ToOpResult(OpContext + (365 - i) + "天" + "操作失败");
+          
             }
             catch (Exception)
             {
@@ -180,6 +143,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public CalendarModel CreatNewCalendarModel(DateTime day)
         {
             var getCalendar = new ChineseCalendar(day);
+         
             CalendarModel carendarModel = new CalendarModel()
             {
                 CalendarDate = day,
