@@ -2042,22 +2042,29 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.initCalendarDatas();
         },
         //判定是否可以编辑，判定规则：只能修改昨天4点以后的数据
-        validateCanEdit: function (dataitem) {
-            if (leeHelper.isServerObject(dataitem)) {
-                dataitem.OpSign = leeDataHandler.dataOpMode.edit;
-                var reportTime = new Date(dataitem.ReportTime);//报餐时间
-                var targetTime = new Date();
-                targetTime.setDate(targetTime.getDate() - 1);
-                var limitTime = new Date(targetTime.getFullYear(), targetTime.getMonth(), targetTime.getDate(), 16, 0, 0);
-                if (reportTime <= limitTime) {
-                    leePopups.alert("在昨天下午四点之前的所有报餐数据已经冻结，禁止修改", 2);
-                    return false;
-                }
-                else {
-                    return true;
-                }
+        validateCanEdit: function (reportMealDay) {
+            var canEdit = true;//是否能够编辑标志变量
+            var reportDay = reportMealDay;
+            var nowTime = new Date();//当前时间
+            var nowDay = nowTime.getDate();//当天日期 天数
+            var alertMsg = "您要操作的报餐数据在当前时间已经冻结，禁止修改";
+            //目标时间 当天下午四点
+            var targetTime = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowDay, 16, 0, 0);
+            //规则说明：如果当前时间小于四点，则只允许修改大于今天之后的数据
+            //反之，则只允许修改大于明天之后的数据
+            if (nowTime > targetTime) {
+                nowTime.setDate(nowTime.getDate() + 1);
+                nowDay = nowTime.getDate();
             }
-            return true;
+            if (reportDay > nowDay) {
+                canEdit = true;
+            }
+            else {
+                leePopups.alert(alertMsg, 2);
+                canEdit = false;
+            }
+
+            return canEdit;
         },
         //验证是否可以操作
         validateCanOperate: function () {
@@ -2086,6 +2093,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         //创建员工报餐记录
         createEmployeeMealRecord: function (item) {
+            if (!vmManager.validateCanEdit(item.Day)) return;
             if (!vmManager.validateCanOperate()) return;
             var dataitem = _.clone(initVM);
             dataitem = vmManager.createEmployeeMealModel(dataitem);
@@ -2103,12 +2111,15 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.editEmployeeMealRecord(item);
         },
         editEmployeeMealRecord: function (item) {
-            $scope.vm = mealReportVM = item.bsData;
-            if (!vmManager.validateCanEdit(item.bsData)) return;
+            if (!vmManager.validateCanEdit(item.Day)) return;
+            var dataitem = $scope.vm = mealReportVM = item.bsData;
+            if (leeHelper.isServerObject(dataitem)) {
+                dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+            }
             employeeMealDialog.show();
         },
         removeEmployeeMealRecord: function (item) {
-            if (!vmManager.validateCanEdit(item.bsData)) return;
+            if (!vmManager.validateCanEdit(item.Day)) return;
             leePopups.confirm("温馨提醒", "删除后数据将不存在，您确认要继续此操作吗？", function () {
                 $scope.$apply(function () {
                     var dataitem = item.bsData;
@@ -2133,6 +2144,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         //登记陆干餐记录
         reportLeaderMealRecord: function (item, mealTime, isReported) {
+            if (!vmManager.validateCanEdit(item.Day)) return;
             if (!vmManager.validateCanOperate()) return;
             if (vmManager.workerInfo === null) {
                 leePopups.alert("请先输入作业工号！", 2);
@@ -2148,7 +2160,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             else {
                 dataitem = item.bsData;
             }
-            if (!vmManager.validateCanEdit(item.bsData)) return;
+
 
             if (mealTime == "中") {
                 dataitem.CountOfLunch = isReported ? 1 : 0;
