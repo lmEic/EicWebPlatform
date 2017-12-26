@@ -63,10 +63,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 
         public void test()
         {
-            var mm = ArchiveService.ArCalendarManger.GetDateDictionary(2018, 2);
-            DateTime day = Convert.ToDateTime("2018-01-01");
-            var mmmmmm = ArchiveService.ArCalendarManger.CreatNewCalendarModel(day);
-            if (mm == null || mm.Count < 0)
+            var mm = ArchiveService.ArCalendarManger.GetMonthCalendar(2018,1);
+            if (mm == null )
             {
                 Assert.Fail();
             }
