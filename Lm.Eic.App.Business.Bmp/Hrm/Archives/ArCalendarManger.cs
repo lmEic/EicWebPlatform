@@ -21,34 +21,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             get { return OBulider.BuildInstance<ArcalendarCurd>(); }
         }
-        public List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
-        {
-            List<CalendarModel> returnDateDictionary = new List<CalendarModel>();
-            var ListModel = curd.FindCalendarDateDatasBy(nowYear, nowMonth);
-            if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
-            //得到当月所有日期周次
-            var nowMonthWeeksList = ListModel.Select(e => e.NowMonthWeekNumber).Distinct().ToList();
-            if (nowMonthWeeksList == null || nowMonthWeeksList.Count <= 0) return returnDateDictionary;
-            nowMonthWeeksList.ForEach(W =>
-            {
-                var models = ListModel.Where(e => e.NowMonthWeekNumber == W).ToList();
-                int modelsCount = models.Count;
-                if (0 < modelsCount && modelsCount < 7)
-                {
-                    int InsertIndex = (W == 1) ? 0 : modelsCount;
-                    int yearWeek = models.FirstOrDefault().YearWeekNumber;
-                    for (int n = 1; n <= 7 - modelsCount; n++)
-                    { models.Insert(InsertIndex, new CalendarModel() { YearWeekNumber = yearWeek, CalendarDay = string.Empty }); }
-                }
-                models.ForEach(e =>
-                {
-                    if (e.CalendarDay != string.Empty)
-                    { e.ChineseCalendar = new ChineseCalendar(e.CalendarDate).ChineseDayString; }
-                    returnDateDictionary.Add(e);
-                });
-            });
-            return returnDateDictionary;
-        }
         /// <summary>
         /// 获取该月日历模型
         /// </summary>
@@ -121,8 +93,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         }
 
-
-        public List<CalendarModel> FindCalendarDateDatasBy(int nowYear, int nowMonth)
+        /// <summary>
+        /// 查询当月的数据（如果据库中没有，创建）
+        /// </summary>
+        /// <param name="nowYear"></param>
+        /// <param name="nowMonth"></param>
+        /// <returns></returns>
+        private List<CalendarModel> FindCalendarDateDatasBy(int nowYear, int nowMonth)
         {
             int vMax = DateTime.DaysInMonth(nowYear, nowMonth);
             List<CalendarModel> datas = irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
@@ -140,10 +117,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return datas;
         }
-        public CalendarModel CreatNewCalendarModel(DateTime day)
+        /// <summary>
+        /// 创建数据
+        /// </summary>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        private  CalendarModel CreatNewCalendarModel(DateTime day)
         {
             var getCalendar = new ChineseCalendar(day);
-         
             CalendarModel carendarModel = new CalendarModel()
             {
                 CalendarDate = day,
@@ -208,40 +189,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 monthCalendar.WeekCalendars.Add(weekCalendar);
             }
             return monthCalendar;
-        }
-       
-        /// <summary>
-        /// 获取日期是全年中的第几周
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="sundayFirstDay">星期天是否本周第一天</param>
-        /// <returns></returns>
-
-        public int GetWeekOfYear(DateTime dt, bool sundayFirstDay)
-        {
-            try
-            {
-                GregorianCalendar gc = new GregorianCalendar();
-                if (sundayFirstDay)
-                    return gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
-                else return gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        private static string GetchineseCalendar(DateTime date)
-        {
-            return new ChineseCalendar(date).ChineseDayString;
         }
     }
     /// <summary>

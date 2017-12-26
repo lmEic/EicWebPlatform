@@ -496,7 +496,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             // 当月的第几周
             _nowMonthWeekNumber = _date.Day / 7 + (_date.Day % 7 == 0 ? 0 : 1);
 
-            //当年的第几周
+            //当年的第几周    星期天 做当月的第一周
             GregorianCalendar gc = new GregorianCalendar();
             _yearWeekNumber = gc.GetWeekOfYear(_date, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
 
