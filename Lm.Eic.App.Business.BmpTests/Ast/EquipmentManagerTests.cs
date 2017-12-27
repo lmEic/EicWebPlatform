@@ -44,7 +44,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.OpSign = "add";
             var tem = AstService.EquipmentManager.Store(model);
             if (!tem.Result) { Assert.Fail(); }
-        }
+          
     }
 
 
