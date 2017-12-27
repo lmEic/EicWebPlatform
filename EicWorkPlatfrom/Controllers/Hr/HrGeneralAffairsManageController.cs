@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.Collections.Generic;
 
 namespace EicWorkPlatfrom.Controllers.Hr
@@ -91,6 +92,26 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return DateJsonResult(datas, "yyyy-MM-dd HH:mm:ss");
         }
 
+        #endregion
+
+        #region 报餐汇总
+        public ActionResult GaMealReportQuery()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetReportMealSumerizeDatas(string yearMonth)
+        {
+            var data = GeneralAffairsService.ReportMealManager.GetAnalogReportMealDatas(yearMonth);
+            TempData["ReportMealSumerize"] = data;
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public FileResult ExportReportMealSumerizeDatas()
+        {
+            var data = TempData["ReportMealSumerize"] as MealReportedAnalogModel;
+            return this.DownLoadFile(GeneralAffairsService.ReportMealManager.ExportAnalogData(data));
+        }
         #endregion
     }
 }

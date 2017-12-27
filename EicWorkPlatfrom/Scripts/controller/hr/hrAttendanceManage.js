@@ -80,6 +80,13 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
             workerId: workerId,
         });
     };
+    //获取报餐汇总数据
+    hr.getReportMealSumerizeDatas = function (yearMonth) {
+        var url = generalAffairsUrl + 'GetReportMealSumerizeDatas';
+        return ajaxService.getData(url, {
+            yearMonth: yearMonth,
+        });
+    };
     //自动检测考勤异常数据
     hr.autoCheckExceptionSlotData = function (yearMonth) {
         var url = attendUrl + "AutoCheckExceptionSlotData";
@@ -2219,4 +2226,23 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     //};
     //$scope.ztree = departmentTreeSet;
 
+});
+//报餐汇总
+hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, connDataOpService) {
+    //查询字段视图
+    var queryVM = $scope.qryvm = {
+        year: null,
+        month: null,
+        yearMonth: null
+    };
+    var vmManager = $scope.vmManager = {
+        activeYGTab: 'dataYGViewTab',
+        analogDatas: null,
+        getReportMealAnalogDatas: function () {
+            $scope.searchPromise = hrDataOpService.getReportMealSumerizeDatas(queryVM.yearMonth).then(function (datas) {
+                vmManager.analogDatas = datas;
+                console.log(datas);
+            });
+        },
+    };
 });
