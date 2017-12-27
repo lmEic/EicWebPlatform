@@ -82,8 +82,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 if (irep.IsExist(e => e.CalendarDate == model.CalendarDate))
                     return EditReportAttendece(model);
-              return  irep.Insert(model).ToOpResult_Add("行事历操作成功");
-          
+                return irep.Insert(model).ToOpResult_Add("行事历操作成功");
+
             }
             catch (Exception)
             {
@@ -103,10 +103,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             int vMax = DateTime.DaysInMonth(nowYear, nowMonth);
             List<CalendarModel> datas = irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
-            if(datas!=null&& datas.Count>0) return datas;
+            if (datas != null && datas.Count > 0) return datas;
             for (int i = 1; i <= vMax; i++)
             {
-                DateTime dt = new DateTime(nowYear,  nowMonth, i);
+                DateTime dt = new DateTime(nowYear, nowMonth, i);
                 var model = CreatNewCalendarModel(dt);
                 if (!datas.Contains(model))
                 {
@@ -122,7 +122,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// </summary>
         /// <param name="day"></param>
         /// <returns></returns>
-        private  CalendarModel CreatNewCalendarModel(DateTime day)
+        private CalendarModel CreatNewCalendarModel(DateTime day)
         {
             var getCalendar = new ChineseCalendar(day);
             CalendarModel carendarModel = new CalendarModel()
@@ -138,11 +138,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 NowMonthWeekNumber = getCalendar.NowMonthWeekNumber,
                 YearWeekNumber = getCalendar.YearWeekNumber,
                 Title = "",
-                OpSign=OpMode.Add,
-                OpDate=DateTime.Now.Date,
-                OpTime=DateTime.Now,
-                OpPerson="初始化",
-                
+                OpSign = OpMode.Add,
+                OpDate = DateTime.Now.Date,
+                OpTime = DateTime.Now,
+                OpPerson = "初始化",
+
             };
             return carendarModel;
         }
@@ -175,6 +175,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     if (m != null)
                     {
                         day.ChineseCalendar = m.ChineseCalendar;
+                        day.Date = m.CalendarDate.ToDateStr();
                         day.Day = m.CalendarDay;
                         day.DateColor = m.DateColor;
                         day.Title = m.Title;
@@ -238,13 +239,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// </summary>
         public int Week { get; set; }
         public List<WeekDayModel> WeekDays { get; set; }
-
     }
 
     public class WeekDayModel
     {
         public int Id { get; set; }
         public string Day { get; set; }
+        /// <summary>
+        /// 日历的日期格式形式
+        /// </summary>
+        public string Date { get; set; }
         /// <summary>
         /// 中国文化的星期几
         /// </summary>

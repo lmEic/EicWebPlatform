@@ -55,8 +55,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// 汇总报餐数据
         /// </summary>
         /// <param name="yearMonth"></param>
-        /// <param name="ygMealDatas"></param>
-        /// <param name="lgMealDatas"></param>
         public MealReportedAnalogModel GetAnalogReportMealDatas(string yearMonth)
         {
             MealReportedAnalogModel analogData = new MealReportedAnalogModel();
@@ -134,7 +132,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             msg = string.Empty;
             DateTime now = DateTime.Now;
-            int nowday = now.Day;
+            DateTime nowday = now.ToDate();
             DateTime targetTime = new DateTime(now.Year, now.Month, now.Day, 16, 0, 0);
 
             StringBuilder sbMsg = new StringBuilder();
@@ -144,9 +142,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 {
                     if (now > targetTime)
                     {
-                        nowday = now.AddDays(1).Day;
+                        nowday = now.AddDays(1).ToDate();
                     }
-                    if (m.ReportDayAt < nowday)
+                    if (m.ReportDay < nowday)
                     {
                         sbMsg.AppendLine(string.Format("工号：{0},姓名:{1}的报餐时间{2}已经超过指定时间期限，数据已冻结，禁止修改！", m.WorkerId, m.WorkerName, m.ReportDay));
                     }
