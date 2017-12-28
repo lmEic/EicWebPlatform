@@ -70,6 +70,10 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     //报餐管理
     .state('gaMealReportManage', {
         templateUrl: 'HrGeneralAffairsManage/GaMealReportManage'
+    })
+    //报餐汇总
+    .state('gaMealReportQuery', {
+        templateUrl: 'HrGeneralAffairsManage/GaMealReportQuery'
     });
 })
 

@@ -77,7 +77,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         /// 采购单单头字段映射
         /// </summary>
         public Dictionary<string, string> PurchaseOrderFieldMap = new Dictionary<string, string> {
-            {"TD008","PurchaseOrderCount"},{"TC004","Supplier"}, {"rtrim(TC001)+'-'+TC002","OrderId"}
+           {"TC003","PurchaseDate"},{"TC024","CreatedDate"}, {"TC004","Supplier"}, {"rtrim(TC001)+'-'+TC002","OrderId"}
         };
 
         /// <summary>
