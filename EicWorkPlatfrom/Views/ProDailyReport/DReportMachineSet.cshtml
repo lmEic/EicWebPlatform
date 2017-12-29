@@ -1,4 +1,4 @@
-﻿<div class="panel panel-primary" ng-controller="DailyProductionReportPT1Ctrl">
+﻿<div class="panel panel-primary" ng-controller="DailyReportMachineCtrl">
     <div class="panel-heading">
         <h6 class="panel-title">机台信息设置</h6>
     </div>
@@ -50,7 +50,7 @@
                                         <div class="col-md-4">
                                             <button type="button" class="btn btn-default" ng-model="vm.machineSpec" ng-change="vmManager.getAstId()" data-html="1" data-multiple="0"
                                                     data-animation="am-flip-x" data-placeholder="选择设备型号"
-                                                    bs-options="item.text as item.text for item in vmManager.taxTypes" bs-select>
+                                                     data-bs-options="item.value as item.label   for  item  in vmManager.taxTypes"  bs-select>
                                                 <span class="caret"></span>
                                             </button>
                                             <input name="machineSpec" class="form-control" ng-model="vm.MachineSpec" ng-show="false" required />
@@ -71,18 +71,15 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <input name="machinePreserver" class="form-control" data-ensure-user-exist
-                                                       ng-change="vmManager.getWorkerInfo()"
-                                                       placeholder="输工号或姓名" ng-model="vm.MachinePreserver" required />
-                                                <div class="error-messages" ng-messages="formEquipment.machinePreserver.$error" ng-if="formEquipment.machinePreserver.$touched">
-                                                    <small ng-message="checkingUserExist">该用户名不存在...</small>
-                                                </div>
+                                                       ng-change="vmManager.getWorkerInfo(workerId)"
+                                                       placeholder="输工号或姓名" ng-model="workerId" required />
                                                 <div class="error-messages" ng-messages="formEquipment.machinePreserver.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">保管人不能为空</small>
                                                 </div>
                                                 <div class="input-group-addon" ng-show="vmManager.isSingle">
                                                     <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.MachinePreserver}}</label>
                                                 </div>
-                                                <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                                <div class="input-group-btn" ng-show="vmManager.isSingle">
                                                     <button type="button" class="btn btn-primary"
                                                             data-animation="am-flip-x"
                                                             bs-dropdown aria-haspopup="true" aria-expanded="false">
@@ -164,7 +161,7 @@
                                         <div class="col-md-2">
                                         </div>
                                         <div class="col-md-10">
-                                            <button class="btn btn-primary" ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
+                                            <button class="btn btn-primary" ng-click="operate.saveDatas(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
                                             <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                             <span yl-operatemsg-board></span>
                                         </div>

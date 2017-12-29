@@ -1535,6 +1535,7 @@
     <Content Include="Views\QuaInspectionManage\InspectionDataGatheringOfIPQC.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionFormManageOfIpqc.cshtml" />
     <Content Include="Views\ProEmployee\ProWorkOverHoursManage.cshtml" />
+    <Content Include="Views\HrGeneralAffairsManage\GaMealReportQuery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1615,6 +1616,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
