@@ -81,10 +81,19 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
         });
     };
     //获取报餐汇总数据
-    hr.getReportMealSumerizeDatas = function (yearMonth) {
+    hr.getReportMealSumerizeDatas = function (reportMealDate) {
         var url = generalAffairsUrl + 'GetReportMealSumerizeDatas';
         return ajaxService.getData(url, {
-            yearMonth: yearMonth,
+            reportMealDate: reportMealDate,
+        });
+    };
+    //获取报餐明细数据
+    hr.getReportMealDetialDatas = function (reportMealDate, reportMealType, department) {
+        var url = generalAffairsUrl + 'GetReportMealDetialDatas';
+        return ajaxService.getData(url, {
+            reportMealDate: reportMealDate,
+            reportMealType: reportMealType,
+            department: department,
         });
     };
     //自动检测考勤异常数据
@@ -2229,20 +2238,25 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
 });
 //报餐汇总
 hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, connDataOpService) {
-    //查询字段视图
-    var queryVM = $scope.qryvm = {
-        year: null,
-        month: null,
-        yearMonth: null
-    };
     var vmManager = $scope.vmManager = {
         activeYGTab: 'dataYGViewTab',
         analogDatas: null,
+        reportDate: new Date(),
         getReportMealAnalogDatas: function () {
-            $scope.searchPromise = hrDataOpService.getReportMealSumerizeDatas(queryVM.yearMonth).then(function (datas) {
+            $scope.searchPromise = hrDataOpService.getReportMealSumerizeDatas(vmManager.reportDate).then(function (datas) {
                 vmManager.analogDatas = datas;
+            });
+        },
+        dataSets: [],
+        getReportMealDetail: function (reportMealType, department) {
+            vmManager.dataSets = [];
+            $scope.searchPromise = hrDataOpService.getReportMealDetialDatas(vmManager.reportDate, reportMealType, department).then(function (datas) {
+                vmManager.dataSets = datas;
+                vmManager.reportMealDetailDisplay = true;
+
                 console.log(datas);
             });
         },
+        reportMealDetailDisplay: false,
     };
 });
