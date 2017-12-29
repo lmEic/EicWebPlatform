@@ -640,6 +640,8 @@
     <Content Include="Content\ueditor\third-party\video-js\font\vjs.eot" />
     <Content Include="Content\ueditor\third-party\video-js\font\vjs.ttf" />
     <Content Include="Content\ueditor\third-party\video-js\font\vjs.woff" />
+    <Content Include="FileLibrary\WorkOverHours\加班数据模板.xls" />
+    <Content Include="FileLibrary\WorkOverHours\加班汇总表.xls" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1541,7 +1543,6 @@
     <Folder Include="Content\ueditor\net\Bin\" />
     <Folder Include="FileLibrary\PreviewFiles\" />
     <Folder Include="FileLibrary\ReportProblemHandleDataFile\" />
-    <Folder Include="FileLibrary\WorkOverHours\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
