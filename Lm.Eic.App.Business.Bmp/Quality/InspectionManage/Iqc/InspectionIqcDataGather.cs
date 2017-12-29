@@ -358,10 +358,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 switch (currentStatus)
                 {
                     case "加严":
-                        retrunstirng = (getFailNumber >= AcceptNumberVauleMin) ? "正常" : currentStatus;
-                        break;
-                    case "放宽":
+                     ///从加严到正常(NG数小于等于接受的数 侧回到正常)
                         retrunstirng = (getFailNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                        break;
+                    ///从放宽到正常  （NG数大于等于接受的数 就不放宽)
+                    case "放宽":
+                        retrunstirng = (getFailNumber >= AcceptNumberVauleMin) ? "正常" : "放宽";
                         break;
                     case "正常":
                         ///如果录入的数量 小于抽样的数量 则反回 正常

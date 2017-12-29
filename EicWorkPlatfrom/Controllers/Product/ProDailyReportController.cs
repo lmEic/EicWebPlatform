@@ -61,11 +61,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        [HttpPost]
         [NoAuthenCheck]
-        public JsonResult StoreMachinePutInDatas(ReportsMachineModel entities)
+        public JsonResult StoreMachinePutInDatas(ReportsMachineModel entity)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.MachineInfo.StoreOpData(entities);
+            var datas = DailyProductionReportService.ProductionConfigManager.MachineInfo.StoreOpData(entity);
             return Json(datas);
         }
         #endregion

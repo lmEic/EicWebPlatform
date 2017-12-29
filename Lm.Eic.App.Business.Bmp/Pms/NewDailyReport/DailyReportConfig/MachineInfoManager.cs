@@ -20,7 +20,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
         /// <returns></returns>
         public OpResult StoreOpData(ReportsMachineModel model)
         {
-            return DailyReportCrudFactory.DailyReportsMachine.Store(model);
+            return DailyReportCrudFactory.DailyReportsMachine.Store(model,true);
         }
     }
 }
