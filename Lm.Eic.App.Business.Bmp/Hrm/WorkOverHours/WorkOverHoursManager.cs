@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             {
                 return ex.ExOpResult();
             }
-            return OpResult.SetResult("批量保储数据成功！", result);
+            return OpResult.SetResult("批量保存数据成功！", result);
 
        }
 
