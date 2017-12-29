@@ -27,6 +27,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
         #region WorkerInfo
         /// <summary>
         /// 人员信息管理
@@ -96,7 +97,6 @@ namespace EicWorkPlatfrom.Controllers.Product
                 QryDate = qrydate,
                 DepartmentText = departmentText,
                 ParentDataNodeText = departmentText,
-
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);

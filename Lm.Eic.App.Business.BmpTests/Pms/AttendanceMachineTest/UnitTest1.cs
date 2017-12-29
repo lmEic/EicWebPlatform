@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.AttendanceTest
 
         public void TestMethod1()
         {
-            DateTime ddd = Convert.ToDateTime("2016-01-5");
+            DateTime ddd = Convert.ToDateTime("2017-01-2");
             int ii = GetWeekOfYear(ddd);
             // AttendanceBusiness attendance = new AttendanceBusiness();
             // string msg = string.Empty;
@@ -41,4 +41,25 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.AttendanceTest
 
 
     }
+
+
+
+
+
+
+
+    #region ChineseCalendarException
+    /// <summary>
+    /// 中国日历异常处理
+    /// </summary>
+    public class ChineseCalendarException : System.Exception
+    {
+        public ChineseCalendarException(string msg)
+            : base(msg)
+        {
+        }
+    }
+
+    #endregion
+
 }
