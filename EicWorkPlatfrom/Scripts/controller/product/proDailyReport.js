@@ -152,8 +152,8 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         });
     };
     ///保存数据信息
-    reportDataOp.SaveMachinePutInDatas = function (entity) {
-        var url = urlPrefix + "SaveMachinePutInDatas";
+    reportDataOp.saveMachinePutInDatas = function (entity) {
+        var url = urlPrefix + "StoreMachinePutInDatas";
         return ajaxService.postData(url, {
             entity: entity,
         });
@@ -1808,7 +1808,7 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
     var nowdate = new Date();
     nowdate.setDate(nowdate.getDate() - 1);
     var uiVM = {
-        Department: '成型课',
+        Department:'成型课',
         MachineId: '80T-4',
         MachineCode: null,
         MachineSetProductionTime: 12,
@@ -1816,7 +1816,6 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
         MachineSpec: null,
         MachineManufactureId: null,
         MachinePreserver: null,
-        MachinePreserId:null,
         PurchaseDate: null,
         State: null,
         Remarks: null,
@@ -1850,7 +1849,6 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
             var strLen = leeHelper.checkIsChineseValue(workerId ) ? 2 : 6;
             if (workerId.length >= strLen) {
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerId).then(function (datas) {
-                    console.log(datas);
                     if (datas.length > 0) {
                         vmManager.searchedWorkers = datas;
                         if (datas.length=== 1) {
@@ -1871,27 +1869,25 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
         selectWorker: function (worker) {
             if (worker !== null) {
                 uiVM.MachinePreserver= worker.Name;
-                uiVM .Department = worker.department;
             }
             else {
-                uiVM.Department = null;
+                uiVM.MachinePreserver = null;
             }
         },
 
     };
     $scope.vmManager = vmManager;
     //保存数据
-    operate.saveDatas = function () {
-        _.forEach(vmManagerPT.datasets, function (e) {
-            e.InPutDate = uiVM.InPutDate;
-            e.Department = vmManagerPT.department;
-            leeHelper.setUserData(e);
-        });
-        $scope.searchPromise = dReportDataOpService.saveMachineInPutDatas(vmManagerPT.datasets).then(function (datasResult) {
-            if (datasResult.result) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.result);
-                
-            };
+    operate.saveDatas = function (isValid) {
+        console.log(uiVM)
+        leeHelper.setUserData(uiVM);
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            $scope.searchPromise = dReportDataOpService.saveMachinePutInDatas(uiVM).then(function (datasResult) {
+                if (datasResult.result) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.result);
+
+                };
+            });
         });
     };
     //刷新数据
