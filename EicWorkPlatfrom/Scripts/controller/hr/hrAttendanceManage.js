@@ -2006,6 +2006,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         setLeaderMealReportDatas: function () {
             if (!vmManager.validateDepartment()) return;
             if (vmManager.workerInfo !== null) {
+                vmManager.initCalendarDatas();
                 vmManager.getReportMealDatas(vmManager.department, vmManager.workerInfo.WorkerId, function (datas) {
                     vmManager.bindingServerDatasToUI(datas);
                 });
@@ -2098,8 +2099,8 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             dataitem.Department = vmManager.department;
         },
         createEmployeeMealModel(dataitem) {
-            dataitem.WorkerId = "000000";
-            dataitem.WorkerName = "111111";
+            dataitem.WorkerId = "员工餐";
+            dataitem.WorkerName = "员工餐";
             dataitem.WorkerType = vmManager.reportMealType;
             dataitem.CountOfBreakfast = 0;
             dataitem.CountOfLunch = 0;
@@ -2225,15 +2226,6 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     };
 
     vmManager.bindingDepartments();
-    //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
-    //    departmentTreeSet.setTreeDataset(datas);
-    //});
-    //var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    //departmentTreeSet.bindNodeToVm = function () {
-    //    var dto = _.clone(departmentTreeSet.treeNode.vm);
-    //    queryFields.department = dto.DataNodeText;
-    //};
-    //$scope.ztree = departmentTreeSet;
 
 });
 //报餐汇总
@@ -2253,8 +2245,6 @@ hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, co
             $scope.searchPromise = hrDataOpService.getReportMealDetialDatas(vmManager.reportDate, reportMealType, department).then(function (datas) {
                 vmManager.dataSets = datas;
                 vmManager.reportMealDetailDisplay = true;
-
-                console.log(datas);
             });
         },
         reportMealDetailDisplay: false,
