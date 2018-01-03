@@ -14,6 +14,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
    public class WorkOverHoursManager
    {
       
+       
         /// <summary>
         /// 查询(1、按日期查询 2、按部门查询)
         /// </summary>
@@ -42,14 +43,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     temModel.WorkerName = item.WorkerName;
                     temModel.DepartmentText = item.DepartmentText;
                     temModel.WorkoverType = item.WorkoverType;
-                    temModel.WorkDate = item.WorkDate;
+                    temModel.WorkDate = item.WorkDate;//2018/1/2 0:00:00
                     temModel.WorkClassType = item.WorkClassType;
                     temModel.WorkOverHours = GetWorkOverHoursList.Where(m => m.WorkoverType == item.WorkoverType &&  m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
                     temModel.Remark = item.Remark;
                     temModel.WorkReason = item.WorkReason;
                     temModel.WorkDayTime = item.WorkDayTime;
                     temModel.WorkNightTime = item.WorkNightTime;
-                    temModel.WorkStatus = item.WorkStatus;                   
+                    temModel.WorkStatus = item.WorkStatus;
+                    temModel.QryDate = item.QryDate;
                     modelList.Add(temModel);
                 }             
             }
@@ -71,9 +73,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         /// <param name="workDate"></param>
         /// <param name="departmentText"></param>
         /// <returns></returns>
-        public List<WorkOverHoursMangeModels>FindRecordByModel(string departmentText,DateTime workDate)
+        public List<WorkOverHoursMangeModels>FindRecordByModel(string departmentText,string postNature,DateTime workDate,int mode)
         {
-            return WorkOverHoursFactory.WorkOverHoursCrud.FindByMode(departmentText, workDate);
+            return WorkOverHoursFactory.WorkOverHoursCrud.FindByMode(departmentText,postNature, workDate,mode);
         }
 
         /// <summary>
