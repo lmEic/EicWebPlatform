@@ -327,6 +327,7 @@
                         <col width="40" />
                         <col width="40" />
                         <col width="40" />
+                        <col width="40" />
                         <col width="90" />
                     </colgroup>
                     <thead>
@@ -334,6 +335,7 @@
                             <th>序号</th>
                             <th>加班日期</th>
                             <th>加班类型</th>
+                            <th>班别</th>
                             <th>工号</th>
                             <th>姓名</th>
                             <th>加班时数(h)</th>
@@ -345,6 +347,7 @@
                             <td><span class="badge" ng-bind="$index+1"></span></td>
                             <td ng-bind="item.WorkDate" ng-show="vmManager.signPerSum"></td>
                             <td ng-bind="item.QryDate" ng-show="vmManager.signDepSum"></td>
+                            <td ng-bind="item.WorkoverType"></td>
                             <td ng-bind="item.WorkClassType"></td>
                             <td ng-bind="item.WorkerId"></td>
                             <td ng-bind="item.WorkerName"></td>
