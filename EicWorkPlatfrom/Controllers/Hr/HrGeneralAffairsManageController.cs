@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
@@ -100,13 +101,19 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return View();
         }
         [NoAuthenCheck]
-        public JsonResult GetReportMealSumerizeDatas(string yearMonth)
+        public ContentResult GetReportMealSumerizeDatas(DateTime reportMealDate)
         {
-            var data = GeneralAffairsService.ReportMealManager.GetAnalogReportMealDatas(yearMonth);
+            var data = GeneralAffairsService.ReportMealManager.GetAnalogReportMealDatas(reportMealDate);
             TempData["ReportMealSumerize"] = data;
-            return Json(data, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(data);
         }
-
+        [NoAuthenCheck]
+        public ContentResult GetReportMealDetialDatas(DateTime reportMealDate, string reportMealType, string department)
+        {
+            var data = GeneralAffairsService.ReportMealManager.GetReportMealDetailDatas(reportMealDate, reportMealType, department);
+            return DateJsonResult(data);
+        }
+        [NoAuthenCheck]
         public FileResult ExportReportMealSumerizeDatas()
         {
             var data = TempData["ReportMealSumerize"] as MealReportedAnalogModel;

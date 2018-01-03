@@ -48,7 +48,7 @@
                                     <div class="form-group">
                                         <label for="machineSpec" class="col-md-2 control-label">设备型号:</label>
                                         <div class="col-md-4">
-                                            <button type="button" class="btn btn-default" ng-model="vm.machineSpec" ng-change="vmManager.getAstId()" data-html="1" data-multiple="0"
+                                            <button type="button" class="btn btn-default" ng-model="vm.MachineSpec" data-html="1" data-multiple="0"
                                                     data-animation="am-flip-x" data-placeholder="选择设备型号"
                                                      data-bs-options="item.value as item.label   for  item  in vmManager.taxTypes"  bs-select>
                                                 <span class="caret"></span>
@@ -71,8 +71,8 @@
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <input name="machinePreserver" class="form-control" data-ensure-user-exist
-                                                       ng-change="vmManager.getWorkerInfo(workerId)"
-                                                       placeholder="输工号或姓名" ng-model="workerId" required />
+                                                       ng-change="vmManager.getWorkerInfo(vm.WorkerId)"
+                                                       placeholder="输工号或姓名" ng-model="vm.WorkerId" required />
                                                 <div class="error-messages" ng-messages="formEquipment.machinePreserver.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">保管人不能为空</small>
                                                 </div>
@@ -191,15 +191,21 @@
                                 </div>
                             </li>
                             <li class="list-group-item" ng-click="vmManager.selectEquipment(item)"
-                                data-title="设备型号:{{item.EquipmentSpec}}" data-bs-tooltip
+                                data-title="设备编码:{{item.MachineId}}" data-bs-tooltip
                                 ng-repeat="item in vmManager.equipments track by $index">
                                 编号：
-                                <span class="label label-success" style="cursor:pointer">{{item.AssetNumber}}</span>
-                                -----
+                                <span class="label label-success" style="cursor:pointer">{{item.MachineCode}}</span>
+                                -------
                                 名称：
                                 <span>
                                     <i class="fa fa-envelope-o"></i>
-                                    {{item.EquipmentName}}
+                                    {{item.MachineName}}
+                                </span>
+                                -----
+                                规格：
+                                <span>
+                                    <i class="fa fa-envelope-o"></i>
+                                    {{item.MachineSpec}}
                                 </span>
                             </li>
                         </ul>
