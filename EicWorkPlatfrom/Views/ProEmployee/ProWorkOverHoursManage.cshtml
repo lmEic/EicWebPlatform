@@ -8,20 +8,32 @@
                 <div class="col-md-6">
                     <form for="form" class="form-inline">
                         @*<div class="form-group">
-                            <select class="form-control" ng-model="vmManager.selectDepartment">
-                                <option></option>
-                                <option ng-repeat="item in vmManager.DepartmentDatas" value={{item.DataNodeText}}>{{item.DataNodeText}}</option>
-                            </select>
-                        </div>*@
-                           <div class="input-group">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-model="vmManager.selectDepartment"
-                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                                            data-bs-options="item.DepartmentText as item.DepartmentText for item in vmManager.organizationUnits" data-bs-select>
-                                        选择部门 <span class="caret"></span>
-                                    </button>
-                                </div>
+            <select class="form-control" ng-model="vmManager.selectDepartment">
+                <option></option>
+                <option ng-repeat="item in vmManager.DepartmentDatas" value={{item.DataNodeText}}>{{item.DataNodeText}}</option>
+            </select>
+        </div>*@      <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-model="vmManager.selectDepartment"
+                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                                        data-bs-options="item.DepartmentText as item.DepartmentText for item in vmManager.organizationUnits" data-bs-select>
+                                    选择部门 <span class="caret"></span>
+                                </button>
                             </div>
+                        </div>
+
+                        </div>
+                        
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-model="vmManager.selectPostNature"
+                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="类型"
+                                        data-bs-options="item.id as item.text for item in vmManager.postNatures" data-bs-select>
+                                    员工类型 <span class="caret"></span>
+                                </button>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="workDate">日期:</label>
@@ -30,7 +42,7 @@
                                 <i class="fa fa-download"></i>载入模板
                             </button>
                         </div>
-                        <div class="form-group">
+                        <div class="input-group">
                             <input id="qry_workname" type="text" ng-model="vmManager.qryWorkName" class="form-control" placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
                         </div>
 
@@ -61,6 +73,7 @@
                             <col width="40" />
                             <col width="40" />
                             <col width="40" />
+                            <col width="40" />
                             <col width="90" />
                         </colgroup>
 
@@ -77,6 +90,7 @@
                                 <th>工号</th>
                                 <th>姓名</th>
                                 <th>加班时数(h)</th>
+                                <th>员工类型</th>
                                 <th>备注</th>
                             </tr>
                         </thead>
@@ -165,6 +179,7 @@
                                            focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入时数" ng-show="item.wkhing" />
                                 </td>
+                                <td ng-bind="item.PostNature"></td>
                                 <td title="双击可修改" ng-dblclick="vmManager.editremark(item)">
                                     <span ng-hide="item.wkhing1">{{item.Remark}}</span>
                                     <input ng-model="vm.Remark" ng-keydown="vmManager.inputremark($event,item)"
@@ -292,7 +307,7 @@
                             <a class="btn btn-primary pull-right" href="@Url.Action("WorkOverHoursDatasSumToExcel", "ProEmployee")"><i class="fa fa-file-excel-o"></i>导出汇总</a>
                         </div>
                         <div class="form-group">
-                            <button id="querytable" type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursWorkIdBydetail()"><i class="fa fa-search"></i> 查询员工明细</button>
+                            <button id="querytable" type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursWorkIdBydetail()"><i class="fa fa-search"></i> 查询所有明细</button>
 
                         </div>
                     </form>
@@ -327,9 +342,10 @@
                     </thead>
                     <tbody>
                         <tr class="success" ng-repeat="item in vmManager.dataSourceSum track by $index">
-                            <td ><span class="badge" ng-bind="$index+1"></span></td>
-                            <td ng-bind="item.WorkDate"></td>
-                            <td ng-bind="item.WorkoverType"></td>
+                            <td><span class="badge" ng-bind="$index+1"></span></td>
+                            <td ng-bind="item.WorkDate" ng-show="vmManager.signPerSum"></td>
+                            <td ng-bind="item.QryDate" ng-show="vmManager.signDepSum"></td>
+                            <td ng-bind="item.WorkClassType"></td>
                             <td ng-bind="item.WorkerId"></td>
                             <td ng-bind="item.WorkerName"></td>
                             <td ng-bind="item.WorkOverHours"></td>

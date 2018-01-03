@@ -761,7 +761,7 @@ var leePopups = (function () {
                     buttons: [
                       {
                           text: '确   定',
-                          addClass: 'btn-info',
+                          addClass: 'btn-default',
                           click: function (notice) {
                               if (!_.isUndefined(okFn) && _.isFunction(okFn))
                                   okFn();
