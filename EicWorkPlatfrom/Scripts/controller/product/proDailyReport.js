@@ -1303,19 +1303,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                uiVM.MachineSetProductionTime = i.MachineSetProductionTime;
            },
            selectmouldId: function (i) {
+               console.log(999999);
+               console.log(i);
                uiVM.MouldHoleCount = i.MouldHoleCount;
                uiVM.MouldId = i.MouldId;
-               var parameterKey = 'PT1' + '&' + uiVM.ProductName + '&' + '注塑' + '&' + uiVM.MouldId
-               var dd = _.findWhere(vmManagerPT.mouldIdInfos, { ParameterKey: parameterKey });
-               if (!_.isUndefined(dd)) {
-                   uiVM.ProcessesIndex = dd.ProcessesIndex;
-                   uiVM.ProcessesName = dd.ProcessesName;
-                   uiVM.ProcessesType = dd.ProcessesType;
-                   uiVM.StandardProductionTime = dd.StandardProductionTime
-                   if (dd.StandardProductionTimeType == "UPH") {
-                       uiVM.StandardProductionTime = dd.UPS
-                   };
-               }
+               uiVM.StandardProductionTime = i.UPS; 
+               uiVM.ProcessesIndex = i.ProcessesIndex;
+               uiVM.ProcessesName = i.ProcessesName;
+               uiVM.ProcessesType = i.ProcessesType;
+               uiVM.WorkerProductionTime = 12;
            },
            //看机人员信息
            searchedWorkers: [],
@@ -1872,9 +1868,10 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
                 uiVM.MachinePreserver = null;
             }
         },
+        ///选择
         selectEquipment: function (item) {
-
-
+            item.OpSign = leeDataHandler.dataOpMode.edit;
+            $scope.vm = item;
         }
 
     };
@@ -1887,6 +1884,7 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
             $scope.searchPromise = dReportDataOpService.saveMachinePutInDatas(uiVM).then(function (opResult) {
                 if (opResult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult.Result);
+                    vmManager.equipments.push(opResult.Entity);
                 };
             });
         });
