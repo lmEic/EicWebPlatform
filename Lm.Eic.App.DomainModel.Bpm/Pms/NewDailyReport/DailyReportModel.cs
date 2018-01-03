@@ -1166,6 +1166,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _machinecode = value; }
             get { return _machinecode; }
         }
+        private int _machinesetproductiontime;
+        /// <summary>
+        ///设置时数
+        /// </summary>
+        public int MachineSetProductionTime
+        {
+            set { _machinesetproductiontime = value; }
+            get { return _machinesetproductiontime; }
+        }
         private string _machinename;
         /// <summary>
         ///机台名称
@@ -1183,15 +1192,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _machinespec = value; }
             get { return _machinespec; }
-        }
-        private int _machineSetProductionTime;
-        /// <summary>
-        ///运用设置时间
-        /// </summary>
-        public int MachineSetProductionTime
-        {
-            set { _machineSetProductionTime = value; }
-            get { return _machineSetProductionTime; }
         }
         private string _machinemanufactureid;
         /// <summary>
@@ -1229,7 +1229,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _state = value; }
             get { return _state; }
         }
-
         private string _remarks;
         /// <summary>
         ///备注
@@ -1239,8 +1238,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _remarks = value; }
             get { return _remarks; }
         }
-
-        
         private string _opperson;
         /// <summary>
         ///操作人

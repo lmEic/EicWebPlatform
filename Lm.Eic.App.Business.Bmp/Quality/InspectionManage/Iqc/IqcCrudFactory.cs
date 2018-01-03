@@ -405,9 +405,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
 
-        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderid, string materialId)
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderid, string materialId,int takecount)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().OrderBy(f => f.MaterialInDate).ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().OrderBy(f => f.MaterialInDate).Take(takecount).ToList();
         }
         /// <summary>
         /// 删除抽检项目
