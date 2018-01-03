@@ -3,9 +3,11 @@
         <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>请假管理</h6>
     </div>
     <div class="panel-body">
-       <div bs-tabs bs-active-pane>        
-           <div class="row">
-               <div class="col-md-6" id="1">
+        <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
+            <div bs-pane data-title="请假登记" data-name="initTab">
+
+                <div class="row">
+                    <div class="col-md-10" id="1">
                         <form role="form" name="LeaveFrm" novalidate class="form-horizontal">
                             <div class="form-group">
                                 <label for="workerId" class="col-md-2 control-label">工号</label>
@@ -135,13 +137,13 @@
                                         </span>
                                     </div>
                                 </div>
-                                
-                               
+
+
 
                             </div>
 
                             <div class="form-group">
-                              <label for="leaveMemo" class="col-md-2 control-label">请假事由</label>
+                                <label for="leaveMemo" class="col-md-2 control-label">请假事由</label>
                                 <div class="col-md-10">
                                     <textarea rows="5" name="problemDesc" class="form-control" ng-model="vm.LeaveMemo" placeholder="请假事由" />
                                 </div>
@@ -162,96 +164,103 @@
 
 
                         </form>
-                    </div> 
-               
-               <div class="col-md-6" id="2">
-                   <div class="bs-callout bs-callout-info">                                          
-                       <form class="form-inline">
-                           <div class="form-group">
-                            @*<select class="form-control" ng-model="vmManager.selectDepartment" >
-                               <option >请选择部门</option>
-                               <option ng-repeat="item in vmManager.DepartmentDatas"value={{item.DataNodeText}}>{{item.DataNodeText}}</option>
-                                </select>*@
-                                <div class="input-group">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-model="vmManager.selectDepartment"
-                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                                            data-bs-options="item.DepartmentText as item.DepartmentText for item in vmManager.organizationUnits" data-bs-select>
-                                        选择部门 <span class="caret"></span>
-                                    </button>
+                    </div>
+                </div>
+
+            </div>
+            <div bs-pane data-title="请假查询" data-name="editTab">
+                <div class="row">
+                    <div class="col-md-12" id="2">
+                        <div class="bs-callout bs-callout-info">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    @*<select class="form-control" ng-model="vmManager.selectDepartment" >
+                        <option >请选择部门</option>
+                        <option ng-repeat="item in vmManager.DepartmentDatas"value={{item.DataNodeText}}>{{item.DataNodeText}}</option>
+                         </select>*@
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-model="vmManager.selectDepartment"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                                                    data-bs-options="item.DepartmentText as item.DepartmentText for item in vmManager.organizationUnits" data-bs-select>
+                                                选择部门 <span class="caret"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>工号</label>
+                                    <input id="queryWorkerId" type="text" class="form-control" ng-model="vm.WorkerId" placeholder="输入工号或姓名后回车" ng-change="vmManager.getWorkerInfo()" ng-keypress="vmManager.getLeaveAskManagerDatas(1)" />
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="leaveState" class="form-control" ng-model="vm.LeaveState" ng-keypress="vmManager.getLeaveAskManagerDatas(2)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-model="vm.LeaveState"
+                                                    data-html="1" data-multiple="0" data-placeholder="选择状态" data-animation="am-flip-x"
+                                                    data-bs-options="leavestate.id as leavestate.text for leavestate in vmManager.leaveStates" data-bs-select></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                            <div class="h-split" />
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-hover" style="table-layout:fixed;">
+                                    <colgroup>
+                                        <col width="18" />
+                                        <col width="25" />
+                                        <col width="50" />
+                                        <col width="50" />
+                                        <col width="30" />
+                                        <col width="30" />
+                                        <col width="40" />
+
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="active">
+                                            <th>序号</th>
+                                            <th>姓名</th>
+                                            <th>开始日期</th>
+                                            <th>结束日期</th>
+                                            <th>时数(H)</th>
+                                            <th>状态</th>
+                                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.searchDatas track by $index">
+                                            <td><span class="badge" ng-bind="$index+1"></span></td>
+                                            <td ng-bind="item.WorkerName"></td>
+                                            <td ng-bind="item.LeaveTimerStart"></td>
+                                            <td ng-bind="item.LeaveTimerEnd"></td>
+                                            <td ng-bind="item.LeaveHours"></td>
+                                            <td ng-bind="item.LeaveState"></td>
+                                            <td>
+                                                <button id="editbtn" class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
+                                                <button id="deletebtn" class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-if="vmManager.datasource.length>0"
+                                     yl-pagination
+                                     data-dataset="vmManager.searchDatas"
+                                     data-datasource="vmManager.datasource">
                                 </div>
                             </div>
-                             </div>
-                           <div class="form-group">
-                               <label>工号</label>
-                               <input id="queryWorkerId" type="text" class="form-control" ng-model="vm.WorkerId" placeholder="输入工号或姓名后回车" ng-change="vmManager.getWorkerInfo()" ng-keypress="vmManager.getLeaveAskManagerDatas(1)" />                        
-                           </div>
-                           <div class="form-group">
-                               <div class="input-group">
-                                   <input name="leaveState" class="form-control" ng-model="vm.LeaveState" ng-keypress="vmManager.getLeaveAskManagerDatas(2)" />                
-                                   <span class="input-group-btn">
-                                       <button type="button" class="btn btn-primary" ng-model="vm.LeaveState"
-                                               data-html="1" data-multiple="0" data-placeholder="选择状态" data-animation="am-flip-x"
-                                               data-bs-options="leavestate.id as leavestate.text for leavestate in vmManager.leaveStates" data-bs-select></button>
-                                   </span>
-                               </div>
-                           </div>
+                        </div>
+                    </div>
 
-                       </form>
-                   
-                      <div class="h-split" />
-                       <div class="table-responsive">
-                           <table class="table table-condensed table-hover"  style="table-layout:fixed;">
-                               <colgroup>
-                                   <col width="18" />
-                                   <col width="25" />
-                                   <col width="50" />
-                                   <col width="50" />
-                                   <col width="30" />
-                                   <col width="30" />
-                                   <col width="40"/>
-                                   
-                               </colgroup>
-                               <thead>
-                                   <tr class="active">
-                                       <th>序号</th>
-                                       <th>姓名</th>
-                                       <th>开始日期</th>
-                                       <th>结束日期</th>
-                                       <th>时数(H)</th>
-                                       <th>状态</th>
-                                       <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
-                                     
-                                   </tr>
-                               </thead>
-                               <tbody>
-                                   <tr ng-repeat="item in vmManager.searchDatas track by $index">
-                                       <td><span class="badge" ng-bind="$index+1"></span></td>
-                                       <td ng-bind="item.WorkerName"></td>
-                                       <td ng-bind="item.LeaveTimerStart"></td>
-                                       <td ng-bind="item.LeaveTimerEnd"></td>
-                                       <td ng-bind="item.LeaveHours"></td>
-                                       <td ng-bind="item.LeaveState"></td>
-                                       <td>
-                                           <button id="editbtn" class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
-                                           <button id="deletebtn" class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
-                                       </td>
-                                       
-                                   </tr>
-                               </tbody>
-                           </table>
-                           <div ng-if="vmManager.datasource.length>0"
-                                yl-pagination
-                                data-dataset="vmManager.searchDatas"
-                                data-datasource="vmManager.datasource">
-                           </div>
-                       </div>
-                  </div>
-             </div>                               
-          </div>         
-       </div>  
-        
+                </div>
 
+            </div>
+
+        </div>
+      
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
             <content dialog-title>
                 <i class="fa fa-pencil-square">用户编辑</i>
@@ -406,5 +415,6 @@
             </content>
 
         </dialog>
+
    </div>
 </div>
