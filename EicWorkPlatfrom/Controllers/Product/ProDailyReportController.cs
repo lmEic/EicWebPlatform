@@ -393,5 +393,24 @@ namespace EicWorkPlatfrom.Controllers.Product
             return DateJsonResult(datas);
         }
         #endregion
+
+        #region 不良制程处理
+        public ActionResult DReportProductionDefectiveTreatmentSet()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 保存机械
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult StoreRedoProductOrderData(DailyProductionDefectiveTreatmentModel entity)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DefectiveTreatment.StoreOpData(entity);
+            return Json(datas);
+        }
+        #endregion
     }
 }
