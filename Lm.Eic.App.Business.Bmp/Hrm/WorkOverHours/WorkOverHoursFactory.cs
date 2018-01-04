@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     case 2:
                         return irep.Entities.OrderBy(m=>m.WorkerId).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId==qryDto.WorkId && m.WorkStatus == "在职").ToList();
                     case 3:
-                        return irep.Entities.Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId == qryDto.WorkId && m.WorkStatus == "在职").ToList();
+                        return irep.Entities.Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
                     default:
                         return new List<WorkOverHoursMangeModels>();
                 }
@@ -115,13 +115,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         /// <param name="workDate"></param>
         /// <param name="departmentText"></param>
         /// <returns></returns>
-        internal List<WorkOverHoursMangeModels>FindByMode(string departmentText,DateTime workDate)
+        internal List<WorkOverHoursMangeModels>FindByMode(string departmentText,string postNature,DateTime workDate,int mode)
         {
             try
             {
-               
-              return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职"&& (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
-                                          
+                switch (mode)
+                {
+                    case 1:
+                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
+                    case 2:
+                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)&& e.PostNature==postNature).ToList();
+
+                    default:
+                        return new List<WorkOverHoursMangeModels>();
+                }                                          
             }
             catch (Exception ex)
             {

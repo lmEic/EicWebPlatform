@@ -122,13 +122,12 @@ namespace EicWorkPlatfrom.Controllers.Product
 
         }
         [NoAuthenCheck]
-        public ContentResult GetWorkOverHoursWorkIdBydetail(string qrydate, string departmentText, string workId, int mode)
+        public ContentResult GetWorkOverHoursWorkIdBydetail(string qrydate, string departmentText, int mode)
         {
             WorkOverHoursDto qryDto = new WorkOverHoursDto()
             {
                 QryDate = qrydate,
-                DepartmentText = departmentText,
-                WorkId = workId,
+                DepartmentText = departmentText,        
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByDetail(qryDto);
@@ -143,10 +142,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="workDate"></param>
         /// <param name="departmentText"></param>
         /// <returns></returns>
-        public ContentResult GetWorkOverHoursMode(string departmentText, DateTime workDate)
+        public ContentResult GetWorkOverHoursMode(string departmentText,string postNature, DateTime workDate,int mode)
         {
 
-            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText, workDate);
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,postNature,workDate,mode);
 
             foreach (var item in datas)
             {

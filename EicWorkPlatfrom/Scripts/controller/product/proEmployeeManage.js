@@ -66,11 +66,13 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
         });
     };
     //载入模板
-    dataAccess.getWorkOverHoursMode = function (departmentText, workDate) {
+    dataAccess.getWorkOverHoursMode = function (departmentText,postNature, workDate,mode) {
         var url = urlPrefix + 'GetWorkOverHoursMode';
         return ajaxService.getData(url, {
             departmentText: departmentText,
+            postNature:postNature,
             workDate: workDate,
+            mode:mode
         });
     };
 
@@ -94,12 +96,12 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
         })
     };
     //查询员工明细
-    dataAccess.getWorkOverHoursWorkIdBydetails = function (qrydate, departmentText, workId, mode) {
+    dataAccess.getWorkOverHoursWorkIdBydetails = function (qrydate, departmentText, mode) {
         var url = urlPrefix + 'GetWorkOverHoursWorkIdBydetail';
         return ajaxService.getData(url, {
             qrydate: qrydate,
             departmentText: departmentText,
-            workId: workId,
+           
             mode: mode
         })
     };
@@ -456,12 +458,12 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
 proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal, $filter, proEmployeeDataService, dataDicConfigTreeSet, connDataOpService) {
     ///ui视图模型
     var uiVM = {
-        WorkerId: null,//
-        WorkerName: null,//
-        WorkoverType: null,//
-        WorkClassType: null,//
-        WorkDate: null,//
-        WorkOverHours: null,//
+        WorkerId: null,
+        WorkerName: null,
+        WorkoverType: null,
+        WorkClassType: null,
+        WorkDate: null,
+        WorkOverHours: null,
         Remark: null,
         DepartmentText: null,
         WorkStatus: '在职',
@@ -469,6 +471,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         WorkReason: '产线加班',
         WorkDayTime: null,
         WorkNightTime: null,
+        PostNature:null,
         ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
         BackgroundIndex: null,
         OpPerson: leeDataHandler.dataStorage.getLoginedUser().userName,
@@ -496,6 +499,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         getworkdate: null,
         getcolorindex: null,
         selectDepartment: null,
+        selectPostNature:null,
         searchYear: new Date().getFullYear(),
         changeworkDate: null,
         workDayDate: null,
@@ -508,6 +512,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         overTypes: [{ id: '平时加班', text: '平时加班' }, { id: '假日加班', text: '假日加班' }, { id: '节假日加班', text: '节假日加班' }],
         workOverHourss: [{ id: 0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0 }, { id: 2.5, text: 2.5 }],
         workStatuss: [{ id: '在职', text: '在职' }, { id: '离职', text: '离职' }],
+        postNatures: [{ id: '间接', text: '间接' }, {id:'直接',text:'直接'}],
         dataSets: [],
         dataSource: [],
         searchDatas: [],
@@ -526,6 +531,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         selectedWorkers: [],
         dataSource: [],
         DepartmentDatas: [],
+        signDepSum: 'true',
+        signPerSum:'false',
         init: function () {
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
@@ -871,8 +878,9 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 uiVM.WorkerName = worker.Name;
                 uiVM.WorkerId = worker.WorkerId;
                 // uiVM.DepartmentText = worker.Department;
-                // uiVM.PostNature = worker.PostNature;
+                uiVM.PostNature = worker.PostNature;
                 uiVM.WorkClassType = worker.ClassType;
+               
 
             }
             else {
@@ -910,13 +918,16 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         },
         //加班汇总
         getWorkOverHourSumss: function (mode) {
+            vmManager.signDepSum = true;
+            vmManager.signPerSum = false;
             vmManager.dataSourceSum = [];
             if (vmManager.selectDepartment == null) {
                 var datas = proEmployeeDataService.getWorkOverHourSums(vmManager.searchYear, uiVM.ParentDataNodeText, 1).then(function (datas) {
                     vmManager.dataSourceSum = datas;
                 })
             }
-            else {
+            else
+            {
                 var datas = proEmployeeDataService.getWorkOverHourSums(vmManager.searchYear, vmManager.selectDepartment, 1).then(function (datas) {
                     vmManager.dataSourceSum = datas;
                 })
@@ -926,6 +937,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         //按工号查询汇总
         getWorkOverHourSumsByWorkId: function (mode) {
             vmManager.dataSourceSum = [];
+            vmManager.signPerSum = true;
+            vmManager.signDepSum = false;
             var datas = proEmployeeDataService.getWorkOverHourSumsByWorkIds(vmManager.searchYear, vmManager.selectDepartment, qryDto.workId, 2).then(function (datas) {
                 vmManager.dataSourceSum = datas;
             })
@@ -933,7 +946,9 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         //查询员工明细
         getWorkOverHoursWorkIdBydetail: function (mode) {
             vmManager.dataSourceSum = [];
-            var datas = proEmployeeDataService.getWorkOverHoursWorkIdBydetails(vmManager.searchYear, vmManager.selectDepartment, qryDto.workId, 3).then(function (datas) {
+            vmManager.signPerSum = true;
+            vmManager.signDepSum = false;
+            var datas = proEmployeeDataService.getWorkOverHoursWorkIdBydetails(vmManager.searchYear, vmManager.selectDepartment, 3).then(function (datas) {
                 vmManager.dataSourceSum = datas;
             })
 
@@ -977,8 +992,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             vmManager.dataSets = [];
             vmManager.dataSource = [];
             tempVm.workOverCount = 0;
-            if (vmManager.selectDepartment == null) {
-                $scope.searchPromise = proEmployeeDataService.getWorkOverHoursMode(uiVM.ParentDataNodeText, qryDto.workDate).then(function (datas) {
+            if (vmManager.selectPostNature==null) {
+                $scope.searchPromise = proEmployeeDataService.getWorkOverHoursMode(qryDto.departmentText,vmManager.selectPostNature, qryDto.workDate,1).then(function (datas) {
                     //构建索引号
                     var rindex = 1;
                     angular.forEach(datas, function (item) {
@@ -996,7 +1011,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 })
             }
             else {
-                $scope.searchPromise = proEmployeeDataService.getWorkOverHoursMode(vmManager.selectDepartment, qryDto.workDate).then(function (datas) {
+                $scope.searchPromise = proEmployeeDataService.getWorkOverHoursMode(vmManager.selectDepartment,vmManager.selectPostNature,qryDto.workDate,2).then(function (datas) {
                     //构建索引号
                     var rindex = 1;
                     angular.forEach(datas, function (item) {
