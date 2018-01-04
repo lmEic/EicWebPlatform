@@ -741,12 +741,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             object workstatus = tpis[8].GetValue(entity, null);
             object workyear = tpis[9].GetValue(entity, null);
             object workreason = tpis[10].GetValue(entity, null);
-
-
+            object postNature = tpis[15].GetValue(entity, null);//直接/间接
             object workdaytime = tpis[11].GetValue(entity, null);
             object worknighttime = tpis[12].GetValue(entity, null);
 
             rowWorkType.GetCell(15).SetCellValue(worktype.ToString());
+            rowWorkType.GetCell(6).SetCellValue(postNature.ToString());
             rowDeparmentAndWorkdate.GetCell(1).SetCellValue(department.ToString());
             rowWorkReason.GetCell(1).SetCellValue(workreason.ToString());
             if (workclasstype.ToString() == "白班")
@@ -762,7 +762,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
             rowDeparmentAndWorkdate.GetCell(11).SetCellValue(dateV.ToShortDateString());
             // rowContent.GetCell(1).SetCellValue(workclasstype.ToString());
-            rowContent.GetCell(colindex0).SetCellValue(workclasstype.ToString());
+           // rowContent.GetCell(colindex0).SetCellValue(workclasstype.ToString());
             rowContent.GetCell(colindex1).SetCellValue(workId.ToString());
             rowContent.GetCell(colindex2).SetCellValue(workName.ToString());
             double doubV = 0;

@@ -2057,6 +2057,9 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.activeYGTab = 'initYGTab';
             vmManager.workerInfo = null;
             vmManager.initCalendarDatas();
+            if (vmManager.department !== null || !_.isUndefined(vmManager.department)) {
+                vmManager.selectDepartment();
+            }
         },
         //判定是否可以编辑，判定规则：只能修改昨天4点以后的数据
         validateCanEdit: function (reportMealDate) {
