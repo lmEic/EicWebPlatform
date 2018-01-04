@@ -1340,12 +1340,12 @@
                                         <td>{{item.OrderProductNumber}}</td>
                                         <td>{{item.OrderNeedPutInNumber}}</td>
                                         <td>
-                                            {{item.OrderHavePutInNumber.toFixed(2)}}
+                                            {{item.OrderHavePutInNumber}}
                                             <a href="javascript:;" ng-click="vmManager.showPutInDetail(item)" ng-if="item.OrderHavePutInNumber>0 ||(item.InputType=='E')||(item.InputType=='B')"> <i class="fa fa-th-list label-info"></i></a>
                                         </td>
                                         <td>
-                                            <span ng-if="(item.OrderNeedPutInNumber - item.OrderHavePutInNumber<=0)" style="color:#FF0000">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
-                                            <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber>0" style="color:#049816">{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</span>
+                                            <span ng-if="(item.OrderNeedPutInNumber - item.OrderHavePutInNumber<=0)" style="color:#FF0000">{{(item.OrderNeedPutInNumber - item.OrderHavePutInNumber).toFixed(1)}}</span>
+                                            <span ng-if="item.OrderNeedPutInNumber - item.OrderHavePutInNumber>0" style="color:#049816">{{(item.OrderNeedPutInNumber - item.OrderHavePutInNumber).toFixed(1)}}</span>
                                         </td>
                                     </tr>
                                 </tbody>

@@ -1648,7 +1648,7 @@ productModule.controller("DailyRedoProductOrderCtrl", function ($scope, dataDicC
 
     //查询字段
     var queryFields = {
-        orderId: '1212121',
+        orderId: null,
         department: null,
         receiveMonth: null
     };
@@ -1696,7 +1696,7 @@ productModule.controller("DailyRedoProductOrderCtrl", function ($scope, dataDicC
                 if (opResult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
                     if (opResult.Entity.OpSign === leeDataHandler.dataOpMode.add) {
-                        console.log(9989898);
+                       
                         vmManager.storeDataset.push(opResult.Entity);
                     };
                     vmManager.init();
