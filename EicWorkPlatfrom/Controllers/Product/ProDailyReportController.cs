@@ -10,19 +10,16 @@ using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Web;
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-
 namespace EicWorkPlatfrom.Controllers.Product
 {
     public class ProDailyReportController : EicBaseController
     {
         //
         // GET: /DailyReport/
-
         public ActionResult Index()
         {
             return View();
         }
-
         #region Date Report Hours Set method
         public ActionResult DReportHoursSet()
         {
@@ -60,17 +57,15 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        /// 载入生技课的数据 LoadPt1MachineInfo
+        /// 保存机械
         /// </summary>
+        /// <param name="entities"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult LoadPt1MachineInfo(string department)
+        public JsonResult StoreMachinePutInDatas(ReportsMachineModel entity)
         {
-            //var Pt1ReportVmData = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
-            var machineData = DailyProductionReportService.ProductionConfigManager.DailyReport.getMachineDatas(department);
-            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = "MD", Post = "注塑师傅" }, 4);
-            var datas = new { machineData, departmentMasterDatas };
-            return DateJsonResult(datas);
+            var datas = DailyProductionReportService.ProductionConfigManager.MachineInfo.StoreOpData(entity);
+            return Json(datas);
         }
         #endregion
 
@@ -384,7 +379,38 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.DisposeDailyReportdMachineDatas(entitys, workerLookMachineSumTime, workerNoProductionSumTime);
             return Json(datas);
         }
+        /// <summary>
+        /// 载入生技课的数据 LoadPt1MachineInfo
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult LoadPt1MachineInfo(string department)
+        {
+            //var Pt1ReportVmData = DailyProductionReportService.ProductionConfigManager.DailyReport.getPt1ReportData(department);
+            var machineData = DailyProductionReportService.ProductionConfigManager.DailyReport.getMachineDatas(department);
+            var departmentMasterDatas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { Department = "MD", Post = "注塑师傅" }, 4);
+            var datas = new { machineData, departmentMasterDatas };
+            return DateJsonResult(datas);
+        }
+        #endregion
 
+        #region 不良制程处理
+        public ActionResult DReportProductionDefectiveTreatmentSet()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 保存机械
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult StoreRedoProductOrderData(DailyProductionDefectiveTreatmentModel entity)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DefectiveTreatment.StoreOpData(entity);
+            return Json(datas);
+        }
         #endregion
     }
 }

@@ -20,9 +20,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcSpecialItemConfigDatasBy("符合ROHS").FirstOrDefault();
             if (item != null) item.MaterialId = materialId;
             bool IsAddAllMaterialId = true;
-
             if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
-            var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(orderId, materialId, materialInDate);
+            int takecount = needInsepctionItems.Count * 10;
+            var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(orderId, materialId, materialInDate, takecount);
             needInsepctionItems.ForEach(m =>
             {
                 /// 检验的项目中是否包含有 条件的项目 主要ROHS测试 和　　NOT　ROHS测试　　
@@ -55,11 +55,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId">物料料号</param>
         /// <param name="materialInDate">当前物料进料日期</param>
         /// <returns></returns>
-        public Dictionary<string, bool> JudgeIsAddOrRemoveItemDic(string orderId, string materialId, DateTime materialInDate)
+        public Dictionary<string, bool> JudgeIsAddOrRemoveItemDic(string orderId, string materialId, DateTime materialInDate,int takecount)
         {
             /// true 要删除的 
             Dictionary<string, bool> itemDic = new Dictionary<string, bool>();
-            var datas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailDatasBy(orderId, materialId);
+            var datas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailDatasBy(orderId, materialId, takecount);
             itemDic.Add("盐雾测试", JudgeYwTest(materialInDate, datas));
             itemDic.Add("全尺寸", JudgeMaterialTwoYearIsRecord(datas));
             itemDic.Add("ROHS", false);

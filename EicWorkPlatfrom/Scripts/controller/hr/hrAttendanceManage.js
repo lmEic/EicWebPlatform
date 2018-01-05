@@ -81,10 +81,19 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
         });
     };
     //获取报餐汇总数据
-    hr.getReportMealSumerizeDatas = function (yearMonth) {
+    hr.getReportMealSumerizeDatas = function (reportMealDate) {
         var url = generalAffairsUrl + 'GetReportMealSumerizeDatas';
         return ajaxService.getData(url, {
-            yearMonth: yearMonth,
+            reportMealDate: reportMealDate,
+        });
+    };
+    //获取报餐明细数据
+    hr.getReportMealDetialDatas = function (reportMealDate, reportMealType, department) {
+        var url = generalAffairsUrl + 'GetReportMealDetialDatas';
+        return ajaxService.getData(url, {
+            reportMealDate: reportMealDate,
+            reportMealType: reportMealType,
+            department: department,
         });
     };
     //自动检测考勤异常数据
@@ -1997,6 +2006,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         setLeaderMealReportDatas: function () {
             if (!vmManager.validateDepartment()) return;
             if (vmManager.workerInfo !== null) {
+                vmManager.initCalendarDatas();
                 vmManager.getReportMealDatas(vmManager.department, vmManager.workerInfo.WorkerId, function (datas) {
                     vmManager.bindingServerDatasToUI(datas);
                 });
@@ -2047,6 +2057,9 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.activeYGTab = 'initYGTab';
             vmManager.workerInfo = null;
             vmManager.initCalendarDatas();
+            if (vmManager.department !== null || !_.isUndefined(vmManager.department)) {
+                vmManager.selectDepartment();
+            }
         },
         //判定是否可以编辑，判定规则：只能修改昨天4点以后的数据
         validateCanEdit: function (reportMealDate) {
@@ -2089,8 +2102,8 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             dataitem.Department = vmManager.department;
         },
         createEmployeeMealModel(dataitem) {
-            dataitem.WorkerId = "000000";
-            dataitem.WorkerName = "111111";
+            dataitem.WorkerId = "员工餐";
+            dataitem.WorkerName = "员工餐";
             dataitem.WorkerType = vmManager.reportMealType;
             dataitem.CountOfBreakfast = 0;
             dataitem.CountOfLunch = 0;
@@ -2216,33 +2229,27 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
     };
 
     vmManager.bindingDepartments();
-    //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
-    //    departmentTreeSet.setTreeDataset(datas);
-    //});
-    //var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    //departmentTreeSet.bindNodeToVm = function () {
-    //    var dto = _.clone(departmentTreeSet.treeNode.vm);
-    //    queryFields.department = dto.DataNodeText;
-    //};
-    //$scope.ztree = departmentTreeSet;
 
 });
 //报餐汇总
 hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, connDataOpService) {
-    //查询字段视图
-    var queryVM = $scope.qryvm = {
-        year: null,
-        month: null,
-        yearMonth: null
-    };
     var vmManager = $scope.vmManager = {
         activeYGTab: 'dataYGViewTab',
         analogDatas: null,
+        reportDate: new Date(),
         getReportMealAnalogDatas: function () {
-            $scope.searchPromise = hrDataOpService.getReportMealSumerizeDatas(queryVM.yearMonth).then(function (datas) {
+            $scope.searchPromise = hrDataOpService.getReportMealSumerizeDatas(vmManager.reportDate).then(function (datas) {
                 vmManager.analogDatas = datas;
-                console.log(datas);
             });
         },
+        dataSets: [],
+        getReportMealDetail: function (reportMealType, department) {
+            vmManager.dataSets = [];
+            $scope.searchPromise = hrDataOpService.getReportMealDetialDatas(vmManager.reportDate, reportMealType, department).then(function (datas) {
+                vmManager.dataSets = datas;
+                vmManager.reportMealDetailDisplay = true;
+            });
+        },
+        reportMealDetailDisplay: false,
     };
 });

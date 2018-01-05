@@ -51,35 +51,23 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             return GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(reportType, yearMonth, department, workerId);
         }
+        public List<MealReportManageModel> GetReportMealDetailDatas(DateTime reportDate, string reportMealType = null, string department = null)
+        {
+            return GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(reportDate, reportMealType, department);
+        }
         /// <summary>
         /// 汇总报餐数据
         /// </summary>
-        /// <param name="yearMonth"></param>
-        public MealReportedAnalogModel GetAnalogReportMealDatas(string yearMonth)
+        /// <param name="reportDate"></param>
+        public MealReportedAnalogModel GetAnalogReportMealDatas(DateTime reportDate)
         {
             MealReportedAnalogModel analogData = new MealReportedAnalogModel();
-            var sumerizeDatas = GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(yearMonth);
+            var sumerizeDatas = GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(reportDate);
             if (sumerizeDatas == null || sumerizeDatas.Count == 0) return analogData;
-            analogData.SumerizeDatasOfYG = SumerizeReportMealDatas(sumerizeDatas.FindAll(e => e.WorkerType == reportWorkerTypeYG), yearMonth);
-            analogData.SumerizeDatasOfLG = SumerizeReportMealDatas(sumerizeDatas.FindAll(e => e.WorkerType == reportWorkerTypeLG), yearMonth);
-            analogData.TotalOfYG = new MealReportSumerizeModel()
-            {
-                YearMonth = yearMonth,
-                Department = "总计",
-                TotalCountOfBreakfast = analogData.SumerizeDatasOfYG.Sum(s => s.TotalCountOfBreakfast),
-                TotalCountOfLunch = analogData.SumerizeDatasOfYG.Sum(s => s.TotalCountOfLunch),
-                TotalCountOfMidnight = analogData.SumerizeDatasOfYG.Sum(s => s.TotalCountOfMidnight),
-                TotalCountOfSupper = analogData.SumerizeDatasOfYG.Sum(s => s.TotalCountOfSupper)
-            };
-            analogData.TotalOfLG = new MealReportSumerizeModel()
-            {
-                YearMonth = yearMonth,
-                Department = "总计",
-                TotalCountOfBreakfast = analogData.SumerizeDatasOfLG.Sum(s => s.TotalCountOfBreakfast),
-                TotalCountOfLunch = analogData.SumerizeDatasOfLG.Sum(s => s.TotalCountOfLunch),
-                TotalCountOfMidnight = analogData.SumerizeDatasOfLG.Sum(s => s.TotalCountOfMidnight),
-                TotalCountOfSupper = analogData.SumerizeDatasOfLG.Sum(s => s.TotalCountOfSupper)
-            };
+            analogData.SumerizeDatasOfYG = SumerizeReportMealDatas(sumerizeDatas.FindAll(e => e.WorkerType == reportWorkerTypeYG), reportDate);
+            analogData.SumerizeDatasOfLG = SumerizeReportMealDatas(sumerizeDatas.FindAll(e => e.WorkerType == reportWorkerTypeLG), reportDate);
+            analogData.TotalOfYG = CreateSumerizeReportMealModel(analogData.SumerizeDatasOfYG, reportDate);
+            analogData.TotalOfLG = CreateSumerizeReportMealModel(analogData.SumerizeDatasOfLG, reportDate);
             return analogData;
         }
 
@@ -92,7 +80,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 {reportWorkerTypeYG,data.SumerizeDatasOfYG }, { reportWorkerTypeLG,data.SumerizeDatasOfLG}
             };
             List<FileFieldMapping> fieldMapps = new List<FileFieldMapping>() {
-                new FileFieldMapping("YearMonth","年月份"),
+                new FileFieldMapping("ReportMealDate","报餐日期"),
                 new FileFieldMapping("Department","部门"),
                 new FileFieldMapping("TotalCountOfBreakfast","早餐数量汇总"),
                 new FileFieldMapping("TotalCountOfLunch","午餐数量汇总"),
@@ -101,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             };
             return dicDatas.ExportToExcelMultiSheets<MealReportSumerizeModel>(fieldMapps).CreateDownLoadExcelFileModel("报餐数据汇总");
         }
-        private List<MealReportSumerizeModel> SumerizeReportMealDatas(List<MealReportManageModel> mealDatas, string yearMonth)
+        private List<MealReportSumerizeModel> SumerizeReportMealDatas(List<MealReportManageModel> mealDatas, DateTime reportMealDate)
         {
             List<MealReportSumerizeModel> sumerizeDatas = null;
             if (mealDatas == null || mealDatas.Count == 0) return sumerizeDatas;
@@ -117,7 +105,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                         sumerizeDatas.Add(new MealReportSumerizeModel()
                         {
                             Department = d,
-                            YearMonth = yearMonth,
+                            ReportMealDate = reportMealDate.ToDateStr(),
                             TotalCountOfBreakfast = datasOfDepartment.Sum(s => s.CountOfBreakfast),
                             TotalCountOfLunch = datasOfDepartment.Sum(s => s.CountOfLunch),
                             TotalCountOfMidnight = datasOfDepartment.Sum(s => s.CountOfMidnight),
@@ -127,6 +115,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 });
             }
             return sumerizeDatas;
+        }
+        private MealReportSumerizeModel CreateSumerizeReportMealModel(List<MealReportSumerizeModel> sumerizeDatas, DateTime reportMealDate)
+        {
+            return new MealReportSumerizeModel()
+            {
+                ReportMealDate = reportMealDate.ToDateStr(),
+                Department = "总计",
+                TotalCountOfBreakfast = sumerizeDatas.Sum(s => s.TotalCountOfBreakfast),
+                TotalCountOfLunch = sumerizeDatas.Sum(s => s.TotalCountOfLunch),
+                TotalCountOfMidnight = sumerizeDatas.Sum(s => s.TotalCountOfMidnight),
+                TotalCountOfSupper = sumerizeDatas.Sum(s => s.TotalCountOfSupper)
+            };
         }
         private bool CheckCanStoreRule(List<MealReportManageModel> entities, out string msg)
         {
@@ -179,7 +179,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     }
     public class MealReportSumerizeModel
     {
-        public string YearMonth { get; set; }
+        public string ReportMealDate { get; set; }
 
         public string Department { get; set; }
         /// <summary>
@@ -256,10 +256,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             }
             return this.irep.Entities.Where(predicate).ToList();
         }
-
-        internal List<MealReportManageModel> GetReportMealDatas(string yearMonth)
+        internal List<MealReportManageModel> GetReportMealDatas(DateTime reportDate, string reportMealType = null, string department = null)
         {
-            return this.irep.Entities.Where(e => e.YearMonth == yearMonth).ToList();
+            var reportMealDate = reportDate.ToDate();
+            if (reportMealType == null)
+                return this.irep.Entities.Where(e => e.ReportDay == reportMealDate).ToList();
+            if (department == null)
+                return this.irep.Entities.Where(e => e.ReportDay == reportMealDate && e.WorkerType == reportMealType).ToList();
+            return this.irep.Entities.Where(e => e.ReportDay == reportMealDate && e.WorkerType == reportMealType && e.Department == department).ToList();
         }
         #endregion
 

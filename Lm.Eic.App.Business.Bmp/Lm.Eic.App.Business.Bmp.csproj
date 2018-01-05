@@ -114,6 +114,7 @@
     <Compile Include="Pms\NewDailyReport\DailyReportConfig\DailyProductionDefectiveTreatmentManger.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportConfig\MachineInfoManager.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportConfig\DailyProductionCodeConfigManager.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportConfig\ProductionDefectiveTreatmentManager.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportManager.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportManagerCrud.cs" />
     <Compile Include="Pms\NewDailyReport\DailyReportService.cs" />

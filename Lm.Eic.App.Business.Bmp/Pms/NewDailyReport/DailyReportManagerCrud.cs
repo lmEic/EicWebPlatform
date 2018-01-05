@@ -580,7 +580,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(ReportsMachineModel model)
         {
-            //
+           
             return irep.Insert(model).ToOpResult(OpContext);
         }
         /// <summary>
