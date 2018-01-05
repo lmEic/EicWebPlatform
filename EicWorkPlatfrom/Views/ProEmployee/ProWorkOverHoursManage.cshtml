@@ -42,13 +42,18 @@
                                 <i class="fa fa-download"></i>载入模板
                             </button>
                         </div>
-                        <div class="input-group">
-                            <input id="qry_workname" type="text" ng-model="vmManager.qryWorkName" class="form-control" placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
+                        <div class="form-group ">
+                            <div class="input-group">
+                                <input id="qry_workname" type="text" ng-model="vmManager.qryWorkName" class="form-control" placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
+                            </div>
+
                         </div>
+                        
 
                     </form>
                 </div>
                 <div class="col-md-5 pull-right">
+
                     <span class="btn btn-default file pull-right" title="初次从Excel中导入数据" style="padding:8px 5px 8px 5px">
                         <i class="fa fa-file-excel-o"></i>初始导入
                         <input type="file" class="form-control" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
