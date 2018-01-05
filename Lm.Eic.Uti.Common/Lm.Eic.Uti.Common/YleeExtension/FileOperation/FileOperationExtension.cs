@@ -545,7 +545,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 IRow cowConter_line23 = sheet.GetRow((rowIndex - row_day) + 5);//换列(2,3)       35
                 IRow cowConter_line45 = sheet.GetRow((rowIndex - row_day_45) + 5);//换列(4,5)    71
                 IRow cowConter_line67 = sheet.GetRow((rowIndex - row_day_67) + 5);//换列(6,7)    107 
-
                 IRow rowContent_day1 = sheet1.GetRow((rowIndex - row_day_index) + 5);//白班行 6,7,8,9     143           
                 IRow cowConter_line231 = sheet1.GetRow((rowIndex - row_day1) + 5);//换列(2,3)
                 IRow cowConter_line451 = sheet1.GetRow((rowIndex - row_day_451) + 5);//换列(4,5)
@@ -744,9 +743,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             object postNature = tpis[15].GetValue(entity, null);//直接/间接
             object workdaytime = tpis[11].GetValue(entity, null);
             object worknighttime = tpis[12].GetValue(entity, null);
-
             rowWorkType.GetCell(15).SetCellValue(worktype.ToString());
-            rowWorkType.GetCell(6).SetCellValue(postNature.ToString());
+           // rowWorkType.GetCell(6).SetCellValue(postNature.ToString());
             rowDeparmentAndWorkdate.GetCell(1).SetCellValue(department.ToString());
             rowWorkReason.GetCell(1).SetCellValue(workreason.ToString());
             if (workclasstype.ToString() == "白班")
@@ -757,7 +755,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             {
                 rowWorkNightTime.GetCell(3).SetCellValue(worknighttime.ToString());
             }
-
             DateTime dateV;
             DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
             rowDeparmentAndWorkdate.GetCell(11).SetCellValue(dateV.ToShortDateString());
@@ -771,39 +768,50 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 
         }
 
-        private static void WorkHoursFillIcellSumArray<T>(ICellStyle cellSytleDate, IRow rowContent, T entity, PropertyInfo[] tpis, int tipsIndex, int rowIndex, int colIndex)
+        private static void WorkHoursFillIcellSumArray<T>(ICellStyle cellSytleDate, IRow rowContent,IRow row_workdate, T entity, PropertyInfo[] tpis, int tipsIndex, int rowIndex, int colIndex)
         {
-            #region 加班汇总输出到EXCEL        
+            #region 加班汇总输出到EXCEL 
+
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
             object department = tpis[2].GetValue(entity, null);//企业信息中心
-            object workdate = tpis[3].GetValue(entity, null);//2017/10/16
+            object workdate = tpis[3].GetValue(entity, null);//2018/1/3
             object workhours = tpis[4].GetValue(entity, null);//2.5
-            object worktype = tpis[5].GetValue(entity, null);//平时加班
-            object workclasstype = tpis[6].GetValue(entity, null);//白班 
-
-
-
+            object workhoursCount = tpis[5].GetValue(entity, null);//总时数
+            object worktype = tpis[6].GetValue(entity, null);//平时加班
+            DateTime wk = Convert.ToDateTime(workdate);
+            string month = wk.ToString("MM");//01
+            int day = Convert.ToInt32(wk.ToString("dd"));//03    
             rowContent.GetCell(0).SetCellValue(workId.ToString());
             rowContent.GetCell(1).SetCellValue(workName.ToString());
-
-
+            row_workdate.GetCell(1).SetCellValue(month);
             double doubV = 0;
             if (worktype.ToString() == "平时加班")
             {
-                double.TryParse(workhours.ToString(), out doubV);
-                rowContent.GetCell(2).SetCellValue(doubV);
+                double.TryParse(workhoursCount.ToString(), out doubV);
+                rowContent.GetCell(32).SetCellValue(doubV);
             }
             if (worktype.ToString() == "假日加班")
             {
-                double.TryParse(workhours.ToString(), out doubV);
-                rowContent.GetCell(3).SetCellValue(doubV);
+                double.TryParse(workhoursCount.ToString(), out doubV);
+                rowContent.GetCell(33).SetCellValue(doubV);
             }
             if (worktype.ToString() == "节假日加班")
             {
-                double.TryParse(workhours.ToString(), out doubV);
-                rowContent.GetCell(4).SetCellValue(doubV);
+                double.TryParse(workhoursCount.ToString(), out doubV);
+                rowContent.GetCell(34).SetCellValue(doubV);
             }
+            for (int i = 1; i <= 30; i++)
+            {
+                if (day == i)
+                {
+                    double.TryParse(workhours.ToString(), out doubV);
+                    rowContent.GetCell(i + 1).SetCellValue(doubV);
+                }
+
+            }
+
+
 
             #endregion
 
@@ -816,6 +824,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             int row_index1 = 0;
             int row_index2 = 0;
             int row_setindex = 3;
+            int row_workdataIndex = 1;//打印月份
             string workerId1 = "";
             string workerId2 = "";
             if (xlsSheetName == string.Empty) xlsSheetName = "Sheet12";
@@ -844,16 +853,18 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                             if (workerId1 == workerId2 && i == 0)
                             {
                                 row_index1 = row_index2;//3，3，4，4 ，5，5，
-                                IRow rowContent1 = sheet.GetRow(row_index1);//3，3，4，4 ，5，5，             
-                                WorkHoursFillIcellSumArray<T>(cellSytleDate, rowContent1, entity, tpis, tipsIndex, rowIndex, colIndex);
+                                IRow rowContent1 = sheet.GetRow(row_index1);//3，3，4，4 ，5，5，
+                                IRow row_workdate = sheet.GetRow(row_workdataIndex);
+                                WorkHoursFillIcellSumArray<T>(cellSytleDate, rowContent1,row_workdate, entity, tpis, tipsIndex, rowIndex, colIndex);
                                 colIndex++;
                                 break;
                             }
                             else
                             {
                                 x++;
-                                IRow rowContent = sheet.GetRow(row_setindex);//3，4  5                     
-                                WorkHoursFillIcellSumArray<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, rowIndex, colIndex);
+                                IRow rowContent = sheet.GetRow(row_setindex);//3，4  5 
+                                IRow row_workdate = sheet.GetRow(row_workdataIndex);
+                                WorkHoursFillIcellSumArray<T>(cellSytleDate, rowContent, row_workdate, entity, tpis, tipsIndex, rowIndex, colIndex);
                                 colIndex++;
                                 if (colIndex == 15)
                                 {
