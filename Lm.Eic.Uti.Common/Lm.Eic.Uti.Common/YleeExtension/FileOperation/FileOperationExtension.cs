@@ -377,7 +377,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             try
             {
                 ISheet sheet = WorkbookCreateSheet<T>(dataSource, xlsSheetName, FieldMapList, workbook);
-
                 sheet.ForceFormulaRecalculation = true;
                 workbook.Write(stream);
                 return stream;
