@@ -190,17 +190,40 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         public FileResult WorkOverHoursDatasToExcel()
         {
+        
             try
             {
-                string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
-                string fileName = "加班数据模板.xls";
+                string postNature="";
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
-                if (datas == null || datas.Count == 0)
+                foreach (var item in datas)
                 {
-                    new DownLoadFileModel().Default();
+                    postNature = item.PostNature;
+                    break;
                 }
-                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
-                return this.DownLoadFile(dlfm);
+                if (postNature=="间接")
+                {
+                    string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板间接.xls";
+                    string fileName = "加班数据模板间接.xls";               
+                    if (datas == null || datas.Count == 0)
+                    {
+                        new DownLoadFileModel().Default();
+                    }
+                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
+                    return this.DownLoadFile(dlfm);
+                }
+                else
+                {
+                    string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板直接.xls";
+                    string fileName = "加班数据模板直接.xls";             
+                    if (datas == null || datas.Count == 0)
+                    {
+                        new DownLoadFileModel().Default();
+                    }
+                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
+                    return this.DownLoadFile(dlfm);
+
+                }
+               
             }
             catch (Exception ex)
             {
@@ -215,6 +238,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
                 string fileName1 = "加班汇总表.xls";
                 var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
+              
+
                 if (datas == null || datas.Count == 0)
                 {
                     new DownLoadFileModel().Default();

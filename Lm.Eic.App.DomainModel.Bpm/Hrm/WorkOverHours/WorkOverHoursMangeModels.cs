@@ -55,6 +55,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _workOverHours = value; }
             get { return _workOverHours; }
         }
+        private double _workOverHoursCount = 0;
+        /// <summary>
+        /// 加班时数
+        /// </summary>
+        public double WorkOverHoursCount
+        {
+            set { _workOverHoursCount = value; }
+            get { return _workOverHoursCount; }
+        }
+
         private string _workoverType;
         /// <summary>
         /// 加班类型
@@ -200,10 +210,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             get { return _id_key; }
         }
 
+
        
 
 
     }
+   
 
-    
+
+
 }

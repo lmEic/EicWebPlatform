@@ -149,9 +149,16 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             department: department,
         });
     };
-    ///保存数据信息
+    ///保存机台信息数据 saveRedoProductOrderData
     reportDataOp.saveMachinePutInDatas = function (entity) {
         var url = urlPrefix + "StoreMachinePutInDatas";
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
+
+    reportDataOp.saveRedoProductOrderData = function (entity) {
+        var url = urlPrefix + "StoreRedoProductOrderData";
         return ajaxService.postData(url, {
             entity: entity,
         });
@@ -1303,19 +1310,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                uiVM.MachineSetProductionTime = i.MachineSetProductionTime;
            },
            selectmouldId: function (i) {
+               console.log(999999);
+               console.log(i);
                uiVM.MouldHoleCount = i.MouldHoleCount;
                uiVM.MouldId = i.MouldId;
-               var parameterKey = 'PT1' + '&' + uiVM.ProductName + '&' + '注塑' + '&' + uiVM.MouldId
-               var dd = _.findWhere(vmManagerPT.mouldIdInfos, { ParameterKey: parameterKey });
-               if (!_.isUndefined(dd)) {
-                   uiVM.ProcessesIndex = dd.ProcessesIndex;
-                   uiVM.ProcessesName = dd.ProcessesName;
-                   uiVM.ProcessesType = dd.ProcessesType;
-                   uiVM.StandardProductionTime = dd.StandardProductionTime
-                   if (dd.StandardProductionTimeType == "UPH") {
-                       uiVM.StandardProductionTime = dd.UPS
-                   };
-               }
+               uiVM.StandardProductionTime = i.UPS; 
+               uiVM.ProcessesIndex = i.ProcessesIndex;
+               uiVM.ProcessesName = i.ProcessesName;
+               uiVM.ProcessesType = i.ProcessesType;
+               uiVM.WorkerProductionTime = 12;
            },
            //看机人员信息
            searchedWorkers: [],
@@ -1621,7 +1624,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
 productModule.controller("DailyRedoProductOrderCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报录入视图模型
     var uiVm = {
-        Department:' 制一',
+        Department: leeLoginUser.organization.B,
         OrderId: null,
         ProductName: null,
         ProductSpec: null,
@@ -1643,27 +1646,64 @@ productModule.controller("DailyRedoProductOrderCtrl", function ($scope, dataDicC
     $scope.vm = uiVm;
     var initVM = _.clone(uiVm);
 
+    //查询字段
+    var queryFields = {
+        orderId: null,
+        department: null,
+        receiveMonth: null
+    };
+
+    $scope.query = queryFields;
 
 
     var vmManager = {
+
+        isLocal:false,
+        init: function () {
+            uiVM = _.clone(initVM);
+            $scope.vm = uiVM;
+        },
+        storeDataset: [],
+        selectInPutDate: function (item) {
+            uiVm = _.clone(item);
+            uiVm.OpSign = leeDataHandler.dataOpMode.edit;
+        },
+        searchBy: function () {
+            console.log(queryFields.orderId);
+        },
     };
     $scope.vmManager = vmManager;
-
-  
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
-    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
-        departmentTreeSet.setTreeDataset(datas);
-    });
-    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    departmentTreeSet.bindNodeToVm = function () {
-        var dto = _.clone(departmentTreeSet.treeNode.vm);
-        queryFields.department = dto.DataNodeText;
+
+    /// 载入不良类别
+    var unProductionCodeTreeSet = dataDicConfigTreeSet.getTreeSet('UnProductionSeason', "非生产原因");
+    unProductionCodeTreeSet.bindNodeToVm = function () {
+         unProductionCodeConfigDto = _.clone(unProductionCodeTreeSet.treeNode.vm);
+        uiVm.ResponsibleAttributionClass = unProductionCodeConfigDto.DataNodeText;
     };
-    $scope.ztree = departmentTreeSet;
+    $scope.ztree = unProductionCodeTreeSet;
+    $scope.promise = dReportDataOpService.loadUnProductionConfigDicData(leeLoginUser.organization.B, "UnProductionConfig").then(function (datas) {
+        unProductionCodeTreeSet.setTreeDataset(datas);
+    });
 
-
+    //保存数据
+    operate.saveDatas = function (isValid) {
+        leeHelper.setUserData(uiVm);
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            $scope.searchPromise = dReportDataOpService.saveRedoProductOrderData(uiVm).then(function (opResult) {
+                if (opResult.Result) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
+                    if (opResult.Entity.OpSign === leeDataHandler.dataOpMode.add) {
+                       
+                        vmManager.storeDataset.push(opResult.Entity);
+                    };
+                    vmManager.init();
+                };
+            });
+        });
+    };
 
 });
 // 非生产原类配置 
@@ -1793,7 +1833,6 @@ productModule.controller("DailyReportUnProductionSetCtrl", function ($scope, dat
     $scope.ztree = unProductionCodeTreeSet;
 
     $scope.promise = dReportDataOpService.loadUnProductionConfigDicData("MD1", "UnProductionConfig").then(function (datas) {
-        console.log(departmentOrganization);
         unProductionCodeTreeSet.setTreeDataset(datas);
     });
 
@@ -1872,9 +1911,10 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
                 uiVM.MachinePreserver = null;
             }
         },
+        ///选择
         selectEquipment: function (item) {
-
-
+            item.OpSign = leeDataHandler.dataOpMode.edit;
+            $scope.vm = item;
         }
 
     };
@@ -1887,6 +1927,7 @@ productModule.controller("DailyReportMachineCtrl", function ($scope, dataDicConf
             $scope.searchPromise = dReportDataOpService.saveMachinePutInDatas(uiVM).then(function (opResult) {
                 if (opResult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult.Result);
+                    vmManager.equipments.push(opResult.Entity);
                 };
             });
         });

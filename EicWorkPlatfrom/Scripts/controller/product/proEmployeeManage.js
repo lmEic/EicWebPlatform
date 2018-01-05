@@ -140,8 +140,7 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
             departmentText: departmentText,
             workDate: workDate
         })
-    }
-
+    }  
     return dataAccess;
 })
 //人员注册管理器
@@ -471,7 +470,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         WorkReason: '产线加班',
         WorkDayTime: null,
         WorkNightTime: null,
-        PostNature:null,
+        PostNature: null, 
+        WorkOverHoursCount:0,
         ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
         BackgroundIndex: null,
         OpPerson: leeDataHandler.dataStorage.getLoginedUser().userName,
@@ -1116,6 +1116,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 };
             },
         }),
+
+       
     };
     //导入excel
     $scope.selectFile = function (el) {
