@@ -47,9 +47,7 @@
                                 <input id="qry_workname" type="text" ng-model="vmManager.qryWorkName" class="form-control" placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
                             </div>
 
-                        </div>
-                        
-
+                        </div>                     
                     </form>
                 </div>
                 <div class="col-md-5 pull-right">
@@ -132,8 +130,8 @@
                                                 <a href="#" ng-click="operate.handleItem(item)" title="批量编辑"><i class="fa fa-pencil"></i>批量编辑</a>
                                             </li>
                                             @*<li role="presentation">
-                                                    <a href="#" ng-click="vmManager.editworkOverHours(item)" title="编辑加班时数"><i class="fa fa-pencil"></i>编辑时数</a>
-                                                </li>*@
+                        <a href="#" ng-click="vmManager.editworkOverHours(item)" title="编辑加班时数"><i class="fa fa-pencil"></i>编辑时数</a>
+                    </li>*@
                                             <li role="presentation">
                                                 <a href="#" ng-click="vmManager.copyAndPaste(item)" title="复制行"><i class="fa fa-clipboard"></i>复制行</a>
                                             </li>
@@ -184,7 +182,16 @@
                                            focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入时数" ng-show="item.wkhing" />
                                 </td>
-                                <td ng-bind="item.PostNature"></td>
+                               
+                                <td title="双击可修改" ng-dblclick="vmManager.editPostNature(item)">
+                                    <span ng-hide="item.isEdittingPostNature">{{item.PostNature}}</span>
+                                    <button type="button" class="btn btn-xs btn-primary" ng-model="vm.PostNature" data-html="1" data-placeholder="类型"
+                                            ng-show="item.isEdittingPostNature" ng-change="vmManager.selectPost()"
+                                            data-multiple="0" data-animation="am-flip-x" bs-options="ct.id as ct.text for ct in vmManager.postNatures" bs-select>
+                                        直接 <span class="caret"></span>
+                                    </button>
+                                </td>
+
                                 <td title="双击可修改" ng-dblclick="vmManager.editremark(item)">
                                     <span ng-hide="item.wkhing1">{{item.Remark}}</span>
                                     <input ng-model="vm.Remark" ng-keydown="vmManager.inputremark($event,item)"
