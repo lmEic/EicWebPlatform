@@ -1243,10 +1243,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         uiVM.OpPerson = $scope.vm.OpPerson;
         if (vmManager.changeworkDate == null) { leePopups.alert("亲！您未选择申请日期"); return; }
         if (uiVM.WorkReason == null) { leePopups.alert("亲！您未填写加班原因"); return; }
-
         vmManager.workDayDate = uiVM.WorkDate;
         vmManager.workNightDate = uiVM.WorkDate;
-
         var _workDayTime = "从 " + vmManager.changeworkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm") + " 至 " + vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");
         var _workNightTime = "从 " + vmManager.changeworkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm") + " 至 " + vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");
         var qryDateFormat = $filter('date')(uiVM.WorkDate, "yyyyMM");
