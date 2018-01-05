@@ -61,6 +61,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<MachineInfoManager>(); }
         }
+        /// <summary>
+        ///不良制程处理
+        /// </summary>
+        public ProductionDefectiveTreatmentManager DefectiveTreatment
+        {
+            get { return OBulider.BuildInstance<ProductionDefectiveTreatmentManager>(); }
+        }
 
     }
 

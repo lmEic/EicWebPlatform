@@ -124,7 +124,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 new FileFieldMapping ("InspectionCount","抽样数量") ,
                 new FileFieldMapping ("InspectionStatus","状态"),
                 new FileFieldMapping ("InspectionResult","检测结果") ,
-                new FileFieldMapping ("FinishDate","完成时间") ,
+                new FileFieldMapping ("OpDate","完成时间") ,
                 new FileFieldMapping ("OpPerson","抽检人"),
             };
             return fieldmappping;
