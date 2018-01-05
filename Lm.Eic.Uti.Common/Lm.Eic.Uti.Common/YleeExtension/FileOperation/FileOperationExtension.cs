@@ -729,20 +729,25 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// </summary>
         private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
         {
+            for (int i = 0; i < 18; i++)
+            {
+                object aa = tpis[i].GetValue(entity, null);
+
+            }
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
             object department = tpis[2].GetValue(entity, null);//企业信息中心
             object workdate = tpis[3].GetValue(entity, null);//2017/10/16
             object workhours = tpis[4].GetValue(entity, null);//2.5
-            object worktype = tpis[5].GetValue(entity, null);//平时加班
-            object workclasstype = tpis[6].GetValue(entity, null);//白班  
-            object mark = tpis[7].GetValue(entity, null);//备注
-            object workstatus = tpis[8].GetValue(entity, null);
-            object workyear = tpis[9].GetValue(entity, null);
-            object workreason = tpis[10].GetValue(entity, null);
-            object postNature = tpis[15].GetValue(entity, null);//直接/间接
-            object workdaytime = tpis[11].GetValue(entity, null);
-            object worknighttime = tpis[12].GetValue(entity, null);
+            object worktype = tpis[6].GetValue(entity, null);//平时加班
+            object workclasstype = tpis[7].GetValue(entity, null);//白班  
+           // object mark = tpis[8].GetValue(entity, null);//备注
+           // object workstatus = tpis[8].GetValue(entity, null);
+           // object workyear = tpis[9].GetValue(entity, null);
+            object workreason = tpis[11].GetValue(entity, null);
+           // object postNature = tpis[16].GetValue(entity, null);//直接/间接
+            object workdaytime = tpis[12].GetValue(entity, null);
+            object worknighttime = tpis[13].GetValue(entity, null);
             rowWorkType.GetCell(15).SetCellValue(worktype.ToString());
            // rowWorkType.GetCell(6).SetCellValue(postNature.ToString());
             rowDeparmentAndWorkdate.GetCell(1).SetCellValue(department.ToString());

@@ -153,6 +153,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 {
                     item.OpSign = "add";
                 }
+               
             }
             TempData["WorkOverHoursDatas"] = datas;
             return DateJsonResult(datas);
@@ -198,6 +199,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 foreach (var item in datas)
                 {
                     postNature = item.PostNature;
+                   
                     break;
                 }
                 if (postNature=="间接")

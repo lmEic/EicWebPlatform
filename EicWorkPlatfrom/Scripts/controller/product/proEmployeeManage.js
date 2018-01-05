@@ -611,6 +611,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             item.isEdittingWorkerId = false;
             item.isEdittingOverType = false;
             item.isEdittingClassType = false;
+            item.isEdittingPostNature = false;
             item.wkhing = false;
             item.wkhing1 = false;
             item.wkhing2 = false;
@@ -640,6 +641,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         selectOverType: function () {
             vmManager.edittingRow.WorkoverType = $scope.vm.WorkoverType;
             vmManager.edittingRow.isEdittingOverType = false;
+           
         },
         //编辑班别
         editClassType: function (item) {
@@ -649,14 +651,34 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         },
         //选择班别
         selectClassType: function () {
+          
             vmManager.edittingRow.WorkClassType = $scope.vm.WorkClassType;
             vmManager.edittingRow.isEdittingClassType = false;
+           
+           
         },
+
+        //编辑直间类型
+        editPostNature: function (item) {
+            item.isEdittingPostNature = true;
+            vmManager.getCurrentRow(item);
+            $scope.vm.PostNature = item.PostNature;
+        },
+        //选择直间类型
+        selectPost: function () {
+     
+            vmManager.edittingRow.PostNature = $scope.vm.PostNature;
+            vmManager.edittingRow.isEdittingPostNature = false;
+         
+          
+        },
+
         editOverHours: function (item) {
             item.pheditting = false;
             item.isEdittingWorkerId = false;
             item.isEdittingOverType = false;
             item.isEdittingClassType = false;
+            item.isEdittingPostNature = false;
             item.wkhing2 = false;
             item.wkhing1 = false;
             item.wkhing = true;
@@ -680,6 +702,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             item.isEdittingWorkerId = false;
             item.isEdittingOverType = false;
             item.isEdittingClassType = false;
+            item.isEdittingPostNature = false;
             item.wkhing = false;//时数
             item.wkhing1 = false;//备注
             item.wkhing2 = true;//部门
@@ -736,6 +759,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             item.isEdittingWorkerId = false;
             item.isEdittingOverType = false;
             item.isEdittingClassType = false;
+            item.isEdittingPostNature = false;
             item.wkhing2 = false;
             item.wkhing = false;
             item.wkhing1 = true;
@@ -791,6 +815,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             item.isEdittingWorkerId = false;
             item.isEdittingOverType = false;
             item.isEdittingClassType = false;
+            item.isEdittingPostNature = false;
             item.wkhing2 = false;
             item.wkhing = false;
             item.wkhing1 = false;
@@ -879,9 +904,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 uiVM.WorkerId = worker.WorkerId;
                 // uiVM.DepartmentText = worker.Department;
                 uiVM.PostNature = worker.PostNature;
-                uiVM.WorkClassType = worker.ClassType;
-               
-
+                uiVM.WorkClassType = worker.WorkClassType;            
             }
             else {
                 uiVM.Department = null;
@@ -1237,6 +1260,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         uiVM.DepartmentText = $scope.vm.DepartmentText;
         uiVM.WorkDate = $scope.vm.WorkDate;
         uiVM.WorkClassType = $scope.vm.WorkClassType;
+        uiVM.PostNature = $scope.vm.PostNature;
         uiVM.WorkOverHours = $scope.vm.WorkOverHours
         uiVM.Remark = $scope.vm.Remark;
         uiVM.ParentDataNodeText = $scope.vm.ParentDataNodeText;
@@ -1245,8 +1269,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         if (uiVM.WorkReason == null) { leePopups.alert("亲！您未填写加班原因"); return; }
         vmManager.workDayDate = uiVM.WorkDate;
         vmManager.workNightDate = uiVM.WorkDate;
-        var _workDayTime = "从 " + vmManager.changeworkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm") + " 至 " + vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");
-        var _workNightTime = "从 " + vmManager.changeworkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm") + " 至 " + vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");
+        var _workDayTime = "从 " + uiVM.WorkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm") + " 至 " + vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");      
+        var _workNightTime = "从 " + uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm") + " 至 " + vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");
         var qryDateFormat = $filter('date')(uiVM.WorkDate, "yyyyMM");
         angular.forEach(vmManager.dataSets, function (row) {
             $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
