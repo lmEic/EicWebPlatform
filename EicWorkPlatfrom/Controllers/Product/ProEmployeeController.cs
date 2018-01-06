@@ -100,10 +100,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
-            TempData["WorkOverHourDatasBySum"] = datas;
-
+            TempData["WorkOverHourDatasBySum"] = datas;        
             return DateJsonResult(datas);
-
         }
         [NoAuthenCheck]
         public ContentResult GetWorkOverHourSumsByWorkId(string qrydate, string departmentText, string workId, int mode)
@@ -131,7 +129,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByDetail(qryDto);
-            TempData["WorkOverHourDatasBySum"] = datas;
+            TempData["WorkOverHourDatasBySum"] = datas;  
+      
             return DateJsonResult(datas);
 
         }
@@ -153,6 +152,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 {
                     item.OpSign = "add";
                 }
+               
             }
             TempData["WorkOverHoursDatas"] = datas;
             return DateJsonResult(datas);
@@ -190,17 +190,49 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         public FileResult WorkOverHoursDatasToExcel()
         {
+        
             try
             {
-                string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
-                string fileName = "加班数据模板.xls";
+                string postNature="";
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
                 if (datas == null || datas.Count == 0)
                 {
                     new DownLoadFileModel().Default();
                 }
-                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
-                return this.DownLoadFile(dlfm);
+                else
+                {
+                    foreach (var item in datas)
+                    {
+                        postNature = item.PostNature;
+
+                        break;
+                    }
+                }
+                  
+                if (postNature=="间接")
+                {
+                    string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板间接.xls";
+                    string fileName = "加班数据模板间接.xls";               
+                    if (datas == null || datas.Count == 0)
+                    {
+                        new DownLoadFileModel().Default();
+                    }
+                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
+                    return this.DownLoadFile(dlfm);
+                }
+                else
+                {
+                    string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板直接.xls";
+                    string fileName = "加班数据模板直接.xls";             
+                    if (datas == null || datas.Count == 0)
+                    {
+                        new DownLoadFileModel().Default();
+                    }
+                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
+                    return this.DownLoadFile(dlfm);
+
+                }
+               
             }
             catch (Exception ex)
             {
@@ -215,6 +247,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
                 string fileName1 = "加班汇总表.xls";
                 var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
+              
+
                 if (datas == null || datas.Count == 0)
                 {
                     new DownLoadFileModel().Default();

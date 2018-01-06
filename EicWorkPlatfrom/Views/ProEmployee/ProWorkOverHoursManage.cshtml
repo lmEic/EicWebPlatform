@@ -42,13 +42,16 @@
                                 <i class="fa fa-download"></i>载入模板
                             </button>
                         </div>
-                        <div class="input-group">
-                            <input id="qry_workname" type="text" ng-model="vmManager.qryWorkName" class="form-control" placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
-                        </div>
+                        <div class="form-group ">
+                            <div class="input-group">
+                                <input id="qry_workname" type="text" ng-model="vmManager.qryWorkName" class="form-control" placeholder="快速查找" ng-keydown="vmManager.getWorkName()" />
+                            </div>
 
+                        </div>                     
                     </form>
                 </div>
                 <div class="col-md-5 pull-right">
+
                     <span class="btn btn-default file pull-right" title="初次从Excel中导入数据" style="padding:8px 5px 8px 5px">
                         <i class="fa fa-file-excel-o"></i>初始导入
                         <input type="file" class="form-control" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
@@ -127,8 +130,8 @@
                                                 <a href="#" ng-click="operate.handleItem(item)" title="批量编辑"><i class="fa fa-pencil"></i>批量编辑</a>
                                             </li>
                                             @*<li role="presentation">
-                                                    <a href="#" ng-click="vmManager.editworkOverHours(item)" title="编辑加班时数"><i class="fa fa-pencil"></i>编辑时数</a>
-                                                </li>*@
+                        <a href="#" ng-click="vmManager.editworkOverHours(item)" title="编辑加班时数"><i class="fa fa-pencil"></i>编辑时数</a>
+                    </li>*@
                                             <li role="presentation">
                                                 <a href="#" ng-click="vmManager.copyAndPaste(item)" title="复制行"><i class="fa fa-clipboard"></i>复制行</a>
                                             </li>
@@ -179,7 +182,16 @@
                                            focus-if="focus.workeroverFocus" focus-setter style="width:70px;" onfocus="this.select()"
                                            placeholder="请输入时数" ng-show="item.wkhing" />
                                 </td>
-                                <td ng-bind="item.PostNature"></td>
+                               
+                                <td title="双击可修改" ng-dblclick="vmManager.editPostNature(item)">
+                                    <span ng-hide="item.isEdittingPostNature">{{item.PostNature}}</span>
+                                    <button type="button" class="btn btn-xs btn-primary" ng-model="vm.PostNature" data-html="1" data-placeholder="类型"
+                                            ng-show="item.isEdittingPostNature" ng-change="vmManager.selectPost()"
+                                            data-multiple="0" data-animation="am-flip-x" bs-options="ct.id as ct.text for ct in vmManager.postNatures" bs-select>
+                                        直接 <span class="caret"></span>
+                                    </button>
+                                </td>
+
                                 <td title="双击可修改" ng-dblclick="vmManager.editremark(item)">
                                     <span ng-hide="item.wkhing1">{{item.Remark}}</span>
                                     <input ng-model="vm.Remark" ng-keydown="vmManager.inputremark($event,item)"
@@ -351,7 +363,8 @@
                             <td ng-bind="item.WorkClassType"></td>
                             <td ng-bind="item.WorkerId"></td>
                             <td ng-bind="item.WorkerName"></td>
-                            <td ng-bind="item.WorkOverHours"></td>
+                            <td ng-bind="item.WorkOverHoursCount" ng-show="vmManager.signDepSum"></td>
+                            <td ng-bind="item.WorkOverHours" ng-show="vmManager.signPerSum"></td>
                             <td ng-bind="item.Remark"></td>
                         </tr>
                     </tbody>

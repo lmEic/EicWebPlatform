@@ -12,9 +12,7 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 {
    public class WorkOverHoursManager
-   {
-      
-       
+   {   
         /// <summary>
         /// 查询(1、按日期查询 2、按部门查询)
         /// </summary>
@@ -36,8 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
          
             foreach (var item in GetWorkOverHoursList)
             {
-               if(modelList.FirstOrDefault(m=>m.WorkerId==item.WorkerId&&m.WorkoverType==item.WorkoverType)==null) 
-                {
+                
                     var temModel = new WorkOverHoursMangeModels();
                     temModel.WorkerId = item.WorkerId;
                     temModel.WorkerName = item.WorkerName;
@@ -45,7 +42,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     temModel.WorkoverType = item.WorkoverType;
                     temModel.WorkDate = item.WorkDate;//2018/1/2 0:00:00
                     temModel.WorkClassType = item.WorkClassType;
-                    temModel.WorkOverHours = GetWorkOverHoursList.Where(m => m.WorkoverType == item.WorkoverType &&  m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
+                    temModel.WorkOverHours = item.WorkOverHours;
+                    temModel.WorkOverHoursCount = GetWorkOverHoursList.Where(m => m.WorkoverType == item.WorkoverType && m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
                     temModel.Remark = item.Remark;
                     temModel.WorkReason = item.WorkReason;
                     temModel.WorkDayTime = item.WorkDayTime;
@@ -53,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     temModel.WorkStatus = item.WorkStatus;
                     temModel.QryDate = item.QryDate;
                     modelList.Add(temModel);
-                }             
+                         
             }
             return modelList;
         }
@@ -169,6 +167,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 new FileFieldMapping("WorkReason","加班原因"),
                 new FileFieldMapping("WorkDayTime","白班日期"),
                 new FileFieldMapping("WorkNightTime","晚班日期")
+               // new FileFieldMapping("WorkOverHoursCount","加班总时数")
+              
 
 
 
