@@ -130,7 +130,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByDetail(qryDto);
             TempData["WorkOverHourDatasBySum"] = datas;  
-            TempData["WorkOverHourDatasByDetail"]=datas;
+      
             return DateJsonResult(datas);
 
         }
