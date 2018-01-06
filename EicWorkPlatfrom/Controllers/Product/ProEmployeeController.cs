@@ -195,12 +195,20 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 string postNature="";
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
-                foreach (var item in datas)
+                if (datas == null || datas.Count == 0)
                 {
-                    postNature = item.PostNature;
-                   
-                    break;
+                    new DownLoadFileModel().Default();
                 }
+                else
+                {
+                    foreach (var item in datas)
+                    {
+                        postNature = item.PostNature;
+
+                        break;
+                    }
+                }
+                  
                 if (postNature=="间接")
                 {
                     string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板间接.xls";
