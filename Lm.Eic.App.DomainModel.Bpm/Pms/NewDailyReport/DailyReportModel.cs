@@ -973,6 +973,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _department = value; }
             get { return _department; }
         }
+        private DateTime _inputdate;
+        /// <summary>
+        ///录入日期
+        /// </summary>
+        public DateTime InPutDate
+        {
+            set { _inputdate = value; }
+            get { return _inputdate; }
+        }
         private string _orderid;
         /// <summary>
         ///重工的工单

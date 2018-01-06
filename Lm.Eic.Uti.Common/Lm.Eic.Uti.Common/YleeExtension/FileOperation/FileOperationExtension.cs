@@ -377,7 +377,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             try
             {
                 ISheet sheet = WorkbookCreateSheet<T>(dataSource, xlsSheetName, FieldMapList, workbook);
-
                 sheet.ForceFormulaRecalculation = true;
                 workbook.Write(stream);
                 return stream;
@@ -794,30 +793,22 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             if (worktype.ToString() == "平时加班")
             {
                 double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(32).SetCellValue(doubV);
+                rowContent.GetCell(33).SetCellValue(doubV);
             }
             if (worktype.ToString() == "假日加班")
             {
                 double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(33).SetCellValue(doubV);
+                rowContent.GetCell(34).SetCellValue(doubV);
             }
             if (worktype.ToString() == "节假日加班")
             {
                 double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(34).SetCellValue(doubV);
+                rowContent.GetCell(35).SetCellValue(doubV);
             }
-            for (int i = 1; i <= 30; i++)
-            {
-                if (day == i)
-                {
-                    double.TryParse(workhours.ToString(), out doubV);
-                    rowContent.GetCell(i + 1).SetCellValue(doubV);
-                }
-
-            }
-
-
-
+            //打印每日加数时数
+                double doubV1 = 0;
+                double.TryParse(workhours.ToString(), out doubV1);
+                rowContent.GetCell(day+1).SetCellValue(doubV1);
             #endregion
 
         }
