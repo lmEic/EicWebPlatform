@@ -100,10 +100,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
-            TempData["WorkOverHourDatasBySum"] = datas;
-
+            TempData["WorkOverHourDatasBySum"] = datas;        
             return DateJsonResult(datas);
-
         }
         [NoAuthenCheck]
         public ContentResult GetWorkOverHourSumsByWorkId(string qrydate, string departmentText, string workId, int mode)
@@ -131,7 +129,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByDetail(qryDto);
-            TempData["WorkOverHourDatasBySum"] = datas;
+            TempData["WorkOverHourDatasBySum"] = datas;  
+            TempData["WorkOverHourDatasByDetail"]=datas;
             return DateJsonResult(datas);
 
         }
