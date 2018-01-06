@@ -809,11 +809,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 double doubV1 = 0;
                 double.TryParse(workhours.ToString(), out doubV1);
                 rowContent.GetCell(day+1).SetCellValue(doubV1);
-
-          
-
-
-
             #endregion
 
         }
