@@ -12,9 +12,7 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 {
    public class WorkOverHoursManager
-   {
-      
-       
+   {   
         /// <summary>
         /// 查询(1、按日期查询 2、按部门查询)
         /// </summary>
