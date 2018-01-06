@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
-angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'angular-popups'])
+angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
@@ -66,7 +66,15 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     //厂服管理
      .state('gaWorkerClothesManage', {
          templateUrl: 'HrGeneralAffairsManage/GaWorkerClothesManage'
-     });
+     })
+    //报餐管理
+    .state('gaMealReportManage', {
+        templateUrl: 'HrGeneralAffairsManage/GaMealReportManage'
+    })
+    //报餐汇总
+    .state('gaMealReportQuery', {
+        templateUrl: 'HrGeneralAffairsManage/GaMealReportQuery'
+    });
 })
 
 

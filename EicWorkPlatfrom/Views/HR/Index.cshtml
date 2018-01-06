@@ -10,6 +10,13 @@
     <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,user-scalable=no" />
     @*<link href="~/Content/CSS/workoverhours.css" rel="stylesheet" />*@
     <title>人力资源管理</title>
+    <style>
+        .bkcolor {
+            background-color: orange;
+        }
+    </style>
+
+
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
 
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
@@ -68,23 +75,22 @@
                                 <ol class="rounded-list">
                                     <li>
                                         <a data-ui-sref-active="active" data-ui-sref="hrEmployeeDataInput" style="cursor:pointer">档案登记</a>
-                                        @*<a data-ui-sref-active="active" data-ui-sref="hrLeaveOffManage" style="cursor:pointer">离职管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrLeaveOffManage" style="cursor:pointer">离职管理</a>
 
-                                            <a data-ui-sref-active="active" data-ui-sref="hrPostChange" style="cursor:pointer">岗位变更</a>
-                                            <a data-ui-sref-active="active" data-ui-sref="hrDepartmentChange" style="cursor:pointer">部门变更</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrPostChange" style="cursor:pointer">岗位变更</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrDepartmentChange" style="cursor:pointer">部门变更</a>
 
-                                            <a data-ui-sref-active="active" data-ui-sref="hrChangeWorkerId" style="cursor:pointer">变更工号</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrChangeWorkerId" style="cursor:pointer">变更工号</a>
 
-                                            <a data-ui-sref-active="active" data-ui-sref="hrPrintCard" style="cursor:pointer">厂牌打印</a>
-                                            <a data-ui-sref-active="active" data-ui-sref="hrClassTypeManage" style="cursor:pointer">班别管理</a>*@
-                                        <a data-ui-sref-active="active" data-ui-sref="hrSumerizeAttendanceData" style="cursor:pointer">汇总考勤数据</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrPrintCard" style="cursor:pointer">厂牌打印</a>
+                                        @*<a data-ui-sref-active="active" data-ui-sref="hrClassTypeManage" style="cursor:pointer">班别管理</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="hrSumerizeAttendanceData" style="cursor:pointer">汇总考勤数据</a>
 
-                                        <a data-ui-sref-active="active" data-ui-sref="hrAskLeaveManage" style="cursor:pointer">请假管理</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="hrWorkOverHoursManage" style="cursor:pointer">加班管理</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="hrAskLeaveManage" style="cursor:pointer">请假管理</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="hrWorkOverHoursManage" style="cursor:pointer">加班管理</a>*@
 
-                                        <a data-ui-sref-active="active" data-ui-sref="hrHandleException" style="cursor:pointer">异常处理</a>
-
-                                        <a data-ui-sref-active="active" data-ui-sref="gaWorkerClothesManage" style="cursor:pointer">厂服管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="gaMealReportQuery" style="cursor:pointer">报餐汇总</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="gaMealReportManage" style="cursor:pointer">报餐管理</a>
                                     </li>
                                 </ol>
                             </div>
@@ -117,6 +123,19 @@
     <script src="@Url.Content("~/Scripts/controller/hr/hrApp.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/hr/hrArchivesManage.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/hr/hrAttendanceManage.js")"></script>
+
+
+
+
+    <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
+    <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/controller/purchase/purchaseApp.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/purchase/purSupplierManage.js")"></script>
 </body>
 
-       </html >
+</html>

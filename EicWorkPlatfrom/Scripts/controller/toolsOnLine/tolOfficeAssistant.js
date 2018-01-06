@@ -571,8 +571,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope, o
             vmManager.searchDataset = [];
             vmManager.datasource = [];
             oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, queryFields.department, mode).then(function (datas) {
-
-                vmManager.datasource = datas;
+            vmManager.datasource = datas;
             })
         },
 
@@ -608,7 +607,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope, o
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var mode = _.clone(uiVM)
-                        mode.Id_Key == opresult.Id_Key;
+                        mode.Id_Key === opresult.Id_Key;
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
                         }

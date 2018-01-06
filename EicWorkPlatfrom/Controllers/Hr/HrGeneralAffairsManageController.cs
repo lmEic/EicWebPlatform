@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
-
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using System.Collections.Generic;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -15,13 +17,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        #region 厂服管理
 
         public ActionResult GaWorkerClothesManage()
         {
             return View();
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -51,7 +54,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public ContentResult GetWorkerClothesReceiveRecords(string workerId, string department, string receiveMonth, int mode)
         {
-            
+
             var datas = GeneralAffairsService.WorkerClothesManager.FindReceiveRecordBy(new QueryGeneralAffairsDto()
             {
                 Department = department,
@@ -68,6 +71,54 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var dlfm = GeneralAffairsService.WorkerClothesManager.DownLaodBuildReceiveWorkClothesFile();
             return this.DownLoadFile(dlfm);
         }
-       
+        #endregion
+
+        #region 报餐管理
+        public ActionResult GaMealReportManage()
+        {
+            return View();
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreReportMealDatas(List<MealReportManageModel> reportMealDatas)
+        {
+            var result = GeneralAffairsService.ReportMealManager.Store(reportMealDatas);
+            return Json(result);
+        }
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetReportMealDatas(string reportType, string yearMonth, string department = null, string workerId = null)
+        {
+            var datas = GeneralAffairsService.ReportMealManager.GetReportMealDatas(reportType, yearMonth, department, workerId);
+            return DateJsonResult(datas, "yyyy-MM-dd HH:mm:ss");
+        }
+
+        #endregion
+
+        #region 报餐汇总
+        public ActionResult GaMealReportQuery()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public ContentResult GetReportMealSumerizeDatas(DateTime reportMealDate)
+        {
+            var data = GeneralAffairsService.ReportMealManager.GetAnalogReportMealDatas(reportMealDate);
+            TempData["ReportMealSumerize"] = data;
+            return DateJsonResult(data);
+        }
+        [NoAuthenCheck]
+        public ContentResult GetReportMealDetialDatas(DateTime reportMealDate, string reportMealType, string department)
+        {
+            var data = GeneralAffairsService.ReportMealManager.GetReportMealDetailDatas(reportMealDate, reportMealType, department);
+            return DateJsonResult(data);
+        }
+        [NoAuthenCheck]
+        public FileResult ExportReportMealSumerizeDatas()
+        {
+            var data = TempData["ReportMealSumerize"] as MealReportedAnalogModel;
+            return this.DownLoadFile(GeneralAffairsService.ReportMealManager.ExportAnalogData(data));
+        }
+        #endregion
     }
 }

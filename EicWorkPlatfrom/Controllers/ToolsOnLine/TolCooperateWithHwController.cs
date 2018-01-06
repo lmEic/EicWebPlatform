@@ -5,13 +5,14 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.HwCollaboration.Business;
 using Lm.Eic.App.HwCollaboration.Model;
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 
 namespace EicWorkPlatfrom.Controllers
 {
     /// <summary>
     /// 华为协同控制器
     /// </summary>
-    public class TolCooperateWithHwController : Controller
+    public class TolCooperateWithHwController : EicBaseController
     {
         //
         // GET: /TolCooperateWithHw/
@@ -21,6 +22,32 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        #region HwMaterialBaseConfig method
+        public ActionResult HwMaterialBaseConfig()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetMaterialBaseConfigDatas()
+        {
+            var datas = HwCollaborationService.MaterialManager.BaseBomManager.MaterialBaseDictionary;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        [HttpPost]
+        public JsonResult SaveMaterialBaseConfigDatas(HwCollaborationMaterialBaseConfigModel entity)
+        {
+            var opResult = HwCollaborationService.MaterialManager.BaseBomManager.Store(entity);
+            return Json(opResult);
+        }
+        [NoAuthenCheck]
+        [HttpGet]
+        public JsonResult AutoSynchironizeData()
+        {
+            var opResult = HwCollaborationService.MaterialManager.BaseBomManager.AutoSynchironizeData();
+            return Json(opResult, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         #region HwManpowerInput
         public ActionResult HwManpowerInput()
@@ -30,14 +57,16 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetManPower()
         {
-            //HwDataEntity entity = HwCollaborationService.ManPowerManager.GetLatestEntity();
-            HwDataEntity entity = new HwDataEntity()
-            {
-                Dto = HwMockDatas.ManPowerDto,
-                OpLog = HwMockDatas.OpLog
-            };
+            var entity = HwCollaborationService.ManPowerManager.GetLatestEntity();
+            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            var data = new { entity, departments };
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveManPower(HwCollaborationDataTransferModel entity)
+        {
             var result = HwCollaborationService.ManPowerManager.SynchronizeDatas(entity);
-            return Json(entity, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         #endregion
@@ -47,35 +76,34 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         #endregion
 
-        #region HwInventoryDetail
+        #region Hw Material  Board Detail
         public ActionResult HwInventoryDetail()
         {
             return View();
         }
-        #endregion
-
-        #region HwMakingVoDetail
-        public ActionResult HwMakingVoDetail()
+        [NoAuthenCheck]
+        public JsonResult GetMaterialDetails()
         {
-            return View();
+            var dto = HwCollaborationService.MaterialManager.AutoLoadDataFromErp();
+            var entity = new
+            {
+                inventoryEntity = dto.InvertoryDto,
+                makingEntity = dto.MakingDto,
+                shippingEntity = dto.ShippmentDto,
+                purchaseEntity = dto.PurchaseDto
+            };
+            return Json(entity, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult SaveMaterialDetailData(MaterialComposeEntity entity)
+        {
+            var result = HwCollaborationService.MaterialManager.SaveMaterialDetail(entity);
+            return Json(result);
         }
         #endregion
-
-        #region HwShipmentVoDetail
-        public ActionResult HwShipmentVoDetail()
-        {
-            return View();
-        }
-        #endregion
-
-        #region HwPurchaseOnWay
-        public ActionResult HwPurchaseOnWay()
-        {
-            return View();
-        }
-        #endregion
-
     }
 }

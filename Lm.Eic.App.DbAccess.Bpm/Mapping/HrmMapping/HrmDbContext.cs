@@ -105,6 +105,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
 
             //总务
             modelBuilder.Configurations.Add(new WorkClothesManageModelMapping());
+            modelBuilder.Configurations.Add(new MealReportManageModelMapping());
             //工号变更
             modelBuilder.Configurations.Add(new ArWorkerIdChangedMapping());
             //

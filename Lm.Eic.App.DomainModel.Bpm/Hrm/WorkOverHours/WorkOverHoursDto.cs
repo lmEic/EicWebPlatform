@@ -10,6 +10,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
        
       public DateTime WorkDate { set; get; }
       public string DepartmentText { get; set; }
+    //  public string Organization { get; set; }
+     public string ParentDataNodeText { get; set; }
+      public string WorkId { get; set; }
         private int _searchMode = 0;
         /// <summary>
         /// 搜索模式
@@ -19,5 +22,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             get { return _searchMode; }
             set { if (_searchMode != value) { _searchMode = value; } }
         }
+        public string QryDate { set; get; }
+
     }
 }

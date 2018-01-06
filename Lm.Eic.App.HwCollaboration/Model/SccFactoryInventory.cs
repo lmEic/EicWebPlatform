@@ -6,10 +6,37 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.HwCollaboration.Model
 {
+
+    /// <summary>
+    /// 物料组合Dto
+    /// </summary>
+    public class MaterialComposeDto
+    {
+        public FactoryInventoryDto InvertoryDto { get; set; }
+
+        public MaterialMakingDto MakingDto { get; set; }
+
+        public MaterialShipmentDto ShippmentDto { get; set; }
+
+        public PurchaseOnWayDto PurchaseDto { get; set; }
+    }
+    /// <summary>
+    /// 物料存储组合实体
+    /// </summary>
+    public class MaterialComposeEntity
+    {
+        public HwCollaborationDataTransferModel InvertoryEntity { get; set; }
+
+        public HwCollaborationDataTransferModel MakingEntity { get; set; }
+
+        public HwCollaborationDataTransferModel ShippmentEntity { get; set; }
+
+        public HwCollaborationDataTransferModel PurchaseEntity { get; set; }
+    }
     /// <summary>
     /// 库存明细数据传输Dto
     /// </summary>
-    public class FactoryInventoryDto : HwDataTransferDtoBase
+    public class FactoryInventoryDto
     {
         public List<SccFactoryInventory> factoryInventoryList { get; set; }
     }
@@ -26,7 +53,7 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// </summary>
         public string vendorFactoryCode { get; set; }
         /// <summary>
-        /// 供应商物料编码
+        /// 供应商物料编码 厂内料号
         /// 非空
         /// </summary>
         public string vendorItemCode { get; set; }

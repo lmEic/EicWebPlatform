@@ -457,9 +457,6 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
                 };
             },
         }),
-
-
-
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);

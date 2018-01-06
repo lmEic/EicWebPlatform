@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
 
@@ -30,8 +31,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model, string siteRootPath)
+        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model)
         {
+         
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
                 OrderId = model.OrderId,
@@ -44,7 +46,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionDate = DateTime.Now,
                 InspectionItemDatas = model.InspectionItemDatas,
                 InspectionItemResult = model.InspectionItemResult,
-                //InspectionItemStatus = model.InsptecitonItemIsFinished.ToString(),
                 InspectionItemStatus = "doing",
                 InspectionMode = model.InspectionMode,
                 MaterialId = model.MaterialId,
@@ -55,16 +56,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionNGCount = model.InspectionNGCount,
                 OpPerson = model.OpPerson,
                 DocumentPath = model.DocumentPath,
+                InspectionRuleDatas= ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(model),
                 Id_Key = model.Id_Key
             };
-            return storeInspectionDetial(datailModel, siteRootPath);
+            return storeInspectionDetial(datailModel);
 
 
         }
-        private OpResult storeInspectionDetial(InspectionIqcDetailModel model, string siteRootPath)
+        private OpResult storeInspectionDetial(InspectionIqcDetailModel model)
         {
-            if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
-                return InspectionManagerCrudFactory.IqcDetailCrud.UploadFileIqcInspectionDetail(model, siteRootPath);
+            //if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
+            //    return InspectionManagerCrudFactory.IqcDetailCrud.UploadFileIqcInspectionDetail(model, siteRootPath);
             /// 判断是否存在此录入的项次
             if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(model))
                 model.OpSign = OpMode.Edit;
@@ -99,6 +101,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 OpSign = model.OpSign,
                 Memo = model.Memo,
                 InspectionNGCount = model.InspectionNGCount,
+                InspectionRuleDatas= ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(model),
                 OpPerson = model.OpPerson,
                 DocumentPath = model.DocumentPath
             };
@@ -139,6 +142,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId)
         {
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId);
+        }
+        /// <summary>
+        /// 删除抽检项目
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        public OpResult DeleteInspectionItems(string orderid, string materialId, string inspectionItem)
+        {
+            return InspectionManagerCrudFactory.IqcDetailCrud.DeleteInspectionItems(orderid, materialId, inspectionItem);
         }
     }
 }

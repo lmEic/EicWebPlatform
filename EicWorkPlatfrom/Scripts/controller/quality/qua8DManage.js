@@ -54,6 +54,13 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
         return ajaxService.uploadFile(url, file
         );
     };
+    ///初始创建8D表格
+    bugd.uploadCreate8DAttachFile = function (file) {
+        var url = quabugDManageUrl + 'UploadCreate8DAttachFile';
+        return ajaxService.uploadFile(url, file
+        );
+    };
+
     ///储存处理8D数据
     bugd.saveQua8DHandleDatas = function (handelData) {
         var url = quabugDManageUrl + 'SaveQua8DHandleDatas';
@@ -136,6 +143,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         OpDate: null,
         OpTime: null,
         OpSign: leeDataHandler.dataOpMode.add,
+        PreviewFileName: null,
         Id_Key: null,
     }
 
@@ -143,6 +151,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
     var initVM = _.clone(uiVm);
     var initHandelVM = _.clone(uiHandelVm);
     var dialog = $scope.dialog = leePopups.dialog();
+    var showImageDialog = $scope.showImageDialog = leePopups.dialog();
     var vmManager = {
         isdisabled: true,
         init: function () {
@@ -194,6 +203,10 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
                 console.log(data);
                 uiVm.ReportId = data;
             });
+        },
+        showImage: function () {
+            showImageDialog.show();
+            console.log(9999999);
         },
     };
     ///搜寻
@@ -265,11 +278,13 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         leeHelper.upoadFile(el, function (fd) {
             var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
             fd.append("attachFileDto", JSON.stringify(dto));
-            $scope.doPromise = BDataOpService.upload8DAttachFile(fd).then(function (uploadResult) {
+            $scope.doPromise = BDataOpService.uploadCreate8DAttachFile(fd).then(function (uploadResult) {
                 console.log(uploadResult);
                 if (uploadResult.Result) {
-                    $scope.uploadFileName = uiHandelVm.FileName = uploadResult.FileName;
+                    uiHandelVm.FileName = uploadResult.FileName;
+                    $scope.uploadFileName = _.clone(uploadResult.FileName);
                     uiHandelVm.FilePath = uploadResult.DocumentFilePath;
+                    uiHandelVm.PreviewFileName = uploadResult.PreviewFileName;
                 }
             });
         });
@@ -298,7 +313,6 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
     }
     //初始化原型
     var initVM = _.clone(uiVm);
-
     var participantInfo = $scope.participantInfo = {
         Applicant: null,//申请人,
         Confirmor: null,//确认人
@@ -363,11 +377,14 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                     stepName: step.StepName,
                     stepTitle: step.StepTitle,
                     stepLevel: step.StepLevel,
+                    imgUrl: null,
                     isSaveSucceed: false,
                     VmDatas: [],
                 };
                 BDataOpService.getQua8DReportStepData(uiVm.ReportId, step).then(function (data) {
                     stepItem.VmDatas = data;
+
+                    console.log(stepItem);
                     isSaveSucceed = false;
                 });
                 leeHelper.setObjectGuid(stepItem);
@@ -382,6 +399,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             else step.IsCheck = true;
             leeHelper.copyVm(stepItem.VmDatas, uiVm);
             vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
+            console.log(vmManager.viewDataset);
         },
         ///显示主表信息数据 isShowMasterData  showMasterData
         showMasterData: function () {
@@ -419,6 +437,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                         if (e.stepId == vmManager.selectStepItemData.StepId) {
                             e.VmDatas.FileName = uploadResult.FileName;
                             e.VmDatas.FilePath = uploadResult.DocumentFilePath;
+                            e.VmDatas.ImgUrl = uploadResult.PreviewFileName;
                             e.isdisabled = true;
                         }
                     });
@@ -449,8 +468,6 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             });
         });
     }
-
-
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
         var user = leeLoginUser;
@@ -495,6 +512,7 @@ qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
         detailDataSource: [],
         dataHead: null,
         searchFromYear: null,
+        imgUrl: null,
         searchToYear: null,
         ///查询
         get8DDatas: function () {
@@ -510,6 +528,7 @@ qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
             $scope.searchPromise = BDataOpService.query8DDetailDatas(item.ReportId).then(function (datas) {
                 vmManager.detailDataSets = datas;
                 vmManager.detailDataSource = datas;
+                console.log(datas);
                 detailDialog.show();
             });
         },
@@ -526,7 +545,6 @@ qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
             //$scope.searchPromise = BDataOpService.changeReportIdStatus(item.ReportId)
         },
         bringToFiles: function (item) {
-            console.log(item);
             if (_.isUndefined(item))
             { item = vmManager.dataHead; }
             leeHelper.setUserData(item);
@@ -557,10 +575,24 @@ qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
                 if (uploadResult.Result) {
                     vmManager.dataHead.FilePath = uploadResult.DocumentFilePath;;
                     vmManager.dataHead.FileName = uploadResult.FileName;
+                    vmManager.imgUrl = uploadResult.PreviewFileName;
                 }
             });
         });
     };
     $scope.vmManager = vmManager;
+
+    var editManager = $scope.editManager = {
+        ///下载文件
+        loadFile: function (item) {
+
+            var loadUrl = "/QuaInspectionManage/LoadFqcDatasDownLoadFile?OrderId=" + item.OrderId + "&OrderIdNumber=" + item.OrderIdNumber + "&InspectionItem=" + item.InspectionItem;
+            return loadUrl;
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.FileName);
+        }
+    };
 
 });

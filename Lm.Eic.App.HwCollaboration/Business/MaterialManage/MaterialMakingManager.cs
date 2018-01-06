@@ -5,20 +5,84 @@ using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.App.HwCollaboration.Business;
 using Lm.Eic.App.HwCollaboration.Model;
+using Lm.Eic.App.HwCollaboration.Model.LmErp;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
 {
-    public class MaterialMakingManager : HwCollaborationBase<MaterialMakingDto>
+    /// <summary>
+    /// 物料在制明细管理器
+    /// </summary>
+    public class MaterialMakingManager : HwCollaborationMaterialBase<MaterialMakingDto>
     {
-        public override HwDataEntity GetLatestEntity()
+        public MaterialMakingManager() : base(HwModuleName.MaterialMaking, HwAccessApiUrl.MaterialMakingApiUrl)
         {
-            return this.GetLatestEntity(HwModuleName.MaterialMaking);
         }
 
-        public override OpResult SynchronizeDatas(HwDataEntity entity)
+        public override MaterialMakingDto AutoGetDatasFromErp(ErpMaterialQueryCell materialQueryCell)
         {
-            return this.SynchronizeDatas(HwAccessApiUrl.MaterialMakingApiUrl, entity);
+            //string productId = "14K1B169600M0RN";//产品品号
+            MaterialMakingDto dto = new MaterialMakingDto() { materialMakingList = new List<SccMaterialMakingVO>() };
+            if (materialQueryCell == null) return dto;
+            materialQueryCell.ProductIdList.ForEach(m =>
+            {
+                List<ErpMaterialMakingModel> datas = this.erpDbAccess.LoadMaterialMakingDatas(m.MaterialId);
+                if (datas != null && datas.Count > 0)
+                {
+                    datas.ForEach(d =>
+                    {
+                        SccMaterialMakingVO smm = new SccMaterialMakingVO()
+                        {
+                            vendorFactoryCode = "421072-001",
+                            componentCode = d.ComponentCode.Trim(),
+                            componentDescription = "BOSA Pigtail",
+                            customerVendorCode = m.customerVendorCode,
+                            orderCompletedQuantity = d.OrderCompletedQuantity,
+                            orderNumber = d.OrderNumber.Trim(),
+                            orderPublishDateStr = d.OrderPublishDateStr.ToFormatDate(),
+                            orderQuantity = d.OrderQuantity,
+                            orderStatus = d.OrderStatus.ToDiscriptionOrderStatus()
+                        };
+                        dto.materialMakingList.Add(smm);
+                    });
+                }
+            });
+            return dto;
+        }
+
+        protected override bool CanSendDto(MaterialMakingDto dto)
+        {
+            return dto.materialMakingList != null && dto.materialMakingList.Count > 0;
+        }
+
+        protected override MaterialMakingDto HandleDto(MaterialMakingDto dto)
+        {
+            List<SccMaterialMakingVO> dataList = new List<SccMaterialMakingVO>();
+            if (dto != null && dto.materialMakingList != null && dto.materialMakingList.Count > 0)
+            {
+                dto.materialMakingList.ForEach(d =>
+                {
+                    if (d.orderCompletedQuantity > 0 && d.orderQuantity > 0)
+                    {
+                        SccMaterialMakingVO vo = new SccMaterialMakingVO()
+                        {
+                            componentCode = d.componentCode.Trim(),
+                            orderQuantity = d.orderQuantity,
+                            orderCompletedQuantity = d.orderCompletedQuantity,
+                            componentDescription = d.componentDescription.Trim(),
+                            customerVendorCode = d.customerVendorCode.Trim(),
+                            orderNumber = d.orderNumber.Trim(),
+                            orderPublishDateStr = d.orderPublishDateStr,
+                            orderStatus = d.orderStatus,
+                            vendorFactoryCode = d.vendorFactoryCode.Trim()
+                        };
+                        dataList.Add(vo);
+                    }
+                });
+
+                dto.materialMakingList = dataList;
+            }
+            return dto;
         }
     }
 }

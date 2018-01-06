@@ -34,6 +34,15 @@ var leeDataHandler = (function () {
                     addfn();
             }
         },
+        ///取消编辑某项数据，oldItem:编辑前的对象，editItemArr编辑项数组
+        cancelEditItem: function (oldItem, editItemArr) {
+            if (_.isObject(oldItem) && _.isArray(editItemArr)) {
+                var item = _.find(editItemArr, { Id: oldItem.Id });
+                if (item != undefined) {
+                    leeHelper.copyVm(oldItem, item);
+                }
+            }
+        },
         ///处理操作结果,opstatus:操作器，opresult:操作结果,successFn:成功回调函数
         handleSuccessResult: function (opstatus, opresult, successFn) {
             opstatus.showValidation = false;
@@ -71,7 +80,7 @@ var leeDataHandler = (function () {
         },
         ///显示信息
         displayMessage: function (opstatus, opresult, message) {
-            if (message == undefined) {
+            if (message === undefined) {
                 opstatus.message = opresult.Message;
             }
             else {
@@ -101,6 +110,41 @@ var leeDataHandler = (function () {
             opstatus.result = false;
             if (cancelfn !== undefined) {
                 cancelfn();
+            }
+        },
+        //从客户端创建数据项,并插入到内存数据集合中
+        createDataItemFromClient: function (dataitem, dbDataset) {
+            leeHelper.setObjectGuid(dataitem);//创建唯一标志
+            leeHelper.setObjectClentSign(dataitem);//设置客户端创建对象标志
+            if (dataitem.OpSign !== undefined)
+                dataitem.OpSign = leeDataOpMode.add;//设置数据处理标志
+            leeHelper.insertWithId(dbDataset, dataitem);
+        },
+        //初始化服务器端的数据，并加入到集合中
+        initDataItemFromServer: function (dataitem, dbDataset) {
+            leeHelper.setObjectGuid(dataitem);//创建唯一标志
+            leeHelper.setObjectServerSign(dataitem);//设置客户端创建对象标志
+            if (dataitem.OpSign !== undefined)
+                dataitem.OpSign = leeDataOpMode.none;//设置数据处理标志
+            leeHelper.insertWithId(dbDataset, dataitem);
+        },
+        //从客户端删除数据，先看数据项是不是服务器端的，如果是，将操作标志位删除
+        //反之，则直接从内存集合中删除
+        removeDataItemFromClient: function (dataitem, dbDataset, handler) {
+            if (!_.isObject(dataitem)) return;
+            if (!_.isArray(dbDataset)) return;
+
+            var isExist = leeHelper.isExist(dbDataset, dataitem);
+            if (isExist.exist) {
+                if (leeHelper.isServerObject(dataitem)) {
+                    if (isExist.item.OpSign !== undefined)
+                        isExist.item.OpSign = leeDataHandler.dataOpMode.delete;
+                }
+                else {
+                    leeHelper.remove(dbDataset, dataitem);
+                }
+                if (_.isFunction(handler))
+                    handler();
             }
         }
     };
@@ -133,6 +177,7 @@ var leeDataHandler = (function () {
                     //处级
                     C: null
                 },
+                organizationUnits: [],
                 //网站物理路径
                 webSitePhysicalApplicationPath: null,
                 serverName: null
@@ -153,6 +198,10 @@ var leeDataHandler = (function () {
                                 loginedUser.department = user.LoginedUser.Department;
                             if (!_.isUndefined(user.LoginedUser.DepartmentText))
                                 loginedUser.departmentText = user.LoginedUser.DepartmentText;
+
+                            if (!_.isUndefined(user.LoginedUser.OrganizationUnits))
+                                loginedUser.organizationUnits = user.LoginedUser.OrganizationUnits;
+
                             if (!_.isUndefined(user.LoginedUser.Organizetion)) {
                                 var fds = user.LoginedUser.Organizetion.split(',');
                                 var organization;
@@ -193,6 +242,7 @@ var leeDataHandler = (function () {
         deleteFile: 'deleteFile',
         IdKey: 'Id_Key'
     };
+
     return {
         ///操作状态
         operateStatus: leeOperateStatus,
@@ -210,7 +260,7 @@ var leeHelper = (function () {
         //消息提示窗口
         msgModalUrl: '/CommonTpl/InfoMsgModalTpl',
         //删除提示窗口
-        deleteModalUrl: '/CommonTpl/DeleteModalTpl',     
+        deleteModalUrl: '/CommonTpl/DeleteModalTpl',
         //文件预览模态窗口
         imgFilePreviewModalUrl: '/CommonTpl/ImageFilePreviewTpl'
     };
@@ -229,6 +279,10 @@ var leeHelper = (function () {
         productBoard: 'ProBoard',
         //日报管理
         dailyReport: 'ProDailyReport',
+        //人员管理
+        proEmployee:'ProEmployee',
+        //重工制程处理
+        redoProduct: 'ProRedoProductArea',
         //工单管理
         mocManage: 'ProMocManage',
         //采购管理
@@ -250,9 +304,21 @@ var leeHelper = (function () {
         ///在线工具
         ToolsOnLine: 'ToolsOnLine',
         //华为协同
-        TolCooperateWithHw: 'TolCooperateWithHw'
-
+        TolCooperateWithHw: 'TolCooperateWithHw',
+        //智能隧道
+        TolManPowerTunnel: 'TolManPowerTunnel'
     };
+    ///选择部门数据
+    var selectDepartments =
+        [{ value: "MS1", label: "制一课" },
+          { value: "MS2", label: "制二课" },
+          { value: "MS3", label: "制三课" },
+          { value: "MS5", label: "制五课" },
+          { value: "MS6", label: "制六课" },
+          { value: "MS7", label: "制七课" },
+          { value: "MS10", label: "制十课" },
+          { value: "PT1", label: "成型课" }]
+    ;
     return {
         ///控制器名称
         controllers: controllerNames,
@@ -323,7 +389,21 @@ var leeHelper = (function () {
         isExist: function (ary, item) {
             if (!Array.isArray(ary)) return false;
             var data = _.findWhere(ary, { Id: item.Id });
-            return data !== undefined;
+            return {
+                ///是否存在，True为存在，false：为不存在
+                exist: data !== undefined,
+                ///存储的项
+                item: data
+            };
+        },
+        ///根据某一属性值，查找指定的项
+        findItem: function (ary, predicateCondition) {
+            if (!_.isArray(ary)) return null;
+            if (!_.isObject(predicateCondition)) return null;
+            var data = _.findWhere(ary, predicateCondition);
+            if (_.isUndefined(data))
+                return null;
+            return data;
         },
         ///在数组指定位置插入项
         insert: function (ary, index, item) {
@@ -430,6 +510,14 @@ var leeHelper = (function () {
                 }
                 if (uiVm.Department !== undefined) {
                     uiVm.Department = user.department;
+                }
+            }
+            else {
+                if (uiVm.OpPerson !== undefined) {
+                    uiVm.OpPerson = "softOp";
+                }
+                if (uiVm.Department !== undefined) {
+                    uiVm.Department = "softDep";
                 }
             }
         },
@@ -587,6 +675,14 @@ var leeHelper = (function () {
             }
             obj.Id = leeHelper.newGuid();
         },
+        ///给集合中的每个对象设置唯一键值Id
+        setObjectsGuid: function (objectArr) {
+            if (_.isArray(objectArr)) {
+                _.forEach(objectArr, function (obj) {
+                    leeHelper.setObjectGuid(obj);
+                });
+            }
+        },
         //给对象设置服务器标志，标志该对象是从服务器端传来的数据
         setObjectServerSign: function (obj) {
             if (_.isUndefined(obj.isServer)) {
@@ -605,7 +701,16 @@ var leeHelper = (function () {
         isServerObject: function (obj) {
             if (_.isUndefined(obj.isServer)) return false;
             return obj.isServer;
-        }
+        },
+        //将从服务器端传来的日期格式化短日期格式
+        formatServerDate(serverDate) {
+            if (serverDate != null) {
+                return new Date(parseInt(serverDate.replace("/Date(", "").replace(")/", "").split("+")[0])).pattern("yyyy-MM-dd");
+            }
+            return "";
+        },
+        ///选择部门
+        selectDepartment:selectDepartments
     };
 })();
 // 弹出框助手
@@ -656,7 +761,7 @@ var leePopups = (function () {
                     buttons: [
                       {
                           text: '确   定',
-                          addClass: 'btn-info',
+                          addClass: 'btn-default',
                           click: function (notice) {
                               if (!_.isUndefined(okFn) && _.isFunction(okFn))
                                   okFn();
@@ -750,6 +855,8 @@ var leeLoginUser = (function () {
         department: null,
         //部门标题名称
         departmentText: null,
+        //组织级别
+        organization: null,
         ///个人头像
         headPortrait: "../Content/login/profilepicture.jpg",
         ///载入个人头像
@@ -760,6 +867,7 @@ var leeLoginUser = (function () {
                 user.userName = loginUser.userName;
                 user.department = loginUser.department;
                 user.departmentText = loginUser.departmentText;
+                user.organization = loginUser.organization;
             }
             user.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
         },
@@ -856,6 +964,11 @@ var leeTreeHelper = (function () {
         getTreeNodes: function (treeId) {
             var treeObj = $.fn.zTree.getZTreeObj(treeId);
             return treeObj.getNodes();
+        },
+        //根据 zTree 的唯一标识 tId 快速获取节点 JSON 数据对象
+        getNodesByParam: function (treeId, propertyName, propertyValue) {
+            var treeObj = $.fn.zTree.getZTreeObj(treeId);
+            return treeObj.getNodesByParam(propertyName, propertyValue);
         },
         //checkTypeFlag = true 表示按照 setting.check.chkboxType 属性进行父子节点的勾选联动操作
         //checkTypeFlag = false 表示只修改此节点勾选状态，无任何勾选联动操作

@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus==='未审核'"><i class="fa  fa-eyedropper"></i>审核</button>
-                    <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
+                    <a class="btn btn-success" href="@Url.Action("ExportIqcDateToExcel", "QuaInspectionManage")"><i class="fa fa-file-text"></i>导出</a>
                     <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
                 </div>
             </div>
@@ -143,8 +143,9 @@
 
                                     <td>
                                         <label ng-show="item.InspectionStatus === '已审核'">审核人:{{item.OpPerson}}</label>
-                                        <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未完成'">明细</button>
-                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'">审核</button>
+                                        <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未抽检'">明细</button>
+                                        <button type="button" class="btn btn-danger btn-xs" ng-click="vmManager.showCheckModal(item,false)" ng-show="item.InspectionStatus ===  '已审核'">撤审</button>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item,true)" ng-show="item.InspectionStatus === '待审核'">审核</button>
                                     </td>
                                 </tr>
 
@@ -253,7 +254,14 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <button type="button" class="btn btn-warning pull-right"
+                                ng-click="vmManager.detailCheckModal()"
+                                ng-show="vmManager.selectedFormStatus === '待审核'">
+                            审核
+                        </button>
                     </div>
+
+
                 </div>
             </div>
 

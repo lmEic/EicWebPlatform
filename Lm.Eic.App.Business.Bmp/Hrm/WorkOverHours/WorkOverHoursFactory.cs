@@ -9,6 +9,7 @@ using System.Text;
 using static Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours.WorkOverHoursManager;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Framework.ProductMaster.Model;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 {
@@ -31,16 +32,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         { }
 
         protected override void AddCrudOpItems()
-        {
-          
+        {    
             this.AddOpItem(OpMode.Add, AddWorkOverHours);
             this.AddOpItem(OpMode.Edit, EditWorkOverHours);
             this.AddOpItem(OpMode.Delete, DeleteWorkOverHours);
+           
         }
 
+       
         private OpResult DeleteWorkOverHours(WorkOverHoursMangeModels model)
         {
-            return irep.Update(e => e.Id_Key == model.Id_Key, s => new WorkOverHoursMangeModels { Id_Key = model.Id_Key }).ToOpResult_Delete(OpContext);
+            return irep.Delete(e => e.WorkerId == model.WorkerId && e.WorkDate==model.WorkDate).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EditWorkOverHours(WorkOverHoursMangeModels model)
@@ -53,6 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
            
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
+       
 
         /// <summary>
         /// 1、按日期查 2、按部门查
@@ -67,9 +70,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 switch (Dto.SearchMode)
                 {
                     case 1:
-                        return irep.Entities.Where(m => m.WorkDate == (Dto.WorkDate)).ToList();
+                        return irep.Entities.Where(m => m.WorkDate == Dto.WorkDate && m.DepartmentText==Dto.DepartmentText && m.WorkStatus=="在职").ToList();
                     case 2:
-                        return irep.Entities.Where(m => m.DepartmentText == (Dto.DepartmentText)).ToList();
+                        return irep.Entities.Where(m => m.DepartmentText == (Dto.DepartmentText) && m.WorkStatus == "在职").ToList();
                     default:
                         return new List<WorkOverHoursMangeModels>();
                 }
@@ -81,17 +84,51 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 throw new Exception(ex.InnerException.Message);
             }
         }
+        internal List<WorkOverHoursMangeModels>FindBySum(WorkOverHoursDto qryDto)
+        {
+            if (qryDto == null) return new List<WorkOverHoursMangeModels>();
+            try
+            {
+                switch (qryDto.SearchMode)
+                {
+                    case 1:
+                        return irep.Entities.OrderBy(m=>m.WorkerId).Where(m =>m.QryDate==qryDto.QryDate &&( m.DepartmentText==qryDto.DepartmentText||m.ParentDataNodeText==qryDto.DepartmentText) && m.WorkStatus == "在职").ToList();
+                    case 2:
+                        return irep.Entities.OrderBy(m=>m.WorkerId).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId==qryDto.WorkId && m.WorkStatus == "在职").ToList();
+                    case 3:
+                        return irep.Entities.Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
+                    default:
+                        return new List<WorkOverHoursMangeModels>();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
         /// <summary>
         /// 模板载入
         /// </summary>
         /// <param name="workDate"></param>
         /// <param name="departmentText"></param>
         /// <returns></returns>
-        internal List<WorkOverHoursMangeModels>FindByMode(string departmentText,DateTime workDate)
+        internal List<WorkOverHoursMangeModels>FindByMode(string departmentText,string postNature,DateTime workDate,int mode)
         {
             try
             {
-                return irep.Entities.Where(e => e.DepartmentText == departmentText && e.WorkDate == workDate).ToList();
+                switch (mode)
+                {
+                    case 1:
+                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
+                    case 2:
+                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)&& e.PostNature==postNature).ToList();
+
+                    default:
+                        return new List<WorkOverHoursMangeModels>();
+                }                                          
             }
             catch (Exception ex)
             {
@@ -100,6 +137,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
             
         }
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="workDate"></param>
+        /// <returns></returns>
+
+        internal OpResult HandleDeleteWorkOverHours(string departmentText, DateTime workDate)
+        {
+            return irep.Delete(e => e.DepartmentText == departmentText && e.WorkDate == workDate).ToOpResult_Delete(OpContext);
+        }
+
+
+
 
 
     }

@@ -12,15 +12,19 @@ namespace Lm.Eic.App.HwCollaboration.Business.ManPower
     /// <summary>
     /// 人力管理器
     /// </summary>
-    public class ManPowerManager : HwCollaborationBase<ManPowerDto>
+    public class ManPowerManager : HwCollaborationDataBase<ManPowerDto>
     {
-        public override HwDataEntity GetLatestEntity()
+        public ManPowerManager() : base(HwModuleName.ManPower, HwAccessApiUrl.ManPowerApiUrl)
+        { }
+
+        protected override bool CanSendDto(ManPowerDto dto)
         {
-            return this.GetLatestEntity(HwModuleName.ManPower);
+            return dto.manpowerMainList != null && dto.manpowerMainList.Count > 0;
         }
-        public override OpResult SynchronizeDatas(HwDataEntity entity)
+
+        protected override ManPowerDto HandleDto(ManPowerDto dto)
         {
-            return this.SynchronizeDatas(HwAccessApiUrl.ManPowerApiUrl, entity);
+            return dto;
         }
     }
 }

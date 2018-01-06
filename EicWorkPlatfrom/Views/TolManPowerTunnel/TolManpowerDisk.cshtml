@@ -1,0 +1,101 @@
+﻿<div class="panel panel-primary" ng-controller="tolManpowerDiskCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-table"></i>人力信息磁盘</h6>
+    </div>
+    <div class="panel-body" cg-busy="{promise:searchPromise}">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="bs-callout bs-callout-info">
+                    <div class="page-header">
+                        <h3>组织架构</h3>
+                    </div>
+                    <div>
+                        <ul data-yl-tree cg-busy="{promise:promise}"
+                            data-tree-dataset="ztree.configDataNodes"
+                            data-start-load="ztree.startLoad"
+                            ng-model="ztree.treeNode"
+                            data-binding-nodevm="ztree.bindNodeToVm()"
+                            id="{{ztree.treeId}}" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="bs-callout bs-callout-success">
+                    <div class="page-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>{{vmManager.workerAnalogDatas.Name}}：</span>
+                                <span class="label label-success">{{vmManager.workerAnalogDatas.Count}}</span>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="@Url.Action("ExportWorkersToExcel","TolManPowerTunnel")" class="btn btn-sm btn-warning pull-right">
+                                    <i class="fa fa-file-excel-o"></i>
+                                    汇出到Excel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mainWindow">
+                        <div class="table-responsive" style="height:500px;max-height:520px;overflow-y:auto;">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr class="success">
+                                        <th>部门名称</th>
+                                        <th>人数</th>
+                                        <th>岗位信息</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.workerAnalogDatas.Departments">
+                                        <td>{{item.Department}}</td>
+                                        <td><a href="#" ng-click="vmManager.getWorkersDetail(item.Name,null,1)"><span>{{item.Count}}</span></a></td>
+                                        <td>
+                                            <div class="bs-callout bs-callout-default">
+                                                <ul class="list-group">
+                                                    <li ng-repeat="post in item.CountOfPostList" class="list-group-item">
+                                                        <a href="#" ng-click="vmManager.getWorkersDetail(item.Name,post.Name,4)">
+                                                            <span class="badge-info">{{post.Count}}</span>
+                                                        </a>
+                                                        {{post.Name}}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div pageslide ps-open="vmManager.workersDetailViewDisplay" style="padding:10px;" ps-side="left" ps-speed="0.25" ps-size="100%" ps-container='mainWindow' ps-key-listener="true">
+                            <div class="table-responsive" style="height:500px; max-height:520px;overflow-y:auto;">
+                                <table class="table table-hover table-condensed">
+                                    <thead>
+                                        <tr class="success">
+                                            <th>工号</th>
+                                            <th>姓名</th>
+                                            <th>岗位</th>
+                                            <th>岗位性质</th>
+                                            <th>头像</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.workersDetail">
+                                            <td>{{item.WorkerId}}</td>
+                                            <td>{{item.Name}}</td>
+                                            <td>{{item.Post}}</td>
+                                            <td>{{item.PostNature}}</td>
+                                            <td><img ng-src="{{item.PersonImageUrl}}" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

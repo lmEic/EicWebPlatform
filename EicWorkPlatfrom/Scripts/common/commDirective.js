@@ -48,6 +48,13 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     }
                 }
             });
+            scope.$watch('year', function () {
+                if (!angular.isUndefined(scope.year)) {
+                    if (angular.isFunction(scope.changed)) {
+                        scope.changed();
+                    }
+                }
+            });
         }
     };
 })
@@ -499,6 +506,32 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
+//enlargePic指令名称，写在需要用到的地方img中即可实现放大图片
+.directive('enlargePic', function () {
+    return {
+        restrict: "AE",
+        link: function (scope, elem) {
+            elem.bind('click', function ($event) {
+                var img = $event.srcElement || $event.target;
+                angular.element(document.querySelector(".mask"))[0].style.display = "block";
+                angular.element(document.querySelector(".bigPic"))[0].src = img.src;
+            })
+        }
+    }
+})
+.directive('closePic', function () {
+    return {
+        restrict: "AE",
+        link: function (scope, elem) {
+            elem.bind('click', function ($event) {
+                angular.element(document.querySelector(".mask"))[0].style.display = "none";
+            })
+        }
+    }
+})
+
+
+
 .directive('ylOperatesignFilterbutton', function () {
     return {
         restrict: 'EA',
@@ -831,6 +864,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     connDataOpService.getWorkersBy(scope.workerId).then(function (workerDatas) {
                         if (angular.isArray(workerDatas) && workerDatas.length > 0) {
                             scope.worker = workerDatas[0];
+                            scope.workerId = null;
                         }
                     });
                 }
@@ -1278,7 +1312,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                         zTreeSet.startLoad = true;
                     }
                 };
-
                 ztreeSetItem = { treeId: treeId, ztreeSet: zTreeSet };
                 ztreeSets.push(ztreeSetItem);
             }

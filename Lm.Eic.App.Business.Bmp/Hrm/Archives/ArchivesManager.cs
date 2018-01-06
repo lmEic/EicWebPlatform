@@ -129,7 +129,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion constructure
 
         #region change data method
-
         /// <summary>
         /// 存储员工档案信息
         /// </summary>
@@ -450,7 +449,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             string sqlWhere = "";
             if (searchMode == 0)
             {
-                //sqlWhere = "WorkingStatus='在职'";
+                sqlWhere = "WorkingStatus='在职'";
             }
             else if (searchMode == 1)
             {
@@ -459,13 +458,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             else if (searchMode == 2)
             {
                 if (qryDto.WorkerId.IsNumber()) //如果为数字按工号查询 否则按姓名查询
-                    sqlWhere = string.Format("WorkerId='{0}' And WorkingStatus='在职'", qryDto.WorkerId);
+                    sqlWhere = string.Format("WorkerId='{0}' ", qryDto.WorkerId);
                 else
-                    sqlWhere = string.Format("Name='{0}' And WorkingStatus='在职'", qryDto.WorkerId);
+                    sqlWhere = string.Format("Name='{0}'", qryDto.WorkerId);
             }
             else if (searchMode == 3)
             {
                 sqlWhere = string.Format("RegistedDate >='{0}' And RegistedDate <='{1}' And WorkingStatus='在职'", qryDto.RegistedDateStart.ToDate(), qryDto.RegistedDateEnd.ToDate());
+            }
+            else if (searchMode == 4)
+            {
+                sqlWhere = string.Format("Department='{0}' And Post='{1}' And  WorkingStatus='在职'", qryDto.Department, qryDto.Post);
+            }
+            else if (searchMode == 6)
+            {
+                sqlWhere = string.Format("Department='{0}' And PostType='{1}' And  WorkingStatus='在职'", qryDto.Department, qryDto.PostType);
             }
             return this.irep.GetWorkerInfos(sqlWhere);
         }
@@ -886,6 +893,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     /// </summary>
     public class QueryWorkersDto
     {
+
+        public string Post { get; set; }
+
+        public string PostType { get; set; }
+
         private string _Department;
 
         /// <summary>
@@ -985,6 +997,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 }
             }
         }
+        public int SearchModel { get; set; }
     }
 
 

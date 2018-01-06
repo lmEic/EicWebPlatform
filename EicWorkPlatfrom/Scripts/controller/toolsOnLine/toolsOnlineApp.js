@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'angular-popups'])
+angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive", 'angular-popups'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -10,6 +10,8 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     var wfUrlPrefix = leeHelper.controllers.TolWorkFlow + "/";
 
     var hwUrlPrefix = leeHelper.controllers.TolCooperateWithHw + "/";
+
+    var itunnelPrefix = leeHelper.controllers.TolManPowerTunnel + "/";
 
     //--------------名片夹管理--------------------------
     $stateProvider.state('collaborateContactLib', {
@@ -29,6 +31,9 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
         templateUrl: wfUrlPrefix + 'WFInternalContactForm'
     });
     //--------------华为协同--------------------
+    $stateProvider.state('hwMaterialBaseConfig', {//物料配置与BOM信息
+        templateUrl: hwUrlPrefix + 'HwMaterialBaseConfig'
+    });
     $stateProvider.state('hwManpowerInput', {//人力管理
         templateUrl: hwUrlPrefix + 'HwManpowerInput'
     });
@@ -38,13 +43,10 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     $stateProvider.state('hwInventoryDetail', {//库存明细
         templateUrl: hwUrlPrefix + 'HwInventoryDetail'
     });
-    $stateProvider.state('hwMakingVoDetail', {//在制明细
-        templateUrl: hwUrlPrefix + 'HwMakingVoDetail'
-    });
-    $stateProvider.state('hwShipmentVoDetail', {//发料明细
-        templateUrl: hwUrlPrefix + 'HwShipmentVoDetail'
-    });
-    $stateProvider.state('hwPurchaseOnWay', {//采购在途
-        templateUrl: hwUrlPrefix + 'HwPurchaseOnWay'
+    //--------------智能隧道---------------------
+    $stateProvider.state('tolManpowerDisk', {//人力磁盘
+        templateUrl: itunnelPrefix + 'TolManpowerDisk'
     });
 })
+
+

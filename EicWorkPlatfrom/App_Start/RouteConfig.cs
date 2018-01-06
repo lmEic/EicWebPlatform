@@ -9,7 +9,6 @@ namespace EicWorkPlatfrom
         {
            // IsCheck = true;
         }
-
         private static bool isCheck = false;
         /// <summary>
         /// 是否进行权限检测
@@ -38,6 +37,7 @@ namespace EicWorkPlatfrom
             }
             else
             {
+
                 //Product
                 //Account
                 //EicSystemManage
@@ -49,8 +49,9 @@ namespace EicWorkPlatfrom
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Product", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "HR", action = "Index", id = UrlParameter.Optional }
                          );
+
             }
         }
     }

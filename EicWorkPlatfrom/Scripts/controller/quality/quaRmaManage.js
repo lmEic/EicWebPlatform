@@ -181,12 +181,9 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 
     $scope.promise = rmaDataOpService.getCustomerShortNameDatas('ArchiveConfig', 'RmaCustomerShortName').then(function (datas) {
         vmManager.customerShortNames = [];
-        console.log(datas);
         angular.forEach(datas, function (dataitem) {
-            console.log(dataitem);
             vmManager.customerShortNames.push({ name: dataitem.DataNodeName, text: dataitem.DataNodeText, labelName: dataitem.labelName });
         });
-        console.log(vmManager.customerShortNames);
     });
 });
 //// 描述RMA登记
@@ -321,6 +318,8 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         handleSalsesOrdersAndShipDate: function () {
             uiVm.SalesOrders = [];
             vmManager.productsShipDates = [];
+            console.log(vmManager.salesOrders);
+            vmManager.salesOrders = [];
             angular.forEach(vmManager.salersOrdersDatas, function (item) {
                 vmManager.salesOrders.push(item.SalesOrder);
                 vmManager.productsShipDates.push(item.ProductsShipDate);

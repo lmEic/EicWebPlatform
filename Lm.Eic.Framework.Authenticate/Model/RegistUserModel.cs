@@ -174,7 +174,6 @@ namespace Lm.Eic.Framework.Authenticate.Model
         /// 登录状态
         /// </summary>
         public LoginStatus LoginStatus { get; set; }
-
         /// <summary>
         /// 用户包含的角色信息
         /// </summary>
@@ -279,6 +278,16 @@ namespace Lm.Eic.Framework.Authenticate.Model
             set { _departmenttext = value; }
         }
 
+        private string _parentDepartmenttext;
+        /// <summary>
+        /// 父部门名称
+        /// </summary>
+        public string ParentDepartmentText
+        {
+            get { return _parentDepartmenttext; }
+            set { _parentDepartmenttext = value; }
+        }
+
         private string _organizetion;
 
         /// <summary>
@@ -289,6 +298,9 @@ namespace Lm.Eic.Framework.Authenticate.Model
             set { _organizetion = value; }
             get { return _organizetion; }
         }
+
+        public List<DepartmentModel> OrganizationUnits { get; set; }
+
 
         private string _post;
 
@@ -333,5 +345,23 @@ namespace Lm.Eic.Framework.Authenticate.Model
             set { _personalpicture = value; }
             get { return _personalpicture; }
         }
+    }
+
+    /// <summary>
+    /// 部门信息模型
+    /// </summary>
+    public class DepartmentModel
+    {
+        public string DepartmentNode { get; set; }
+
+        public string DepartmentText { get; set; }
+
+        public string ParentDepartmentText { get; set; }
+        /// <summary>
+        /// 是否是自身部门
+        /// True：则包含自己所在单位和上级单位
+        /// False:则包含与自己平级的单位和上级单位
+        /// </summary>
+        public bool IsSelf { get; set; }
     }
 }

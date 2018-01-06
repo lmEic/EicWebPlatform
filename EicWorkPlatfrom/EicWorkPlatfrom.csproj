@@ -159,6 +159,7 @@
     <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
     <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
+    <Compile Include="Controllers\ProRedoProductAreaController.cs" />
     <Compile Include="Controllers\Purchase\PurSupplierManageController.cs" />
     <Compile Include="Controllers\Quality\Qua8DManageController.cs" />
     <Compile Include="Controllers\Quality\QuaInspectionManageController.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Controllers\Purchase\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
     <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
+    <Compile Include="Controllers\ToolsOnLine\TolManPowerTunnelController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolCooperateWithHwController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolWorkFlowController.cs" />
     <Compile Include="Controllers\ToolsOnLine\ToolsOnLineController.cs" />
@@ -369,9 +371,6 @@
     <Content Include="Content\ueditor\lang\zh-cn\images\music.png" />
     <Content Include="Content\ueditor\lang\zh-cn\images\upload.png" />
     <Content Include="Content\ueditor\lang\zh-cn\zh-cn.js" />
-    <Content Include="Content\ueditor\net\Bin\Newtonsoft.Json.dll" />
-    <Content Include="Content\ueditor\net\Bin\Newtonsoft.Json.pdb" />
-    <Content Include="Content\ueditor\net\Bin\Newtonsoft.Json.xml" />
     <Content Include="Content\ueditor\net\net.sln" />
     <Content Include="Content\ueditor\themes\default\css\ueditor.css" />
     <Content Include="Content\ueditor\themes\default\css\ueditor.min.css" />
@@ -548,6 +547,7 @@
     <Content Include="Scripts\controller\hr\hrAttendanceManage.js" />
     <Content Include="Scripts\controller\product\proBoard.js" />
     <Content Include="Scripts\controller\product\proDailyReport.js" />
+    <Content Include="Scripts\controller\product\proEmployeeManage.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
     <Content Include="Scripts\controller\quality\qua8DManage.js" />
@@ -563,6 +563,7 @@
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolHwCollaboration.js" />
+    <Content Include="Scripts\controller\toolsOnLine\tolIntelligenceTunnel.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
@@ -639,6 +640,9 @@
     <Content Include="Content\ueditor\third-party\video-js\font\vjs.eot" />
     <Content Include="Content\ueditor\third-party\video-js\font\vjs.ttf" />
     <Content Include="Content\ueditor\third-party\video-js\font\vjs.woff" />
+    <Content Include="FileLibrary\WorkOverHours\加班汇总表.xls" />
+    <Content Include="FileLibrary\WorkOverHours\加班数据模板直接.xls" />
+    <Content Include="FileLibrary\WorkOverHours\加班数据模板间接.xls" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1421,9 +1425,7 @@
     <Content Include="Views\DailyReport\ProStationConfig.cshtml" />
     <Content Include="Views\CommonTpl\ModuleLayoutIndexTpl.cshtml" />
     <Content Include="Views\ProEmployee\RegistWorkerInfo.cshtml" />
-    <Content Include="Views\ProEmployee\ProStationManage.cshtml" />
-    <Content Include="Views\ProEmployee\ProClassManage.cshtml" />
-    <Content Include="Views\ProEmployee\WorkHoursManage.cshtml" />
+    <Content Include="Views\ProEmployee\ProAskLeaveManage.cshtml" />
     <Content Include="Views\HrArchivesManage\HrEmployeeDataInput.cshtml" />
     <Content Include="Views\CommonTpl\InfoMsgModalTpl.cshtml" />
     <Content Include="Views\CommonTpl\DeleteModalTpl.cshtml" />
@@ -1466,7 +1468,7 @@
     <Content Include="Views\Equipment\AstScrapInput.cshtml" />
     <Content Include="Views\ProBoard\JumperWireBoard.cshtml" />
     <Content Include="Views\ProBoard\AuditMaterailBoardTpl.cshtml" />
-    <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportFlowSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportInput.cshtml" />
     <Content Include="Views\ProDailyReport\EditRemarkViewTpl.cshtml" />
     <Content Include="Views\Equipment\AstInputRepairRecord.cshtml" />
@@ -1526,12 +1528,21 @@
     <Content Include="Views\TolCooperateWithHw\HwManpowerInput.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwLogisticDeliveryInput.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwInventoryDetail.cshtml" />
-    <Content Include="Views\TolCooperateWithHw\HwMakingVoDetail.cshtml" />
-    <Content Include="Views\TolCooperateWithHw\HwShipmentVoDetail.cshtml" />
-    <Content Include="Views\TolCooperateWithHw\HwPurchaseOnWay.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwMaterialBaseConfig.cshtml" />
+    <Content Include="Views\TolManPowerTunnel\TolManpowerDisk.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportMachineSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportUnproductionSet.cshtml" />
+    <Content Include="Views\ProRedoProductArea\DRRedoInput.cshtml" />
+    <Content Include="Views\HrGeneralAffairsManage\GaMealReportManage.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionDataGatheringOfIPQC.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionFormManageOfIpqc.cshtml" />
+    <Content Include="Views\ProEmployee\ProWorkOverHoursManage.cshtml" />
+    <Content Include="Views\HrGeneralAffairsManage\GaMealReportQuery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\ueditor\net\Bin\" />
     <Folder Include="FileLibrary\PreviewFiles\" />
     <Folder Include="FileLibrary\ReportProblemHandleDataFile\" />
     <Folder Include="Models\" />
@@ -1587,6 +1598,29 @@
       <Project>{35fa689a-9ef7-4944-8a6e-0cf9f2cacdde}</Project>
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="LCC11">
+      <Guid>{EDCD5812-6A06-43C3-AFAC-46EF5D14E22C}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>4</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

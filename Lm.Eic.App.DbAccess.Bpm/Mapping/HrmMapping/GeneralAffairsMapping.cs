@@ -18,4 +18,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         }
     }
 
+    /// <summary>
+    ///MealReportManageModel
+    /// </summary>
+    public class MealReportManageModelMapping : EntityTypeConfiguration<MealReportManageModel>
+    {
+        public MealReportManageModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("GA_MealReportManage");
+        }
+    }
+
 }

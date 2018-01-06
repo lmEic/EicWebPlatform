@@ -22,8 +22,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         { }
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddFqcInspection);
-            this.AddOpItem(OpMode.Edit, EidtFqcInspection);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Eidt);
             this.AddOpItem(OpMode.Delete, DeleteFqcInspection);
         }
 
@@ -32,13 +32,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtFqcInspection(InspectionFqcItemConfigModel model)
+        private OpResult Eidt(InspectionFqcItemConfigModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddFqcInspection(InspectionFqcItemConfigModel model)
+        private OpResult Add(InspectionFqcItemConfigModel model)
         {
+            if (irep.IsExist(e => e.MaterialId == model.MaterialId && e.InspectionItem == model.InspectionItem))
+            {
+                model.Id_Key = irep.Entities.FirstOrDefault(e => e.MaterialId == model.MaterialId && e.InspectionItem == model.InspectionItem).Id_Key;
+                return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            }
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
@@ -88,12 +93,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         #region Crud
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddFqcInspectionDetail);
+            this.AddOpItem(OpMode.Add, Add);
         }
 
 
 
-        private OpResult AddFqcInspectionDetail(InspectionFqcDetailModel model)
+        private OpResult Add(InspectionFqcDetailModel model)
         {
             if (model == null) return new OpResult("保存文件不能为空", false);
             //如果存在 (Id_key 已经赋值） 
@@ -113,7 +118,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (model == null) return new OpResult("采集数据模型不能为NULL", false);
             var oldmodel = this.GetFqcOldDetailModelBy(model);
             if (oldmodel == null)
-                return this.AddFqcInspectionDetail(model);//若不存在则直接添加
+                return this.Add(model);//若不存在则直接添加
             model.Id_Key = oldmodel.Id_Key;
             oldmodel.DocumentPath.DeleteExistFile(model.DocumentPath, siteRootPath);//删除旧的文件
             this.SetFixFieldValue(model);
@@ -123,16 +128,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         #region find method
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId)
-        {
-            return irep.Entities.Where(e => e.OrderId == orderId).ToList();
-        }
 
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
+        internal List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
         }
-        public bool IsExist(string orderId, int orderIdNumber, string inspecitonItem)
+
+        internal InspectionFqcDetailModel GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber, string inspectionItem)
+        {
+            return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspectionItem);
+        }
+        internal bool IsExist(string orderId, int orderIdNumber, string inspecitonItem)
         {
             try
             {
@@ -146,7 +152,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        public InspectionFqcDetailModel GetFqcOldDetailModelBy(InspectionFqcDetailModel newmodel)
+        internal InspectionFqcDetailModel GetFqcOldDetailModelBy(InspectionFqcDetailModel newmodel)
         {
             try
             {
@@ -161,21 +167,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        public InspectionFqcDetailModel GetFqcDetailModelBy(string orderId, int orderIdNumber, string inspecitonItem)
-        {
-            try
-            {
-                return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspecitonItem);
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw new Exception(ex.InnerException.Message);
-            }
 
-        }
 
-        public List<InspectionFqcDetailModel> GetFqcDetailDatasBy(string orderId, int orderIdNumber)
+        internal List<InspectionFqcDetailModel> GetFqcDetailDatasBy(string orderId, int orderIdNumber)
         {
             try
             {
@@ -188,18 +182,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-        public InspectionFqcDetailModel GetFqcDetailModelBy(decimal id_key)
-        {
-            try
-            {
-                return irep.Entities.FirstOrDefault(e => e.Id_Key == id_key);
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw new Exception(ex.InnerException.Message);
-            }
 
+        internal OpResult DeleteFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
+        {
+            return irep.Delete(e => e.OrderIdNumber == orderIdNumber && e.OrderId == orderId).ToOpResult_Delete(OpContext);
+        }
+
+        internal OpResult UpAuditDetailDataStatus(string orderId, int orderIdNumber, string Updatestring)
+        {
+            return irep.Update(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber, u => new InspectionFqcDetailModel { InspectionItemStatus = Updatestring }).ToOpResult_Eidt(OpContext);
         }
         #endregion
     }
@@ -221,6 +212,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult DeleteFqcInspectionMaster(InspectionFqcMasterModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+        internal OpResult DeleteFqcInspectionMasterBy(string orderId, int orderNumber)
+        {
+            return irep.Delete(e => e.OrderId == orderId && e.OrderIdNumber == orderNumber).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
@@ -265,9 +260,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(DateTime dateFrom, DateTime dateTo, string selectedDepartment, string formStatus = null)
         {
-            if (formStatus == null || formStatus == "全部")
-                return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
-            return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.InspectionStatus == formStatus && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
+            if ((formStatus == "全部")&& ( selectedDepartment != "全部"))
+                return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+           else
+                if(( selectedDepartment != "全部") && (formStatus == "全部"))
+                   return   irep.Entities.Where(e =>e.InspectionStatus == formStatus && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+                 else 
+                       if((selectedDepartment == "全部") && (formStatus == "全部"))
+                        return irep.Entities.Where(e => e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+                        else 
+                            if((selectedDepartment == "全部") && (formStatus != "全部"))
+                            return irep.Entities.Where(e => e.InspectionStatus == formStatus && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
+            return irep.Entities.Where(e => e.ProductDepartment == selectedDepartment && e.InspectionStatus == formStatus && e.OpDate >= dateFrom && e.OpDate <= dateTo).OrderBy(f => f.OpDate).ToList();
         }
         /// <summary>
         /// 
@@ -299,18 +303,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionResult = updateInspectionResult
             }).ToOpResult_Eidt(OpContext);
         }
-        /// <summary>
-        /// 更新 详细表状态
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="orderIdNumber"></param>
-        /// <param name="Updatestring"></param>
-        /// <returns></returns>
-        internal OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
-        {
-            return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
-        }
-
     }
     /// <summary>
     /// ORT物料配置

@@ -9,6 +9,8 @@ using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -63,6 +65,27 @@ namespace EicWorkPlatfrom.Controllers
             var data = Qua8DService.Qua8DManager.Qua8DMaster.AutoBuildingReportId(discoverPosition);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 上传文件附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadCreate8DAttachFile(HttpPostedFileBase file)
+        {
+            FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Qua8DUpAttachFile, dto.ModuleName);
+            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId + "-" + "1");
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+                result.PreviewFileName = (result.DocumentFilePath + "\\" + result.FileName).ToPhotoByte().ToBase64Url();
+            }
+            return Json(result);
+        }
         #endregion
 
 
@@ -96,8 +119,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetQua8DReportStepData(string reportId, ShowStepViewModel step)
         {
-            var data = Qua8DService.Qua8DManager.Qua8DDatail.Get8DStepDetailDatasBy(reportId, step);
-            return Json(data, JsonRequestBehavior.AllowGet);
+            var stepData = Qua8DService.Qua8DManager.Qua8DDatail.Get8DStepDetailDatasBy(reportId, step);
+            
+            return Json(stepData, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -141,6 +165,9 @@ namespace EicWorkPlatfrom.Controllers
             {
                 dto.DocumentFilePath = filePath;
                 dto.FileName = customizeFileName;
+                string imgFilePath = (result.DocumentFilePath + "\\" + result.FileName);
+                var imgBytes = imgFilePath.ToPhotoByte();
+                result.PreviewFileName = imgBytes.ToBase64Url();
             }
             return Json(result);
         }
@@ -207,7 +234,20 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(result);
         }
-
+        /// <summary>
+        /// 下载8D归档文件
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <param name="stepId"></param>
+        /// <param name="fileProperty"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult Load8dDownLoadDarchivingFile(string reportId, int stepId, string fileProperty)
+        {
+           // DownLoadFileModel dlfm = InspectionService.DataGatherManager.FqcDataGather.GetFqcDatasDownLoadFileModel(SiteRootPath, orderId, orderIdNumber, inspectionItem);
+            DownLoadFileModel dlfm = null;
+            return this.DownLoadFile(dlfm);
+        }
         #endregion
 
 

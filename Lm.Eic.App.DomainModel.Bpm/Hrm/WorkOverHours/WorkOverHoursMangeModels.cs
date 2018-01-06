@@ -55,6 +55,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _workOverHours = value; }
             get { return _workOverHours; }
         }
+        private double _workOverHoursCount = 0;
+        /// <summary>
+        /// 加班时数
+        /// </summary>
+        public double WorkOverHoursCount
+        {
+            set { _workOverHoursCount = value; }
+            get { return _workOverHoursCount; }
+        }
+
         private string _workoverType;
         /// <summary>
         /// 加班类型
@@ -82,6 +92,77 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _remark = value; }
             get { return _remark; }
         }
+        private string _workstatus="在职";
+        /// <summary>
+        /// 员工状态
+        /// </summary>
+        public string WorkStatus
+        {
+            set { _workstatus = value; }
+            get { return _workstatus; }
+        }
+        private string _qryDate = DateTime.Now.ToString("yyyy") + DateTime.Now.ToString("MM");
+        /// <summary>
+        /// 年月
+        /// </summary>
+        public string QryDate
+        {
+            set { _qryDate = value; }
+            get { return _qryDate; }
+        }
+        private string _workReason="产线加班";
+        /// <summary>
+        /// 加班原因
+        /// </summary>
+        public string WorkReason 
+        {
+            set { _workReason = value; }
+            get { return _workReason; }
+        }
+        private string _workDayTime="NULL";
+        /// <summary>
+        /// 白班时间
+        /// </summary>
+        public string WorkDayTime
+        {
+            set { _workDayTime = value; }
+            get { return _workDayTime; }
+        }
+        private string _workNightTime="NULL";
+        /// <summary>
+        /// 晚班时间
+        /// </summary>
+        public string WorkNightTime
+        {
+            set { _workNightTime = value; }
+            get { return _workNightTime; }
+        }
+        private string _parentDataNodeText;
+        /// <summary>
+        /// 部级代码
+        /// </summary>
+        public string ParentDataNodeText
+        {
+            set { _parentDataNodeText = value; }
+            get { return _parentDataNodeText; }
+        }
+        private string _backgroundIndex = "NULL";
+        public string BackgroundIndex
+        {
+            set { _backgroundIndex = value; }
+            get { return _backgroundIndex; }
+        }
+        public string _postNature;
+        /// <summary>
+        /// 员工类型
+        /// </summary>
+        public string PostNature
+        {
+            set { _postNature = value; }
+            get { return _postNature; }
+        }
+
+
         //private DateTime _opdate;
         /// <summary>
         ///操作日期
@@ -110,8 +191,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             get { return _opsign; }
         }
         private string _opperson;
+
         /// <summary>
-        ///操作人
+        ///操作人1
         /// </summary>
         public string OpPerson
         {
@@ -128,6 +210,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             get { return _id_key; }
         }
 
+
        
+
+
     }
+   
+
+
+
 }

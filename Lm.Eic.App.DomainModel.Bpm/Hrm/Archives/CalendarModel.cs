@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -160,7 +161,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 
 
 
-   public class CalendarWeekDay
+    public class CalendarWeekDay
     {
         private List<CalendarModel> _date;
         public CalendarWeekDay(List<CalendarModel> date,int weekykey)
@@ -234,37 +235,50 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     public class ChineseCalendar
     {
         #region 内部结构
+
+        /// <summary>
+        /// 阳历的节假日
+        /// </summary>
         private struct SolarHolidayStruct
         {
-            public int Month;
-            public int Day;
+            public int Month;// 月份
+            public int Day;//日期
+            public int StartDay;//假期起始天
             public int Recess; //假期长度
-            public string HolidayName;
-            public SolarHolidayStruct(int month, int day, int recess, string name)
+            public string HolidayName;//假期名称
+            public SolarHolidayStruct(int month, int day, int startDay, int recess, string name)
             {
                 Month = month;
                 Day = day;
+                StartDay = startDay;
                 Recess = recess;
                 HolidayName = name;
             }
         }
 
+        /// <summary>
+        /// 农历节假日
+        /// </summary>
         private struct LunarHolidayStruct
         {
-            public int Month;
-            public int Day;
-            public int Recess;
-            public string HolidayName;
+            public int Month;// 月份
+            public int Day;//日期
+            public int StartDay;//假期起始天
+            public int Recess; //假期长度
+            public string HolidayName;//假期名称
 
-            public LunarHolidayStruct(int month, int day, int recess, string name)
+            public LunarHolidayStruct(int month, int day,  int startDay, int recess, string name)
             {
                 Month = month;
                 Day = day;
+                StartDay = startDay;
                 Recess = recess;
                 HolidayName = name;
             }
         }
-
+        /// <summary>
+        /// 星期六日的休息日
+        /// </summary>
         private struct WeekHolidayStruct
         {
             public int Month;
@@ -285,7 +299,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         #region 内部变量
         private DateTime _date;
         private DateTime _datetime;
-
+        private int _nowMonthWeekNumber;
+        private int _yearWeekNumber;
+        private string _dateProperty;
         private int _cYear;
         private int _cMonth;
         private int _cDay;
@@ -304,6 +320,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         private const string HZNum = "零一二三四五六七八九";
         private const int AnimalStartYear = 1900; //1900年为鼠年
         private static DateTime ChineseConstellationReferDay = new DateTime(2007, 9, 13);//28星宿参考值,本日为角
+        private static ChineseLunisolarCalendar calendar = new ChineseLunisolarCalendar();
+        private static GregorianCalendar GetGc()
+        {
+            GregorianCalendar gc = new GregorianCalendar();
+            return gc;
+        }
         #endregion
 
         #region 阴历数据
@@ -332,19 +354,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                 0x07954,0x06AA0,0x0AD50,0x05B52,0x04B60,0x0A6E6,0x0A4E0,0x0D260,0x0EA65,0x0D530,
                 0x05AA0,0x076A3,0x096D0,0x04BD7,0x04AD0,0x0A4D0,0x1D0B6,0x0D250,0x0D520,0x0DD45,
                 0x0B5A0,0x056D0,0x055B2,0x049B0,0x0A577,0x0A4B0,0x0AA50,0x1B255,0x06D20,0x0ADA0,
-                0x14B63        
+                0x14B63
                 };
 
         #endregion
 
         #region 二十四节气
-        private static string[] _lunarHolidayName = 
-                    { 
-                    "小寒", "大寒", "立春", "雨水", 
-                    "惊蛰", "春分", "清明", "谷雨", 
-                    "立夏", "小满", "芒种", "夏至", 
-                    "小暑", "大暑", "立秋", "处暑", 
-                    "白露", "秋分", "寒露", "霜降", 
+        private static string[] _lunarHolidayName =
+                    {
+                    "小寒", "大寒", "立春", "雨水",
+                    "惊蛰", "春分", "清明", "谷雨",
+                    "立夏", "小满", "芒种", "夏至",
+                    "小暑", "大暑", "立秋", "处暑",
+                    "白露", "秋分", "寒露", "霜降",
                     "立冬", "小雪", "大雪", "冬至"
                     };
         #endregion
@@ -366,32 +388,39 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         #endregion
 
         #region 按公历计算的节日
+        /// <summary>
+        /// 按公历计算的节日
+        /// </summary>
         private static SolarHolidayStruct[] sHolidayInfo = new SolarHolidayStruct[]{
-            new SolarHolidayStruct(1, 1, 1, "元旦"),
-            new SolarHolidayStruct(2, 14, 0, "情人节"),
-            new SolarHolidayStruct(3, 8, 0, "妇女节"), 
-            new SolarHolidayStruct(3, 12, 0, "植树节"), 
-            new SolarHolidayStruct(4, 1, 0, "愚人节"),
-            new SolarHolidayStruct(5, 1, 1, "劳动节"),
-            new SolarHolidayStruct(5, 4, 0, "青年节"), 
-            new SolarHolidayStruct(7, 1, 0, "建党节"),
-            new SolarHolidayStruct(8, 1, 0, "建军节"), 
-            new SolarHolidayStruct(9, 10, 0, "教师节"),
-            new SolarHolidayStruct(10, 1, 1, "国庆节"), 
-            new SolarHolidayStruct(12, 24, 0, "平安夜"), 
-            new SolarHolidayStruct(12, 25, 0, "圣诞节")
+            new SolarHolidayStruct(1,1,1,1, "元旦"),
+            new SolarHolidayStruct(2,14,14,0,"情人节"),
+            new SolarHolidayStruct(3,8,8,0, "妇女节"),
+            new SolarHolidayStruct(3,12,12,0, "植树节"),
+            new SolarHolidayStruct(4,1,1,0, "愚人节"),
+            new SolarHolidayStruct(5,1,1,1, "劳动节"),
+            new SolarHolidayStruct(5,4,4,0, "青年节"),
+            new SolarHolidayStruct(7,1,1,0, "建党节"),
+            new SolarHolidayStruct(8,1,1,0, "建军节"),
+            new SolarHolidayStruct(9,10,10,0, "教师节"),
+            new SolarHolidayStruct(10,1,1,3, "国庆节"),
+            new SolarHolidayStruct(12,24,24,0, "平安夜"),
+            new SolarHolidayStruct(12,25,25,0, "圣诞节")
            };
         #endregion
 
         #region 按农历计算的节日
+        /// <summary>
+        ///  按农历计算的节日
+        /// </summary>
         private static LunarHolidayStruct[] lHolidayInfo = new LunarHolidayStruct[]{
-            new LunarHolidayStruct(1, 1, 1, "春节"), 
-            new LunarHolidayStruct(1, 15, 0, "元宵节"), 
-            new LunarHolidayStruct(5, 5, 0, "端午节"),
-            new LunarHolidayStruct(8, 15, 0, "中秋节"), 
-            new LunarHolidayStruct(9, 9, 0, "重阳节"), 
-            new LunarHolidayStruct(12, 8, 0, "腊八节"),
-            new LunarHolidayStruct(12, 23, 0, "小年"),
+            new LunarHolidayStruct(1,1,1,3, "春节"),
+            new LunarHolidayStruct(1,15,15,0, "元宵节"),
+            new LunarHolidayStruct(4,4,4,3, "清明节"),
+            new LunarHolidayStruct(5,5,5,1, "端午节"),
+            new LunarHolidayStruct(8,15,15,1, "中秋节"),
+            new LunarHolidayStruct(9,9,9,0, "重阳节"),
+            new LunarHolidayStruct(12,8,8,0, "腊八节"),
+            new LunarHolidayStruct(12,23,23,0, "小年"),
             //new LunarHolidayStruct(12, 30, 0, "除夕")  //注意除夕需要其它方法进行计算
         };
         #endregion
@@ -464,10 +493,40 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                 offset = offset - temp;
                 if (offset <= 0) break;
             }
+            // 当月的第几周
+            _nowMonthWeekNumber = _date.Day / 7 + (_date.Day % 7 == 0 ? 0 : 1);
+
+            //当年的第几周    星期天 做当月的第一周
+            GregorianCalendar gc = new GregorianCalendar();
+            _yearWeekNumber = gc.GetWeekOfYear(_date, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
 
             offset = offset + temp;
             _cMonth = i;
             _cDay = offset;
+        }
+        private   List<DateTime> IsRecessDate
+        {
+            get
+            {
+                List<DateTime> allIsRecessDate = new List<DateTime>();
+                foreach (LunarHolidayStruct lh in lHolidayInfo)
+                {
+                        for (int i = 0; i < lh.Recess; i++)
+                        {  DateTime lhdd = calendar.ToDateTime(_date.Year, lh.Month, lh.StartDay + i , 0, 0, 0, 0).Date; 
+                            if (!allIsRecessDate.Contains(lhdd))  allIsRecessDate.Add(lhdd);
+                        }
+                }
+                foreach (SolarHolidayStruct sh in sHolidayInfo)
+                {
+                  for (int i =0; i < sh.Recess; i++)
+                        {
+                           DateTime shdd = new DateTime(_date.Year, sh.Month, sh.StartDay + i);
+                            if (!allIsRecessDate.Contains(shdd))  allIsRecessDate.Add(shdd);
+                        }
+                }
+                return allIsRecessDate;
+            }
+          
         }
         #endregion
 
@@ -887,20 +946,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         {
             get
             {
-                string tempStr = "";
+                string tempStr = string.Empty;
                 if (this._cIsLeapMonth == false) //闰月不计算节日
                 {
                     foreach (LunarHolidayStruct lh in lHolidayInfo)
                     {
-                        if ((lh.Month == this._cMonth) && (lh.Day == this._cDay))
+                        if ((lh.Month == this._cMonth  &&lh.Day==this._cDay))
                         {
-
                             tempStr = lh.HolidayName;
-                            break;
-
+                            break;  
                         }
                     }
-
                     //对除夕进行特别处理
                     if (this._cMonth == 12)
                     {
@@ -926,14 +982,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         {
             get
             {
-                string tempStr = "";
-
+                string tempStr =string.Empty;
                 foreach (SolarHolidayStruct sh in sHolidayInfo)
                 {
-                    if ((sh.Month == _date.Month) && (sh.Day == _date.Day))
+                    if (sh.Month==_date.Month && sh.Day==  _date.Day)
                     {
-                        tempStr = sh.HolidayName;
-                        break;
+                       tempStr = sh.HolidayName; 
+                       break;
                     }
                 }
                 return tempStr;
@@ -989,6 +1044,118 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                     default:
                         return "星期六";
                 }
+            }
+        }
+
+        /// <summary>
+        /// 获取日期是当月中的第几周
+        /// </summary>
+        /// 
+        /// <returns></returns>
+        public int NowMonthWeekNumber
+        {
+            get
+            {
+                
+                 bool sundayStart = true;
+                //如果要判断的日期为1号，则肯定是第一周了
+               if (_date.Day == 1)
+                       return 1;
+               else
+                    {
+                          //得到本月第一天
+                         DateTime dtStart = new DateTime(_date.Year, _date.Month, 1);
+                        //得到本月第一天是周几
+                         int dayofweek = (int)dtStart.DayOfWeek;
+                        //如果不是以周日开始，需要重新计算一下dayofweek，详细DayOfWeek枚举的定义
+                        if (!sundayStart)
+                         {
+                            dayofweek = dayofweek - 1;
+                             if (dayofweek < 0)
+                            dayofweek = 7;
+                         }
+                          //得到本月的第一周一共有几天
+                         int startWeekDays = 7 - dayofweek;
+                         //如果要判断的日期在第一周范围内，返回1
+                        if (_date.Day <= startWeekDays)
+                            return 1;
+                        else
+                            {
+                              int aday = _date.Day + 7 - startWeekDays;
+                               return aday / 7 + (aday % 7 > 0 ? 1 : 0);
+                             }
+                    }
+            }
+        }
+        public int YearWeekNumber
+        {
+            get { return _yearWeekNumber; }
+        }
+        /// <summary>
+        /// 周几的数字
+        /// </summary>
+        public int WeekDayInt
+        {
+            get
+            {
+                switch (_date.DayOfWeek)
+                {
+                    case DayOfWeek.Sunday:
+                        return 0;
+                    case DayOfWeek.Monday:
+                        return 1;
+                    case DayOfWeek.Tuesday:
+                        return 2;
+                    case DayOfWeek.Wednesday:
+                        return 3;
+                    case DayOfWeek.Thursday:
+                        return 4;
+                    case DayOfWeek.Friday:
+                        return 5;
+                    case DayOfWeek.Saturday:
+                        return 6;
+                    default:
+                        return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 休息日为red 其它的Whtie
+        /// </summary>
+        public string DateColor
+        {
+            get
+            {
+                if (WeekDayInt == 0 || WeekDayInt == 6)
+                {
+                    _dateProperty = "星期六日";
+                    return "red";
+                }
+                else
+                {
+                    if (IsRecessDate.Contains(_date))
+                    {
+                        _dateProperty = "法定假日";
+                        return "#29B8CB";
+                    }
+                    else
+                    {
+                        _dateProperty = "正常";
+                        return "white";
+                    }
+                       
+                }
+            }
+        }
+        /// <summary>
+        /// 是否正常上班 还是休息日
+        /// </summary>
+        public string DateProperty
+        {
+            get
+            {
+                return _dateProperty;
             }
         }
         #endregion

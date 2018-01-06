@@ -784,6 +784,15 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return record;
         }
+        private string GetTableNameFrom<TEntity>(TEntity entity)
+        {
+            Type tity = entity.GetType();
+            var attribute = tity.GetCustomAttributes(typeof(LTableNameAttribute), false).FirstOrDefault();
+            if (attribute == null) return string.Empty;
+            string tableName = ((LTableNameAttribute)attribute).TableName;
+            return tableName;
+        }
+
         /// <summary>
         /// 插入实体数据模型,表名称从特性标注中获取，需要用特性的方式进行指定
         /// </summary>
@@ -792,11 +801,59 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns></returns>
         public int Insert<TEntity>(TEntity entity)
         {
-            Type tity = entity.GetType();
-            var attribute = tity.GetCustomAttributes(typeof(LTableNameAttribute), false).FirstOrDefault();
-            if (attribute == null) return 0;
-            string tableName = ((LTableNameAttribute)attribute).TableName;
+            string tableName = GetTableNameFrom<TEntity>(entity);
             return Insert<TEntity>(entity, tableName);
+        }
+        /// <summary>
+        /// 根据自增键进行修改实体的所有属性值
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public int Update<TEntity>(TEntity entity, string tableName)
+        {
+            int record = 0;
+            StringBuilder sbUpdateSql = new StringBuilder();
+            string sqlPre = string.Format("Update {0} Set ", tableName);
+            try
+            {
+                Type tity = entity.GetType();
+                PropertyInfo[] Pis = tity.GetProperties();
+                if (Pis.Length > 0)
+                {
+
+                    foreach (PropertyInfo pi in Pis)
+                    {
+                        if (pi.Name.ToUpper() == "ENTITYSTATE" || pi.Name.ToUpper() == "ENTITYKEY" || pi.Name.ToUpper() == "ID_KEY")
+                        { }
+                        else
+                        {
+                            object piProxyValue = pi.GetValue(entity, null);
+                            sbUpdateSql.AppendFormat("{0}='{1}',", pi.Name.Trim(), piProxyValue);
+                        }
+                    }
+                    var idKeyValue = Pis.FirstOrDefault(p => p.Name.ToUpper() == "ID_KEY").GetValue(entity, null);
+                    string sqlUpdate = string.Format("{0}{1} Where Id_Key='{2}'", sqlPre, sbUpdateSql.ToString().TrimEnd(','), idKeyValue);
+                    return ExecuteNonQuery(sqlUpdate);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return record;
+        }
+        /// <summary>
+        /// 插入实体数据模型,表名称从特性标注中获取，需要用特性的方式进行指定
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity">实体模型</param>
+        /// <returns></returns>
+        public int Update<TEntity>(TEntity entity)
+        {
+            string tableName = GetTableNameFrom<TEntity>(entity);
+            return Update<TEntity>(entity, tableName);
         }
         #endregion
     }
