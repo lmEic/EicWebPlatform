@@ -9,73 +9,123 @@
                     <div class="col-md-8">
                         <div class="bs-callout bs-callout-info">
                             <form role="form" name="formDailyTreatmentManager" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+
                                 <div class="form-group">
+                                    <label for="orderId" class="col-md-2 control-label">制令号:</label>
+                                    <div class="col-md-4">
+                                        <input name="orderId" placeholder="必填" class="form-control" ng-model="vm.OrderId"
+                                               ng-keypress="($event.which === 13)?vmManager.getOrderIdInfo(vm.OrderId):0"
+
+                                                ng-keydown="focus.moveFocusNext($event,'departmentFocus')"
+                                                                   focus-if="focus.orderIdFocus" focus-setter
+                                               required />
+                                        <div class="error-messages" ng-messages="formDailyTreatmentManager.orderId.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">制令单不能为空</small>
+                                        </div>
+                                    </div>
                                     <label for="department" class="col-md-2 control-label">部门</label>
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input name="department" placeholder="必填" class="form-control" ng-model="vm.Department" required />
+                                            <input name="department" placeholder="必填" class="form-control" ng-model="vmManager.department"
+                                                     ng-keydown="focus.moveFocusNext($event,'inPutDateFocus')"
+                                                                   focus-if="focus.departmentFocus" focus-setter
+                                                   required />
                                             <div class="error-messages" ng-messages="vmManager.department.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">部门不能为空</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <label for="systemName" class="col-md-2 control-label">制令单:</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inPutDate" class="col-md-2 control-label">日期:</label>
                                     <div class="col-md-4">
-                                        <input name="orderId" placeholder="必填" class="form-control" ng-model="vm.OrderId" required />
-                                        <div class="error-messages" ng-messages="formDailyTreatmentManager.orderId.$error" ng-show="operate.showValidation">
+                                        <input name="inPutDate" type="date" class="form-control" format-date ng-model="vm.InPutDate"
+                                                ng-keydown="focus.moveFocusNext($event,'processesNameFocus')"
+                                                                   focus-if="focus.inPutDateFocus" focus-setter
+                                                 data-ensure-user-exist style="width:200px;"
+                                               placeholder="日期" />
+                                        <div class="error-messages" ng-messages="formDailyTreatmentManager.inPutDate.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">制令单不能为空</small>
+                                        </div>
+                                    </div>
+                                    <label for="productName" class="col-md-2 control-label">产品名称:</label>
+                                    <div class="col-md-4">
+                                        <input name="productName" type="text" class="form-control" placeholder="必填" readonly  ng-model="vm.ProductName" required />
+                                        <div class="error-messages" ng-messages="formDailyTreatmentManager.productName.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">产品名称不能为空</small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="processesName" class="col-md-2 control-label">产品工序:</label>
+                                    <label for="processesName" class="col-md-2 control-label">工序：</label>
                                     <div class="col-md-4">
-                                        <input name="processesName" class="form-control" placeholder="必填" ng-model="vm.ProcessesName" required />
+                                        <input name="processesName" class="form-control" placeholder="必填" ng-model="vm.ProcessesName"
+                                                  ng-keydown="focus.moveFocusNext($event,'productInPutNumberFocus')"
+                                                                   focus-if="focus.processesNameFocus" focus-setter
+                                               required />
                                         <div class="error-messages" ng-messages="formDailyTreatmentManager.processesName.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">产品工序不能为空</small>
                                         </div>
                                     </div>
                                     <label for="productInPutNumber" class="col-md-2 control-label">投产数:</label>
                                     <div class="col-md-4">
-                                        <input name="productInPutNumber" type="number" class="form-control" ng-model="vm.ProductInPutNumber" />
+                                        <input name="productInPutNumber" type="number" class="form-control" ng-model="vm.ProductInPutNumber"
+                                                  ng-keydown="focus.moveFocusNext($event,'badNumberFocus')"
+                                                                   focus-if="focus.productInPutNumberFocus" focus-setter
+                                               required />
                                         <div class="error-messages" ng-messages="formDailyTreatmentManager.productInPutNumber.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">审核人不能为空</small>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="badDescription" class="col-md-2 control-label">不合格现象:</label>
-                                    <div class="col-md-4">
-                                        <textarea name="badDescription" class="form-control" ng-model="vm.BadDescription" />
-                                    </div>
-                                    <label for="badReason" class="col-md-2 control-label">不合格原因:</label>
-                                    <div class="col-md-4">
-                                        <textarea name="badReason" class="form-control" ng-model="vm.BadReason" />
-                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="badNumber" class="col-md-2 control-label">不合格数</label>
+                                    <label for="badNumber" class="col-md-2 control-label">不合格数：</label>
                                     <div class="col-md-4">
-                                        <input name="badNumber" type="number" class="form-control" ng-model="vm.BadNumber" required />
+                                        <input name="badNumber" type="number" class="form-control" ng-model="vm.BadNumber" 
+                                                 ng-keydown="focus.moveFocusNext($event,'scrapTreatmentNumberFocus')"
+                                                                   focus-if="focus.badNumberFocus" focus-setter
+                                               required />
                                         <div class="error-messages" ng-messages="formDailyTreatmentManager.badNumber.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">不合格数不能为空</small>
                                         </div>
                                     </div>
-                                    <label for="scrapTreatmentNumber" class="col-md-2 control-label">报费数</label>
+                                    <label for="scrapTreatmentNumber" class="col-md-2 control-label">修复返线:</label>
                                     <div class="col-md-4">
-                                        <input name="scrapTreatmentNumber" type="number" class="form-control" ng-model="vm.ScrapTreatmentNumber" required />
-                                        <div class="error-messages" ng-messages="formDailyTreatmentManager.scrapTreatmentNumber.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">报费数不能为空</small>
-                                        </div>
+                                        <input name="scrapTreatmentNumber" type="number" class="form-control" ng-model="vm.ScrapTreatmentNumber" 
+                                                  ng-keydown="focus.moveFocusNext($event,'badDescriptionFocus')"
+                                                                   focus-if="focus.scrapTreatmentNumberFocus" focus-setter
+                                               />  
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <label for="badDescription" class="col-md-2 control-label">不合格现象:</label>
+                                    <div class="col-md-4">
+                                        <textarea name="badDescription" class="form-control" ng-model="vm.BadDescription"
+                                                    ng-keydown="focus.moveFocusNext($event,'badReasonFocus')"
+                                                                   focus-if="focus.badDescriptionFocus" focus-setter
+                                                  />
+                                    </div>
+                                    <label for="badReason" class="col-md-2 control-label">不合格原因:</label>
+                                    <div class="col-md-4">
+                                        <textarea name="badReason" class="form-control" ng-model="vm.BadReason"
+                                                   ng-keydown="focus.moveFocusNext($event,'responsibleAttributionClassFocus')"
+                                                                   focus-if="focus.badReasonFocus" focus-setter
+                                                  />
                                     </div>
                                 </div>
 
+
                                 <div class="form-group">
-                                    <label for="difficultyCoefficient" class="col-md-2 control-label">不合格归类:</label>
+                                
+                                    <label for="responsibleAttributionClass" class="col-md-2 control-label">原因归类:</label>
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input type="text" name="responsibleAttributionClass" placeholder="必填" class="form-control" ng-model="vm.ResponsibleAttributionClass" required />
+                                            <input type="text" name="responsibleAttributionClass" placeholder="必填" class="form-control" ng-model="vm.ResponsibleAttributionClass" 
+                                                       ng-keydown="focus.moveFocusNext($event,'responsiblePersonFocus')"
+                                                                   focus-if="focus.responsibleAttributionClassFocus" focus-setter
+                                                   required />
                                             <div class="error-messages" ng-messages="formDailyTreatmentManager.responsibleAttributionClass.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">难度系数不能为空</small>
                                             </div>
@@ -94,28 +144,82 @@
                                     <label for="responsiblePerson" class="col-md-2 control-label">责任人:</label>
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input name="responsiblePerson" placeholder="必填" class="form-control" ng-model="vm.ResponsiblePerson" />
-                                            <div class="error-messages" ng-messages="formDailyTreatmentManager.responsiblePerson.$error" ng-show="operate.showValidation">
-                                                <small ng-message="required">责任人不能为空</small>
+                                            <input name="responsiblePerson" class="form-control"
+                                                   ng-model="workerId"
+                                                   ng-keypress="($event.which === 13)?vmManager.getWorkerInfo(workerId,1):0"
+                                                   focus-if="focus.responsiblePersonFocus" focus-setter
+                                                   placeholder="输工号或姓名"
+                                                   data-ensure-user-exist required />
+                                            <div class="error-messages" ng-messages="formDailyProductionReport.responsiblePerson.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">工号不能为空</small>
+                                            </div>
+                                            <div class="input-group-addon">
+                                                <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.ResponsiblePerson}}</label>
+                                            </div>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-primary"
+                                                        data-animation="am-flip-x"
+                                                        bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                    <span class="fa fa-chevron-circle-down"></span>
+                                                </button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker,1)"
+                                                            ng-repeat="worker in  vmManager.searchedWorkers  track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                            <i class="fa fa-user"></i>
+                                                            <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                            <span>姓名：{{worker.Name}}</span>|
+                                                            <span>部门：{{worker.Department}}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="treatmentMethod" class="col-md-2 control-label">处理对策</label>
+                                    <label for="treatmentMethod" class="col-md-2 control-label">处理对策:</label>
                                     <div class="col-md-4">
-                                        <input name="text" placeholder="必填" class="form-control" ng-model="vm.TreatmentMethod" required />
+                                        <input name="text" placeholder="必填" class="form-control" ng-model="vm.TreatmentMethod"
+                                                  ng-keydown="focus.moveFocusNext($event,'treatmentPersonFocus')"
+                                                                   focus-if="focus.treatmentMethodFocus" focus-setter
+                                               required />
 
                                     </div>
                                     <label for="treatmentPerson" class="col-md-2 control-label">处理人:</label>
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input name="treatmentPerson" placeholder="必填" class="form-control" ng-model="vm. TreatmentPerson" required />
-                                            <div class="error-messages" ng-messages="formDailyTreatmentManager.treatmentPerson.$error" ng-show="operate.showValidation">
+                                            <input name="treatmentPerson" class="form-control"
+                                                   ng-model="treatmentPersonId"
+                                                   ng-keypress="($event.which === 13)?vmManager.getWorkerInfo(treatmentPersonId,2):0"
+                                                   focus-if="focus.treatmentPersonFocus" focus-setter
+                                                   placeholder="输工号或姓名"
+                                                   data-ensure-user-exist required />
+                                            <div class="error-messages" ng-messages="formDailyProductionReport.treatmentPerson.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">处理人不能为空</small>
                                             </div>
-                                        </div>
-                                    </div>
+                                            <div class="input-group-addon">
+                                                <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.TreatmentPerson}}</label>
+                                            </div>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-primary"
+                                                        data-animation="am-flip-x"
+                                                        bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                    <span class="fa fa-chevron-circle-down"></span>
+                                                </button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker,2)"
+                                                            ng-repeat="worker in  vmManager.searchedWorkers  track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                            <i class="fa fa-user"></i>
+                                                            <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                            <span>姓名：{{worker.Name}}</span>|
+                                                            <span>部门：{{worker.Department}}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>                                    </div>
                                 </div>
                                 <div class="form-group">
 
@@ -130,7 +234,10 @@
                                         <div class="col-md-2">
                                         </div>
                                         <div class="col-md-10">
-                                            <button class="btn btn-primary " ng-click="operate.saveDatas(formDailyTreatmentManager.$valid)"><i class="fa fa-save"></i>保存</button>
+                                            <button class="btn btn-primary " ng-click="operate.saveDatas(formDailyTreatmentManager.$valid)"
+                                                     ng-keypress="operate.saveDatas(formDailyTreatmentManager.$valid)"
+                                                      focus-if="focus.saveDatasFocus" focus-setter
+                                                    ><i class="fa fa-save"></i>保存</button>
                                             <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                             <span yl-operatemsg-board></span>
                                         </div>
@@ -156,18 +263,18 @@
                                             <div class="input-group-addon">
                                                 <label>单号:</label>
                                             </div>
-                                            <input type="text" class="form-control" ng-model="query.orderId" placeholder="输入单号" />
+                                            <input type="text" class="form-control" ng-model="queryOrderId" placeholder="输入单号" />
                                             <div class="input-group-btn" ng-show="!vmManager.isLocal">
-                                                <button class="btn btn-success" ng-click="vmManager.searchBy()"><i class="fa fa-search"></i>查询</button>
+                                                <button class="btn btn-success" ng-click="vmManager.searchBy(queryOrderId)"><i class="fa fa-search"></i>查询</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             </li>
                             <li class="list-group-item" ng-click="vmManager.selectInPutDate(item)" cg-busy="{promise:searchPromise}"
-                                ng-repeat="item in vmManager.storeDataset|filter:query.orderId track by $index">
+                                ng-repeat="item in  mManager.storeDataset |filter:queryOrderId  track by $index">
                                 <h5>
-                                    <span class="label label-default" style="cursor:pointer">{{item.OrderId}}</span>
+                                    <span class="label label-default" style="cursor:pointer">{{item.orderId}}</span>
                                     <span class="label label-primary">{{item.ProductName}}</span>
                                     <span class="label label-default">{{item.ProductSpec}}</span>
                                     <span class="label label-info">{{item.ProcessesName}}</span>
