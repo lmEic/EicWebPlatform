@@ -793,17 +793,17 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             if (worktype.ToString() == "平时加班")
             {
                 double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(32).SetCellValue(doubV);
+                rowContent.GetCell(33).SetCellValue(doubV);
             }
             if (worktype.ToString() == "假日加班")
             {
                 double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(33).SetCellValue(doubV);
+                rowContent.GetCell(34).SetCellValue(doubV);
             }
             if (worktype.ToString() == "节假日加班")
             {
                 double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(34).SetCellValue(doubV);
+                rowContent.GetCell(35).SetCellValue(doubV);
             }
             //打印每日加数时数
                 double doubV1 = 0;
