@@ -363,7 +363,8 @@
                             <td ng-bind="item.WorkClassType"></td>
                             <td ng-bind="item.WorkerId"></td>
                             <td ng-bind="item.WorkerName"></td>
-                            <td ng-bind="item.WorkOverHoursCount"></td>
+                            <td ng-bind="item.WorkOverHoursCount" ng-show="vmManager.signDepSum"></td>
+                            <td ng-bind="item.WorkOverHours" ng-show="vmManager.signPerSum"></td>
                             <td ng-bind="item.Remark"></td>
                         </tr>
                     </tbody>
