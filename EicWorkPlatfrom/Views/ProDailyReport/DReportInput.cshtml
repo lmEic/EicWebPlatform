@@ -1166,7 +1166,7 @@
                                                        ng-keydown="focus.moveFocusNext($event,'processesIndexFocus')"
                                                        placeholder="机台"
                                                        data-ensure-user-exist required />
-                                                <div class="error-messages" ng-messages="formDailyProductionReport.machineId.$error" ng-show="operate.showValidation">
+                                                <div class="error-messages" ng-messages="formMachinePutin.machineId.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">模具编号不能为空</small>
                                                 </div>
                                                 <span title="机台设置时数" class="input-group-addon">{{vm.MachineSetProductionTime}}</span>
@@ -1205,7 +1205,7 @@
                                                    ng-onblur="vmMMachineInPut.putInProcesses($event)"
                                                    ng-model="vm.ProcessesIndex"
                                                    required />
-                                            <div class="error-messages" ng-messages="formDailyProductionReport.processesIndex.$error" ng-show="operate.showValidation">
+                                            <div class="error-messages" ng-messages="formMachinePutin.processesIndex.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">录入工序不能为空</small>
                                             </div>
                                             <div class="input-group-addon">
