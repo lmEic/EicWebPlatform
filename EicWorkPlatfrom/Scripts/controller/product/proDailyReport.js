@@ -1172,10 +1172,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             });
         },
         /// 得到机器信息  getMachineIdInfo
-        getMachineIdInfo: function ($event,item) {
-            if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
-                console.log(999999);
-                var machineInfo = _.findWhere(vmManagerPT.machineDatas, { MachineId: uiVM.MachineId });
+        getMachineIdInfo: function (item) {
+                console.log(item);
+                var machineInfo = _.findWhere(vmManagerPT.machineDatas, { MachineId: item});
                 if (!_.isUndefined(machineInfo)) {
                     uiVM.MachineName = machineInfo.MachineName;
                     uiVM.MachineSetProductionTime = machineInfo.MachineSetProductionTime;
@@ -1184,8 +1183,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     focusSetter.machineIdFocus = true;
                     leePopups.alert("机台信息不合法");
                 };
-            };
-           
         },
     };
     $scope.vmMMachineInPut = vmMMachineInPut;
