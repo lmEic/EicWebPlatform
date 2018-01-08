@@ -1174,7 +1174,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         /// 得到机器信息  getMachineIdInfo
         getMachineIdInfo: function (item) {
                 console.log(item);
-                var machineInfo = _.findWhere(vmManagerPT.machineDatas, { MachineId: item});
+                var machineInfo = _.findWhere(vmManagerPT.machineDatas,{ MachineId: item});
                 if (!_.isUndefined(machineInfo)) {
                     uiVM.MachineName = machineInfo.MachineName;
                     uiVM.MachineSetProductionTime = machineInfo.MachineSetProductionTime;
