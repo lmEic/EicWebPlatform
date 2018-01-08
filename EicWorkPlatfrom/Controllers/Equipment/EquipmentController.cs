@@ -19,7 +19,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
         public ActionResult AstArchiveInput()
         {
             return View();
