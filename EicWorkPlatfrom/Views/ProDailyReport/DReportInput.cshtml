@@ -1162,7 +1162,7 @@
                                                 <input name="machineId" class="form-control"  type="text"
                                                        ng-model="vm.MachineId"
                                                        focus-if="focus.machineIdFocus" focus-setter
-                                                       ng-keypress="vmMMachineInPut.getMachineIdInfo($event,vm.MachineId)"
+                                                       ng-keypress="($event.which === 13)?vmMMachineInPut.getMachineIdInfo(vm.MachineId):0"
                                                        ng-keydown="focus.moveFocusNext($event,'processesIndexFocus')"
                                                        placeholder="机台"
                                                        data-ensure-user-exist required />
