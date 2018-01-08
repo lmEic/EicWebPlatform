@@ -420,7 +420,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     },
     ////复制表中删除
     operate.copyDeleteItem = function (item) {
-        console.log(item);
         leePopups.confirm("删除提示", "您确定要删除复制的数据吗？", function () {
             $scope.$apply(function () {
                 if (item.IsServer) {
