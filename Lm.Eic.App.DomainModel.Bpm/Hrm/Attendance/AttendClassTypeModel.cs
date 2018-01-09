@@ -771,6 +771,49 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             get { return _slotcardtime; }
         }
 
+        private string _LeaveType;
+
+        /// <summary>
+        ///请假类别
+        /// </summary>
+        public string LeaveType
+        {
+            set { _LeaveType = value; }
+            get { return _LeaveType; }
+        }
+
+        private double _LeaveHours;
+
+        /// <summary>
+        ///请假时数
+        /// </summary>
+        public double LeaveHours
+        {
+            set { _LeaveHours = value; }
+            get { return _LeaveHours; }
+        }
+
+        private string _LeaveTimeRegion;
+
+        /// <summary>
+        ///请假时段
+        /// </summary>
+        public string LeaveTimeRegion
+        {
+            set { _LeaveTimeRegion = value; }
+            get { return _LeaveTimeRegion; }
+        }
+
+        private string _LeaveDescription;
+
+        /// <summary>
+        ///请假描述
+        /// </summary>
+        public string LeaveDescription
+        {
+            set { _LeaveDescription = value; }
+            get { return _LeaveDescription; }
+        }
         #endregion Model
     }
 
