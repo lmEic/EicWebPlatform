@@ -9,7 +9,7 @@
                     <label>  部门:</label>
                     <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
                             data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                            data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
+                            data-bs-options="item.DepartmentNode as item.DepartmentText for item in vmManager.departments" data-bs-select>
                         <span class="caret"></span>
                     </button>
                     <label>日期:</label>
@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <lable for="inputDate" class="col-md-6 label-warning control-label">录入日期:{{vm.InPutDate}}</lable>
+                            <lable for="inputDate" class="col-md-6 label-warning " >录入日期:{{vm.InPutDate}}</lable>
                         </div>
                         <div class="row ">
                             <div class="h-split"></div>
@@ -83,7 +83,13 @@
                         <input type="text" placeholder="输入品名快速定位" ng-model="filterErpOrder" ng-keydown="vmManager.confirmSearch($event,filterErpOrder)"
                                bs-options="item.OrderId as item.OrderId for item in vmManager.erpOrderInfoDatasSet" limit="10" bs-typeahead />
                     </div>
-                    <lable for="inputDate" class="col-md-6 label-warning control-label">录入日期:{{vm.InPutDate}}</lable>
+                    <div>
+                        <label>日期:</label>
+                        <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.InPutDate"
+                               focus-setter data-ensure-user-exist style="width:200px;" 
+                               placeholder="日期" />
+                    </div>
+                  
                 </div>
                 <div class="row ">
                     <div class="h-split"></div>
@@ -1162,8 +1168,8 @@
                                                 <input name="machineId" class="form-control"  type="text"
                                                        ng-model="vm.MachineId"
                                                        focus-if="focus.machineIdFocus" focus-setter
-                                                       ng-keypress="($event.which === 13)?vmMMachineInPut.getMachineIdInfo(vm.MachineId):0"
-                                                       ng-keydown="focus.moveFocusNext($event,'processesIndexFocus')"
+                                                        ng-keydown="($event.which === 13)?vmMMachineInPut.getMachineIdInfo(vm.MachineId):0"
+                                                        ng-keypress ="focus.moveFocusNext($event,'processesIndexFocus')"
                                                        placeholder="机台"
                                                        data-ensure-user-exist required />
                                                 <div class="error-messages" ng-messages="formMachinePutin.machineId.$error" ng-show="operate.showValidation">

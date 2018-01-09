@@ -240,7 +240,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             { id: "1", text: "是" },
            { id: "0", text: "否" }],
         ///部门
-        departments:leeHelper.selectDepartment,
+        departments: leeHelper.userDepartmentDatas(),
         ///输入类型
         inputTypes: [
            { id: "A", text: "有工时，计生产" },
@@ -645,7 +645,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             $scope.vm = uiVM;
         },
         ///选择部门
-        departments: leeHelper.selectDepartment,
+        departments: leeHelper.userDepartmentDatas(),
         searchedWorkers: [],
         processesInfos: [],
         workerId: null,
@@ -1180,7 +1180,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 }
                 else {
                     focusSetter.machineIdFocus = true;
-                    leePopups.alert("机台信息不合法");
                 };
         },
     };
@@ -1335,12 +1334,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                uiVM.MachineSetProductionTime = i.MachineSetProductionTime;
            },
            selectmouldId: function (i) {
-               console.log(999999);
-               console.log(i);
                uiVM.MouldHoleCount = i.MouldHoleCount;
                vm.MachineId = i.MachineId;
                uiVM.MouldId = i.MouldId;
-              
                uiVM.StandardProductionTime = i.UPS; 
                uiVM.ProcessesIndex = i.ProcessesIndex;
                uiVM.ProcessesName = i.ProcessesName;
@@ -1531,7 +1527,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
             });
         },
         department: leeLoginUser.department,
-        departments:leeHelper.selectDepartment,
+        departments: leeHelper.userDepartmentDatas(),
         IsValids: [{ id: true, text: "启用" }, { id: false, text: "不启用" }],
         erpOrderInfoDatas: [],
         nowDate: new Date(),
