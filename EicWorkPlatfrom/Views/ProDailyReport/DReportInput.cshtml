@@ -37,7 +37,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <lable for="inputDate" class="col-md-6 label-warning " >录入日期:{{vm.InPutDate}}</lable>
+                            <div class="input-group">
+                                <span class="input-group-addon  label-primary">录入日期:</span>
+                                <input name="queryDate" type="date" class="form-control" readonly format-date ng-model="vm.InPutDate"
+                                       focus-setter data-ensure-user-exist style="width:200px;"
+                                       placeholder="日期" />
+                            </div>
                         </div>
                         <div class="row ">
                             <div class="h-split"></div>
@@ -83,11 +88,13 @@
                         <input type="text" placeholder="输入品名快速定位" ng-model="filterErpOrder" ng-keydown="vmManager.confirmSearch($event,filterErpOrder)"
                                bs-options="item.OrderId as item.OrderId for item in vmManager.erpOrderInfoDatasSet" limit="10" bs-typeahead />
                     </div>
-                    <div>
-                        <label>日期:</label>
-                        <input name="queryDate" type="date" class="form-control" format-date ng-model="vm.InPutDate"
-                               focus-setter data-ensure-user-exist style="width:200px;" 
-                               placeholder="日期" />
+                    <div class="col-md-6 ">
+                        <div class="input-group" >
+                            <span class="input-group-addon  label-primary">录入日期:</span>
+                            <input name="queryDate" type="date" class="form-control" readonly format-date ng-model="vm.InPutDate"
+                                   focus-setter data-ensure-user-exist style="width:200px;"
+                                   placeholder="日期" />
+                        </div>
                     </div>
                   
                 </div>
@@ -637,7 +644,7 @@
                             @*机台*@
                             <form role="form" ng-show="vm.ProcessesType ==='机台'&& vmManager.department!='PT1'" name="formMachinePutIn" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                 <fieldset>
-                                    <div class="table-responsive" id="inPutMachineInfo" style="padding:20px;overflow-y:auto;">
+                                    <div class="table-responsive" id="inPutMachineInfo" style="padding:20px;overflow-y:auto">
                                         <div ng-if="vmManager.department!='PT1'" class="table-responsive" style="padding:20px;overflow-y:auto;">
                                             @*工序   人员  工时 非工时*@
                                             <div class="col-md-12">
@@ -648,7 +655,7 @@
                                                             <span class="input-group-addon">机台师傅:</span>
                                                             <input name="masterWorkerId" class="form-control"
                                                                    ng-model="vm.MasterWorkerId" 
-                                                                   ng-keypress="($event.which === 13)?vmManager.getWorkerInfo(vm.WorkerId,2):0"
+                                                                   ng-keypress="($event.which === 13)?vmManager.getWorkerInfo(vm.MasterWorkerId,2):0"
                                                                    ng-keydown="focus.changeEnter($event,'workerIdFocus')"
                                                                    focus-if="focus.masterWorkerIdFocus" focus-setter
                                                                    placeholder="输工号或姓名"
@@ -678,6 +685,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     @*工号人员信息*@
                                                     <div class="col-md-6">
