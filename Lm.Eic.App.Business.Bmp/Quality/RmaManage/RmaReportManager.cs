@@ -48,8 +48,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public string AutoBuildingRmaId()
         {
             int nowYaer = DateTime.Now.Year;
+            int count = 1;
             string maxRmaId = RmaCrudFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer);
-            int count = Convert.ToInt16(maxRmaId.Substring(maxRmaId.Length - 3, 3)) + 1;
+            if(maxRmaId!=null&& maxRmaId.Length>=6) 
+                 count = Convert.ToInt16(maxRmaId.Substring(maxRmaId.Length - 3, 3)) + 1;
             return "R" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + count.ToString("000");
         }
 

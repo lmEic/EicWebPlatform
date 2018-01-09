@@ -240,7 +240,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             { id: "1", text: "是" },
            { id: "0", text: "否" }],
         ///部门
-        departments:leeHelper.selectDepartment,
+        departments: leeHelper.userDepartmentDatas(),
         ///输入类型
         inputTypes: [
            { id: "A", text: "有工时，计生产" },
@@ -420,7 +420,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     },
     ////复制表中删除
     operate.copyDeleteItem = function (item) {
-        console.log(item);
         leePopups.confirm("删除提示", "您确定要删除复制的数据吗？", function () {
             $scope.$apply(function () {
                 if (item.IsServer) {
@@ -646,14 +645,14 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             $scope.vm = uiVM;
         },
         ///选择部门
-        departments: leeHelper.selectDepartment,
+        departments: leeHelper.userDepartmentDatas(),
         searchedWorkers: [],
         processesInfos: [],
         workerId: null,
         isSingle: true,//是否搜寻到的是单个人
         ///得到用户信息
         getWorkerInfo: function (workerid, opData) {
-            if (workerid === undefined) return;
+            if (workerid === undefined || workerid==null) return;
             var strLen = leeHelper.checkIsChineseValue(workerid) ? 2 : 6;
             if (workerid.length >= strLen) {
                 if (opData == 1) vmManager.searchedWorkers = [];
@@ -665,17 +664,20 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         vmManager.searchedWorkers = datas;
                         console.log(vmManager.searchedWorkers);
                         var mm = _.findWhere(vmManager.departments, { value: vmManager.department });
-                        var userInfo = _.findWhere(vmManager.searchedWorkers, { Department: mm.label });
-                        if (_.isUndefined(userInfo)) {
-                            if (vmManager.searchedWorkers.length == 1) {
+                        if (!_.isUndefined(mm)) {
+                            var userInfo = _.findWhere(vmManager.searchedWorkers, { Department: mm.DepartmentNode });
+                            if (!_.isUndefined(userInfo)) {
+                                vmManager.isSingle = true;
+                                vmManager.selectWorker(userInfo, opData);
+                            }
+                        }
+                        else {
+
+                            if (vmManager.searchedWorkers.length >= 1) {
                                 vmManager.isSingle = true;
                                 vmManager.selectWorker(vmManager.searchedWorkers[0], opData);
                             }
                             else vmManager.isSingle = false;
-                        }
-                        else {
-                            vmManager.isSingle = true;
-                            vmManager.selectWorker(userInfo, opData);
                         }
                     }
                     else {
@@ -1181,7 +1183,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 }
                 else {
                     focusSetter.machineIdFocus = true;
-                    leePopups.alert("机台信息不合法");
                 };
         },
     };
@@ -1336,12 +1337,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                uiVM.MachineSetProductionTime = i.MachineSetProductionTime;
            },
            selectmouldId: function (i) {
-               console.log(999999);
-               console.log(i);
                uiVM.MouldHoleCount = i.MouldHoleCount;
                vm.MachineId = i.MachineId;
                uiVM.MouldId = i.MouldId;
-              
                uiVM.StandardProductionTime = i.UPS; 
                uiVM.ProcessesIndex = i.ProcessesIndex;
                uiVM.ProcessesName = i.ProcessesName;
@@ -1532,7 +1530,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
             });
         },
         department: leeLoginUser.department,
-        departments:leeHelper.selectDepartment,
+        departments: leeHelper.userDepartmentDatas(),
         IsValids: [{ id: true, text: "启用" }, { id: false, text: "不启用" }],
         erpOrderInfoDatas: [],
         nowDate: new Date(),
