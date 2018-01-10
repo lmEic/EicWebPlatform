@@ -120,7 +120,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     /// </summary>
     public class AttendSlodFingerDataCurrentMonthRepository : HrmRepositoryBase<AttendSlodFingerDataCurrentMonthModel>, IAttendSlodFingerDataCurrentMonthRepository
     {
-        private const string loadAttendDataSql = "SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth";
+        private const string loadAttendDataSql = "SELECT WorkerId, WorkerName, Department, ClassType,LeaveType,LeaveHours,LeaveTimeRegion,LeaveDescription, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth";
         public List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto)
         {
             StringBuilder sqlText = new StringBuilder();
