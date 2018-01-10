@@ -3,7 +3,7 @@
         <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>请假管理</h6>
     </div>
     <div class="panel-body">
-        <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
+        <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:searchPromise}">
             <div bs-pane data-title="请假登记" data-name="initTab">
                 <div class="row">
                     <div class="col-md-10" id="1">
@@ -201,9 +201,22 @@
                                         </span>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input name="leaveType" class="form-control"ng-model="vm.LeaveType" ng-keypress="vmManager.getLeaveAskManagerDatas(3)"/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-model="vm.LeaveType"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择假别"
+                                                    data-bs-options="item.name as item.text for item in vmManager.leaveTypes" data-bs-select>
+                                                选择请假类别<span class="caret"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                @*<div class="form-group">
+                                    <button type="button" class="btn btn-primary form-control"ng-click="vmManager.getLeaveAskManagerDatas(4)"><i class="fa fa-square"></i>全部</button>
+                                </div>*@
                             </form>
-
                             <div class="h-split" />
                             <div class="table-responsive">
                                 <table class="table table-condensed table-hover" style="table-layout:fixed;">
@@ -214,16 +227,18 @@
                                         <col width="50" />
                                         <col width="30" />
                                         <col width="30" />
+                                        <col width="30" />
                                         <col width="40" />
 
                                     </colgroup>
                                     <thead>
-                                        <tr class="active">
+                                        <tr class="info">
                                             <th>序号</th>
                                             <th>姓名</th>
                                             <th>开始日期</th>
                                             <th>结束日期</th>
                                             <th>时数(H)</th>
+                                            <th>请假类别</th>
                                             <th>状态</th>
                                             <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
 
@@ -236,6 +251,7 @@
                                             <td ng-bind="item.LeaveTimerStart"></td>
                                             <td ng-bind="item.LeaveTimerEnd"></td>
                                             <td ng-bind="item.LeaveHours"></td>
+                                            <td ng-bind="item.LeaveType"></td>
                                             <td ng-bind="item.LeaveState"></td>
                                             <td>
                                                 <button id="editbtn" class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
