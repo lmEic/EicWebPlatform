@@ -63,10 +63,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
                 switch (Dto.SearchMode)
                 {
                     case 1:
-                    return irep.Entities.Where(k => k.WorkerId == Dto.WorkerId && k.Department==Dto.Department).ToList();
+                        return irep.Entities.Where(k => k.WorkerId == Dto.WorkerId && k.Department==Dto.Department).ToList();
                     case 2:
                         return irep.Entities.Where(k => k.LeaveState == Dto.LeaveSate && k.Department == Dto.Department).ToList();
-
+                    case 3:
+                        return irep.Entities.Where(k => k.LeaveType == Dto.LeaveType && k.Department == Dto.Department).ToList();
                     default:
                         return new List<LeaveAskManagerModels>();                      
                 }
