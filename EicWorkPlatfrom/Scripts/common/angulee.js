@@ -308,17 +308,6 @@ var leeHelper = (function () {
         //智能隧道
         TolManPowerTunnel: 'TolManPowerTunnel'
     };
-    ///选择部门数据
-    var selectDepartments =
-        [{ value: "MS1", label: "制一课" },
-          { value: "MS2", label: "制二课" },
-          { value: "MS3", label: "制三课" },
-          { value: "MS5", label: "制五课" },
-          { value: "MS6", label: "制六课" },
-          { value: "MS7", label: "制七课" },
-          { value: "MS10", label: "制十课" },
-          { value: "PT1", label: "成型课" }]
-    ;
     return {
         ///控制器名称
         controllers: controllerNames,
@@ -709,8 +698,13 @@ var leeHelper = (function () {
             }
             return "";
         },
-        ///选择部门
-        selectDepartment:selectDepartments
+        ///userDepartmentDatas部门
+        userDepartmentDatas: function () {
+            var user = leeDataHandler.dataStorage.getLoginedUser();
+            if (_.isObject(user)) {
+               return user.organizationUnits;
+            }
+        },
     };
 })();
 // 弹出框助手
