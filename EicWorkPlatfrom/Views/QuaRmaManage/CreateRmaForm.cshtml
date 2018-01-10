@@ -7,10 +7,15 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-4">
-                <button class="btn btn-xs btn-success" ng-click="vmManager.autoCreateRmaId()" type="button">新增</button>
+                <button class="btn  btn-success" ng-click="vmManager.autoCreateRmaId()" type="button">新增</button>
             </div>
-
-            <div class="col-md-8">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>年份:</label>
+                    <span xq-year-button  data-title-visible="false"  data-year="vmManager.createYear"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
                 <form class="form-inline pull-right">
                     <div class="form-group">
                         <label>RMA单号</label>

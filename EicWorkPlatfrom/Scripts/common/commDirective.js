@@ -58,6 +58,43 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
+
+ //年份控件
+.directive('xqYearButton', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: '/CommonTpl/YearButtonTpl',
+        replace: false,
+        scope: {
+            year: '=',//选择年份
+            titleVisible: '=',//是否显示标题
+            changed: '&'//选择事件
+        },
+        link: function (scope, element, attrs) {
+            scope.titleVisible = true;
+            var mydate = new Date();
+            scope.year = scope.currentYear = mydate.getFullYear();
+            var BindValue = function () {
+                scope.year = scope.currentYear;
+            };
+            scope.upYear = function () {
+                scope.currentYear += 1;
+                BindValue();
+            };
+            scope.downYear = function () {
+                scope.currentYear -= 1;
+                BindValue();
+            };
+            scope.$watch('year', function () {
+                if (!angular.isUndefined(scope.year)) {
+                    if (angular.isFunction(scope.changed)) {
+                        scope.changed();
+                    }
+                }
+            });
+        }
+    };
+})
 //季度控件
 .directive('ylQuarterButton', function () {
     return {

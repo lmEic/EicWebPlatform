@@ -45,14 +45,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 自动生成RmaId编号
         /// </summary>
         /// <returns></returns>
-        public string AutoBuildingRmaId()
+        public string AutoBuildingRmaId(int putInYaer)
         {
-            int nowYaer = DateTime.Now.Year;
-            int count = 1;
-            string maxRmaId = RmaCrudFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer);
-            if(maxRmaId!=null&& maxRmaId.Length>=6) 
-                 count = Convert.ToInt16(maxRmaId.Substring(maxRmaId.Length - 3, 3)) + 1;
-            return "R" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + count.ToString("000");
+            string maxRmaId = RmaCrudFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(putInYaer);
+            string yearStr = DateTime.Now.ToString("yy");
+            string changeYearStr = (putInYaer.ToString().Length == 4) ? changeYearStr = putInYaer.ToString().Substring(2, 2) : string.Empty;
+            yearStr=(changeYearStr!= yearStr && changeYearStr!=string.Empty)?yearStr = changeYearStr : DateTime.Now.ToString("yy");
+            string monthStr=(DateTime.Now.Year > putInYaer)?"12":(DateTime.Now.Year < putInYaer)?"01": DateTime.Now.ToString("MM");
+            int  count = (maxRmaId !=null&& maxRmaId.Length>=6) ? Convert.ToInt16(maxRmaId.Substring(maxRmaId.Length - 3, 3)) + 1:1;
+            return "R" + yearStr + monthStr + count.ToString("000");
         }
 
         /// <summary>
