@@ -33,7 +33,7 @@ namespace EicWorkPlatfrom.Controllers
             var dateConverter = new IsoDateTimeConverter() { DateTimeFormat = dateFormat };
             return Content(JsonConvert.SerializeObject(data, Formatting.Indented, dateConverter));
         }
-
+       
         #endregion json date converter
 
         #region my define

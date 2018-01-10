@@ -12,6 +12,7 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -106,7 +107,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetWorkOverHourSumsByWorkId(string qrydate, string departmentText, string workId, int mode)
         {
-
             WorkOverHoursDto qryDto = new WorkOverHoursDto()
             {
                 QryDate = qrydate,
@@ -117,7 +117,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
             TempData["WorkOverHourDatasBySum"] = datas;
             return DateJsonResult(datas);
-
         }
         [NoAuthenCheck]
         public ContentResult GetWorkOverHoursWorkIdBydetail(string qrydate, string departmentText, int mode)
@@ -246,9 +245,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
                 string fileName1 = "加班汇总表.xls";
-                var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
-              
-
+                var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;            
                 if (datas == null || datas.Count == 0)
                 {
                     new DownLoadFileModel().Default();
@@ -359,23 +356,50 @@ namespace EicWorkPlatfrom.Controllers.Product
 
 
         }
+        /// <summary>
+        /// 查询请假信息
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="leaveSate"></param>
+        /// <param name="department"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetLeaveAskManagerDatas(string workerId,string leaveSate,string department,int mode)
+        
+        public ContentResult GetLeaveAskManagerDatas(string workerId,string leaveSate,string department,string leaveType,int mode)
         {
             var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
             {
                 WorkerId = workerId,
                 LeaveSate=leaveSate,
                 Department=department,
+                LeaveType=leaveType,
                 SearchMode=mode     
             });
            
             return DateJsonResult(datas);
 
         }
+
+        /// <summary>
+        /// 计算两个日期的差值 
+        /// </summary>
+        /// <param name="date2"></param>
+        /// <param name="date1"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [NoAuthenCheck]
+        public JsonResult CalculateDate(DateTime date2,DateTime date1)
+        {
+            TimeSpan ts = date2.Subtract(date1);
+            var hours = Math.Round(ts.TotalHours, 2);
+            return  Json(hours, JsonRequestBehavior.AllowGet); ;
+        }
         #endregion
 
         #endregion
+
+
     }
 }
