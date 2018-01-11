@@ -10,7 +10,7 @@
                     部门:
                     <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
                             data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                            data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
+                            data-bs-options="item.DepartmentNode as item.DepartmentText for item in vmManager.departments" data-bs-select>
                         <span class="caret"></span>
                     </button>
                     <label>产品品名</label>

@@ -61,6 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <param name="reportDate"></param>
         public MealReportedAnalogModel GetAnalogReportMealDatas(DateTime reportDate)
         {
+            reportDate = reportDate.ToDate();
             MealReportedAnalogModel analogData = new MealReportedAnalogModel();
             var sumerizeDatas = GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(reportDate);
             if (sumerizeDatas == null || sumerizeDatas.Count == 0) return analogData;
@@ -118,6 +119,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         }
         private MealReportSumerizeModel CreateSumerizeReportMealModel(List<MealReportSumerizeModel> sumerizeDatas, DateTime reportMealDate)
         {
+            if (sumerizeDatas == null) return null;
             return new MealReportSumerizeModel()
             {
                 ReportMealDate = reportMealDate.ToDateStr(),

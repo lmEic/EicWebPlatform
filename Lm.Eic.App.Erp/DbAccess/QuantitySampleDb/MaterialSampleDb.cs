@@ -269,6 +269,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         public List<ProductionOrderIdInfo> GetLikeQueryProductionOrderInfoBy(string orderId)
         {
             List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
+            if (orderId == string.Empty || orderId == null) return ProductionOrderIdDatas;
             ProductionOrderIdInfo OrderIdData = null;
             string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011,TA003,TA010  FROM MOCTA WHERE  CAST(RTRIM(TA001) AS varchar(10)) + '-' + CAST(RTRIM(TA002) AS varchar(10)) like'{0}%'   ORDER BY TA002 ", orderId);
             DataTable dt = DbHelper.Erp.LoadTable(sql);

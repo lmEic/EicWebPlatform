@@ -726,7 +726,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// </summary>
         private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
         {
-           
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
             object department = tpis[2].GetValue(entity, null);//企业信息中心

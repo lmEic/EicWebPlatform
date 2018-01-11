@@ -42,8 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId))
             {
-                model.RmaYear = DateTime.Now.Year;
-                model.RmaMonth = DateTime.Now.Month;
+               
                 model.RmaIdStatus = RmaHandleStatus.InitiateStatus;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
