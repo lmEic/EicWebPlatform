@@ -205,8 +205,7 @@ namespace EicWorkPlatfrom.Controllers.Product
 
                         break;
                     }
-                }
-                  
+                }                
                 if (postNature=="间接")
                 {
                     string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板间接.xls";

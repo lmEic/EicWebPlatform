@@ -132,7 +132,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.InnerException.Message);
             }
             

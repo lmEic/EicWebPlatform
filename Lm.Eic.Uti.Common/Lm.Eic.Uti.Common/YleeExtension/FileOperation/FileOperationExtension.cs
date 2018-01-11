@@ -515,25 +515,25 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             int row_day1 = 0;
             int row_day_451 = 0;
             int row_day_671 = 0;
-            int colIndex0 = 1;
-            int colIndex1 = 2;
-            int colIndex2 = 3;
-            int colIndex3 = 4;
+            int colIndex0 = 2;
+            int colIndex1 = 3;
+            int colIndex2 = 4;
+            int colIndex3 = 5;
 
-            int colIndex5 = 5;
-            int colIndex6 = 6;
-            int colIndex7 = 7;
-            int colIndex8 = 8;
+            int colIndex5 = 6;
+            int colIndex6 = 7;
+            int colIndex7 = 8;
+            int colIndex8 = 9;
 
-            int colIndex9 = 9;
-            int colIndex10 = 10;
-            int colIndex11 = 11;
-            int colIndex12 = 12;
+            int colIndex9 = 10;
+            int colIndex10 = 11;
+            int colIndex11 = 12;
+            int colIndex12 = 13;
 
-            int colIndex13 = 13;
-            int colIndex14 = 14;
-            int colIndex15 = 15;
-            int colIndex16 = 16;
+            int colIndex13 = 14;
+            int colIndex14 = 15;
+            int colIndex15 = 16;
+            int colIndex16 = 17;
 
             #endregion
 
@@ -548,9 +548,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 IRow cowConter_line231 = sheet1.GetRow((rowIndex - row_day1) + 5);//换列(2,3)
                 IRow cowConter_line451 = sheet1.GetRow((rowIndex - row_day_451) + 5);//换列(4,5)
                 IRow cowConter_line671 = sheet1.GetRow((rowIndex - row_day_671) + 5);//换列(6,7)
-
                 #endregion
-
                 T entity = dataSource[rowIndex];
                 Type tentity = entity.GetType();
                 PropertyInfo[] tpis = tentity.GetProperties();
@@ -741,39 +739,33 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             object worknighttime = tpis[14].GetValue(entity, null);
             object workdaytime1 = tpis[15].GetValue(entity, null);
             object worknighttime1 = tpis[16].GetValue(entity, null);
-
-
-            rowWorkType.GetCell(15).SetCellValue(worktype.ToString());
-         
+            rowWorkType.GetCell(19).SetCellValue(worktype.ToString());       
             rowDeparmentAndWorkdate.GetCell(1).SetCellValue(department.ToString());
             rowWorkReason.GetCell(1).SetCellValue(workreason.ToString());
             if (workclasstype.ToString() == "白班")
             {
                 rowWorkDayTime.GetCell(3).SetCellValue(workdaytime.ToString());
-                rowWorkDayTime.GetCell(11).SetCellValue(workdaytime1.ToString());
+                rowWorkDayTime.GetCell(12).SetCellValue(workdaytime1.ToString());
             }
             if (workclasstype.ToString() == "晚班")
             {
                 rowWorkNightTime.GetCell(3).SetCellValue(worknighttime.ToString());
-                rowWorkNightTime.GetCell(11).SetCellValue(worknighttime1.ToString());
+                rowWorkNightTime.GetCell(12).SetCellValue(worknighttime1.ToString());
             }
             DateTime dateV;
             DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
-            rowDeparmentAndWorkdate.GetCell(11).SetCellValue(dateV.ToShortDateString());
-            // rowContent.GetCell(1).SetCellValue(workclasstype.ToString());
-           // rowContent.GetCell(colindex0).SetCellValue(workclasstype.ToString());
+            rowDeparmentAndWorkdate.GetCell(14).SetCellValue(dateV.ToShortDateString());
+         
+            rowContent.GetCell(colindex0).SetCellValue(workclasstype.ToString());
             rowContent.GetCell(colindex1).SetCellValue(workId.ToString());
             rowContent.GetCell(colindex2).SetCellValue(workName.ToString());
             double doubV = 0;
             double.TryParse(workhours.ToString(), out doubV);
             rowContent.GetCell(colindex3).SetCellValue(doubV);
-
         }
-
         private static void WorkHoursFillIcellSumArray<T>(ICellStyle cellSytleDate, IRow rowContent,IRow row_workdate, T entity, PropertyInfo[] tpis, int tipsIndex, int rowIndex, int colIndex)
         {
-            #region 加班汇总输出到EXCEL 
-           
+            #region 加班汇总输出到EXCEL          
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
             object department = tpis[2].GetValue(entity, null);//企业信息中心
@@ -811,18 +803,15 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 double.TryParse(workhours.ToString(), out doubV1);
                 rowContent.GetCell(day+1).SetCellValue(doubV1);
             //打印统计晚班时数
-            if(workclasstype.ToString()=="晚班")
-            {
+           
+            if (workclasstype.ToString()=="晚班")
+            {              
                 double doubV2 = 0;
                 double.TryParse(workhoursNightCount.ToString(), out doubV2);
                 rowContent.GetCell(36).SetCellValue(doubV2);
-            }
-           
-
+            }         
             #endregion
-
         }
-
         private static ISheet WorkHoursFillcellSum<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
             #region 加班汇总方法
@@ -841,14 +830,11 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
             {
                 int i = 0;
-
                 T entity = dataSource[rowIndex];
                 Type tentity = entity.GetType();
                 PropertyInfo[] tpis = tentity.GetProperties();
                 int colIndex = 0;
-
-                workerId1 = tpis[0].GetValue(entity, null).ToString();//1  1  2
-                                                                      //0  1 ,2
+                workerId1 = tpis[0].GetValue(entity, null).ToString();//1  1  2                                                                    //0  1 ,2
                 FieldMapList.ForEach(e =>
                 {
                     for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
