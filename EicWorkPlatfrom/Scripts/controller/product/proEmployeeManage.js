@@ -971,7 +971,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         getWorkOverHourSumss: function (mode) {
             vmManager.signDepSum = true;
             vmManager.signPerSum = false;
-            if (leeLoginUser.userName == "桂艳子") {             
+            if (leeLoginUser.departmentText == "生技部"||leeLoginUser.departmentText=="企业讯息中心"||leeLoginUser.departmentText=="制二课") {             
                 vmManager.workhoursNightCountShow = true;
             }
             else
@@ -1009,9 +1009,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             var datas = proEmployeeDataService.getWorkOverHoursWorkIdBydetails(vmManager.searchYear, vmManager.selectDepartment, 3).then(function (datas) {
                 vmManager.dataSourceSum = datas;
             })
-
         },
-
         //获取正在编辑的行
         getEdittingRow: function () {
             var rowItem = _.find(vmManager.dataSets, { rowindex: vmManager.edittingRowIndex });
@@ -1019,16 +1017,12 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         },
         //快速查找员工
         getWorkName: function () {
-
             var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
-
             if (qryItem != null) {
                 vmManager.editworkOverHours(qryItem);
                 vmManager.qryWorkName = null;
             }
-
         },
-
         //加载部门信息
         getDepartment: function () {
             vmManager.DepartmentDatas = [];
@@ -1036,14 +1030,13 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 vmManager.DepartmentDatas = datas;
             })
         },
-
         bindingDepartments: function () {
+            vmManager.workhoursNightCountShow = false;
             var departments;
             var user = leeDataHandler.dataStorage.getLoginedUser();
             if (_.isObject(user)) {
                 vmManager.organizationUnits = user.organizationUnits;
             }
-
         },
         //载入模板
         getWorkOverHoursModes: function () {
@@ -1329,7 +1322,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             row.WorkNightTime1 = _workNightTime1;         
             row.WorkoverType = uiVM.WorkoverType;
             row.QryDate = qryDateFormat;
-            row.WorkClassType = uiVM.WorkClassType;
+            //row.WorkClassType = uiVM.WorkClassType;
             row.WorkOverHours = uiVM.WorkOverHours;
             row.DepartmentText = uiVM.DepartmentText;
             row.ParentDataNodeText = uiVM.ParentDataNodeText;

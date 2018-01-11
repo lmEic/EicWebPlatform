@@ -203,7 +203,7 @@
                     </table>
                     <ul class="nav nav-pills" role="tablist">
                         <li class="success"><a href="#">当前总行数: <span class="badge">{{tempVm.tabCount}}</span></a></li>
-                        <li class="success"><a href="#">加班部门: <span class="badge">{{tempVm.department}}</span></a></li>
+                        <li class="success"><a href="#">加班部门: <span class="badge">{{vmManager.selectDepartment}}</span></a></li>
                         <li class="success"><a href="#">加班总时数: <span class="badge">{{tempVm.workOverCount}}h</span></a></li>
                     </ul>
                 </div>
@@ -353,7 +353,7 @@
                             <th>姓名</th>
                             <th>加班时数(h)</th>
                             <th>备注</th>
-                            <th ng-show="vmManager.workhoursNightCountShow">各班统计</th>
+                            <th ng-show="vmManager.workhoursNightCountShow">晚班统计</th>
                         </tr>
                     </thead>
                     <tbody>
