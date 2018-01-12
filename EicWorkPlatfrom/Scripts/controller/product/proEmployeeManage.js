@@ -1166,10 +1166,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                     vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
                 };
             },
-        }),
-       
-
-       
+        }),           
     };
     //导入excel
     $scope.selectFile = function (el) {
@@ -1187,10 +1184,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
 
                 })
             });
-        });
-
-
-        
+        });   
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -1207,8 +1201,6 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         vmManager.workNightDate = item.WorkDate;
         vmManager.workDayDate1 = item.WorkDate;
         vmManager.workNightDate1 = item.WorkDate;
-
-
         dialog.show();
     };
     //后台编辑
@@ -1309,9 +1301,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         var _workNightTime = "从 " + uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm") + " 至 " + vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");
         var _workDayTime1 = "从 " + uiVM.WorkDate + " " + vmManager.workDayTimeStart1.pattern("HH:mm") + " 至 " + vmManager.workDayDate1 + " " + vmManager.workDayTimeEnd1.pattern("HH:mm");
         var _workNightTime1 = "从 " + uiVM.WorkDate + " " + vmManager.workNightTimeStart1.pattern("HH:mm") + " 至 " + vmManager.workNightDate1 + " " + vmManager.workNightTimeEnd1.pattern("HH:mm");
-        var qryDateFormat = $filter('date')(uiVM.WorkDate, "yyyyMM");
-       
-        
+        var qryDateFormat = $filter('date')(uiVM.WorkDate, "yyyyMM");      
         uiVM.WorkOverHours = $scope.vm.WorkOverHours;
         angular.forEach(vmManager.dataSets, function (row) {
             $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
