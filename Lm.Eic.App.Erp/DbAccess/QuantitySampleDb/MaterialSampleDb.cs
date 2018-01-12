@@ -236,6 +236,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         public List<ProductionOrderIdInfo> GetProductionOrderIdInfoBy(string department, string orderStatus)
         {
             string orderStatusSql = OrderStatusStr(orderStatus);
+            if (department == "MD") department = "PT1";
             List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
             ProductionOrderIdInfo OrderIdData = null;
             string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011,TA003,TA010 FROM MOCTA WHERE(TA021 = '{0}')  {1}   ORDER BY TA002 ", department, orderStatusSql);
