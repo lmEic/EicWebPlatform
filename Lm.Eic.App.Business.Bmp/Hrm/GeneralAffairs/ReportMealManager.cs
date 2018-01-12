@@ -71,15 +71,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             analogData.TotalOfLG = CreateSumerizeReportMealModel(analogData.SumerizeDatasOfLG, reportDate);
             return analogData;
         }
-
+        private void AddDataTo(Dictionary<string, List<MealReportSumerizeModel>> dicDatas, List<MealReportSumerizeModel> datas, MealReportSumerizeModel item, string key)
+        {
+            if (datas != null && item != null)
+            {
+                datas.Add(item);
+                dicDatas.Add(key, datas);
+            }
+        }
         public DownLoadFileModel ExportAnalogData(MealReportedAnalogModel data)
         {
-            if (data == null) return null;
-            data.SumerizeDatasOfLG.Add(data.TotalOfLG);
-            data.SumerizeDatasOfYG.Add(data.TotalOfYG);
-            Dictionary<string, List<MealReportSumerizeModel>> dicDatas = new Dictionary<string, List<MealReportSumerizeModel>>() {
-                {reportWorkerTypeYG,data.SumerizeDatasOfYG }, { reportWorkerTypeLG,data.SumerizeDatasOfLG}
-            };
+            if (data == null) return new DownLoadFileModel().Default();
+            Dictionary<string, List<MealReportSumerizeModel>> dicDatas = new Dictionary<string, List<MealReportSumerizeModel>>();
+            AddDataTo(dicDatas, data.SumerizeDatasOfYG, data.TotalOfYG, reportWorkerTypeYG);
+            AddDataTo(dicDatas, data.SumerizeDatasOfLG, data.TotalOfLG, reportWorkerTypeLG);
             List<FileFieldMapping> fieldMapps = new List<FileFieldMapping>() {
                 new FileFieldMapping("ReportMealDate","报餐日期"),
                 new FileFieldMapping("Department","部门"),

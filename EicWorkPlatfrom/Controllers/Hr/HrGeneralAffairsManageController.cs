@@ -117,6 +117,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult ExportReportMealSumerizeDatas()
         {
             var data = TempData["ReportMealSumerize"] as MealReportedAnalogModel;
+
             return this.DownLoadFile(GeneralAffairsService.ReportMealManager.ExportAnalogData(data));
         }
         #endregion
