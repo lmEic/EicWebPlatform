@@ -243,7 +243,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
                 string fileName1 = "加班汇总表.xls";
-                var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;            
+                var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
                 if (datas == null || datas.Count == 0)
                 {
                     new DownLoadFileModel().Default();
@@ -255,7 +255,32 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 throw new Exception(ex.Message);
             }
+
+
         }
+        [NoAuthenCheck]
+        public FileResult WorkOverHoursDatasSumToExcelDayCount()
+        {
+            try
+            {
+                string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表1.xls";
+                string fileName1 = "加班汇总表1.xls";
+                var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
+                if (datas == null || datas.Count == 0)
+                {
+                    new DownLoadFileModel().Default();
+                }
+                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM1(datas, SiteRootPath, filePath1, fileName1);
+                return this.DownLoadFile(dlfm);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+        }
+
         /// <summary>
         /// 后台保存
         /// </summary>
