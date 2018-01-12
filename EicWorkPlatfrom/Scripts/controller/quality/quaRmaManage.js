@@ -10,9 +10,10 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     var quaRmaManageUrl = "/quaRmaManage/";
     //-------------RMA表单创建----------------------------
     //自动生成RMA表单号
-    rma.autoCreateRmaId = function () {
+    rma.autoCreateRmaId = function (buildYear) {
         var url = quaRmaManageUrl + 'AutoBuildingRmaId';
         return ajaxService.getData(url, {
+            buildYear: buildYear
         });
     };
     ///获取RMA表单单头
@@ -118,9 +119,11 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     var initVM = _.clone(uiVm);
     var vmManager = {
         customerShortNames: [],
+        createYear:null,
         //自动生成RMA编号
         autoCreateRmaId: function () {
-            $scope.doPromise = rmaDataOpService.autoCreateRmaId().then(function (rmaId) {
+            console.log(new Date().getFullYear());
+            $scope.doPromise = rmaDataOpService.autoCreateRmaId(vmManager.createYear).then(function (rmaId) {
                 uiVm.RmaId = rmaId;
                 uiVm.OpSign = leeDataHandler.dataOpMode.add;
             });
@@ -149,6 +152,16 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     operate.saveAll = function (isValid) {
         var isContainCustomerShortName = false;
         leeHelper.setUserData(uiVm);
+        uiVm.RmaYear = vmManager.createYear
+        var nowYear = new Date().getFullYear();
+        if (vmManager.createYear != nowYear)
+        {
+            if (vmManager.createYear < nowYear)
+                uiVm.RmaMonth = 1;
+            if (vmManager.createYear > nowYear)
+                uiVm.RmaMonth =12;
+        }
+       else  uiVm.RmaMonth =new Date().getMonth();
         angular.forEach(vmManager.customerShortNames, function (customerShortName) {
             if (uiVm.CustomerShortName == customerShortName.text)
             { isContainCustomerShortName = true; }

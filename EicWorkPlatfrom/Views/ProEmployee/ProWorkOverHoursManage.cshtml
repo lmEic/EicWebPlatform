@@ -57,7 +57,9 @@
                         <input type="file" class="form-control" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
                     </span>
                     <button class="btn btn-primary pull-right" title="保存" ng-click="operate.saveDialog()"><i class="fa fa-save"></i>批量保存</button>&nbsp;
-                    <a class="btn btn-success pull-right" href="@Url.Action("WorkOverHoursDatasToExcel", "ProEmployee")"><i class="fa fa-file-excel-o"></i> 导出打印</a>
+                    <a  class="btn btn-success pull-right" href="@Url.Action("WorkOverHoursDatasToExcel", "ProEmployee")"><i class="fa fa-file-excel-o"></i> 导出打印</a>
+
+
                     <button class="btn btn-info pull-right" title="加班汇总" ng-click="vmManager.showWorkOverHoursSum()"><i class="fa fa-pie-chart"></i>加班汇总</button>
                     <button class="btn btn-danger pull-right" title="后台编辑" ng-click="vmManager.showWorkOverHoursDatas()"><i class="fa fa-paperclip"></i>后台编辑</button>
                 </div>
@@ -203,7 +205,7 @@
                     </table>
                     <ul class="nav nav-pills" role="tablist">
                         <li class="success"><a href="#">当前总行数: <span class="badge">{{tempVm.tabCount}}</span></a></li>
-                        <li class="success"><a href="#">加班部门: <span class="badge">{{tempVm.department}}</span></a></li>
+                        <li class="success"><a href="#">加班部门: <span class="badge">{{vmManager.selectDepartment}}</span></a></li>
                         <li class="success"><a href="#">加班总时数: <span class="badge">{{tempVm.workOverCount}}h</span></a></li>
                     </ul>
                 </div>
@@ -315,16 +317,21 @@
                                 <input id="queryworkid" type="text" ng-model="query.workId" class="form-control pull-right" placeholder="输入工号查询人个汇总" ng-keydown="vmManager.getWorkOverHourSumsByWorkId()" />
                             </span>
                         </div>
-                        <div class="form-group">
-                            <a class="btn btn-primary pull-right" href="@Url.Action("WorkOverHoursDatasSumToExcel", "ProEmployee")"><i class="fa fa-file-excel-o"></i>导出汇总</a>
-                        </div>
+
                         <div class="form-group">
                             <button id="querytable" type="button" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursWorkIdBydetail()"><i class="fa fa-search"></i> 查询所有明细</button>
 
                         </div>
+                        <div class="form-group">
+                            <a class="btn btn-primary pull-right" href="@Url.Action("WorkOverHoursDatasSumToExcel", "ProEmployee")"><i class="fa fa-file-excel-o"></i>导出汇总</a>          
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-default pull-left" href="@Url.Action("WorkOverHoursDatasSumToExcelDayCount", "ProEmployee")"><i class="fa fa-file-excel-o"></i>晚班天数</a>
+                        </div>
                     </form>
                 </div>
                 <div class="col-md-2 pull-right">
+                   
                     <button class="btn btn-success pull-right" title="返回" ng-click="vmManager.returnWorkOverHoursSum()"><i class="fa fa-refresh"></i>返回</button>
                 </div>
             </div>
@@ -341,6 +348,7 @@
                         <col width="40" />
                         <col width="40" />
                         <col width="90" />
+                        <col width="30" />
                     </colgroup>
                     <thead>
                         <tr class="info">
@@ -352,6 +360,7 @@
                             <th>姓名</th>
                             <th>加班时数(h)</th>
                             <th>备注</th>
+                            <th ng-show="vmManager.workhoursNightCountShow">晚班统计</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -366,6 +375,7 @@
                             <td ng-bind="item.WorkOverHoursCount" ng-show="vmManager.signDepSum"></td>
                             <td ng-bind="item.WorkOverHours" ng-show="vmManager.signPerSum"></td>
                             <td ng-bind="item.Remark"></td>
+                            <td ng-bind="item.WorkOverHoursNightCount" ng-show="vmManager.workhoursNightCountShow"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -485,6 +495,7 @@
                             <input type="text" name="remark" class="form-control" ng-model="vm.Remark" placeholder="备注" />
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="workstatus" class="col-md-2 control-label">工员状态:</label>
                         <div class="col-md-4">
@@ -501,6 +512,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="workreason" class="col-md-2 control-label">加班原因:</label>
                         <div class="col-md-4">
@@ -513,8 +525,10 @@
                         </div>
                     </div>
 
+                    <div class="h-split"/>
+                    
                     <div class="form-group">
-                        <label for="workday" class="col-md-2 control-label">白班截止日期:</label>
+                        <label for="workday" class="col-md-2 control-label">白班时间段:</label>
                         <div class="col-md-4">
                             <input id="workDayDate" type="date" name="workDayDate" class="form-control" ng-model="vmManager.workDayDate" placeholder="白班时间" format-date required />
                         </div>
@@ -523,22 +537,18 @@
                                 <input id="workdayTimestart" name="workdaystart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
                                        ng-model="vmManager.workDayTimeStart" data-length="1" data-minute-step="1"
                                        required data-arrow-behavior="picker" />
-
                                 <div class="input-group-addon">
                                     <label>-</label>
                                 </div>
-                                <input id="workdayTimeend" name="workdayTimeend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
+                                <input id="workdayTimeend" name="workdayTimeend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1" ng-change="operate.calculateDayDates1()"
                                        bs-timepicker data-time-format="HH:mm"
                                        ng-model="vmManager.workDayTimeEnd" required data-arrow-behavior="picker" />
                             </div>
                         </div>
-
-
-
                     </div>
 
                     <div class="form-group">
-                        <label for="worknight" class="col-md-2 control-label">晚班截止日期:</label>
+                        <label for="worknight" class="col-md-2 control-label">晚班时间段:</label>
                         <div class="col-md-4">
                             <input id="workNightDate" type="date" name="workNightDate" class="form-control" ng-model="vmManager.workNightDate" placeholder="白班时间" format-date required />
                         </div>
@@ -551,7 +561,7 @@
                                 <div class="input-group-addon">
                                     <label>-</label>
                                 </div>
-                                <input id="worknightend" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
+                                <input id="worknightend" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"ng-change="operate.calculateNightDates1()"
                                        bs-timepicker data-time-format="HH:mm"
                                        ng-model="vmManager.workNightTimeEnd" required data-arrow-behavior="picker" />
                             </div>
@@ -559,6 +569,50 @@
                     </div>
 
                     <div class="h-split" />
+
+                    <div class="form-group">
+                        <label for="workday" class="col-md-2 control-label">白班时间段1:</label>
+                        <div class="col-md-4">
+                            <input id="workDayDate1" type="date" name="workDayDate" class="form-control" ng-model="vmManager.workDayDate1" placeholder="白班时间" format-date required />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input id="workdayTimestart1" name="workdaystart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
+                                       ng-model="vmManager.workDayTimeStart1" data-length="1" data-minute-step="1"
+                                       required data-arrow-behavior="picker" />
+                                <div class="input-group-addon">
+                                    <label>-</label>
+                                </div>
+                                <input id="workdayTimeend1" name="workdayTimeend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1" ng-change="operate.calculateDayDates2()"
+                                       bs-timepicker data-time-format="HH:mm"
+                                       ng-model="vmManager.workDayTimeEnd1" required data-arrow-behavior="picker" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="worknight" class="col-md-2 control-label">晚班时间段1:</label>
+                        <div class="col-md-4">
+                            <input id="workNightDate1" type="date" name="workNightDate" class="form-control" ng-model="vmManager.workNightDate1" placeholder="白班时间" format-date required />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input id="worknightstart1" name="worknightstart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
+                                       ng-model="vmManager.workNightTimeStart1" data-length="1" data-minute-step="1"
+                                       required data-arrow-behavior="picker" />
+
+                                <div class="input-group-addon">
+                                    <label>-</label>
+                                </div>
+                                <input id="worknightend1" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"ng-change="operate.calculateNightDates2()"
+                                       bs-timepicker data-time-format="HH:mm"
+                                       ng-model="vmManager.workNightTimeEnd1" required data-arrow-behavior="picker" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-split" />
+
                     <div class="alert alert-info ">
                         <div class="row">
                             <div class="col-md-2 ">

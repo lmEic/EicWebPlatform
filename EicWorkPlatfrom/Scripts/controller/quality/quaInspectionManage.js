@@ -706,7 +706,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.cacheDatas = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                     angular.forEach(materialIdDatas, function (item) {
-                        console.log(item);
                         var dataItem = {
                             productId: item.MaterialId,
                             orderId: item.OrderId,
@@ -989,7 +988,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             },
             show: false,
         }),
-
+        //审核 上传数据
         changeCheckModal: function (inspectionStatus) {
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.InspectionStatus = inspectionStatus;
@@ -1003,13 +1002,13 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 }
             })
         },
-
+        //得到数据
         getMasterDatasBy: function (qryField, mode) {
             vmManager.dataSource = [];
             vmManager.dataSets = [];
-            $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(qryField, mode, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+            $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(qryField, mode, vmManager.dateFrom, vmManager.dateTo).then(function (editDatas) {
                 if (editDatas.length >= 100) {
-                    vmManager.showTips.$promise.then(vmManager.showTips.show);
+                   vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
@@ -1046,8 +1045,10 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         detailCheckModal: function () {
             vmManager.checkModal.$promise.then(vmManager.checkModal.show);
         },
+        dataList: [],
         //获取详细数据
         getDetailDatas: function (item) {
+            console.log(989999);
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfIqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
