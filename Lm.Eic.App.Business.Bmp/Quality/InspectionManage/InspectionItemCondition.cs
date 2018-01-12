@@ -83,8 +83,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 //调出此物料所有打印记录项
 
                 //如果第一次打印 
-                if (datas == null | datas.Count() <= 0)
-                    return false;
+                if (datas == null | datas.Count() <= 0) return false;
+                var ddd = materialInDate.AddDays(-30);
                 // 进料日期后退30天 抽测打印记录
                 var inspectionItemsMonthRecord = (from t in datas
                                                   where t.MaterialInDate >= (materialInDate.AddDays(-30))
