@@ -156,6 +156,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
 
         }
+        public DownLoadFileModel WorkOverHoursDatasSumDLFM1(List<WorkOverHoursMangeModels> datas, string SiteRootPath1, string filePath1, string fileName1)
+        {
+            try
+            {
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
+                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
+
+                return dataGroupping.WorkOverHoursListToExcelSum1<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath1).WorkOverExcelTemplae("汇总报表");
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
         private List<FileFieldMapping> CreateFieldMapping()
         {
             List<FileFieldMapping> fieldmapping = new List<FileFieldMapping>()

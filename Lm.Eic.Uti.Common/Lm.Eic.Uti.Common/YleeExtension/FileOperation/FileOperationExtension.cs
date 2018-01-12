@@ -520,20 +520,20 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             int colIndex2 = 4;
             int colIndex3 = 5;
 
-            int colIndex5 = 6;
-            int colIndex6 = 7;
-            int colIndex7 = 8;
-            int colIndex8 = 9;
+            int colIndex5 = 7;
+            int colIndex6 = 8;
+            int colIndex7 = 9;
+            int colIndex8 = 10;
 
-            int colIndex9 = 10;
-            int colIndex10 = 11;
-            int colIndex11 = 12;
-            int colIndex12 = 13;
+            int colIndex9 = 12;
+            int colIndex10 = 13;
+            int colIndex11 = 14;
+            int colIndex12 = 15;
 
-            int colIndex13 = 14;
-            int colIndex14 = 15;
-            int colIndex15 = 16;
-            int colIndex16 = 17;
+            int colIndex13 = 17;
+            int colIndex14 = 18;
+            int colIndex15 = 19;
+            int colIndex16 = 20;
 
             #endregion
 
@@ -811,6 +811,55 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }         
             #endregion
         }
+        private static void WorkHoursFillIcellSumArray1<T>(ICellStyle cellSytleDate, IRow rowContent, IRow row_workdate, T entity, PropertyInfo[] tpis, int tipsIndex, int rowIndex, int colIndex)
+        {
+            #region 加班汇总输出到EXCEL          
+            object workId = tpis[0].GetValue(entity, null);//1187
+            object workName = tpis[1].GetValue(entity, null);//张三
+            object department = tpis[2].GetValue(entity, null);//企业信息中心
+            object workdate = tpis[3].GetValue(entity, null);//2018/1/3
+            //object workhours = tpis[4].GetValue(entity, null);//2.5
+            object workhours = 1;
+            object workhoursNightCount = tpis[5].GetValue(entity, null);//统计晚班
+            object workhoursCount = tpis[6].GetValue(entity, null);//总时数
+            object worktype = tpis[7].GetValue(entity, null);//平时加班
+            object workclasstype = tpis[8].GetValue(entity, null);//白班
+            DateTime wk = Convert.ToDateTime(workdate);
+            string month = wk.ToString("MM");//01
+            int day = Convert.ToInt32(wk.ToString("dd"));//03    
+            rowContent.GetCell(0).SetCellValue(workId.ToString());
+            rowContent.GetCell(1).SetCellValue(workName.ToString());
+            row_workdate.GetCell(1).SetCellValue(month);
+            double doubV = 0;
+            if (worktype.ToString() == "平时加班")
+            {
+                double.TryParse(workhoursCount.ToString(), out doubV);
+                rowContent.GetCell(33).SetCellValue(doubV);
+            }
+            if (worktype.ToString() == "假日加班")
+            {
+                double.TryParse(workhoursCount.ToString(), out doubV);
+                rowContent.GetCell(34).SetCellValue(doubV);
+            }
+            if (worktype.ToString() == "节假日加班")
+            {
+                double.TryParse(workhoursCount.ToString(), out doubV);
+                rowContent.GetCell(35).SetCellValue(doubV);
+            }
+
+            //打印每日加数时数和打印统计晚班时数
+            if (workclasstype.ToString() == "晚班")
+            {
+                double doubV1 = 0;
+                double.TryParse(workhours.ToString(), out doubV1);
+                rowContent.GetCell(day + 1).SetCellValue(doubV1);
+                double doubV2 = 0;
+                double.TryParse(workhoursNightCount.ToString(), out doubV2);
+                rowContent.GetCell(36).SetCellValue(doubV2);
+
+            }                  
+            #endregion
+        }
         private static ISheet WorkHoursFillcellSum<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
             #region 加班汇总方法
@@ -856,6 +905,70 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 IRow rowContent = sheet.GetRow(row_setindex);//3，4  5 
                                 IRow row_workdate = sheet.GetRow(row_workdataIndex);
                                 WorkHoursFillIcellSumArray<T>(cellSytleDate, rowContent, row_workdate, entity, tpis, tipsIndex, rowIndex, colIndex);
+                                colIndex++;
+                                if (colIndex == 15)
+                                {
+                                    i = 1;
+                                    row_index2 = row_setindex;//3,4
+                                    workerId2 = tpis[0].GetValue(entity, null).ToString();//工号1
+                                    row_setindex++;//4，5，6
+
+                                }
+                                break;
+                            }
+                            #endregion
+                        }
+                    }
+                });
+            }
+            return sheet;
+            #endregion 
+        }
+        private static ISheet WorkHoursFillcellSum1<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
+        {
+            #region 加班汇总方法
+            int x = 0;
+            int row_index1 = 0;
+            int row_index2 = 0;
+            int row_setindex = 3;
+            int row_workdataIndex = 1;//打印月份
+            string workerId1 = "";
+            string workerId2 = "";
+            if (xlsSheetName == string.Empty) xlsSheetName = "Sheet12";
+            ISheet sheet = workbook.GetSheet(workbook.GetSheetName(0));
+            ICellStyle cellSytleDate = workbook.CreateCellStyle();
+            IDataFormat format = workbook.CreateDataFormat();
+            cellSytleDate.DataFormat = format.GetFormat("yyyy-mm-dd");
+            for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
+            {
+                int i = 0;
+                T entity = dataSource[rowIndex];
+                Type tentity = entity.GetType();
+                PropertyInfo[] tpis = tentity.GetProperties();
+                int colIndex = 0;
+                workerId1 = tpis[0].GetValue(entity, null).ToString();//1  1  2                                                                    //0  1 ,2
+                FieldMapList.ForEach(e =>
+                {
+                    for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                    { //如不是所需字段 跳过
+                        if (e.FieldName == tpis[tipsIndex].Name)
+                        {
+                            #region 备注
+                            if (workerId1 == workerId2 && i == 0)
+                            {
+                                row_index1 = row_index2;//3，3，4，4 ，5，5，
+                                IRow rowContent1 = sheet.GetRow(row_index1);//3，3，4，4 ，5，5，
+                                IRow row_workdate = sheet.GetRow(row_workdataIndex);
+                                WorkHoursFillIcellSumArray1<T>(cellSytleDate, rowContent1, row_workdate, entity, tpis, tipsIndex, rowIndex, colIndex);
+                                colIndex++;
+                                break;
+                            }
+                            else
+                            {
+                                x++;
+                                IRow rowContent = sheet.GetRow(row_setindex);//3，4  5 
+                                IRow row_workdate = sheet.GetRow(row_workdataIndex);
+                                WorkHoursFillIcellSumArray1<T>(cellSytleDate, rowContent, row_workdate, entity, tpis, tipsIndex, rowIndex, colIndex);
                                 colIndex++;
                                 if (colIndex == 15)
                                 {
@@ -1027,6 +1140,28 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                     if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
 
                     ISheet sheet = WorkHoursFillcellSum<T>(DicDataSources[i], i, FieldMapList, workbook1);
+                    sheet.ForceFormulaRecalculation = true;
+                }
+
+                workbook1.Write(stream1);
+                return stream1;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+        public static MemoryStream WorkOverHoursListToExcelSum1<T>(this Dictionary<string, List<T>> DicDataSources, List<FileFieldMapping> FieldMapList, string filepath1) where T : class, new()
+        {
+            try
+            {
+                MemoryStream stream1 = new MemoryStream();
+                HSSFWorkbook workbook1 = (HSSFWorkbook)WorkbookFactory.Create(filepath1);
+                foreach (string i in DicDataSources.Keys)
+                {
+                    if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
+
+                    ISheet sheet = WorkHoursFillcellSum1<T>(DicDataSources[i], i, FieldMapList, workbook1);
                     sheet.ForceFormulaRecalculation = true;
                 }
 
