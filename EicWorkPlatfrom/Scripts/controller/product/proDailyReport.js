@@ -832,7 +832,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             });
             vmManager.queryActiveTab = 'qryUserInfoTab';
         },
-
         showputInDisplay: function () {
             if (!vmManager.putInDisplay) { vmManager.putInDisplay = true; }
             focusSetter.workerIdFocus = true;
@@ -1315,7 +1314,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
            // 机台模具信息
            getOrderIdDatas: function () {
                var thisQueryDto = {
-                   Department: 'PT1',
+                   Department: 'MD',
                    InputDate: null,
                    ProductName: uiVM.ProductName,
                    ProcessesName: '注塑',
@@ -1338,7 +1337,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
            },
            selectmouldId: function (i) {
                uiVM.MouldHoleCount = i.MouldHoleCount;
-               vm.MachineId = i.MachineId;
+               uiVM.MachineId = i.MachineId;
                uiVM.MouldId = i.MouldId;
                uiVM.StandardProductionTime = i.UPS; 
                uiVM.ProcessesIndex = i.ProcessesIndex;
