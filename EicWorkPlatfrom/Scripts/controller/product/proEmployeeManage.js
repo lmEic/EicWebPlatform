@@ -1284,8 +1284,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
     operate.updateItem = function (item) {
         vmManager.workDayDate = uiVM.WorkDate;
         vmManager.workNightDate = uiVM.WorkDate;
-        vmManager.workDayDate1 = item.WorkDate;
-        vmManager.workNightDate1 = item.WorkDate;
+        vmManager.workDayDate1 = uiVM.WorkDate;
+        vmManager.workNightDate1 = uiVM.WorkDate;
         tempVm.workOverCount = 0;
         uiVM.WorkoverType = $scope.vm.WorkoverType;
         uiVM.DepartmentText = $scope.vm.DepartmentText;
