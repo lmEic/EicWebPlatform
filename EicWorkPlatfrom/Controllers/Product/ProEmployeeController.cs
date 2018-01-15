@@ -21,7 +21,7 @@ namespace EicWorkPlatfrom.Controllers.Product
 {
     public class ProEmployeeController : EicBaseController
     {
-        //
+       
         // GET: /ProEmployee/
 
         public ActionResult Index()
@@ -68,7 +68,6 @@ namespace EicWorkPlatfrom.Controllers.Product
 
         }
         #endregion
-
 
         #region 考勤管理
 
