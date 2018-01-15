@@ -804,12 +804,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 rowContent.GetCell(day+1).SetCellValue(doubV1);
             //打印统计晚班时数
            
-            if (workclasstype.ToString()=="晚班")
-            {              
-                double doubV2 = 0;
-                double.TryParse(workhoursNightCount.ToString(), out doubV2);
-                rowContent.GetCell(36).SetCellValue(doubV2);
-            }         
+            //if (workclasstype.ToString()=="晚班")
+            //{              
+            //    double doubV2 = 0;
+            //    double.TryParse(workhoursNightCount.ToString(), out doubV2);
+            //    rowContent.GetCell(36).SetCellValue(doubV2);
+            //}         
             #endregion
         }
         private static void WorkHoursFillIcellSumArray1<T>(ICellStyle cellSytleDate, IRow rowContent, IRow row_workdate, T entity, PropertyInfo[] tpis, int tipsIndex, int rowIndex, int colIndex)
