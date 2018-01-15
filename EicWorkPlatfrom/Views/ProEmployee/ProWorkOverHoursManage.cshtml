@@ -525,8 +525,8 @@
                         </div>
                     </div>
 
-                    <div class="h-split"/>
-                    
+                    <div class="h-split" />
+
                     <div class="form-group">
                         <label for="workday" class="col-md-2 control-label">白班时间段:</label>
                         <div class="col-md-4">
@@ -561,7 +561,7 @@
                                 <div class="input-group-addon">
                                     <label>-</label>
                                 </div>
-                                <input id="worknightend" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"ng-change="operate.calculateNightDates1()"
+                                <input id="worknightend" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1" ng-change="operate.calculateNightDates1()"
                                        bs-timepicker data-time-format="HH:mm"
                                        ng-model="vmManager.workNightTimeEnd" required data-arrow-behavior="picker" />
                             </div>
@@ -569,21 +569,20 @@
                     </div>
 
                     <div class="h-split" />
-
                     <div class="form-group">
                         <label for="workday" class="col-md-2 control-label">白班时间段1:</label>
                         <div class="col-md-4">
-                            <input id="workDayDate1" type="date" name="workDayDate" class="form-control" ng-model="vmManager.workDayDate1" placeholder="白班时间" format-date required />
+                            <input id="workDayDate1" type="date" name="workDayDate1" class="form-control" ng-model="vmManager.workDayDate1" placeholder="白班时间" format-date required />
                         </div>
                         <div class="col-md-4">
                             <div class="input-group">
-                                <input id="workdayTimestart1" name="workdaystart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
+                                <input id="workdayTimestart" name="workdaystart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
                                        ng-model="vmManager.workDayTimeStart1" data-length="1" data-minute-step="1"
                                        required data-arrow-behavior="picker" />
                                 <div class="input-group-addon">
                                     <label>-</label>
                                 </div>
-                                <input id="workdayTimeend1" name="workdayTimeend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1" ng-change="operate.calculateDayDates2()"
+                                <input id="workdayTimeend" name="workdayTimeend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1" ng-change="operate.calculateDayDates2()"
                                        bs-timepicker data-time-format="HH:mm"
                                        ng-model="vmManager.workDayTimeEnd1" required data-arrow-behavior="picker" />
                             </div>
@@ -593,7 +592,7 @@
                     <div class="form-group">
                         <label for="worknight" class="col-md-2 control-label">晚班时间段1:</label>
                         <div class="col-md-4">
-                            <input id="workNightDate1" type="date" name="workNightDate" class="form-control" ng-model="vmManager.workNightDate1" placeholder="白班时间" format-date required />
+                            <input id="workNightDate" type="date" name="workNightDate" class="form-control" ng-model="vmManager.workNightDate1" placeholder="白班时间" format-date required />
                         </div>
                         <div class="col-md-4">
                             <div class="input-group">
@@ -604,12 +603,14 @@
                                 <div class="input-group-addon">
                                     <label>-</label>
                                 </div>
-                                <input id="worknightend1" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"ng-change="operate.calculateNightDates2()"
+                                <input id="worknightend" name="worknightend" type="text" class="form-control" size="8" data-length="1" data-minute-step="1" ng-change="operate.calculateNightDates2()"
                                        bs-timepicker data-time-format="HH:mm"
                                        ng-model="vmManager.workNightTimeEnd1" required data-arrow-behavior="picker" />
                             </div>
                         </div>
                     </div>
+
+
 
                     <div class="h-split" />
 
