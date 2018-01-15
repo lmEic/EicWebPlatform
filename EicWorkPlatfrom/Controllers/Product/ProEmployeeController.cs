@@ -21,7 +21,7 @@ namespace EicWorkPlatfrom.Controllers.Product
 {
     public class ProEmployeeController : EicBaseController
     {
-        //
+       
         // GET: /ProEmployee/
 
         public ActionResult Index()
