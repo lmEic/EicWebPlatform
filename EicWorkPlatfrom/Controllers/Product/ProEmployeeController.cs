@@ -278,7 +278,6 @@ namespace EicWorkPlatfrom.Controllers.Product
                 throw new Exception(ex.Message);
             }
 
-
         }
 
         /// <summary>
