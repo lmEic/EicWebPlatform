@@ -21,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (item != null) item.MaterialId = materialId;
             bool IsAddAllMaterialId = true;
             if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
-            int takecount = needInsepctionItems.Count * 10;
+            int takecount = needInsepctionItems.Count * 100;
             var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(orderId, materialId, materialInDate, takecount);
             needInsepctionItems.ForEach(m =>
             {
