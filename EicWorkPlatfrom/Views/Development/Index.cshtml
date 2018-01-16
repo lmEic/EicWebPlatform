@@ -1,63 +1,121 @@
 ﻿
 <html>
 <head>
-   
-
-</head>
-<body>
+    <title>Js方向键切换输入框焦点</title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body> 
+    <asp:ContentPlaceHolder id="head" runat="server">
+        <table border="1" id="mm" onkeydown="keyDown(event)">
+            <tr>
+                <td> <input class="txt"> </td>
+                <td>  <input class="txt"></td>
+                <td> <input class="txt"> </td>
+                <td> <input class="txt"> </td>
+            </tr>
+            <tr>
+                <td> <input class="txt"> </td>
+                <td>  <input class="txt"></td>
+                <td> <input class="txt"> </td>
+                <td> <input class="txt"> </td>
+            </tr>
+            <tr>
+                <td> <input class="txt"> </td>
+                <td>  <input class="txt"></td>
+                <td> <input class="txt"> </td>
+                <td> <input class="txt"> </td>
+            </tr>
+            <tr>
+                <td> <input class="txt"> </td>
+                <td>  <input class="txt"></td>
+                <td> <input class="txt"> </td>
+                <td> <input class="txt"> </td>
+            </tr>
+            <tr>
+                <td> <input class="txt"> </td>
+                <td>  <input class="txt"></td>
+                <td> <input class="txt"> </td>
+                <td> <input class="txt"> </td>
+            </tr>
+        </table>
+        <script language="javascript" type="text/javascript">
+   // var inputs=document.getElementById("mm").getElementsByTagName("INPUT");
+    function keyDown(event) {
+        var inputs = $(".txt")
+        var focus = document.activeElement;                 //得到处于激活状态的控件
+        if (!document.getElementById("mm").contains(focus)) return;     //判断是否包含激活控件在指定的Table下
+        var event = window.event || event;                              //获取事件
+        var key = event.keyCode;                                        //得到按下的键盘Ascii码
+        var flag = -1;
 
-    <OBJECT classid=CLSID:0045EA0A-2042-43F8-A2F4-B5CF54D45C10 id=Addcom  width=0 height=0></OBJECT>
-    <script language="JavaScript">
-
-     alert("----------------------start-----------------------");
-       var wmp;
-          var iResult = 12345;
-        alert(iResult);
-        wmp = document.getElementById("AddComService");
-        alert(wmp );
-    if(wmp == null)
-     { alert(wmp );}
-    else
-        {
-         iResult = wmp.iadd(4,9);
-         alert("Test Successful!");
+        //得到激活控件在组合中的具体位置
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i] === focus) {
+                break;
+            }
         }
-         alert("iadd(4,9) =" + iResult);
-         alert("----------------------start-----------------------");
-    </script>
+        switch (key) {
+            case 38:                //向上键
+                var j = i - 2;
+                var flag = false;
 
-    <div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">客资类型：</label>
-            <div class="col-sm-4">
-                <select id="usertype" name="usertype" class="selectpicker show-tick form-control" multiple data-live-search="false">
-                    <option value="0">苹果</option>
-                    <option value="1">菠萝</option>
-                    <option value="2">香蕉</option>
-                    <option value="3">火龙果</option>
-                    <option value="4">梨子</option>
-                    <option value="5">草莓</option>
-                    <option value="6">哈密瓜</option>
-                    <option value="7">椰子</option>
-                    <option value="8">猕猴桃</option>
-                    <option value="9">桃子</option>
-                </select>
-            </div>
-
-            <select id="test" multiple="">
-                <option value="option-A">option-A</option>
-                <option value="option-B">option-B</option>
-                <option value="option-C">option-C</option>
-                <option value="option-D">option-D</option>
-            </select>
-            <input type="button" value="确定" onclick="fun()" />
-        </div>
-        <h1>研发管理模块正在开发中，敬请期待...</h1>
-    </div>
-</body>
-
-
+                if (inputs.get(j).disabled == false) {              //判断接下来得到的焦点控件是否能够使用
+                    flag = true;
+                } else {
+                    for (j = i - 4; j >= 0; j = j - 2) {                    //之后控件不能获得焦点情况下寻找下一个控件
+                        if (inputs.get(j).disabled == false) {      //判断之后焦点是否可以获取焦点
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if (flag) {
+                    inputs[j].focus();
+                }
+                break;
+            case 40:                //向下键
+                var j = i + 2;
+                var flag = false;
+                if (inputs.get(j).disabled == false) {              //判断接下来得到的焦点控件是否能够使用
+                    flag = true;
+                } else {
+                    for (j = i + 4; j < inputs.length; j = j + 2) { //之后控件不能获得焦点情况下寻找下一个控件
+                        if (inputs.get(j).disabled == false) {      //判断之后焦点是否可以获取焦点
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if (flag) {
+                    inputs[j].focus();
+                }
+                break;
+            case 13:                //回车键
+                event.returnValue = false;                          //阻止自动提交
+                var j = i + 2;
+                var flag = false;
+                if (inputs.get(j).disabled == false) {
+                    flag = true;
+                } else {
+                    for (j = i + 4; j <= inputs.length - 1; j = j + 2) {
+                        if (inputs.get(j).disabled == false) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if (flag) {
+                    inputs[j].focus();
+                }
+                break;
+        }
+    }
+        </script>
+     </asp:ContentPlaceHolder>
+   
+    </body>
 </html>
 
 <td>性别:</td>

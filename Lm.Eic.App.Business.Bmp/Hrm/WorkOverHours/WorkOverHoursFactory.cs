@@ -37,9 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             this.AddOpItem(OpMode.Edit, EditWorkOverHours);
             this.AddOpItem(OpMode.Delete, DeleteWorkOverHours);
            
-        }
-
-       
+        }   
         private OpResult DeleteWorkOverHours(WorkOverHoursMangeModels model)
         {
             return irep.Delete(e => e.WorkerId == model.WorkerId && e.WorkDate==model.WorkDate).ToOpResult_Delete(OpContext);
