@@ -744,11 +744,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             if (workclasstype.ToString() == "白班")
             {
                 rowWorkDayTime.GetCell(3).SetCellValue(workdaytime.ToString());
-                rowWorkDayTime.GetCell(12).SetCellValue(workdaytime1.ToString());
+                rowWorkDayTime.GetCell(12).SetCellValue(worknighttime.ToString());
+               // rowWorkDayTime.GetCell(12).SetCellValue(workdaytime1.ToString());
             }
             if (workclasstype.ToString() == "晚班")
             {
-                rowWorkNightTime.GetCell(3).SetCellValue(worknighttime.ToString());
+                rowWorkNightTime.GetCell(3).SetCellValue(workdaytime1.ToString());
                 rowWorkNightTime.GetCell(12).SetCellValue(worknighttime1.ToString());
             }
             DateTime dateV;
@@ -803,12 +804,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 rowContent.GetCell(day+1).SetCellValue(doubV1);
             //打印统计晚班时数
            
-            if (workclasstype.ToString()=="晚班")
-            {              
-                double doubV2 = 0;
-                double.TryParse(workhoursNightCount.ToString(), out doubV2);
-                rowContent.GetCell(36).SetCellValue(doubV2);
-            }         
+            //if (workclasstype.ToString()=="晚班")
+            //{              
+            //    double doubV2 = 0;
+            //    double.TryParse(workhoursNightCount.ToString(), out doubV2);
+            //    rowContent.GetCell(36).SetCellValue(doubV2);
+            //}         
             #endregion
         }
         private static void WorkHoursFillIcellSumArray1<T>(ICellStyle cellSytleDate, IRow rowContent, IRow row_workdate, T entity, PropertyInfo[] tpis, int tipsIndex, int rowIndex, int colIndex)
@@ -830,23 +831,25 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             rowContent.GetCell(0).SetCellValue(workId.ToString());
             rowContent.GetCell(1).SetCellValue(workName.ToString());
             row_workdate.GetCell(1).SetCellValue(month);
-            double doubV = 0;
-            if (worktype.ToString() == "平时加班")
-            {
-                double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(33).SetCellValue(doubV);
-            }
-            if (worktype.ToString() == "假日加班")
-            {
-                double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(34).SetCellValue(doubV);
-            }
-            if (worktype.ToString() == "节假日加班")
-            {
-                double.TryParse(workhoursCount.ToString(), out doubV);
-                rowContent.GetCell(35).SetCellValue(doubV);
-            }
+            #region 加班分类
+            //double doubV = 0;
+            //if (worktype.ToString() == "平时加班")
+            //{
+            //    double.TryParse(workhoursCount.ToString(), out doubV);
+            //    rowContent.GetCell(33).SetCellValue(doubV);
+            //}
+            //if (worktype.ToString() == "假日加班")
+            //{
+            //    double.TryParse(workhoursCount.ToString(), out doubV);
+            //    rowContent.GetCell(34).SetCellValue(doubV);
+            //}
+            //if (worktype.ToString() == "节假日加班")
+            //{
+            //    double.TryParse(workhoursCount.ToString(), out doubV);
+            //    rowContent.GetCell(35).SetCellValue(doubV);
+            //}
 
+            #endregion          
             //打印每日加数时数和打印统计晚班时数
             if (workclasstype.ToString() == "晚班")
             {
@@ -855,7 +858,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 rowContent.GetCell(day + 1).SetCellValue(doubV1);
                 double doubV2 = 0;
                 double.TryParse(workhoursNightCount.ToString(), out doubV2);
-                rowContent.GetCell(36).SetCellValue(doubV2);
+                rowContent.GetCell(33).SetCellValue(doubV2);
 
             }                  
             #endregion

@@ -971,13 +971,9 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         getWorkOverHourSumss: function (mode) {
             vmManager.signDepSum = true;
             vmManager.signPerSum = false;
-            if (leeLoginUser.departmentText == "生技部"||leeLoginUser.departmentText=="企业讯息中心"||leeLoginUser.departmentText=="制二课") {             
-                vmManager.workhoursNightCountShow = true;
-            }
-            else
-            {           
-                vmManager.workhoursNightCountShow = false;
-            }
+          
+           vmManager.workhoursNightCountShow = true;
+           
             vmManager.dataSourceSum = [];
             if (vmManager.selectDepartment == null) {
                 var datas = proEmployeeDataService.getWorkOverHourSums(vmManager.searchYear, uiVM.ParentDataNodeText, 1).then(function (datas) {
@@ -1218,6 +1214,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         $scope.vm = uiVM = item;
         vmManager.workDayDate = item.WorkDate;
         vmManager.workNightDate = item.WorkDate;
+        vmManager.workDayDate1 = item.WorkDate;
+        vmManager.workNightDate1 = item.WorkDate;
         vmManager.BackgroundIndexFirst = item.rowindex1;
         dialog.show();
     };
@@ -1234,6 +1232,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         $scope.vm = uiVM = item;
         vmManager.workDayDate = item.WorkDate;
         vmManager.workNightDate = item.WorkDate;
+        vmManager.workDayDate1 = item.WorkDate;
+        vmManager.workNightDate1 = item.WorkDate;
         vmManager.BackgroundIndexFirst = item.rowindex1;
         dialog.show();
     }
@@ -1284,19 +1284,19 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
     operate.updateItem = function (item) {
         vmManager.workDayDate = uiVM.WorkDate;
         vmManager.workNightDate = uiVM.WorkDate;
+        vmManager.workDayDate1 = uiVM.WorkDate;
+        vmManager.workNightDate1 = uiVM.WorkDate;
         tempVm.workOverCount = 0;
         uiVM.WorkoverType = $scope.vm.WorkoverType;
         uiVM.DepartmentText = $scope.vm.DepartmentText;
         uiVM.WorkDate = $scope.vm.WorkDate;
         uiVM.WorkClassType = $scope.vm.WorkClassType;
-        uiVM.PostNature = $scope.vm.PostNature;
-       
+        uiVM.PostNature = $scope.vm.PostNature;      
         uiVM.Remark = $scope.vm.Remark;
         uiVM.ParentDataNodeText = $scope.vm.ParentDataNodeText;
         uiVM.OpPerson = $scope.vm.OpPerson;
         if (vmManager.changeworkDate == null) { leePopups.alert("亲！您未选择申请日期"); return; }
-        if (uiVM.WorkReason == null) { leePopups.alert("亲！您未填写加班原因"); return; }
-       
+        if (uiVM.WorkReason == null) { leePopups.alert("亲！您未填写加班原因"); return; }    
         var _workDayTime = "从 " + uiVM.WorkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm") + " 至 " + vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");
         var _workNightTime = "从 " + uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm") + " 至 " + vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");
         var _workDayTime1 = "从 " + uiVM.WorkDate + " " + vmManager.workDayTimeStart1.pattern("HH:mm") + " 至 " + vmManager.workDayDate1 + " " + vmManager.workDayTimeEnd1.pattern("HH:mm");
@@ -1312,14 +1312,14 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             row.WorkNightTime1 = _workNightTime1;         
             row.WorkoverType = uiVM.WorkoverType;
             row.QryDate = qryDateFormat;
-            //row.WorkClassType = uiVM.WorkClassType;
+          //  row.WorkClassType = uiVM.WorkClassType;
             row.WorkOverHours = uiVM.WorkOverHours;
             row.DepartmentText = uiVM.DepartmentText;
             row.ParentDataNodeText = uiVM.ParentDataNodeText;
             row.OpPerson = uiVM.OpPerson;
             row.WorkReason = uiVM.WorkReason;
             row.BackgroundIndex = null;
-            $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
+           $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
         });
         dialog.close();
         //统计行数
