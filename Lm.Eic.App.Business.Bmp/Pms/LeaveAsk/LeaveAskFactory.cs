@@ -68,6 +68,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.LeaveAsk
                         return irep.Entities.Where(k => k.LeaveState == Dto.LeaveSate && k.Department == Dto.Department).ToList();
                     case 3:
                         return irep.Entities.Where(k => k.LeaveType == Dto.LeaveType && k.Department == Dto.Department).ToList();
+                    case 4:
+                        return irep.Entities.Where(k=> k.Department == Dto.Department).ToList();
                     default:
                         return new List<LeaveAskManagerModels>();                      
                 }

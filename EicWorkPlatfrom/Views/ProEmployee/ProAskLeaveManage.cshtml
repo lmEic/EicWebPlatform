@@ -71,7 +71,7 @@
                                 <label for="leaveType" class="col-md-2 control-label">请假类别</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <input name="leaveType" class="form-control" ng-model="vm.LeaveType" placeholder="请选假类别" required />
+                                        <input name="leaveType" class="form-control" ng-model="vm.LeaveType" placeholder="请选假类别"   required />
                                         <div class="error-messages" ng-messages="LeaveFrm.leaveType.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">假别名称不能为空</small>
                                         </div>
@@ -112,7 +112,7 @@
                                         <div class="input-group-addon">
                                             <label>-</label>
                                         </div>
-                                        <input id="leaveTimerEndIn" name="leaveTimerStart" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
+                                        <input id="leaveTimerEndIn" name="leaveTimerStart" type="text" class="form-control" size="8" data-length="1" data-minute-step="1" ng-change="operate.calculateHours()"
                                                bs-timepicker data-time-format="HH:mm"
                                                ng-model="vmManager.workTimeEnd" required data-arrow-behavior="picker" />
                                     </div>
@@ -213,9 +213,9 @@
                                         </span>
                                     </div>
                                 </div>
-                                @*<div class="form-group">
-                                    <button type="button" class="btn btn-primary form-control"ng-click="vmManager.getLeaveAskManagerDatas(4)"><i class="fa fa-square"></i>全部</button>
-                                </div>*@
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary form-control"ng-click="vmManager.getLeaveAskManagerDatas(4)"><i class="fa fa-square"></i>显示全部</button>
+                                </div>
                             </form>
                             <div class="h-split" />
                             <div class="table-responsive">
