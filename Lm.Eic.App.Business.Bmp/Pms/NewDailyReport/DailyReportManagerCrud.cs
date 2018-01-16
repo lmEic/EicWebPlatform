@@ -580,8 +580,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(ReportsMachineModel model)
         {
-           
-            return irep.Insert(model).ToOpResult(OpContext);
+           return (irep.IsExist(e => e.MachineId == model.MachineId))?
+                 OpResult.SetErrorResult("此编号已经存在"):
+                 irep.Insert(model).ToOpResult(OpContext);
         }
         /// <summary>
         /// 编辑
@@ -608,11 +609,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
         #region  find
 
-        public List<ReportsMachineModel> GetMachineDatas(string department)
+        public List<ReportsMachineModel> GetMachineDatasBy(string department)
         {
             return irep.Entities.Where(e => e.Department == department).ToList();
         }
-
+        public List<ReportsMachineModel> GetMachineInfoBy(string machineId)
+        {
+            return irep.Entities.Where(e => e.MachineId == machineId).ToList();
+        }
+        public List<ReportsMachineModel> GetMachineBy(string State)
+        {
+            return irep.Entities.Where(e => e.State == State).ToList();
+        }
+        public List<ReportsMachineModel> GetMachineDatasBy(DateTime opDate)
+        {
+            return irep.Entities.Where(e => e.OpDate == opDate).ToList();
+        }
         #endregion
     }
 }

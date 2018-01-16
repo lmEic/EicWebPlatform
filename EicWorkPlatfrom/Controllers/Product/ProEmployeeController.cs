@@ -21,7 +21,7 @@ namespace EicWorkPlatfrom.Controllers.Product
 {
     public class ProEmployeeController : EicBaseController
     {
-        //
+       
         // GET: /ProEmployee/
 
         public ActionResult Index()
@@ -276,7 +276,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 throw new Exception(ex.Message);
             }
-
 
         }
 
