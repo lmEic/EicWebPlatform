@@ -8,13 +8,14 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="well">
-                            <form role="form" name="formEquipment" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-                                <fieldset>
+                            <form role="form" name="formEquipment" novalidate class="form-horizontal"
+                                   onkeypress="if (event.keyCode ===13) return false;">
+                                <fieldset id="mm"   onkeydown="keyDown(event)" > 
                                     <legend>基本信息</legend>
                                     <div class="form-group">
                                         <label for="machineId" class="col-md-2 control-label">设备编号</label>
                                         <div class="col-md-4">
-                                            <input name="machineId" class="form-control" ng-model="vm.MachineId" required />
+                                            <input name="machineId" type="text" class="form-control" ng-model="vm.MachineId" required />
                                             <div class="error-messages" ng-messages="formEquipment.machineId.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">设备编号不能为空</small>
                                             </div>
@@ -119,27 +120,30 @@
                                         <label for="department" class="col-md-2 control-label">保管单位</label>
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <input name="department" class="form-control" ng-model="vm.Department" readonly required />
+                                                <input name="department" type="text" class="form-control" ng-model="vm.Department"/>
                                                 <div class="error-messages" ng-messages="formEquipment.department.$error" ng-show="operate.showValidation">
-                                                    <small ng-message="required">保管单位不能为空</small>
+                                                    <small ng-message="required">机台设置时数不能为空</small>
                                                 </div>
                                                 <div class="input-group-btn">
-                                                    <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
-                                                            data-title="选择部门名称"
-                                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                                            data-animation="am-flip-x" data-auto-close="1"
-                                                            data-keyboard="false"
-                                                            data-bs-popover>
-                                                        <i class="fa fa-sitemap"></i>
+                                                    <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
+                                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                                                            data-bs-options="item.DepartmentNode as item.DepartmentText for item in vmManager.departments" data-bs-select>
+                                                        <span class="caret"></span>
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </div> 
                                         </div>
-
-                                        <label for="state" class="col-md-2 control-label">机台状态</label>
+                                        <label for="state" class="col-md-2 control-label">机台状态:</label>
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <input name="state" class="form-control" ng-model="vm.State"  required />
+                                                <input name="state"  readonly class="form-control" ng-model="vm.State"  required />
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-success " ng-model="vm.State" 
+                                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="状态"
+                                                            data-bs-options="item.value as item.label   for  item  in vmManager.States" bs-select>
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                </div>
                                                 <div class="error-messages" ng-messages="formEquipment.state.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">机台状态不能为空</small>
                                                 </div>
@@ -169,7 +173,8 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
+                       
+</div>
                     <div class="col-md-4">
                         <ul class="list-group">
                             <li class="list-group-item active">
@@ -193,20 +198,10 @@
                             <li class="list-group-item" ng-click="vmManager.selectEquipment(item)"
                                 data-title="设备编码:{{item.MachineId}}" data-bs-tooltip
                                 ng-repeat="item in vmManager.equipments track by $index">
-                                编号：
-                                <span class="label label-success" style="cursor:pointer">{{item.MachineCode}}</span>
-                                -------
-                                名称：
-                                <span>
-                                    <i class="fa fa-envelope-o"></i>
-                                    {{item.MachineName}}
-                                </span>
-                                -----
-                                规格：
-                                <span>
-                                    <i class="fa fa-envelope-o"></i>
-                                    {{item.MachineSpec}}
-                                </span>
+                                编号： <span class="label label-success" style="cursor:pointer">{{item.MachineCode}}</span>
+                                名称： <span> {{item.MachineName}} </span>
+                                规格： <span> {{item.MachineSpec}} </span>
+                                <button></button>
                             </li>
                         </ul>
                     </div>

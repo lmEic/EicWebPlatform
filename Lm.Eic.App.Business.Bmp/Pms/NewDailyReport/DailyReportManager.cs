@@ -454,7 +454,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         public List<ReportsMachineModel> getMachineDatas(string department)
         {
-           return  DailyReportCrudFactory.DailyReportsMachine.GetMachineDatas(department);
+           return  DailyReportCrudFactory.DailyReportsMachine.GetMachineDatasBy(department);
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             List<DailyPTProductVm> datas = new List<DailyPTProductVm>();
             DailyPTProductVm newModel = null;
-            var machineInfos = DailyReportCrudFactory.DailyReportsMachine.GetMachineDatas(department);
+            var machineInfos = DailyReportCrudFactory.DailyReportsMachine.GetMachineDatasBy(department);
             if (machineInfos == null) return datas;
             machineInfos.ForEach(e => {
 

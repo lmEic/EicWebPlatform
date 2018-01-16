@@ -11,7 +11,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport.DailyReportConfig
     {
         public List<ReportsMachineModel> GetMachineDatas(string department)
         {
-            return DailyReportCrudFactory.DailyReportsMachine.GetMachineDatas(department);
+            return DailyReportCrudFactory.DailyReportsMachine.GetMachineDatasBy(department);
         }
         /// <summary>
         /// 存储数据
