@@ -796,6 +796,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 if (item.StandardProductionTimeType == "UPH") {
                     uiVM.StandardProductionTime = item.UPS
                 };
+                if (item.Department == "MS6" && item.ProcessesType == '机台') {
+                    uiVM.MachineUnproductiveReason = '无订单'
+                }
+                else uiVM.MachineUnproductiveReason = null;
                 uiVM.WorkerId = null;
                 uiVM.WorkerName = null;
                 uiVM.WorkerProductionTime = 0;

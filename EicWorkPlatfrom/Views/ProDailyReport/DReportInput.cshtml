@@ -1277,7 +1277,7 @@
                                     <div class="col-md-6" ng-if="vm.MachineSetProductionTime-vm.MachineProductionTime>0">
                                         <div class="input-group">
                                             <span class="input-group-addon">非生产原因:</span>
-                                            <input type="text" name="machineUnproductiveReason" ng-readonly="true"
+                                            <input type="text" name="machineUnproductiveReason"  readonly 
                                                    focus-if="focus.machineUnproductiveReasonFocus" focus-setter
                                                    ng-keydown="focus.moveFocusNext($event,'machineProductionBadCountFocus')"
                                                    rows="2" class="form-control" ng-model="vm.MachineUnproductiveReason" required />
