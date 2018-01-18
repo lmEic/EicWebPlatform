@@ -59,8 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     temModel.WorkNightTime = item.WorkNightTime;
                     temModel.WorkStatus = item.WorkStatus;
                     temModel.QryDate = item.QryDate;
-                    modelList.Add(temModel);
-                 
+                    modelList.Add(temModel);              
             }
             return modelList;
         }
