@@ -86,7 +86,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
 
