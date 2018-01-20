@@ -37,9 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             this.AddOpItem(OpMode.Edit, EditWorkOverHours);
             this.AddOpItem(OpMode.Delete, DeleteWorkOverHours);
            
-        }
-
-       
+        }   
         private OpResult DeleteWorkOverHours(WorkOverHoursMangeModels model)
         {
             return irep.Delete(e => e.WorkerId == model.WorkerId && e.WorkDate==model.WorkDate).ToOpResult_Delete(OpContext);
@@ -96,7 +94,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     case 2:
                         return irep.Entities.OrderBy(m=>m.WorkerId).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId==qryDto.WorkId && m.WorkStatus == "在职").ToList();
                     case 3:
-                        return irep.Entities.OrderBy(m => m.WorkerId).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
+                        return irep.Entities.OrderBy(m => m.WorkDate).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
                     default:
                         return new List<WorkOverHoursMangeModels>();
                 }
