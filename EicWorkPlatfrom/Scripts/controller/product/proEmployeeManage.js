@@ -354,6 +354,20 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         leaveStats: [{ id: '未填写', text: '未填写' }, { id: '己填写', text: "己填写" }],
         selectDepartment: null,
         DepartmentDatas: [],      
+        selectLeaveType: [], 
+        //添加请假类别
+        addLeaveType: function ()
+        {            
+            vmManager.selectLeaveType = vmManager.selectLeaveType+" "+ uiVM.LeaveType;             
+            $scope.vm.LeaveType = vmManager.selectLeaveType;    
+           
+        },
+        //删除请假类别
+        deleteLeaveType: function () {
+          
+            vmManager.selectLeaveType=uiVM.LeaveType        
+        },
+
         //拼接时间
         SetDate: function ()
         {                              
@@ -364,7 +378,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         },
         //查询请假数据
         getLeaveAskManagerDatas: function (mode) {    
-            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return;}        
+               
             queryFields.workerId = uiVM.WorkerId; 
             queryFields.leaveSate = uiVM.LeaveState;
             queryFields.leaveType = uiVM.LeaveType;
@@ -453,6 +467,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                         vmManager.init();
                         vmManager.getLeaveAskManagerDatas(1);
                         dialog.close();
+                        vmManager.selectLeaveType = [];
                     }
                 });
             });
@@ -1457,4 +1472,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
 
 
 });
+
+
+
 
