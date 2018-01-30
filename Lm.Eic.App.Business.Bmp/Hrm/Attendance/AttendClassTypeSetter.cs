@@ -125,7 +125,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return classTypes;
         }
-
         /// <summary>
         /// 设置班别数据
         /// </summary>

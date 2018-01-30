@@ -21,7 +21,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         internal static WorkOverHoursCrud WorkOverHoursCrud
         {
             get { return OBulider.BuildInstance<WorkOverHoursCrud>(); }
-
         }
 
     }

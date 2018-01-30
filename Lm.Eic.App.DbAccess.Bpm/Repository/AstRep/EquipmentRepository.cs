@@ -39,7 +39,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     /// </summary>
     public class EquipmentDiscardRepository : BpmRepositoryBase<EquipmentDiscardRecordModel>, IEquipmentDiscardRepository
     { }
-
     /// <summary>
     ///设备维修 仓储层
     /// </summary>
