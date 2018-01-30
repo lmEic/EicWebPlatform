@@ -139,7 +139,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         public ContentResult GetWorkOverHoursMode(string departmentText,string postNature, DateTime workDate,int mode)
         {
-
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,postNature,workDate,mode);
             foreach (var item in datas)
             {

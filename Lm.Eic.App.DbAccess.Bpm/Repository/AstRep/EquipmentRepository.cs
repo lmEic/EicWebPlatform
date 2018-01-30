@@ -21,7 +21,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     public class EquipmentCheckRepository : BpmRepositoryBase<EquipmentCheckRecordModel>, IEquipmentCheckRepository
     {
     }
-
     public interface IEquipmentMaintenanceRepositor : IRepository<EquipmentMaintenanceRecordModel> { }
 
     /// <summary>
