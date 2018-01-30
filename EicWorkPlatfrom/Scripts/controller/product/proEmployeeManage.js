@@ -47,7 +47,6 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
             leaveType: leaveType,
             mode: mode
         });
-
     };
     //加载部门
     dataAccess.getDepartment = function (dataNodeName) {
@@ -289,7 +288,6 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             vmManager.selectDepartment();
         }
     });
-
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {
         workerId: null,
