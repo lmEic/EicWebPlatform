@@ -365,7 +365,6 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         deleteLeaveType: function () {      
             vmManager.selectLeaveType=uiVM.LeaveType        
         },
-
         //拼接时间
         SetDate: function ()
         {                              
