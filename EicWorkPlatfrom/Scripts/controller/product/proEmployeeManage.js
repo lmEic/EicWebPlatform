@@ -359,12 +359,10 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         addLeaveType: function ()
         {            
             vmManager.selectLeaveType = vmManager.selectLeaveType+" "+ uiVM.LeaveType;             
-            $scope.vm.LeaveType = vmManager.selectLeaveType;    
-           
+            $scope.vm.LeaveType = vmManager.selectLeaveType;          
         },
         //删除请假类别
-        deleteLeaveType: function () {
-          
+        deleteLeaveType: function () {      
             vmManager.selectLeaveType=uiVM.LeaveType        
         },
 
