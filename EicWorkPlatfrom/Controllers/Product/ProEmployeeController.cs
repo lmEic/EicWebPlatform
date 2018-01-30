@@ -141,14 +141,12 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
 
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,postNature,workDate,mode);
-
             foreach (var item in datas)
             {
                 if (item.OpSign == "edit")
                 {
                     item.OpSign = "add";
-                }
-               
+                }            
             }
             TempData["WorkOverHoursDatas"] = datas;
             return DateJsonResult(datas);
