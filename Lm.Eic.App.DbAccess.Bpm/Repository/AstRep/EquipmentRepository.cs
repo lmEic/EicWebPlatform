@@ -29,7 +29,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     public class EquipmentMaintenanceRepository : BpmRepositoryBase<EquipmentMaintenanceRecordModel>, IEquipmentMaintenanceRepositor
     {
     }
-
     /// <summary>
     ///设备报废 仓储层
     /// </summary>
