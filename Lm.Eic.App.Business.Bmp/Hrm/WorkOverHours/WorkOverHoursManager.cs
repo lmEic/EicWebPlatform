@@ -44,22 +44,22 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     temModel.WorkClassType = item.WorkClassType;
                     temModel.WorkOverHours = item.WorkOverHours;
                     temModel.WorkOverHoursCount = GetWorkOverHoursList.Where(m => m.WorkoverType == item.WorkoverType && m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
-                    if(item.DepartmentText=="生技部"||item.DepartmentText=="企业讯息中心")
-                    {
+                if (item.DepartmentText == "生技部" || item.DepartmentText == "企业讯息中心" || item.DepartmentText == "制二课" || item.DepartmentText == "制十课")
+                {
                     temModel.WorkOverHoursNightCount = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId && m.WorkClassType == "晚班").Count();
-                    }
-                    else
-                    {
+                }
+                else
+                {
                     temModel.WorkOverHoursNightCount = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId && m.WorkClassType == "晚班").Sum(m => m.WorkOverHours);
-                    }                               
+                }
+                // temModel.WorkOverHoursNightCount = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId && m.WorkClassType == "晚班").Count();
                     temModel.Remark = item.Remark;
                     temModel.WorkReason = item.WorkReason;
                     temModel.WorkDayTime = item.WorkDayTime;
                     temModel.WorkNightTime = item.WorkNightTime;
                     temModel.WorkStatus = item.WorkStatus;
                     temModel.QryDate = item.QryDate;
-                    modelList.Add(temModel);
-                 
+                    modelList.Add(temModel);              
             }
             return modelList;
         }

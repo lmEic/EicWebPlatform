@@ -254,8 +254,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 throw new Exception(ex.Message);
             }
-
-
         }
         [NoAuthenCheck]
         public FileResult WorkOverHoursDatasSumToExcelDayCount()
