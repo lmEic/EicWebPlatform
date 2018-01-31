@@ -47,6 +47,7 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
             leaveType: leaveType,
             mode: mode
         });
+
     };
     //加载部门
     dataAccess.getDepartment = function (dataNodeName) {
@@ -288,6 +289,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             vmManager.selectDepartment();
         }
     });
+
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {
         workerId: null,
@@ -351,17 +353,17 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         workTimeEnd: new Date(00, 00, 00),  
         leaveStats: [{ id: '未填写', text: '未填写' }, { id: '己填写', text: "己填写" }],
         selectDepartment: null,
-        DepartmentDatas: [],      
-        selectLeaveType: [], 
+        DepartmentDatas: [],  
+        selectLeaveType: [],
         //添加请假类别
-        addLeaveType: function ()
-        {            
-            vmManager.selectLeaveType = vmManager.selectLeaveType+" "+ uiVM.LeaveType;             
-            $scope.vm.LeaveType = vmManager.selectLeaveType;          
+        addLeaveType: function () {
+            selectLeaveType=[],
+            vmManager.selectLeaveType = vmManager.selectLeaveType + " " + uiVM.LeaveType;
+            uiVM.LeaveType = vmManager.selectLeaveType;
         },
         //删除请假类别
-        deleteLeaveType: function () {      
-            vmManager.selectLeaveType=uiVM.LeaveType        
+        deleteLeaveType: function () {
+            vmManager.selectLeaveType = uiVM.LeaveType
         },
         //拼接时间
         SetDate: function ()
@@ -373,7 +375,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         },
         //查询请假数据
         getLeaveAskManagerDatas: function (mode) {    
-               
+            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return;}        
             queryFields.workerId = uiVM.WorkerId; 
             queryFields.leaveSate = uiVM.LeaveState;
             queryFields.leaveType = uiVM.LeaveType;
@@ -415,8 +417,6 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 });
             });
         }
-
-
     }); 
     //编辑
     operate.editItem = function (item) {
@@ -438,7 +438,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {                   
                        vmManager.init();
-                        vmManager.getLeaveAskManagerDatas(1);
+                       vmManager.getLeaveAskManagerDatas(4);
                         deleteDialog.close();
                     }
                 })
@@ -460,9 +460,8 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                             vmManager.datasource.push(mode);
                         }                   
                         vmManager.init();
-                        vmManager.getLeaveAskManagerDatas(1);
+                        vmManager.selectLeaveType=[],
                         dialog.close();
-                        vmManager.selectLeaveType = [];
                     }
                 });
             });
@@ -1467,7 +1466,4 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
 
 
 });
-
-
-
 

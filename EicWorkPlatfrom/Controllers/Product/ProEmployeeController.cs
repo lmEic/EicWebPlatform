@@ -366,8 +366,6 @@ namespace EicWorkPlatfrom.Controllers.Product
 
                 throw new Exception(ex.Message);
            }
-
-
         }
         /// <summary>
         /// 查询请假信息
@@ -390,9 +388,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 LeaveType=leaveType,
                 SearchMode=mode     
             });
-           
             return DateJsonResult(datas);
-
         }
 
         /// <summary>
