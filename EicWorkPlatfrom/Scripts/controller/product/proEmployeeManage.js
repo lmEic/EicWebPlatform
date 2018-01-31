@@ -357,8 +357,9 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         selectLeaveType: [],
         //添加请假类别
         addLeaveType: function () {
+            selectLeaveType=[],
             vmManager.selectLeaveType = vmManager.selectLeaveType + " " + uiVM.LeaveType;
-            $scope.vm.LeaveType = vmManager.selectLeaveType;
+            uiVM.LeaveType = vmManager.selectLeaveType;
         },
         //删除请假类别
         deleteLeaveType: function () {
@@ -459,7 +460,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                             vmManager.datasource.push(mode);
                         }                   
                         vmManager.init();
-                       
+                        vmManager.selectLeaveType=[],
                         dialog.close();
                     }
                 });
