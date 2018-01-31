@@ -28,7 +28,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
-
         #region WorkerInfo
         /// <summary>
         /// 人员信息管理
