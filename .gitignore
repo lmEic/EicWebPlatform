@@ -193,3 +193,7 @@ ModelManifest.xml
 /.vs/EicWorkPlatfrom/v15/sqlite3/db.lock
 /.vs/EicWorkPlatfrom/v15/sqlite3/storage.ide-shm
 /.vs/EicWorkPlatfrom/v15/sqlite3/storage.ide-wal
+/.vs/EicWorkPlatfrom/v15/Server/sqlite3/db.lock
+/.vs/EicWorkPlatfrom/v15/Server/sqlite3/storage.ide
+/.vs/EicWorkPlatfrom/v15/Server/sqlite3/storage.ide-shm
+/.vs/EicWorkPlatfrom/v15/Server/sqlite3/storage.ide-wal
