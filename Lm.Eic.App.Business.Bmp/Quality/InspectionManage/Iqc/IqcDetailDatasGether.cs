@@ -14,10 +14,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
         public List<InspectionIqcDetailModel> GetIqcDetailModeDatasBy(string materailId, string inspecitonItem)
         {
-
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelDatasBy(materailId, inspecitonItem);
-
-
+        }
+        public bool isExsitOrderId(string orderid)
+        {
+            return InspectionManagerCrudFactory.IqcDetailCrud.isExsitOrderId(orderid);
         }
         public List<InspectionIqcMasterModel> GetIqcMasterModeDatasBy(string materailId)
         {

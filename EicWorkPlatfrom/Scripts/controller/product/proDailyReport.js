@@ -611,6 +611,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     //初始化视图
     var initVM = _.clone(uiVM);
     var vmManager = {
+     
         ///部门
         inspectionDataGatherType: 'A',
         department: leeLoginUser.department,
@@ -633,7 +634,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         ///保存后继续
         continueSaveInit: function () {
             uiVM.WorkerId = null;
-            uiVM.ProcessesIndex = 0;
+            uiVM.ProcessesIndex = null;
             uiVM.ProcessesName = null;
             uiVM.TodayProductionCount = 0;
             uiVM.TodayBadProductCount = 0;
@@ -656,13 +657,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             var strLen = leeHelper.checkIsChineseValue(workerid) ? 2 : 6;
             if (workerid.length >= strLen) {
                 if (opData == 1) vmManager.searchedWorkers = [];
-                console.log(vmManager.departmentMasterDatas);
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerid).then(function (datas) {
                     vmManager.searchedWorkers = datas;
-                    console.log(vmManager.searchedWorkers);
                     if (datas.length > 0) {
                         vmManager.searchedWorkers = datas;
-                        console.log(vmManager.searchedWorkers);
+                      
                         var mm = _.findWhere(vmManager.departments, { value: vmManager.department });
                         if (!_.isUndefined(mm)) {
                             var userInfo = _.findWhere(vmManager.searchedWorkers, { Department: mm.DepartmentNode });
@@ -675,7 +674,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
 
                             if (vmManager.searchedWorkers.length >= 1) {
                                 vmManager.isSingle = true;
-                                vmManager.selectWorker(vmManager.searchedWorkers[0], opData);
+                                if (vmManager.searchedWorkers.length == 1)
+                                { vmManager.selectWorker(vmManager.searchedWorkers[0], opData); }
+                                else { leePopups.alert("出现多项请选择人员信息！！"); }
                             }
                             else vmManager.isSingle = false;
                         }
@@ -921,13 +922,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             if (uiVmUser.WorkerId.length >= strLen) {
                 vmManagerMultiermUser.searchedWorkers = [];
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVmUser.WorkerId).then(function (workersdatas) {
-                    if (workersdatas.length > 0) {
+                    if (workersdatas.length >= 1) {
                         vmManagerMultiermUser.searchedWorkers = workersdatas;
                         if (vmManagerMultiermUser.searchedWorkers.length === 1) {
                             vmManagerMultiermUser.isSingle = true;
                             vmManagerMultiermUser.selectWorker(vmManagerMultiermUser.searchedWorkers[0]);
                         }
-                        else vmManagerMultiermUser.isSingle = false;
+                        else
+                        {  vmManagerMultiermUser.isSingle = false;
+                            leePopups.alert("出现多项请选择人员信息！！"); }
                     }
                     else vmManagerMultiermUser.selectWorker(null);
                 });
@@ -1282,6 +1285,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                         else {
                             vmManagerPT.isSingle = false;
                             vmManagerPT.isMasterSingle = false;
+                            leePopups.alert("出现多项请选择人员信息！！");
                         }
                     }
                     else {
@@ -1381,7 +1385,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             leeHelper.setUserData(uiVM);
             uiVM.Department = vmManager.department;
             $scope.searchPromise = dReportDataOpService.saveGroupDailyReportData(uiVM, vmManagerMultiermUser.multiermUserInPutInfos).then(function (datasResult) {
-                console.log(datasResult);
                 if (datasResult.opResult.Result) {
                     console.log(datasResult.dataslist);
                     leeDataHandler.dataOperate.handleSuccessResult(operate, datasResult.opResult);
@@ -1391,7 +1394,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                             vmManager.havePutInData.push(m);
                         }
                     });
-                    // vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
                     vmManagerMultiermUser.multiermUserInPutInfos = [];
                 };
             });

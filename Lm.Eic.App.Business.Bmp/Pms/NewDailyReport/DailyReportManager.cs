@@ -301,8 +301,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             datas.ForEach(e =>
             {
                 ///如果工单不在ERP中的在制工单中 那么此分配的工单失效 状态变为已经完工 如果是虚拟工单不用改变
-                var dates = erpInProductiondatas.FirstOrDefault(f => f.OrderId == e.OrderId && e.IsVirtualOrderId == 0);
-                if (dates == null)
+                var ErpDatas = erpInProductiondatas.FirstOrDefault(f => f.OrderId == e.OrderId && e.IsVirtualOrderId == 0);
+                if (ErpDatas == null)
                 {
                     e.IsValid = "false";
                     e.ProductStatus = "已完工";

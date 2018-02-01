@@ -21,7 +21,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     public class EquipmentCheckRepository : BpmRepositoryBase<EquipmentCheckRecordModel>, IEquipmentCheckRepository
     {
     }
-
     public interface IEquipmentMaintenanceRepositor : IRepository<EquipmentMaintenanceRecordModel> { }
 
     /// <summary>
@@ -30,7 +29,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     public class EquipmentMaintenanceRepository : BpmRepositoryBase<EquipmentMaintenanceRecordModel>, IEquipmentMaintenanceRepositor
     {
     }
-
     /// <summary>
     ///设备报废 仓储层
     /// </summary>
@@ -41,7 +39,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     /// </summary>
     public class EquipmentDiscardRepository : BpmRepositoryBase<EquipmentDiscardRecordModel>, IEquipmentDiscardRepository
     { }
-
     /// <summary>
     ///设备维修 仓储层
     /// </summary>

@@ -353,7 +353,24 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         workTimeEnd: new Date(00, 00, 00),  
         leaveStats: [{ id: '未填写', text: '未填写' }, { id: '己填写', text: "己填写" }],
         selectDepartment: null,
-        DepartmentDatas: [],      
+        DepartmentDatas: [],  
+        selectLeaveType: [],
+        //添加请假类别
+        addLeaveType: function () {
+            selectLeaveType=[],
+            vmManager.selectLeaveType = vmManager.selectLeaveType + " " + uiVM.LeaveType;
+            uiVM.LeaveType = vmManager.selectLeaveType;
+        },
+        //删除请假类别
+        deleteLeaveType: function () {
+            if (uiVM.LeaveType == undefined) {
+                vmManager.selectLeaveType=[]
+                uiVM.LeaveType = []
+            }
+            else {
+                vmManager.selectLeaveType = uiVM.LeaveType
+            }         
+        },
         //拼接时间
         SetDate: function ()
         {                              
@@ -406,8 +423,6 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 });
             });
         }
-
-
     }); 
     //编辑
     operate.editItem = function (item) {
@@ -429,7 +444,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {                   
                        vmManager.init();
-                        vmManager.getLeaveAskManagerDatas(1);
+                       vmManager.getLeaveAskManagerDatas(4);
                         deleteDialog.close();
                     }
                 })
@@ -451,7 +466,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                             vmManager.datasource.push(mode);
                         }                   
                         vmManager.init();
-                        vmManager.getLeaveAskManagerDatas(1);
+                        vmManager.selectLeaveType=[],
                         dialog.close();
                     }
                 });

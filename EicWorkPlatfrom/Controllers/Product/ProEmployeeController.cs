@@ -28,7 +28,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
-
         #region WorkerInfo
         /// <summary>
         /// 人员信息管理
@@ -127,10 +126,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByDetail(qryDto);
-            TempData["WorkOverHourDatasBySum"] = datas;  
-      
+            TempData["WorkOverHourDatasBySum"] = datas;     
             return DateJsonResult(datas);
-
         }
         [NoAuthenCheck]
         /// <summary>
@@ -141,16 +138,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         public ContentResult GetWorkOverHoursMode(string departmentText,string postNature, DateTime workDate,int mode)
         {
-
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,postNature,workDate,mode);
-
             foreach (var item in datas)
             {
                 if (item.OpSign == "edit")
                 {
                     item.OpSign = "add";
-                }
-               
+                }            
             }
             TempData["WorkOverHoursDatas"] = datas;
             return DateJsonResult(datas);
@@ -254,8 +248,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 throw new Exception(ex.Message);
             }
-
-
         }
         [NoAuthenCheck]
         public FileResult WorkOverHoursDatasSumToExcelDayCount()
@@ -374,8 +366,6 @@ namespace EicWorkPlatfrom.Controllers.Product
 
                 throw new Exception(ex.Message);
            }
-
-
         }
         /// <summary>
         /// 查询请假信息
@@ -398,9 +388,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 LeaveType=leaveType,
                 SearchMode=mode     
             });
-           
             return DateJsonResult(datas);
-
         }
 
         /// <summary>
