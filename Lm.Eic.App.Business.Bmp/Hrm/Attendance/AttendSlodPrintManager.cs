@@ -100,16 +100,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var askLeaveDataSource = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatas(yearMonth);
             datas.ForEach(d =>
             {
-                if (d.LeaveHours > 0)
+                AttendAskLeaveEntry item = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatasOfWorker(d.WorkerId, d.AttendanceDate, askLeaveDataSource);
+                if (item != null)
                 {
-                    AttendAskLeaveEntry item = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatasOfWorker(d.WorkerId, d.AttendanceDate, askLeaveDataSource);
-                    if (item != null)
-                    {
-                        d.LeaveHours = item.AskLeaveHours;
-                        d.LeaveTimeRegion = item.AskLeaveRegion;
-                        d.LeaveType = item.AskLeaveType;
-                        d.LeaveDescription = item.AskLeaveDescription;
-                    }
+                    d.LeaveHours = item.AskLeaveHours;
+                    d.LeaveTimeRegion = item.AskLeaveRegion;
+                    d.LeaveType = item.AskLeaveType;
+                    d.LeaveDescription = item.AskLeaveDescription;
                 }
             });
         }
