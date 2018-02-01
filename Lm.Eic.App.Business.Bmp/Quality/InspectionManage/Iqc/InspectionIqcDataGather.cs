@@ -405,7 +405,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///如果后果单号有删除 但是抽检已经生成 这种情况 不都考虑
             List<MaterialModel> masterdatas = QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
             if (masterdatas == null || masterdatas.Count == 0) return retrunListdatas;
-            ///如果详细表中没有 那么主表的显示就无效
+            ///如果详细表中没有，那么主表的显示数据就无效
             if (DetailDatasGather.isExsitOrderId(orderId))
             {
                 var masterInfos = MasterDatasGather.GetIqcMasterDatasBy(orderId);
