@@ -71,16 +71,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             return irep.Entities.Where(e => e.YearMonth == yearMonth && e.WorkerId == workerId).ToList();
         }
+        internal List<AttendAskLeaveModel> GetAskLeaveDatas(string yearMonth)
+        {
+            return irep.Entities.Where(e => e.YearMonth == yearMonth).ToList();
+        }
         /// <summary>
         /// 获取作业员的请假条目数据
         /// </summary>
         /// <param name="workerId"></param>
         /// <param name="attendDate"></param>
         /// <returns></returns>
-        internal AttendAskLeaveEntry GetAskLeaveDatasOfWorker(string workerId, DateTime attendDate)
+        internal AttendAskLeaveEntry GetAskLeaveDatasOfWorker(string workerId, DateTime attendDate, List<AttendAskLeaveModel> dataSource)
         {
             attendDate = attendDate.ToDate();
-            var datas = irep.Entities.Where(e => e.AttendanceDate == attendDate && e.WorkerId == workerId).ToList();
+            var datas = dataSource == null ? dataSource.Where(e => e.AttendanceDate == attendDate && e.WorkerId == workerId).ToList()
+                : irep.Entities.Where(e => e.AttendanceDate == attendDate && e.WorkerId == workerId).ToList();
             AttendAskLeaveEntry entry = null;
             if (datas != null && datas.Count > 0)
             {

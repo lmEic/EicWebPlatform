@@ -91,17 +91,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 };
             var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
             if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
-            BindingAskLeaveDataToAttendance(datas);
+            BindingAskLeaveDataToAttendance(datas, yearMonth);
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
             return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping).CreateDownLoadExcelFileModel("考勤数据-" + yearMonth);
         }
-        private void BindingAskLeaveDataToAttendance(List<AttendanceDataModel> datas)
+        private void BindingAskLeaveDataToAttendance(List<AttendanceDataModel> datas, string yearMonth)
         {
+            var askLeaveDataSource = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatas(yearMonth);
             datas.ForEach(d =>
             {
                 if (d.LeaveHours > 0)
                 {
-                    AttendAskLeaveEntry item = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatasOfWorker(d.WorkerId, d.AttendanceDate);
+                    AttendAskLeaveEntry item = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatasOfWorker(d.WorkerId, d.AttendanceDate, askLeaveDataSource);
                     if (item != null)
                     {
                         d.LeaveHours = item.AskLeaveHours;
