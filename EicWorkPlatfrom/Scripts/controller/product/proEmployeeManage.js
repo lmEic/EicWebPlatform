@@ -1394,7 +1394,6 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 vmManager.workhoursNightCount = data;
                
             });
-
         }
         operate.calculateNightDates2 = function () {
            var worknightCount = vmManager.workhoursNightCount;
