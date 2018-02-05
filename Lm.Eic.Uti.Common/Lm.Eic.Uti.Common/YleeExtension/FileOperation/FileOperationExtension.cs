@@ -956,7 +956,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             DateTime dateV;
             DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
             rowDeparmentAndWorkdate.GetCell(14).SetCellValue(dateV.ToShortDateString());
-
             rowContent.GetCell(colindex0).SetCellValue(workclasstype.ToString());
             rowContent.GetCell(colindex1).SetCellValue(workId.ToString());
             rowContent.GetCell(colindex2).SetCellValue(workName.ToString());
