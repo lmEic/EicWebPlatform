@@ -479,7 +479,194 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             return sheet;
         }
         /// <summary>
-        /// 创建加班Excel表
+        /// 直接员工
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataSource"></param>
+        /// <param name="xlsSheetName"></param>
+        /// <param name="FieldMapList"></param>
+        /// <param name="workbook"></param>
+        /// <returns></returns>
+
+        private static ISheet WorkOverHoursCreateSheet_direct<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
+        {
+            #region 填充内容区域
+            if (xlsSheetName == string.Empty) xlsSheetName = "Sheet12";
+            ISheet sheet = workbook.GetSheet(workbook.GetSheetName(0));
+            ISheet sheet1 = workbook.GetSheet(workbook.GetSheetName(1));
+            ICellStyle cellSytleDate = workbook.CreateCellStyle();
+            IDataFormat format = workbook.CreateDataFormat();
+            cellSytleDate.DataFormat = format.GetFormat("yyyy-mm-dd");
+
+            #region 设定单元格参数
+            IRow rowDepmentAndWorkdate = sheet.GetRow(2);
+            IRow rowWorkType = sheet.GetRow(1);
+            IRow rowWorkReason = sheet.GetRow(42);
+            IRow rowWorkDayTime = sheet.GetRow(3);
+            IRow rowWorkNightTime = sheet.GetRow(4);
+            IRow rowDepmentAndWorkdate1 = sheet1.GetRow(2);
+            IRow rowWorkType1 = sheet1.GetRow(1);
+            IRow rowWorkReason1 = sheet1.GetRow(42);
+            IRow rowWorkDayTime1 = sheet.GetRow(3);
+            IRow rowWorkNightTime1 = sheet.GetRow(4);
+            int row_day = 0;
+            int row_day_index = 0;
+            int row_day_45 = 0;
+            int row_day_67 = 0;
+            int row_day1 = 0;
+            int row_day_451 = 0;
+            int row_day_671 = 0;
+            int colIndex0 = 2;
+            int colIndex1 = 3;
+            int colIndex2 = 4;
+            int colIndex3 = 5;
+
+            int colIndex5 = 7;
+            int colIndex6 = 8;
+            int colIndex7 = 9;
+            int colIndex8 = 10;
+
+            int colIndex9 = 12;
+            int colIndex10 = 13;
+            int colIndex11 = 14;
+            int colIndex12 = 15;
+
+            int colIndex13 = 17;
+            int colIndex14 = 18;
+            int colIndex15 = 19;
+            int colIndex16 = 20;
+
+            #endregion
+
+            for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
+            {
+                #region 设定行参数
+                IRow rowContent_day = sheet.GetRow(rowIndex + 6);//白班行 6,7,8,9              
+                IRow cowConter_line23 = sheet.GetRow((rowIndex - row_day) + 5);//换列(2,3)       35
+                IRow cowConter_line45 = sheet.GetRow((rowIndex - row_day_45) + 5);//换列(4,5)    71
+                IRow cowConter_line67 = sheet.GetRow((rowIndex - row_day_67) + 5);//换列(6,7)    107 
+                IRow rowContent_day1 = sheet1.GetRow((rowIndex - row_day_index) + 5);//白班行 6,7,8,9     143           
+                IRow cowConter_line231 = sheet1.GetRow((rowIndex - row_day1) + 5);//换列(2,3)
+                IRow cowConter_line451 = sheet1.GetRow((rowIndex - row_day_451) + 5);//换列(4,5)
+                IRow cowConter_line671 = sheet1.GetRow((rowIndex - row_day_671) + 5);//换列(6,7)
+                #endregion
+                T entity = dataSource[rowIndex];
+                Type tentity = entity.GetType();
+                PropertyInfo[] tpis = tentity.GetProperties();
+                int colIndex = 1;
+                FieldMapList.ForEach(e =>
+                {
+                    for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                    {
+                        if (e.FieldName == tpis[tipsIndex].Name)
+                        {
+                            #region 导出记录
+                            if (rowIndex < 144)
+                            {
+                                //0,1
+                                if (rowIndex < 36)
+                                {
+                                    WorkHoursFillIcell_direct<T>(cellSytleDate, rowContent_day, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
+                                    colIndex++;
+                                    row_day = rowIndex;//35
+                                    row_day_index = rowIndex;
+                                    break;
+                                }
+                                else
+                                {
+                                    if (rowIndex > 107)
+                                    {
+                                        //6,7
+                                        WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line67, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
+                                        colIndex++;
+                                        row_day_index = rowIndex;
+
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        if (rowIndex > 71)
+                                        {
+                                            //4,5
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line45, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
+                                            colIndex++;
+                                            row_day_67 = rowIndex;
+                                            row_day_index = rowIndex;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            // 2,3                                                                
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line23, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
+                                            colIndex++;
+                                            row_day_45 = rowIndex;//18
+                                            row_day_index = rowIndex;
+                                            break;
+
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //0,1
+                                if (rowIndex < 180)
+                                {
+                                    WorkHoursFillIcell_direct<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
+                                    colIndex++;
+                                    row_day1 = rowIndex;//1  
+
+                                    break;
+                                }
+                                else
+                                {
+                                    if (rowIndex > 251)
+                                    {
+
+                                        WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
+                                        colIndex++;
+
+
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        if (rowIndex > 215)
+                                        {
+
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
+                                            colIndex++;
+                                            row_day_671 = rowIndex;
+
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
+                                            colIndex++;
+                                            row_day_451 = rowIndex;
+
+                                            break;
+
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+                        }
+                    }
+
+                });
+            }
+            #endregion 填充内容区域
+
+            return sheet;
+        }
+
+
+
+        /// <summary>
+        /// 间接员工
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dataSource"></param>
@@ -722,8 +909,84 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
         }
         /// <summary>
-        /// 填充表格值
+        /// 直接员工
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cellSytleDate"></param>
+        /// <param name="rowContent"></param>
+        /// <param name="rowDeparmentAndWorkdate"></param>
+        /// <param name="rowWorkType"></param>
+        /// <param name="rowWorkReason"></param>
+        /// <param name="rowWorkDayTime"></param>
+        /// <param name="rowWorkNightTime"></param>
+        /// <param name="entity"></param>
+        /// <param name="tpis"></param>
+        /// <param name="colindex0"></param>
+        /// <param name="colindex1"></param>
+        /// <param name="colindex2"></param>
+        /// <param name="colindex3"></param>
+        private static void WorkHoursFillIcell_direct<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
+        {
+            object workId = tpis[0].GetValue(entity, null);//1187
+            object workName = tpis[1].GetValue(entity, null);//张三
+            object department = tpis[2].GetValue(entity, null);//企业信息中心
+            object workdate = tpis[3].GetValue(entity, null);//2017/10/16
+            object workhours = tpis[4].GetValue(entity, null);//2.5
+            object worktype = tpis[7].GetValue(entity, null);//平时加班
+            object workclasstype = tpis[8].GetValue(entity, null);//白班          
+            object workreason = tpis[12].GetValue(entity, null);
+            object workdaytime = tpis[13].GetValue(entity, null);
+            object worknighttime = tpis[14].GetValue(entity, null);
+            object workdaytime1 = tpis[15].GetValue(entity, null);
+            object worknighttime1 = tpis[16].GetValue(entity, null);
+            rowWorkType.GetCell(19).SetCellValue(worktype.ToString());
+            rowDeparmentAndWorkdate.GetCell(1).SetCellValue(department.ToString());
+            rowWorkReason.GetCell(1).SetCellValue(workreason.ToString());
+            if (workclasstype.ToString() == "白班")
+            {
+                rowWorkDayTime.GetCell(3).SetCellValue(workdaytime.ToString());
+                rowWorkDayTime.GetCell(12).SetCellValue(worknighttime.ToString());
+                // rowWorkDayTime.GetCell(12).SetCellValue(workdaytime1.ToString());
+            }
+            if (workclasstype.ToString() == "晚班")
+            {
+                rowWorkNightTime.GetCell(3).SetCellValue(workdaytime1.ToString());
+                rowWorkNightTime.GetCell(12).SetCellValue(worknighttime1.ToString());
+            }
+            DateTime dateV;
+            DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
+            rowDeparmentAndWorkdate.GetCell(14).SetCellValue(dateV.ToShortDateString());
+
+            rowContent.GetCell(colindex0).SetCellValue(workclasstype.ToString());
+            rowContent.GetCell(colindex1).SetCellValue(workId.ToString());
+            rowContent.GetCell(colindex2).SetCellValue(workName.ToString());
+            double doubV = 0;
+            double.TryParse(workhours.ToString(), out doubV);
+            rowContent.GetCell(colindex3).SetCellValue(doubV);
+        }
+
+
+
+
+
+
+        /// <summary>
+        /// 间接员工
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cellSytleDate"></param>
+        /// <param name="rowContent"></param>
+        /// <param name="rowDeparmentAndWorkdate"></param>
+        /// <param name="rowWorkType"></param>
+        /// <param name="rowWorkReason"></param>
+        /// <param name="rowWorkDayTime"></param>
+        /// <param name="rowWorkNightTime"></param>
+        /// <param name="entity"></param>
+        /// <param name="tpis"></param>
+        /// <param name="colindex0"></param>
+        /// <param name="colindex1"></param>
+        /// <param name="colindex2"></param>
+        /// <param name="colindex3"></param>
         private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
         {
             object workId = tpis[0].GetValue(entity, null);//1187
@@ -1104,7 +1367,38 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
         }
         /// <summary>
-        /// 扩展方法二:导入Excel模板文件中
+        /// 直接员工
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="DicDataSources"></param>
+        /// <param name="FieldMapList"></param>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
+        public static MemoryStream WorkOverHoursListToExcel_direct<T>(this Dictionary<string, List<T>> DicDataSources, List<FileFieldMapping> FieldMapList, string filepath) where T : class, new()
+        {
+            try
+            {
+                MemoryStream stream = new MemoryStream();
+                HSSFWorkbook workbook = (HSSFWorkbook)WorkbookFactory.Create(filepath);
+                foreach (string i in DicDataSources.Keys)
+                {
+                    if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
+                    ISheet sheet = WorkOverHoursCreateSheet_direct<T>(DicDataSources[i], i, FieldMapList, workbook);
+                    sheet.ForceFormulaRecalculation = true;
+                }
+                workbook.Write(stream);
+
+                return stream;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+
+
+        /// <summary>
+        /// 间接员工
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="DicDataSources"></param>
