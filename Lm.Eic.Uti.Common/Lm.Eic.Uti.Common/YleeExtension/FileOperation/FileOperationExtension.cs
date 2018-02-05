@@ -511,6 +511,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             IRow rowWorkNightTime1 = sheet.GetRow(4);
             int row_day = 0;
             int row_day_index = 0;
+      
             int row_day_45 = 0;
             int row_day_67 = 0;
             int row_day1 = 0;
@@ -545,7 +546,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 IRow cowConter_line23 = sheet.GetRow((rowIndex - row_day) + 5);//换列(2,3)       35
                 IRow cowConter_line45 = sheet.GetRow((rowIndex - row_day_45) + 5);//换列(4,5)    71
                 IRow cowConter_line67 = sheet.GetRow((rowIndex - row_day_67) + 5);//换列(6,7)    107 
-                IRow rowContent_day1 = sheet1.GetRow((rowIndex - row_day_index) + 5);//白班行 6,7,8,9     143           
+
+                IRow rowContent_day1 = sheet1.GetRow((rowIndex - row_day_index) + 5);//白班行 6,7,8,9     143                
                 IRow cowConter_line231 = sheet1.GetRow((rowIndex - row_day1) + 5);//换列(2,3)
                 IRow cowConter_line451 = sheet1.GetRow((rowIndex - row_day_451) + 5);//换列(4,5)
                 IRow cowConter_line671 = sheet1.GetRow((rowIndex - row_day_671) + 5);//换列(6,7)
@@ -615,17 +617,17 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     WorkHoursFillIcell_direct<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
                                     colIndex++;
                                     row_day1 = rowIndex;//1  
-
+                                  
                                     break;
                                 }
                                 else
                                 {
                                     if (rowIndex > 251)
                                     {
-
+                                        //6,7
                                         WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
                                         colIndex++;
-
+                                       
 
                                         break;
                                     }
@@ -633,19 +635,20 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     {
                                         if (rowIndex > 215)
                                         {
-
+                                            //4,5
                                             WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
                                             colIndex++;
                                             row_day_671 = rowIndex;
-
+                                          
                                             break;
                                         }
                                         else
                                         {
+                                            //2,3
                                             WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
                                             colIndex++;
                                             row_day_451 = rowIndex;
-
+                                        
                                             break;
 
                                         }

@@ -1018,4 +1018,29 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
         #endregion Model
     }
 
+    /// <summary>
+    /// 考勤请假条目
+    /// </summary>
+    public class AttendAskLeaveEntry
+    {
+
+
+        /// <summary>
+        /// 请假时数
+        /// </summary>
+        public double AskLeaveHours { get; set; }
+        /// <summary>
+        /// 请假类型
+        /// </summary>
+        public string AskLeaveType { get; set; }
+        /// <summary>
+        /// 请假时段
+        /// </summary>
+        public string AskLeaveRegion { get; set; }
+        /// <summary>
+        /// 请假描述信息
+        /// </summary>
+        public string AskLeaveDescription { get; set; }
+    }
+
 }
