@@ -507,11 +507,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             IRow rowDepmentAndWorkdate1 = sheet1.GetRow(2);
             IRow rowWorkType1 = sheet1.GetRow(1);
             IRow rowWorkReason1 = sheet1.GetRow(42);
-            IRow rowWorkDayTime1 = sheet.GetRow(3);
-            IRow rowWorkNightTime1 = sheet.GetRow(4);
+            IRow rowWorkDayTime1 = sheet1.GetRow(3);
+            IRow rowWorkNightTime1 = sheet1.GetRow(4);
             int row_day = 0;
-            int row_day_index = 0;
-      
+            int row_day_index = 0;    
             int row_day_45 = 0;
             int row_day_67 = 0;
             int row_day1 = 0;
@@ -521,17 +520,14 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             int colIndex1 = 3;
             int colIndex2 = 4;
             int colIndex3 = 5;
-
             int colIndex5 = 7;
             int colIndex6 = 8;
             int colIndex7 = 9;
             int colIndex8 = 10;
-
             int colIndex9 = 12;
             int colIndex10 = 13;
             int colIndex11 = 14;
             int colIndex12 = 15;
-
             int colIndex13 = 17;
             int colIndex14 = 18;
             int colIndex15 = 19;
@@ -696,8 +692,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             IRow rowDepmentAndWorkdate1 = sheet1.GetRow(2);
             IRow rowWorkType1 = sheet1.GetRow(1);
             IRow rowWorkReason1 = sheet1.GetRow(24);
-            IRow rowWorkDayTime1 = sheet.GetRow(3);
-            IRow rowWorkNightTime1 = sheet.GetRow(4);
+            IRow rowWorkDayTime1 = sheet1.GetRow(3);
+            IRow rowWorkNightTime1 = sheet1.GetRow(4);
             int row_day = 0;
             int row_day_index = 0;
             int row_day_45 = 0;
