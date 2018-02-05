@@ -1344,7 +1344,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             row.WorkoverType = uiVM.WorkoverType;
             row.QryDate = qryDateFormat;
           //  row.WorkClassType = uiVM.WorkClassType;
-          //  row.WorkOverHours = uiVM.WorkOverHours;
+            row.WorkOverHours = uiVM.WorkOverHours;
             row.DepartmentText = uiVM.DepartmentText;
             row.ParentDataNodeText = uiVM.ParentDataNodeText;
             row.OpPerson = uiVM.OpPerson;
