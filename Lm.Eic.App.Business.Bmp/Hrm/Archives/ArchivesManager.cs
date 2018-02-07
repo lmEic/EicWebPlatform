@@ -442,6 +442,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <param name="searchMode">
         /// 默认载入全部数据
         /// 1:根据部门载入数据，需设定部门字段值
+        /// 2:根据工号查询
         /// </param>
         /// <returns></returns>
         public List<ArWorkerInfo> FindWorkers(QueryWorkersDto qryDto = null, int searchMode = 0)
