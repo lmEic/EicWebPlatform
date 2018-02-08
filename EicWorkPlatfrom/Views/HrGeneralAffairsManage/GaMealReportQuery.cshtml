@@ -9,23 +9,49 @@
                     <div class="row">
                         <div class="col-md-12">
                             <form class="form-inline" onkeypress="if (event.keyCode === 13) return false;">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <label class="control-label">日期</label>
+                                <div id="queryFrom">
+                                    <div bs-tabs bs-active-pane="vmManager.activeQueryFromTab">
+                                        <div  bs-pane data-title="每天报餐汇总" data-name="everyDayDataViewTab">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <label class="control-label">日期</label>
+                                                    </div>
+                                                    <input type="date" class="form-control" ng-model="vmManager.reportDate" placeholder="汇总日期" />
+                                                    <div class="input-group-btn">
+                                                        <span class="btn btn-success" ng-click="vmManager.getReportMealAnalogDatas()"><i class="fa fa-search"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <a href="@Url.Action("ExportReportMealSumerizeDatas", "HrGeneralAffairsManage")" class="btn btn-success">
+                                                    <i class="fa fa-file-excel-o"></i>
+                                                    当天汇出到Excel
+                                                </a>
+                                            </div>
                                         </div>
-                                        <input type="date" class="form-control" ng-model="vmManager.reportDate" placeholder="汇总日期" />
-                                        <div class="input-group-btn">
-                                            <span class="btn btn-success" ng-click="vmManager.getReportMealAnalogDatas()"><i class="fa fa-search"></i></span>
+                                        <div bs-pane data-title="每月报餐汇总" data-name="everyMonthDataViewTab">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <label class="control-label">年月份</label>
+                                                    </div>
+                                                    <span yl-month-button data-title-visible="false" data-yearmonth="vmManager.reportDate"></span>
+                                                    <div class="input-group-btn">
+                                                        <span class="btn btn-success" ng-click="vmManager.getReportMealAnalogDatas()"><i class="fa fa-search"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <a href="@Url.Action("ExportReportMealSumerizeDatas", "HrGeneralAffairsManage")" class="btn btn-success">
+                                                    <i class="fa fa-file-excel-o"></i>
+                                                    当月汇出到Excel
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <a href="@Url.Action("ExportReportMealSumerizeDatas", "HrGeneralAffairsManage")" class="btn btn-success">
-                                        <i class="fa fa-file-excel-o"></i>
-                                        汇出到Excel
-                                    </a>
-                                </div>
+                                
                             </form>
                         </div>
                     </div>

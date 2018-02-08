@@ -2235,6 +2235,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
 hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, connDataOpService) {
     var vmManager = $scope.vmManager = {
         activeYGTab: 'dataYGViewTab',
+        activeQueryFromTab: 'everyDayDataViewTab',
         analogDatas: null,
         reportDate: new Date(),
         getReportMealAnalogDatas: function () {
