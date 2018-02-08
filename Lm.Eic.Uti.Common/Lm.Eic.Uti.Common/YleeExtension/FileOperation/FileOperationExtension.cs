@@ -503,12 +503,20 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             IRow rowWorkType = sheet.GetRow(1);
             IRow rowWorkReason = sheet.GetRow(42);
             IRow rowWorkDayTime = sheet.GetRow(3);
-            IRow rowWorkNightTime = sheet.GetRow(4);
-            IRow rowDepmentAndWorkdate1 = sheet1.GetRow(2);
-            IRow rowWorkType1 = sheet1.GetRow(1);
-            IRow rowWorkReason1 = sheet1.GetRow(42);
-            IRow rowWorkDayTime1 = sheet1.GetRow(3);
-            IRow rowWorkNightTime1 = sheet1.GetRow(4);
+            IRow rowWorkNightTime = sheet.GetRow(3);
+            IRow rowWorkDayTime1 = sheet.GetRow(4);
+            IRow rowWorkNightTime1 = sheet.GetRow(4);
+
+            IRow rowDepmentAndWorkdate_sheet1 = sheet1.GetRow(2);
+            IRow rowWorkType_sheet1 = sheet1.GetRow(1);
+            IRow rowWorkReason_sheet1 = sheet1.GetRow(42);
+            IRow rowWorkDayTime_sheet1 = sheet1.GetRow(3);
+            IRow rowWorkNightTime_sheet1 = sheet1.GetRow(3);
+            IRow rowWorkDayTime1_sheet1 = sheet1.GetRow(4);
+            IRow rowWorkNightTime1_sheet1 = sheet1.GetRow(4);
+
+
+
             int row_day = 0;
             int row_day_index = 0;    
             int row_day_45 = 0;
@@ -564,7 +572,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 //0,1
                                 if (rowIndex < 36)
                                 {
-                                    WorkHoursFillIcell_direct<T>(cellSytleDate, rowContent_day, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
+                                    WorkHoursFillIcell_direct<T>(cellSytleDate, rowContent_day, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
                                     colIndex++;
                                     row_day = rowIndex;//35
                                     row_day_index = rowIndex;
@@ -575,7 +583,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     if (rowIndex > 107)
                                     {
                                         //6,7
-                                        WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line67, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
+                                        WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line67, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
                                         colIndex++;
                                         row_day_index = rowIndex;
 
@@ -586,7 +594,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         if (rowIndex > 71)
                                         {
                                             //4,5
-                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line45, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line45, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
                                             colIndex++;
                                             row_day_67 = rowIndex;
                                             row_day_index = rowIndex;
@@ -595,7 +603,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         else
                                         {
                                             // 2,3                                                                
-                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line23, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line23, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
                                             colIndex++;
                                             row_day_45 = rowIndex;//18
                                             row_day_index = rowIndex;
@@ -610,7 +618,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 //0,1
                                 if (rowIndex < 180)
                                 {
-                                    WorkHoursFillIcell_direct<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
+                                    WorkHoursFillIcell_direct<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
                                     colIndex++;
                                     row_day1 = rowIndex;//1  
                                   
@@ -621,7 +629,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     if (rowIndex > 251)
                                     {
                                         //6,7
-                                        WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
+                                        WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
                                         colIndex++;
                                        
 
@@ -632,7 +640,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         if (rowIndex > 215)
                                         {
                                             //4,5
-                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
                                             colIndex++;
                                             row_day_671 = rowIndex;
                                           
@@ -641,7 +649,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         else
                                         {
                                             //2,3
-                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
+                                            WorkHoursFillIcell_direct<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
                                             colIndex++;
                                             row_day_451 = rowIndex;
                                         
@@ -685,12 +693,18 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             IRow rowWorkType = sheet.GetRow(1);
             IRow rowWorkReason = sheet.GetRow(24);
             IRow rowWorkDayTime = sheet.GetRow(3);
-            IRow rowWorkNightTime = sheet.GetRow(4);
-            IRow rowDepmentAndWorkdate1 = sheet1.GetRow(2);
-            IRow rowWorkType1 = sheet1.GetRow(1);
-            IRow rowWorkReason1 = sheet1.GetRow(24);
-            IRow rowWorkDayTime1 = sheet1.GetRow(3);
-            IRow rowWorkNightTime1 = sheet1.GetRow(4);
+            IRow rowWorkNightTime = sheet.GetRow(3);
+            IRow rowWorkDayTime1 = sheet.GetRow(4);
+            IRow rowWorkNightTime1 = sheet.GetRow(4);
+
+            IRow rowDepmentAndWorkdate_sheet1 = sheet1.GetRow(2);
+            IRow rowWorkType_sheet1= sheet1.GetRow(1);
+            IRow rowWorkReason_sheet1 = sheet1.GetRow(24);
+            IRow rowWorkDayTime_sheet1 = sheet1.GetRow(3);
+            IRow rowWorkNightTime_sheet1 = sheet1.GetRow(3);
+            IRow rowWorkDayTime1_sheet1 = sheet1.GetRow(4);
+            IRow rowWorkNightTime1_sheet1 = sheet1.GetRow(4);
+        
             int row_day = 0;
             int row_day_index = 0;
             int row_day_45 = 0;
@@ -748,7 +762,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 //0,1  36
                                 if (rowIndex < 18)
                                 {
-                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
+                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
                                     colIndex++;
                                     row_day = rowIndex;//35
                                     row_day_index = rowIndex;
@@ -759,7 +773,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     if (rowIndex >53)
                                     {
                                         //6,7
-                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line67, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
+                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line67, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
                                         colIndex++;
                                         row_day_index = rowIndex;
 
@@ -770,7 +784,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         if (rowIndex >35)
                                         {
                                             //4,5
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line45, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line45, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
                                             colIndex++;
                                             row_day_67 = rowIndex;
                                             row_day_index = rowIndex;
@@ -779,7 +793,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         else
                                         {
                                             // 2,3                                                                
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line23, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line23, rowDepmentAndWorkdate, rowWorkType, rowWorkReason, rowWorkDayTime, rowWorkNightTime, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
                                             colIndex++;
                                             row_day_45 = rowIndex;//18
                                             row_day_index = rowIndex;
@@ -794,7 +808,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                 //0,1
                                 if (rowIndex < 91)
                                 {
-                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
+                                    WorkHoursFillIcell<T>(cellSytleDate, rowContent_day1, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime_sheet1, rowWorkNightTime_sheet1, rowWorkDayTime1_sheet1, rowWorkNightTime1_sheet1, entity, tpis, colIndex0, colIndex1, colIndex2, colIndex3);
                                     colIndex++;
                                     row_day1 = rowIndex;//1  
 
@@ -805,7 +819,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                     if (rowIndex > 128)
                                     {
 
-                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
+                                        WorkHoursFillIcell<T>(cellSytleDate, cowConter_line671, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime_sheet1, rowWorkNightTime_sheet1, rowWorkDayTime1_sheet1, rowWorkNightTime1_sheet1, entity, tpis, colIndex13, colIndex14, colIndex15, colIndex16);
                                         colIndex++;
 
 
@@ -816,7 +830,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         if (rowIndex > 109)
                                         {
 
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line451, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime_sheet1, rowWorkNightTime_sheet1, rowWorkDayTime1_sheet1, rowWorkNightTime1_sheet1, entity, tpis, colIndex9, colIndex10, colIndex11, colIndex12);
                                             colIndex++;
                                             row_day_671 = rowIndex;
 
@@ -824,7 +838,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                                         }
                                         else
                                         {
-                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate1, rowWorkType1, rowWorkReason1, rowWorkDayTime1, rowWorkNightTime1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
+                                            WorkHoursFillIcell<T>(cellSytleDate, cowConter_line231, rowDepmentAndWorkdate_sheet1, rowWorkType_sheet1, rowWorkReason_sheet1, rowWorkDayTime_sheet1, rowWorkNightTime_sheet1, rowWorkDayTime1_sheet1, rowWorkNightTime1_sheet1, entity, tpis, colIndex5, colIndex6, colIndex7, colIndex8);
                                             colIndex++;
                                             row_day_451 = rowIndex;
 
@@ -920,7 +934,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="colindex1"></param>
         /// <param name="colindex2"></param>
         /// <param name="colindex3"></param>
-        private static void WorkHoursFillIcell_direct<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
+        private static void WorkHoursFillIcell_direct<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, IRow rowWorkDayTime1, IRow rowWorkNightTime1, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
         {
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
@@ -939,14 +953,25 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             rowWorkReason.GetCell(1).SetCellValue(workreason.ToString());
             if (workclasstype.ToString() == "白班")
             {
-                rowWorkDayTime.GetCell(3).SetCellValue(workdaytime.ToString());
-                rowWorkDayTime.GetCell(12).SetCellValue(worknighttime.ToString());
-                // rowWorkDayTime.GetCell(12).SetCellValue(workdaytime1.ToString());
+               if(workdaytime.ToString().Length>=37)
+                {
+                    rowWorkDayTime.GetCell(3).SetCellValue(workdaytime.ToString());
+                }
+               if(workdaytime1.ToString().Length>=37)
+                {
+                    rowWorkDayTime1.GetCell(3).SetCellValue(workdaytime1.ToString());
+                }                                    
             }
             if (workclasstype.ToString() == "晚班")
             {
-                rowWorkNightTime.GetCell(3).SetCellValue(workdaytime1.ToString());
-                rowWorkNightTime.GetCell(12).SetCellValue(worknighttime1.ToString());
+                if(worknighttime.ToString().Length>=37)
+                {
+                    rowWorkNightTime.GetCell(12).SetCellValue(worknighttime.ToString());
+                }
+                if(worknighttime1.ToString().Length>=37)
+                {
+                    rowWorkNightTime1.GetCell(12).SetCellValue(worknighttime1.ToString());
+                }                       
             }
             DateTime dateV;
             DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
@@ -981,7 +1006,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="colindex1"></param>
         /// <param name="colindex2"></param>
         /// <param name="colindex3"></param>
-        private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
+        private static void WorkHoursFillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, IRow rowDeparmentAndWorkdate, IRow rowWorkType, IRow rowWorkReason, IRow rowWorkDayTime, IRow rowWorkNightTime, IRow rowWorkDayTime1, IRow rowWorkNightTime1, T entity, PropertyInfo[] tpis, int colindex0, int colindex1, int colindex2, int colindex3)
         {
             object workId = tpis[0].GetValue(entity, null);//1187
             object workName = tpis[1].GetValue(entity, null);//张三
@@ -1000,14 +1025,27 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             rowWorkReason.GetCell(1).SetCellValue(workreason.ToString());
             if (workclasstype.ToString() == "白班")
             {
-                rowWorkDayTime.GetCell(3).SetCellValue(workdaytime.ToString());
-                rowWorkDayTime.GetCell(12).SetCellValue(worknighttime.ToString());
-               // rowWorkDayTime.GetCell(12).SetCellValue(workdaytime1.ToString());
+                if(workdaytime.ToString().Length>=37)
+                {
+                    rowWorkDayTime.GetCell(3).SetCellValue(workdaytime.ToString());
+                }
+                if(workdaytime1.ToString().Length>=37)
+                {
+                    rowWorkDayTime1.GetCell(3).SetCellValue(workdaytime1.ToString());
+                }
+                                   
             }
             if (workclasstype.ToString() == "晚班")
             {
-                rowWorkNightTime.GetCell(3).SetCellValue(workdaytime1.ToString());
-                rowWorkNightTime.GetCell(12).SetCellValue(worknighttime1.ToString());
+                if(worknighttime.ToString().Length>=37)
+                {
+                    rowWorkNightTime.GetCell(12).SetCellValue(worknighttime.ToString());
+                }
+                if(worknighttime1.ToString().Length>=37)
+                {
+                  rowWorkNightTime1.GetCell(12).SetCellValue(worknighttime1.ToString());
+                }
+                          
             }
             DateTime dateV;
             DateTime.TryParse(((DateTime)workdate).ToString("yyyy-MM-dd HH:mm"), out dateV);
