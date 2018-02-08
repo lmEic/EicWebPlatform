@@ -1313,10 +1313,10 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
     }
     //关闭窗口
     operate.updateItem = function (item) {
-        //vmManager.workDayDate = uiVM.WorkDate;
-        //vmManager.workNightDate = uiVM.WorkDate;
-        //vmManager.workDayDate1 = uiVM.WorkDate;
-        //vmManager.workNightDate1 = uiVM.WorkDate;
+        //vmManager.workDayDate = $scope.vmManager.workDayDate;
+        //vmManager.workNightDate = $scope.vmManager.workNightDate;
+        //vmManager.workDayDate1 = $scope.vmManager.workDayDate1;
+        //vmManager.workNightDate1 = $scope.vmManager.workNightDate1;
         tempVm.workOverCount = 0;
         uiVM.WorkoverType = $scope.vm.WorkoverType;
         uiVM.DepartmentText = $scope.vm.DepartmentText;
@@ -1388,9 +1388,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
       //晚计算日期差值 
         operate.calculateNightDates1 = function () {      
             uiVM.WorkDate = $scope.vm.WorkDate;
-            vmManager.workNightDate = $scope.vmManager.workNightDate;
-            alert(uiVM.WorkDate);
-            alert(vmManager.workNightDate);
+            vmManager.workNightDate = $scope.vmManager.workNightDate;          
             var nt01 = vmManager.workDayDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
             var nt02 = vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");       
             proEmployeeDataService.calculateDate(nt02, nt01).then(function (data) {
