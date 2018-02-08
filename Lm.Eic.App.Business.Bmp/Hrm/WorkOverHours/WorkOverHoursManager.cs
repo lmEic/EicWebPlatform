@@ -119,7 +119,30 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 
         }
         /// <summary>
-        /// 导出Excel
+        /// 直接员工
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <param name="SiteRootPath"></param>
+        /// <param name="filePath"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public DownLoadFileModel WorkOverHoursDatasDLFM_direct(List<WorkOverHoursMangeModels> datas, string SiteRootPath, string filePath, string fileName)
+        {
+            try
+            {
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
+                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
+                return dataGroupping.WorkOverHoursListToExcel_direct<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath).WorkOverExcelTemplae("加班报表");
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+        /// <summary>
+        /// 间接员工
         /// </summary>
         /// <param name="datas"></param>
         /// <returns></returns>
@@ -136,7 +159,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 
                 throw new Exception(ex.Message);
             }
-
         }
         public DownLoadFileModel WorkOverHoursDatasSumDLFM(List<WorkOverHoursMangeModels> datas, string SiteRootPath1, string filePath1, string fileName1)
         {

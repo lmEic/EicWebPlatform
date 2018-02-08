@@ -71,6 +71,41 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             return irep.Entities.Where(e => e.YearMonth == yearMonth && e.WorkerId == workerId).ToList();
         }
+        internal List<AttendAskLeaveModel> GetAskLeaveDatas(string yearMonth)
+        {
+            return irep.Entities.Where(e => e.YearMonth == yearMonth).ToList();
+        }
+        /// <summary>
+        /// 获取作业员的请假条目数据
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="attendDate"></param>
+        /// <returns></returns>
+        internal AttendAskLeaveEntry GetAskLeaveDatasOfWorker(string workerId, DateTime attendDate, List<AttendAskLeaveModel> dataSource)
+        {
+            attendDate = attendDate.ToDate();
+            var datas = dataSource == null ? dataSource.Where(e => e.AttendanceDate == attendDate && e.WorkerId == workerId).ToList()
+                : irep.Entities.Where(e => e.AttendanceDate == attendDate && e.WorkerId == workerId).ToList();
+            AttendAskLeaveEntry entry = null;
+            if (datas != null && datas.Count > 0)
+            {
+                entry = new AttendAskLeaveEntry();
+                StringBuilder leaveTypeSb = new StringBuilder();
+                StringBuilder leaveDesciptionSb = new StringBuilder();
+                StringBuilder leaveRegion = new StringBuilder();
+                datas.ForEach(ad =>
+                {
+                    entry.AskLeaveHours += ad.LeaveHours;
+                    leaveTypeSb.Append(ad.LeaveType + ",");
+                    leaveRegion.Append(ad.LeaveTimeRegion + ",");
+                    leaveDesciptionSb.AppendLine(string.Format("*假别：{0},时数：{1},时间段：{2}*", ad.LeaveType, ad.LeaveHours, ad.LeaveTimeRegion));
+                });
+                entry.AskLeaveType = leaveTypeSb.ToString().TrimEnd(',');
+                entry.AskLeaveRegion = leaveRegion.ToString().TrimEnd(',');
+                entry.AskLeaveDescription = leaveDesciptionSb.ToString().TrimEnd();
+            }
+            return entry;
+        }
         #endregion
     }
 

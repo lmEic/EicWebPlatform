@@ -140,6 +140,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDatas(workerId, yearMonth);
             return DateJsonResult(datas);
         }
+
+        [NoAuthenCheck]
+        public FileResult BuildAskLeaveSumerizeReportFile(string yearMonth)
+        {
+            ///excel
+            var dlfm = AttendanceService.AttendAskLeaveManager.BuildAskLeaveSumerizeReportFile(yearMonth);
+            return this.DownLoadFile(dlfm);
+        }
         #endregion
 
         #region 考勤异常检测管理
@@ -190,45 +198,45 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
-        [NoAuthenCheck] 
+        [NoAuthenCheck]
         //获取信息
-        public ContentResult GetWorkOverHoursData(DateTime workDate,string departmentText,int mode)
+        public ContentResult GetWorkOverHoursData(DateTime workDate, string departmentText, int mode)
         {
             WorkOverHoursDto dto = new WorkOverHoursDto()
             {
                 WorkDate = workDate,
-                DepartmentText=departmentText,
+                DepartmentText = departmentText,
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBy(dto);
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]
-        public ContentResult GetWorkOverHoursSum(string qrydate,string departmentText, int mode)
+        public ContentResult GetWorkOverHoursSum(string qrydate, string departmentText, int mode)
         {
             WorkOverHoursDto qryDto = new WorkOverHoursDto()
             {
                 QryDate = qrydate,
                 DepartmentText = departmentText,
                 ParentDataNodeText = departmentText,
-                
+
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
             TempData["WorkOverHourDatasBySum"] = datas;
-       
+
             return DateJsonResult(datas);
 
         }
         [NoAuthenCheck]
-        public ContentResult GetWorkOverHourSumsByWorkId(string qrydate,string departmentText,string workId,int mode)
+        public ContentResult GetWorkOverHourSumsByWorkId(string qrydate, string departmentText, string workId, int mode)
         {
-            
+
             WorkOverHoursDto qryDto = new WorkOverHoursDto()
             {
                 QryDate = qrydate,
                 DepartmentText = departmentText,
-                WorkId=workId,
+                WorkId = workId,
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
@@ -237,7 +245,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
 
         }
         [NoAuthenCheck]
-        public ContentResult GetWorkOverHoursWorkIdBydetail(string qrydate,string departmentText,string workId,int mode)
+        public ContentResult GetWorkOverHoursWorkIdBydetail(string qrydate, string departmentText, string workId, int mode)
         {
             WorkOverHoursDto qryDto = new WorkOverHoursDto()
             {
@@ -258,24 +266,24 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="workDate"></param>
         /// <param name="departmentText"></param>
         /// <returns></returns>
-        public ContentResult GetWorkOverHoursMode(string departmentText,string postNature,DateTime workDate,int mode)
-        {    
-            
-           var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,postNature, workDate,mode);
-       
+        public ContentResult GetWorkOverHoursMode(string departmentText, string postNature, DateTime workDate, int mode)
+        {
+
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText, postNature, workDate, mode);
+
             foreach (var item in datas)
             {
-                if(item.OpSign=="edit")
+                if (item.OpSign == "edit")
                 {
                     item.OpSign = "add";
-                }                         
+                }
             }
             TempData["WorkOverHoursDatas"] = datas;
-           return DateJsonResult(datas);                         
+            return DateJsonResult(datas);
         }
-        [NoAuthenCheck]    
+        [NoAuthenCheck]
         [HttpPost]
-          
+
         public JsonResult HandlWorkOverHoursDt(List<WorkOverHoursMangeModels> workOverHours)
         {
             var result = WorkOverHoursService.WorkOverHoursManager.HandleWorkOverHoursDatas(workOverHours);
@@ -307,23 +315,23 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult WorkOverHoursDatasToExcel()
         {
             try
-            {         
+            {
                 string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板.xls";
                 string fileName = "加班数据模板.xls";
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
-                if(datas==null||datas.Count==0)
+                if (datas == null || datas.Count == 0)
                 {
-                  new DownLoadFileModel().Default();                 
-                }            
+                    new DownLoadFileModel().Default();
+                }
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
-                return this.DownLoadFile(dlfm);                       
+                return this.DownLoadFile(dlfm);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }                  
+            }
         }
-        [NoAuthenCheck]      
+        [NoAuthenCheck]
         public FileResult WorkOverHoursDatasSumToExcel()
         {
             try
@@ -335,13 +343,13 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 {
                     new DownLoadFileModel().Default();
                 }
-                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas,SiteRootPath, filePath1, fileName1);
+                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas, SiteRootPath, filePath1, fileName1);
                 return this.DownLoadFile(dlfm);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }                   
+            }
         }
         /// <summary>
         /// 后台保存
@@ -349,25 +357,25 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [NoAuthenCheck]             
+        [NoAuthenCheck]
         public JsonResult StoreWorkOverHoursRecordSingle(WorkOverHoursMangeModels model)
         {
             try
             {
-              var opresult = WorkOverHoursService.WorkOverHoursManager.StoreWorkOverHours(model);
-              return Json(opresult);
+                var opresult = WorkOverHoursService.WorkOverHoursManager.StoreWorkOverHours(model);
+                return Json(opresult);
             }
             catch (Exception ex)
             {
-              throw new System.Exception(ex.Message);
+                throw new System.Exception(ex.Message);
             }
         }
         [NoAuthenCheck]
         public ContentResult GetDepartment(string datanodeName)
-        {          
+        {
             try
             {
-                var  datas = PmConfigService.DataDicManager.GetConfigDataDepartment("Organization", "HrBaseInfoManage", datanodeName);
+                var datas = PmConfigService.DataDicManager.GetConfigDataDepartment("Organization", "HrBaseInfoManage", datanodeName);
 
                 return DateJsonResult(datas);
 
@@ -387,9 +395,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
-        public JsonResult HandlDeleteWorkOverHoursDt(string departmentText,DateTime workDate)
+        public JsonResult HandlDeleteWorkOverHoursDt(string departmentText, DateTime workDate)
         {
-          
+
             try
             {
                 var opresult = WorkOverHoursService.WorkOverHoursManager.HandleDeleteWorkOverHours(departmentText, workDate);

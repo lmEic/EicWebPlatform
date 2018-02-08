@@ -90,10 +90,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
             var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
-
             if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+            BindingAskLeaveDataToAttendance(datas, yearMonth);
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
             return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping).CreateDownLoadExcelFileModel("考勤数据-" + yearMonth);
+        }
+        private void BindingAskLeaveDataToAttendance(List<AttendanceDataModel> datas, string yearMonth)
+        {
+            var askLeaveDataSource = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatas(yearMonth);
+            datas.ForEach(d =>
+            {
+                AttendAskLeaveEntry item = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatasOfWorker(d.WorkerId, d.AttendanceDate, askLeaveDataSource);
+                if (item != null)
+                {
+                    d.LeaveHours = item.AskLeaveHours;
+                    d.LeaveTimeRegion = item.AskLeaveRegion;
+                    d.LeaveType = item.AskLeaveType;
+                    d.LeaveDescription = item.AskLeaveDescription;
+                }
+            });
         }
         public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
         {

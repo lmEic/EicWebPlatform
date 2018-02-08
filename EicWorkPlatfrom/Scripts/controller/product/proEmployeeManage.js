@@ -1313,10 +1313,10 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
     }
     //关闭窗口
     operate.updateItem = function (item) {
-        vmManager.workDayDate = uiVM.WorkDate;
-        vmManager.workNightDate = uiVM.WorkDate;
-        vmManager.workDayDate1 = uiVM.WorkDate;
-        vmManager.workNightDate1 = uiVM.WorkDate;
+        //vmManager.workDayDate = $scope.vmManager.workDayDate;
+        //vmManager.workNightDate = $scope.vmManager.workNightDate;
+        //vmManager.workDayDate1 = $scope.vmManager.workDayDate1;
+        //vmManager.workNightDate1 = $scope.vmManager.workNightDate1;
         tempVm.workOverCount = 0;
         uiVM.WorkoverType = $scope.vm.WorkoverType;
         uiVM.DepartmentText = $scope.vm.DepartmentText;
@@ -1343,7 +1343,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             row.WorkNightTime1 = _workNightTime1;         
             row.WorkoverType = uiVM.WorkoverType;
             row.QryDate = qryDateFormat;
-          //  row.WorkClassType = uiVM.WorkClassType;
+          //row.WorkClassType = uiVM.WorkClassType;
             row.WorkOverHours = uiVM.WorkOverHours;
             row.DepartmentText = uiVM.DepartmentText;
             row.ParentDataNodeText = uiVM.ParentDataNodeText;
@@ -1360,13 +1360,14 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
         })   
     },
-        //白计算日期差值
+        //白班计算日期差值
         operate.calculateDayDates1 = function ()
         {
            uiVM.WorkDate = $scope.vm.WorkDate;
-           vmManager.workDayDate = uiVM.WorkDate;   
+           vmManager.workDayDate =$scope.vmManager.workDayDate;      
            var dt01 = uiVM.WorkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm");
-           var dt02 = vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");     
+           var dt02 = vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");   
+           
            proEmployeeDataService.calculateDate(dt02, dt01).then(function (data)
            {                       
                $scope.vm.WorkOverHours = data;
@@ -1376,8 +1377,9 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         operate.calculateDayDates2 = function () {
            var workdayCount = vmManager.workhoursDayCount;
            uiVM.WorkDate = $scope.vm.WorkDate;
-           vmManager.workDayDate1 = uiVM.WorkDate;
-           var dt03 = uiVM.WorkDate + " " + vmManager.workDayTimeStart1.pattern("HH:mm");
+           vmManager.workDayDate = $scope.vmManager.workDayDate;
+           vmManager.workDayDate1 = $scope.vmManager.workDayDate1;
+           var dt03 = vmManager.workDayDate + " " + vmManager.workDayTimeStart1.pattern("HH:mm");
            var dt04 = vmManager.workDayDate1 + " " + vmManager.workDayTimeEnd1.pattern("HH:mm");
            proEmployeeDataService.calculateDate(dt04, dt03).then(function (data) {
                $scope.vm.WorkOverHours = data + workdayCount ;
@@ -1386,23 +1388,20 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
       //晚计算日期差值 
         operate.calculateNightDates1 = function () {      
             uiVM.WorkDate = $scope.vm.WorkDate;
-            vmManager.workNightDate = uiVM.WorkDate;
-            var nt01 = uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
+            vmManager.workNightDate = $scope.vmManager.workNightDate;          
+            var nt01 = vmManager.workDayDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
             var nt02 = vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");       
             proEmployeeDataService.calculateDate(nt02, nt01).then(function (data) {
                 $scope.vm.WorkOverHours = data;
-                vmManager.workhoursNightCount = data;
-               
+                vmManager.workhoursNightCount = data;             
             });
-
         }
         operate.calculateNightDates2 = function () {
            var worknightCount = vmManager.workhoursNightCount;
-            uiVM.WorkDate = $scope.vm.WorkDate;
-            vmManager.workNightDate1 = uiVM.WorkDate;
-            var nt03 = uiVM.WorkDate + " " + vmManager.workNightTimeStart1.pattern("HH:mm");
-            var nt04 = vmManager.workNightDate1+ " " + vmManager.workNightTimeEnd1.pattern("HH:mm");
-          
+           vmManager.workNightDate = $scope.vmManager.workNightDate;
+           vmManager.workNightDate1 = $scope.vmManager.workNightDate1;
+            var nt03 = vmManager.workNightDate+ " " + vmManager.workNightTimeStart1.pattern("HH:mm");
+            var nt04 = vmManager.workNightDate1+ " " + vmManager.workNightTimeEnd1.pattern("HH:mm");      
             proEmployeeDataService.calculateDate(nt04, nt03).then(function (data) {
                 $scope.vm.WorkOverHours = data + worknightCount;                         
             });                     
