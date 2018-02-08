@@ -120,6 +120,19 @@ namespace EicWorkPlatfrom.Controllers.Hr
 
             return this.DownLoadFile(GeneralAffairsService.ReportMealManager.ExportAnalogData(data));
         }
+        public ContentResult GetReportSumerizeMonthDatas(string yearMonth)
+        {
+            var data = GeneralAffairsService.ReportMealManager.GetSumerizeMonthDatas(yearMonth);
+            TempData["ReportMealSumerizeMonth"] = data;
+            return DateJsonResult(data);
+        }
+        [NoAuthenCheck]
+        public FileResult ExportReportMealSumerizeMonthDatas(DateTime reportMealDate)
+        {
+            var data = TempData["ReportMealSumerizeMonth"] as List<MealReportManageModel>;
+
+            return this.DownLoadFile(GeneralAffairsService.ReportMealManager.ExportAnalogMonthData(data));
+        }
         #endregion
     }
 }
