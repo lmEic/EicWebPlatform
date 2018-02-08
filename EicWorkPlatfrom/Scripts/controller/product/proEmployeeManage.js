@@ -1386,7 +1386,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         operate.calculateNightDates1 = function () {      
             uiVM.WorkDate = $scope.vm.WorkDate;
             vmManager.workNightDate = $scope.vmManager.workNightDate;          
-            var nt01 = vmManager.workDayDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
+            var nt01 = uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
             var nt02 = vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");       
             proEmployeeDataService.calculateDate(nt02, nt01).then(function (data) {
                 $scope.vm.WorkOverHours = data;
