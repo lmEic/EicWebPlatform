@@ -1221,13 +1221,10 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         var dataitem = _.clone(item);
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;
         item.ParentDataNodeText = $scope.vm.ParentDataNodeText;
-        item.OpPerson = $scope.vm.OpPerson;
+        item.OpPerson = $scope.vm.OpPerson;     
+        dialog.show();
         $scope.vm = item;
-        vmManager.changeworkDate = item.WorkDate;
-        vmManager.workDayDate = item.WorkDate;
-        vmManager.workNightDate = item.WorkDate;
-        vmManager.workDayDate1 = item.WorkDate;
-        vmManager.workNightDate1 = item.WorkDate;
+        vmManager.changeworkDate = item.WorkDate;     
         dialog.show();
     };
     //后台编辑
@@ -1313,10 +1310,10 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
     }
     //关闭窗口
     operate.updateItem = function (item) {
-        //vmManager.workDayDate = $scope.vmManager.workDayDate;
-        //vmManager.workNightDate = $scope.vmManager.workNightDate;
-        //vmManager.workDayDate1 = $scope.vmManager.workDayDate1;
-        //vmManager.workNightDate1 = $scope.vmManager.workNightDate1;
+        vmManager.workDayDate = $scope.vmManager.workDayDate;
+        vmManager.workNightDate = $scope.vmManager.workNightDate;
+        vmManager.workDayDate1 = $scope.vmManager.workDayDate1;
+        vmManager.workNightDate1 = $scope.vmManager.workNightDate1;    
         tempVm.workOverCount = 0;
         uiVM.WorkoverType = $scope.vm.WorkoverType;
         uiVM.DepartmentText = $scope.vm.DepartmentText;
@@ -1389,7 +1386,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         operate.calculateNightDates1 = function () {      
             uiVM.WorkDate = $scope.vm.WorkDate;
             vmManager.workNightDate = $scope.vmManager.workNightDate;          
-            var nt01 = vmManager.workDayDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
+            var nt01 = uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
             var nt02 = vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");       
             proEmployeeDataService.calculateDate(nt02, nt01).then(function (data) {
                 $scope.vm.WorkOverHours = data;
