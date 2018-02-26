@@ -227,7 +227,7 @@
                                 <tbody>
                                     <tr ng-repeat="row in vmManager.inputDatas">
                                         <td ng-repeat="col in row.cols">
-                                            <span ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                            <span ng-class="{'invalidInputBg':!col.result,'':col.result}" ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
                                                 {{col.indata}}
                                             </span>
                                             <input ng-model="col.indata" style="text-align:center;width:120px;" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
