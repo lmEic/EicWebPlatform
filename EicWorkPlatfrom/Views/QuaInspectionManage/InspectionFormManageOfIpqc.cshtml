@@ -1,13 +1,13 @@
 ﻿<div class="panel panel-primary" ng-controller="inspectionFormManageOfFqcCtrl">
     <div class="panel-heading">
         <h6 class="panel-title">
-           IPQC  表单管理
+           IPQC 表单管理
         </h6>
     </div>
     <div>
         <div class="panel-body">
             <div bs-tabs bs-active-pane="vmManager.queryActiveTab">
-                @*FQC(ERP表单)统计*@
+                @*IPQC(ERP表单)统计*@
                 <div bs-pane data-title="IPQC(ERP表单)统计" class="active" data-name="qryERPFormProcessTab">
                     @*抬头*@
                     <div class="row">
@@ -37,7 +37,6 @@
                             <button class="btn btn-default" type="button" ng-click="vmManager. refreshErp()"><i class="fa fa-reply"></i>返回(Erp)</button>
                         </div>
                     </div>
-
                     @*查询主表*@
                     <div class="row">
                         <div class="col-md-12" id="editWindow">
@@ -71,7 +70,6 @@
                                                 <button type="button" class="btn btn-warning btn-xs" ng-show="item.InspectionNumber === 0">未检验</button>
                                             </td>
                                         </tr>
-
                                     </tbody>
                                 </table>
                                 <div ng-if="vmManager.erpDataSource.length>0"
@@ -139,7 +137,6 @@
                                         {{vmManager.selectMasterItem.ProduceNumber}}
                                     </span>
                                 </div>
-
                             </div>
                             <div class="col-md-12" id="editWindow">
                                 <div class="table-responsive" style="min-height:500px;" cg-busy="{promise:searchPromise}">
@@ -174,7 +171,6 @@
                                                     <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'||item.InspectionResult==='已完成'">审核</button>
                                                 </td>
                                             </tr>
-
                                         </tbody>
                                     </table>
                                     <div ng-if="vmManager.dataSource.length>0"
@@ -187,7 +183,6 @@
                         </div>
                     </div>
                 </div>
-
                 @*FQC表单统计*@
                 <div bs-pane data-title="IPQC表单统计" class="active" data-name="qryFqcFormProcessTab">
                     @*查询条件*@

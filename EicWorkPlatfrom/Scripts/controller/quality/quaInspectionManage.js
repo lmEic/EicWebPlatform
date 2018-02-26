@@ -1054,12 +1054,33 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 vmManager.isShowDetailWindow = true;
                 vmManager.detailDatas = datas;
                 angular.forEach(datas, function (item) {
-                    if (item.InspectionItemDatas != null && item.InspectionItemDatas != '') {
-                        var dataItems = item.InspectionItemDatas.split(",");
-                        item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
-                    }
+                  
+                    console.log(item);
+                   vmManager.createGataherDataUi(item.InspectionDataGatherType, item);
+                   //if (item.InspectionItemDatas != null && item.InspectionItemDatas != '') {
+                   //     var dataItems = item.InspectionItemDatas.split(",");
+                   //     item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems, function (itemdata) {
+                   //         itemdata.result = leeHelper.checkValue(item.SizeUSL, item.SizeLSL, itemdata.indata);
+                   //     });
+                   // }
                 })
             })
+        },
+
+        //根据采集方式创建数据采集窗口
+        createGataherDataUi: function (dataGatherType, item) {
+            var splistdatas = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
+            if (dataGatherType === "A" || dataGatherType === "E") {
+                item.dataList = leeHelper.createDataInputs(splistdatas.length, 4, splistdatas, function (itemdata) {
+                    itemdata.result = leeHelper.checkValue(item.SizeUSL, item.SizeLSL, itemdata.indata);
+                });
+            }
+            else if (dataGatherType === "C" || dataGatherType === "F") {
+                item.dataList = leeHelper.createDataInputs(splistdatas.length,4, splistdatas, function (itemdata) {
+                    itemdata.result = itemdata.indata === "OK" ? true : false
+                });
+            }
+
         },
         //返回
         refresh: function () {
@@ -1712,7 +1733,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
                 }
                 vmManager.erpDataSource = editDatas;
                 vmManager.erpDataSets = editDatas;
-                console.log(editDatas);
+             
             })
         },
 
@@ -1723,7 +1744,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
 
                 vmManager.fqcDataSource = datas;
                 vmManager.fqcDataSets = datas;
-                console.log(datas);
+
             })
         },
         //审核
@@ -1735,23 +1756,14 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             else {
                 vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.show);
             };
-
         },
         getMasterDetailDatas: function (item) {
             console.log(item);
             vmManager.selectMasterItem = item;
             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormMasterOfFqcDatas(item.OrderID).then(function (datas) {
                 vmManager.isShowMasterDetailFrom = true;
-                console.log(datas);
                 vmManager.dataSource = datas;
                 vmManager.dataSets = datas;
-                //angular.forEach(datas, function (item) {
-                //    var dataItems = item.InspectionItemDatas.split(",");
-                //    item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
-                //})
-                //vmManager.detailDatas = datas;
-
-                //console.log(vmManager.detailDatas);
             })
         },
 
@@ -1762,14 +1774,24 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
                 vmManager.isShowDetailWindow = true;
                 vmManager.detailDatas = datas;
                 angular.forEach(datas, function (item) {
-                    if (item.InspectionItemDatas != null && item.InspectionItemDatas != '') {
-                        var dataItems = item.InspectionItemDatas.split(",");
-                        item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
-                    }
+                    vmManager.createGataherDataUi(item.InspectionDataGatherType, item);
                 })
             })
         },
-
+        //根据采集方式创建数据采集窗口
+        createGataherDataUi: function (dataGatherType, item) {
+            var splistdatas = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
+            if (dataGatherType === "A" || dataGatherType === "E") {
+                item.dataList = leeHelper.createDataInputs(splistdatas.length, 4, splistdatas, function (itemdata) {
+                    itemdata.result = leeHelper.checkValue(item.SizeUSL, item.SizeLSL, itemdata.indata);
+                });
+            }
+            else if (dataGatherType === "C" || dataGatherType === "F") {
+                item.dataList = leeHelper.createDataInputs(splistdatas.length, 4, splistdatas, function (itemdata) {
+                    itemdata.result = itemdata.indata === "OK" ? true : false
+                });
+            }
+        },
         //返回
         refresh: function () {
             vmManager.isShowDetailWindow = false;
