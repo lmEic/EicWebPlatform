@@ -289,9 +289,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 throw new Exception(ex.Message);
             }
-
         }
-
         /// <summary>
         /// 后台保存
         /// </summary>
