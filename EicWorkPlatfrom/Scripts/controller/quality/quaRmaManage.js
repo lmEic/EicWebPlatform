@@ -161,7 +161,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
             if (vmManager.createYear > nowYear)
                 uiVm.RmaMonth =12;
         }
-       else  uiVm.RmaMonth =new Date().getMonth();
+       else  uiVm.RmaMonth =new Date().getMonth()+1;
         angular.forEach(vmManager.customerShortNames, function (customerShortName) {
             if (uiVm.CustomerShortName == customerShortName.text)
             { isContainCustomerShortName = true; }

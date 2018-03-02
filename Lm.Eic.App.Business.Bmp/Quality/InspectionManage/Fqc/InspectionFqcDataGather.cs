@@ -325,7 +325,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     ///初始化 综合模块
                     model = new InspectionItemDataSummaryVM();
-                    if (m.InspectionRuleDatas != null) model = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m.InspectionRuleDatas);
+                    if (m.InspectionRuleDatas != null)
+                    {
+                        model = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m.InspectionRuleDatas);
+                        model.InspectionItemStatus = m.InspectionItemStatus;
+                    }
                     else
                     {
                         OOMaper.Mapper<InspectionFqcDetailModel, InspectionItemDataSummaryVM>(m, model);

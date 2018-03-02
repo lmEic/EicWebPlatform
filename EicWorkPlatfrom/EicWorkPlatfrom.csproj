@@ -1541,6 +1541,7 @@
     <Content Include="Views\ProEmployee\ProWorkOverHoursManage.cshtml" />
     <Content Include="Views\HrGeneralAffairsManage\GaMealReportQuery.cshtml" />
     <Content Include="Views\CommonTpl\YearButtonTpl.cshtml" />
+    <Content Include="Views\QuaInspectionManage\IpqcInspectionItemConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

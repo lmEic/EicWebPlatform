@@ -138,6 +138,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
            {
                if (m.InspectionRuleDatas != null) {
                     model = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m.InspectionRuleDatas);
+                    model.InspectionItemStatus = m.InspectionItemStatus;
                }
                ///主是为了兼容 没有存储 InspectionRuleDatas 信息的
                else

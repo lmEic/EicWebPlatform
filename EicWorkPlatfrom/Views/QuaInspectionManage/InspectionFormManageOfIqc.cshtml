@@ -229,7 +229,7 @@
                                             <tbody>
                                                 <tr ng-repeat="row in item.dataList">
                                                     <td ng-repeat="col in row.cols" style="text-align:center">
-                                                        <span>
+                                                        <span   ng-class="{'invalidInputBg':!col.result,'':col.result}">
                                                             {{col.indata}}
                                                         </span>
                                                     </td>

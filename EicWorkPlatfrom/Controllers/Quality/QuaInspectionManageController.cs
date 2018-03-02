@@ -631,8 +631,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, int orderIdNumber)
         {
-
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionDatailListBy(orderId, orderIdNumber);
+           var datas= InspectionService.DataGatherManager.FqcDataGather.FindFqcInspectionSummaryDataBy(orderId, orderIdNumber);
+           // var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionDatailListBy(orderId, orderIdNumber);
 
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
