@@ -119,9 +119,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 switch (mode)
                 {
                     case 1:
-                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
+                        return irep.Entities.OrderBy(e=>e.WorkerId).Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
                     case 2:
-                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)&& e.PostNature==postNature).ToList();
+                        return irep.Entities.OrderBy(e => e.WorkerId).Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)&& e.PostNature==postNature).ToList();
 
                     default:
                         return new List<WorkOverHoursMangeModels>();

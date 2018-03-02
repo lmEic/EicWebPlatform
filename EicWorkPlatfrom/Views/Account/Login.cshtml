@@ -19,7 +19,7 @@
 
 
     <div class="container" ng-controller="loginCtrl">
-        <style>
+        @*<style>
             .login-form:before {
                 content: "";
                 position: absolute;
@@ -33,72 +33,73 @@
                 background-size: cover;
                 border-radius: 50px;
             }
-        </style>
+        </style>*@
         <div class="row navigationBg">
             <div class="col-md-6">
             </div>
-            <div class="col-md-5 loginBg">
-                <form class="form-horizontal login-form"
-                      name="loginForm" method="post" novalidate role="form" onkeypress="if (event.keyCode === 13) return false;">
-                    <div class="login-inputcontent">
-                        <div class="form-group">
-                            <label class="control-label col-sm-3" for="userId">用户名:</label>
-                            <div class="col-sm-7">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
-                                    <input class="form-control" name="userId" type="text" ng-keypress="moveFocusToPassword($event,'passwordFocus')"
-                                           ng-model="vm.userId" autofocus required placeholder="默认为您的作业工号" />
-                                </div>
-                                <div class="error-messages" ng-messages="loginForm.userId.$error" ng-if="loginForm.userId.$touched">
-                                    <small ng-message="required">用户名不能为空</small>
+            @*<div class="col-md-5 loginBg">*@
+                <div class="col-md-5 ">
+                    <form class="form-horizontal login-form"
+                          name="loginForm" method="post" novalidate role="form" onkeypress="if (event.keyCode === 13) return false;">
+                        <div class="login-inputcontent">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="userId">用户名:</label>
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+                                        <input class="form-control" name="userId" type="text" ng-keypress="moveFocusToPassword($event,'passwordFocus')"
+                                               ng-model="vm.userId" autofocus required placeholder="默认为您的作业工号" />
+                                    </div>
+                                    <div class="error-messages" ng-messages="loginForm.userId.$error" ng-if="loginForm.userId.$touched">
+                                        <small ng-message="required">用户名不能为空</small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group login-inputpassword">
-                            <label class="control-label col-sm-3" for="password">用户密码:</label>
-                            <div class="col-sm-7">
-                                <div class="input-group">
-                                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                                    <input class="form-control" type="password" name="password" focus-if="focus.passwordFocus" focus-setter
-                                           ng-keypress="moveFocusToPassword($event,'loginFocus')"
-                                           ng-model="vm.password" required placeholder="默认为您的作业工号" />
+                            <div class="form-group login-inputpassword">
+                                <label class="control-label col-sm-3" for="password">用户密码:</label>
+                                <div class="col-sm-7">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                                        <input class="form-control" type="password" name="password" focus-if="focus.passwordFocus" focus-setter
+                                               ng-keypress="moveFocusToPassword($event,'loginFocus')"
+                                               ng-model="vm.password" required placeholder="默认为您的作业工号" />
+                                    </div>
+                                    <div class="error-messages" ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
+                                        <small ng-message="required">密码不能为空</small>
+                                    </div>
                                 </div>
-                                <div class="error-messages" ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
-                                    <small ng-message="required">密码不能为空</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6 col-sm-offset-4" ng-cloak>
+                                    <button type="submit" class="btn btn-primary btn-block login-button" focus-if="focus.loginFocus" focus-setter
+                                            ng-keypress="loginCheck(loginForm.$valid)" ng-click="loginCheck(loginForm.$valid)"
+                                            id="btnlogin">
+                                        登录
+                                        <span class="glyphicon glyphicon-log-in"></span>
+                                        <img src="~/Content/login/input-spinner.gif" class="pull-right" ng-if="vm.start" />
+                                    </button>
+                                    <div class="alert alert-danger" ng-hide="loginResult.isSuccess">
+                                        <span class="text-danger">{{loginResult.message}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-6 col-sm-offset-4" ng-cloak>
-                                <button type="submit" class="btn btn-primary btn-block login-button" focus-if="focus.loginFocus" focus-setter
-                                        ng-keypress="loginCheck(loginForm.$valid)" ng-click="loginCheck(loginForm.$valid)"
-                                        id="btnlogin">
-                                    登录
-                                    <span class="glyphicon glyphicon-log-in"></span>
-                                    <img src="~/Content/login/input-spinner.gif" class="pull-right" ng-if="vm.start" />
-                                </button>
-                                <div class="alert alert-danger" ng-hide="loginResult.isSuccess">
-                                    <span class="text-danger">{{loginResult.message}}</span>
-                                </div>
-                            </div>
-                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="navbar navbar-fixed-bottom">
+                <div class="row">
+                    <div class="col-md-4">
                     </div>
-                </form>
-            </div>
-        </div>
-        <div class="navbar navbar-fixed-bottom">
-            <div class="row">
-                <div class="col-md-4">
-                </div>
-                <div class="col-md-4">
-                    <span class="footer-links">All copyright reserved by EZconn Corporation 2016</span>
-                </div>
-                <div class="col-md-4">
+                    <div class="col-md-4">
+                        <span class="footer-links">All copyright reserved by EZconn Corporation 2016</span>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 
