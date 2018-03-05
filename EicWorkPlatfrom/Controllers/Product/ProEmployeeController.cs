@@ -193,43 +193,42 @@ namespace EicWorkPlatfrom.Controllers.Product
                 {
                     new DownLoadFileModel().Default();
                 }
-                else
-                {
-                    foreach (var item in datas)
-                    {
-                        postNature = item.PostNature;
-                        workhours = item.WorkOverHours;
-                        var temModel = new WorkOverHoursMangeModels();
-                        temModel.WorkerId = item.WorkerId;
-                        temModel.WorkerName = item.WorkerName;
-                        temModel.DepartmentText = item.DepartmentText;
-                        temModel.WorkoverType = item.WorkoverType;
-                        temModel.WorkDate = item.WorkDate;
-                        temModel.WorkOverHours = item.WorkOverHours;
-                        temModel.WorkReason = item.WorkReason;
-                        temModel.WorkClassType = item.WorkClassType;
-                        temModel.WorkDayTime = item.WorkDayTime;
-                        temModel.WorkDayTime1 = item.WorkDayTime1;
-                        temModel.WorkNightTime = item.WorkNightTime;
-                        temModel.WorkNightTime1 = item.WorkNightTime1;
-                        temModel.PostNature = item.PostNature;
-                        temModel.Remark = item.Remark;
-                        temModel.WorkStatus = item.WorkStatus;
-                        if(workhours>0)
-                        {
-                            datasList.Add(temModel);
-                        }                   
-                    }
-                }                
+                //else
+                //{
+                //    foreach (var item in datas)
+                //    {
+                //        postNature = item.PostNature;
+                //        workhours = item.WorkOverHours;
+                //        var temModel = new WorkOverHoursMangeModels();
+                //        temModel.WorkerId = item.WorkerId;
+                //        temModel.WorkerName = item.WorkerName;
+                //        temModel.DepartmentText = item.DepartmentText;
+                //        temModel.WorkoverType = item.WorkoverType;
+                //        temModel.WorkDate = item.WorkDate;
+                //        temModel.WorkOverHours = item.WorkOverHours;
+                //        temModel.WorkReason = item.WorkReason;
+                //        temModel.WorkClassType = item.WorkClassType;
+                //        temModel.WorkDayTime = item.WorkDayTime;
+                //        temModel.WorkDayTime1 = item.WorkDayTime1;
+                //        temModel.WorkNightTime = item.WorkNightTime;
+                //        temModel.WorkNightTime1 = item.WorkNightTime1;
+                //        temModel.PostNature = item.PostNature;
+                //        temModel.Remark = item.Remark;
+                //        temModel.WorkStatus = item.WorkStatus;
+                       
+                //        datasList.Add(temModel);
+                                     
+                //    }
+                //}                
                 if (postNature=="间接")
                 {
                     string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板间接.xls";
                     string fileName = "加班数据模板间接.xls";               
-                    if (datasList == null || datasList.Count == 0)
+                    if (datas == null || datas.Count == 0)
                     {
                         new DownLoadFileModel().Default();
                     }
-                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datasList, SiteRootPath, filePath, fileName);
+                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
                     return this.DownLoadFile(dlfm);
                 }
                 else
@@ -240,7 +239,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                     {
                         new DownLoadFileModel().Default();
                     }
-                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM_direct(datasList, SiteRootPath, filePath, fileName);
+                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM_direct(datas, SiteRootPath, filePath, fileName);
                     return this.DownLoadFile(dlfm);
                 }
                
