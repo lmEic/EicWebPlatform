@@ -39,8 +39,18 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetQueryDatas(int searchModel, string orderId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.MasterDatasGather.GetIqcMasterContainDatasBy(orderId);
-            return DateJsonResult(datas);
+            switch(searchModel)
+            {
+                case 1:
+                    return DateJsonResult(InspectionService.DataGatherManager.IqcDataGather.MasterDatasGather.GetIqcMasterContainDatasBy(orderId));
+                case 2:
+                    var datas = InspectionService.DataGatherManager.FqcDataGather.MasterDatasGather.GetFqcMasterOrderIdDatasBy(orderId);
+                    return DateJsonResult(datas);
+                case 3:
+                    return DateJsonResult(InspectionService.DataGatherManager.IqcDataGather.MasterDatasGather.GetIqcMasterContainDatasBy(orderId));
+                 default:
+                    return DateJsonResult(InspectionService.DataGatherManager.IqcDataGather.MasterDatasGather.GetIqcMasterContainDatasBy(orderId));
+            }
         }
 
         /// <summary>
