@@ -18,9 +18,50 @@
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div ng-include="'showQueryTable'" class="well">
+                    <div class="row">
+                        <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
+                            <thead>
+                                <tr class="info">
+                                    <th>单号</th>
+                                    <th>品号</th>
+                                    <th>品名</th>
+                                    <th>供应商</th>
+                                    <th>进货数量</th>
+                                    <th>检测状态</th>
+                                    <th>进货日期</th>
+                                    <th>结果</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.dataSets track by $index">
+                                    <td>{{item.OrderId}}</td>
+                                    <td>{{item.MaterialId}}</td>
+                                    <td>
+                                        <span title="规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
+                                    </td>
+                                    <td>{{item.MaterialSupplier}}</td>
+                                    <td>{{item.MaterialCount}}</td>
+                                    <td>
+                                        <span title="检测方式:{{item.InspectionMode}}，检测日期:{{item.MaterialInDate}}">
+                                            {{item.InspectionStatus}}
+                                        </span>
+                                    </td>
+                                    <td>{{item.MaterialInDate}}</td>
+                                    <td>{{item.InspectionResult}}</td>
+
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.create8DReportMaster(item)" ng-show="item.InspectionStatus !== '未完成'">生成8D表单</button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        @* 分页显示 *@
+                        <div ng-if="vmManager.dataSource.length>0"
+                             yl-pagination data-dataset="vmManager.dataSets"
+                             data-datasource="vmManager.dataSource">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,9 +79,55 @@
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div ng-include="'showQueryTable'" class="well">
+                    <div class="row">
+                        <div class="table-responsive" style="min-height:500px;" cg-busy="{promise:searchPromise}">
+                            <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
+                                <thead>
+                                    <tr class="info">
+                                        <th>单号</th>
+                                        <th>序号</th>
+                                        <th>品号</th>
+                                        <th>品名</th>
+                                        <th>部门</th>
+                                        <th>抽验数量</th>
+                                        <th>检测状态</th>
+                                        <th>进货日期</th>
+                                        <th>结果</th>
+                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager. fqcDataSets track by $index">
+                                        <td>{{item.OrderId}}</td>
+                                        <td>{{item.OrderIdNumber}}</td>
+                                        <td>{{item.MaterialId}}</td>
+                                        <td>
+                                            <span title="规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
+                                        </td>
+                                        <td>{{item.ProductDepartment}}</td>
+                                        <td>{{item.InspectionCount}}</td>
+                                        <td>
+                                            <span title="检测方式:{{item.InspectionMode}}，检测日期:{{item.MaterialInDate}}">
+                                                {{item.InspectionStatus}}
+                                            </span>
+                                        </td>
+                                        <td>{{item.MaterialInDate}}</td>
+                                        <td>{{item.InspectionResult}}</td>
+
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.create8DReportMaster(item)" ng-show="item.InspectionStatus !== '未完成'">生成8D表单</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @* 分页显示 *@
+                            <div ng-if="vmManager. fqcDataSource.length>0"
+                                 yl-pagination data-dataset="vmManager.fqcDataSets"
+                                 data-datasource="vmManager.fqcDataSource">
+                            </div>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -58,14 +145,14 @@
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div ng-include="'showQueryTable'" class="well">
+                    <div class="row">
+                        <div ng-include="'showQueryTable'" class="well">
+                        </div>
                     </div>
                 </div>
             </div>
             @*其它*@
-            <div bs-pane data-title="其它" data-name="AntherTab">
+            <div bs-pane data-title="直接生成" data-name="AntherTab">
                 <div ng-include="'showPutInBody'">
                 </div>
             </div>
