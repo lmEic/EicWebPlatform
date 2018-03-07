@@ -12,6 +12,7 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,14 +21,13 @@ namespace EicWorkPlatfrom.Controllers.Product
 {
     public class ProEmployeeController : EicBaseController
     {
-        //
+       
         // GET: /ProEmployee/
 
         public ActionResult Index()
         {
             return View();
         }
-
         #region WorkerInfo
         /// <summary>
         /// 人员信息管理
@@ -68,7 +68,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
         #endregion
 
-
         #region 考勤管理
 
         #region 加班管理
@@ -106,7 +105,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetWorkOverHourSumsByWorkId(string qrydate, string departmentText, string workId, int mode)
         {
-
             WorkOverHoursDto qryDto = new WorkOverHoursDto()
             {
                 QryDate = qrydate,
@@ -117,7 +115,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBySum(qryDto);
             TempData["WorkOverHourDatasBySum"] = datas;
             return DateJsonResult(datas);
-
         }
         [NoAuthenCheck]
         public ContentResult GetWorkOverHoursWorkIdBydetail(string qrydate, string departmentText, int mode)
@@ -129,10 +126,8 @@ namespace EicWorkPlatfrom.Controllers.Product
                 SearchMode = mode
             };
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByDetail(qryDto);
-            TempData["WorkOverHourDatasBySum"] = datas;  
-      
+            TempData["WorkOverHourDatasBySum"] = datas;     
             return DateJsonResult(datas);
-
         }
         [NoAuthenCheck]
         /// <summary>
@@ -143,7 +138,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         public ContentResult GetWorkOverHoursMode(string departmentText,string postNature, DateTime workDate,int mode)
         {
-
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,postNature,workDate,mode);
 
             foreach (var item in datas)
@@ -151,8 +145,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 if (item.OpSign == "edit")
                 {
                     item.OpSign = "add";
-                }
-               
+                }             
             }
             TempData["WorkOverHoursDatas"] = datas;
             return DateJsonResult(datas);
@@ -189,26 +182,44 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// </summary>
         /// <returns></returns>
         public FileResult WorkOverHoursDatasToExcel()
-        {
-        
+        {     
             try
             {
                 string postNature="";
+                double workhours = 0;
+                var datasList = new List<WorkOverHoursMangeModels>();
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
                 if (datas == null || datas.Count == 0)
                 {
                     new DownLoadFileModel().Default();
                 }
-                else
-                {
-                    foreach (var item in datas)
-                    {
-                        postNature = item.PostNature;
-
-                        break;
-                    }
-                }
-                  
+                //else
+                //{
+                //    foreach (var item in datas)
+                //    {
+                //        postNature = item.PostNature;
+                //        workhours = item.WorkOverHours;
+                //        var temModel = new WorkOverHoursMangeModels();
+                //        temModel.WorkerId = item.WorkerId;
+                //        temModel.WorkerName = item.WorkerName;
+                //        temModel.DepartmentText = item.DepartmentText;
+                //        temModel.WorkoverType = item.WorkoverType;
+                //        temModel.WorkDate = item.WorkDate;
+                //        temModel.WorkOverHours = item.WorkOverHours;
+                //        temModel.WorkReason = item.WorkReason;
+                //        temModel.WorkClassType = item.WorkClassType;
+                //        temModel.WorkDayTime = item.WorkDayTime;
+                //        temModel.WorkDayTime1 = item.WorkDayTime1;
+                //        temModel.WorkNightTime = item.WorkNightTime;
+                //        temModel.WorkNightTime1 = item.WorkNightTime1;
+                //        temModel.PostNature = item.PostNature;
+                //        temModel.Remark = item.Remark;
+                //        temModel.WorkStatus = item.WorkStatus;
+                       
+                //        datasList.Add(temModel);
+                                     
+                //    }
+                //}                
                 if (postNature=="间接")
                 {
                     string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板间接.xls";
@@ -223,14 +234,13 @@ namespace EicWorkPlatfrom.Controllers.Product
                 else
                 {
                     string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板直接.xls";
-                    string fileName = "加班数据模板直接.xls";             
-                    if (datas == null || datas.Count == 0)
+                    string fileName = "加班数据模板直接.xls";
+                    if (datasList == null || datasList.Count == 0)
                     {
                         new DownLoadFileModel().Default();
                     }
-                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas, SiteRootPath, filePath, fileName);
+                    var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM_direct(datas, SiteRootPath, filePath, fileName);
                     return this.DownLoadFile(dlfm);
-
                 }
                
             }
@@ -247,13 +257,31 @@ namespace EicWorkPlatfrom.Controllers.Product
                 string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表.xls";
                 string fileName1 = "加班汇总表.xls";
                 var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
-              
-
                 if (datas == null || datas.Count == 0)
                 {
                     new DownLoadFileModel().Default();
                 }
                 var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM(datas, SiteRootPath, filePath1, fileName1);
+                return this.DownLoadFile(dlfm);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        [NoAuthenCheck]
+        public FileResult WorkOverHoursDatasSumToExcelDayCount()
+        {
+            try
+            {
+                string filePath1 = SiteRootPath + @"FileLibrary\WorkOverHours\加班汇总表1.xls";
+                string fileName1 = "加班汇总表1.xls";
+                var datas = TempData["WorkOverHourDatasBySum"] as List<WorkOverHoursMangeModels>;
+                if (datas == null || datas.Count == 0)
+                {
+                    new DownLoadFileModel().Default();
+                }
+                var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasSumDLFM1(datas, SiteRootPath, filePath1, fileName1);
                 return this.DownLoadFile(dlfm);
             }
             catch (Exception ex)
@@ -356,26 +384,49 @@ namespace EicWorkPlatfrom.Controllers.Product
 
                 throw new Exception(ex.Message);
            }
-
-
         }
+        /// <summary>
+        /// 查询请假信息
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="leaveSate"></param>
+        /// <param name="department"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetLeaveAskManagerDatas(string workerId,string leaveSate,string department,int mode)
+        
+        public ContentResult GetLeaveAskManagerDatas(string workerId,string leaveSate,string department,string leaveType,int mode)
         {
             var datas = LeaveAskService.LeaveAskManager.FindByWorkerId(new LeaveAskManagerModelDto()
             {
                 WorkerId = workerId,
                 LeaveSate=leaveSate,
                 Department=department,
+                LeaveType=leaveType,
                 SearchMode=mode     
             });
-           
             return DateJsonResult(datas);
+        }
 
+        /// <summary>
+        /// 计算两个日期的差值 
+        /// </summary>
+        /// <param name="date2"></param>
+        /// <param name="date1"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [NoAuthenCheck]
+        public JsonResult CalculateDate(DateTime date2,DateTime date1)
+        {
+            TimeSpan ts = date2.Subtract(date1);
+            var hours = Math.Round(ts.TotalHours, 2);
+            return  Json(hours, JsonRequestBehavior.AllowGet); ;
         }
         #endregion
 
         #endregion
+
+
     }
 }

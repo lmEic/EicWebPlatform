@@ -5,7 +5,7 @@
     <div class="panel-body" cg-busy="{promise:promise}">
         <div class="bs-callout bs-callout-info">
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-8">
                     <form class="form-inline">
                         <div class="form-group">
                             <div yl-month-button
@@ -29,8 +29,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <span class="pull-right">
+                        <a class="btn btn-success pull-right" title="汇总导出" ng-href="{{ vmManager.buildAskLeaveSumerizeReportFile()}}"><i class="fa fa-file-excel-o"></i>汇总导出</a>
                         <button class="btn btn-info pull-right" ng-click="operate.saveAll()"><i class="fa fa-save"></i>批量保存</button>
                     </span>
                 </div>

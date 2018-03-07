@@ -53,6 +53,12 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+
+        [NoAuthenCheck]
+        public ActionResult YearButtonTpl()
+        {
+            return View();
+        }
         /// <summary>
         /// 季度按钮模板
         /// </summary>

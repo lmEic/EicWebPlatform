@@ -61,6 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <param name="reportDate"></param>
         public MealReportedAnalogModel GetAnalogReportMealDatas(DateTime reportDate)
         {
+            reportDate = reportDate.ToDate();
             MealReportedAnalogModel analogData = new MealReportedAnalogModel();
             var sumerizeDatas = GeneralAffairsFactory.ReportMealStore.GetReportMealDatas(reportDate);
             if (sumerizeDatas == null || sumerizeDatas.Count == 0) return analogData;
@@ -70,15 +71,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             analogData.TotalOfLG = CreateSumerizeReportMealModel(analogData.SumerizeDatasOfLG, reportDate);
             return analogData;
         }
-
+        public List<MealReportManageModel> GetSumerizeMonthDatas(string yearMonth)
+        {
+         
+            return GeneralAffairsFactory.ReportMealStore.GetReportMealMonthDatas(yearMonth);
+        }
+        private void AddDataTo(Dictionary<string, List<MealReportSumerizeModel>> dicDatas, List<MealReportSumerizeModel> datas, MealReportSumerizeModel item, string key)
+        {
+            if (datas != null && item != null)
+            {
+                datas.Add(item);
+                dicDatas.Add(key, datas);
+            }
+        }
         public DownLoadFileModel ExportAnalogData(MealReportedAnalogModel data)
         {
-            if (data == null) return null;
-            data.SumerizeDatasOfLG.Add(data.TotalOfLG);
-            data.SumerizeDatasOfYG.Add(data.TotalOfYG);
-            Dictionary<string, List<MealReportSumerizeModel>> dicDatas = new Dictionary<string, List<MealReportSumerizeModel>>() {
-                {reportWorkerTypeYG,data.SumerizeDatasOfYG }, { reportWorkerTypeLG,data.SumerizeDatasOfLG}
-            };
+            if (data == null) return new DownLoadFileModel().Default();
+            Dictionary<string, List<MealReportSumerizeModel>> dicDatas = new Dictionary<string, List<MealReportSumerizeModel>>();
+            AddDataTo(dicDatas, data.SumerizeDatasOfYG, data.TotalOfYG, reportWorkerTypeYG);
+            AddDataTo(dicDatas, data.SumerizeDatasOfLG, data.TotalOfLG, reportWorkerTypeLG);
             List<FileFieldMapping> fieldMapps = new List<FileFieldMapping>() {
                 new FileFieldMapping("ReportMealDate","报餐日期"),
                 new FileFieldMapping("Department","部门"),
@@ -88,6 +99,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 new FileFieldMapping("TotalCountOfMidnight","夜宵数量汇总"),
             };
             return dicDatas.ExportToExcelMultiSheets<MealReportSumerizeModel>(fieldMapps).CreateDownLoadExcelFileModel("报餐数据汇总");
+        }
+        public DownLoadFileModel ExportAnalogMonthData(List<MealReportManageModel> data)
+        {
+          
+            if (data == null) return new DownLoadFileModel().Default();
+            Dictionary<string, List<MealReportSumerizeModel>> dicDatas = new Dictionary<string, List<MealReportSumerizeModel>>();
+            List<FileFieldMapping> fieldMapps = new List<FileFieldMapping>() {
+                 new FileFieldMapping("WorkerType","类型"),
+                 new FileFieldMapping("Department","部门"),
+                 new FileFieldMapping("WorkerId","工号"),
+                 new FileFieldMapping("WorkerName","姓名"),
+                 new FileFieldMapping("CountOfBreakfast","早餐"),
+                 new FileFieldMapping("CountOfLunch","中餐"),
+                 new FileFieldMapping("CountOfSupper","晚餐"),
+                 new FileFieldMapping("CountOfMidnight","夜宵"),
+                 new FileFieldMapping("ReportDay","日期"),
+                 new FileFieldMapping("OpPerson","报餐人"),
+            };
+            return dicDatas.ExportToExcelMultiSheets<MealReportSumerizeModel>(fieldMapps).CreateDownLoadExcelFileModel("报餐月报明细汇总");
         }
         private List<MealReportSumerizeModel> SumerizeReportMealDatas(List<MealReportManageModel> mealDatas, DateTime reportMealDate)
         {
@@ -118,6 +148,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         }
         private MealReportSumerizeModel CreateSumerizeReportMealModel(List<MealReportSumerizeModel> sumerizeDatas, DateTime reportMealDate)
         {
+            if (sumerizeDatas == null) return null;
             return new MealReportSumerizeModel()
             {
                 ReportMealDate = reportMealDate.ToDateStr(),
@@ -175,7 +206,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// 员工餐总汇总模型
         /// </summary>
         public MealReportSumerizeModel TotalOfYG { get; set; }
-
     }
     public class MealReportSumerizeModel
     {
@@ -264,6 +294,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             if (department == null)
                 return this.irep.Entities.Where(e => e.ReportDay == reportMealDate && e.WorkerType == reportMealType).ToList();
             return this.irep.Entities.Where(e => e.ReportDay == reportMealDate && e.WorkerType == reportMealType && e.Department == department).ToList();
+        }
+        internal List<MealReportManageModel> GetReportMealMonthDatas(string yearMonth)
+        {
+            return this.irep.Entities.Where(e =>e.YearMonth== yearMonth).ToList();
         }
         #endregion
 

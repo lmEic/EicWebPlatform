@@ -21,7 +21,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         internal static WorkOverHoursCrud WorkOverHoursCrud
         {
             get { return OBulider.BuildInstance<WorkOverHoursCrud>(); }
-
         }
 
     }
@@ -37,9 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             this.AddOpItem(OpMode.Edit, EditWorkOverHours);
             this.AddOpItem(OpMode.Delete, DeleteWorkOverHours);
            
-        }
-
-       
+        }   
         private OpResult DeleteWorkOverHours(WorkOverHoursMangeModels model)
         {
             return irep.Delete(e => e.WorkerId == model.WorkerId && e.WorkDate==model.WorkDate).ToOpResult_Delete(OpContext);
@@ -96,7 +93,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     case 2:
                         return irep.Entities.OrderBy(m=>m.WorkerId).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkerId==qryDto.WorkId && m.WorkStatus == "在职").ToList();
                     case 3:
-                        return irep.Entities.Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
+                        return irep.Entities.OrderBy(m => m.WorkDate).Where(m => m.QryDate == qryDto.QryDate && m.DepartmentText == qryDto.DepartmentText && m.WorkStatus == "在职").ToList();
                     default:
                         return new List<WorkOverHoursMangeModels>();
                 }
@@ -122,9 +119,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 switch (mode)
                 {
                     case 1:
-                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
+                        return irep.Entities.OrderBy(e=>e.WorkerId).Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)).ToList();
                     case 2:
-                        return irep.Entities.Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)&& e.PostNature==postNature).ToList();
+                        return irep.Entities.OrderBy(e => e.WorkerId).Where(e => e.WorkDate == workDate && e.WorkStatus == "在职" && (e.DepartmentText == departmentText || e.ParentDataNodeText == departmentText)&& e.PostNature==postNature).ToList();
 
                     default:
                         return new List<WorkOverHoursMangeModels>();
@@ -132,7 +129,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.InnerException.Message);
             }
             

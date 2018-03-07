@@ -30,11 +30,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         public List<WorkOverHoursMangeModels> FindRecordBySum(WorkOverHoursDto Dto)
         {
             var  modelList = new List<WorkOverHoursMangeModels>();
-            List<WorkOverHoursMangeModels> GetWorkOverHoursList = WorkOverHoursFactory.WorkOverHoursCrud.FindBySum(Dto); 
-         
+            List<WorkOverHoursMangeModels> GetWorkOverHoursList = WorkOverHoursFactory.WorkOverHoursCrud.FindBySum(Dto);
+            
             foreach (var item in GetWorkOverHoursList)
             {
-                
+                    
                     var temModel = new WorkOverHoursMangeModels();
                     temModel.WorkerId = item.WorkerId;
                     temModel.WorkerName = item.WorkerName;
@@ -44,14 +44,22 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                     temModel.WorkClassType = item.WorkClassType;
                     temModel.WorkOverHours = item.WorkOverHours;
                     temModel.WorkOverHoursCount = GetWorkOverHoursList.Where(m => m.WorkoverType == item.WorkoverType && m.WorkerId == item.WorkerId).Sum(m => m.WorkOverHours);
+                if (item.DepartmentText == "生技部" || item.DepartmentText == "企业讯息中心" || item.DepartmentText == "制二课" || item.DepartmentText == "制十课")
+                {
+                    temModel.WorkOverHoursNightCount = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId && m.WorkClassType == "晚班").Count();
+                }
+                else
+                {
+                    temModel.WorkOverHoursNightCount = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId && m.WorkClassType == "晚班").Sum(m => m.WorkOverHours);
+                }
+                // temModel.WorkOverHoursNightCount = GetWorkOverHoursList.Where(m => m.WorkerId == item.WorkerId && m.WorkClassType == "晚班").Count();
                     temModel.Remark = item.Remark;
                     temModel.WorkReason = item.WorkReason;
                     temModel.WorkDayTime = item.WorkDayTime;
                     temModel.WorkNightTime = item.WorkNightTime;
                     temModel.WorkStatus = item.WorkStatus;
                     temModel.QryDate = item.QryDate;
-                    modelList.Add(temModel);
-                         
+                    modelList.Add(temModel);              
             }
             return modelList;
         }
@@ -111,17 +119,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 
         }
         /// <summary>
-        /// 导出Excel
+        /// 直接员工
         /// </summary>
         /// <param name="datas"></param>
+        /// <param name="SiteRootPath"></param>
+        /// <param name="filePath"></param>
+        /// <param name="fileName"></param>
         /// <returns></returns>
-        public DownLoadFileModel WorkOverHoursDatasDLFM(List<WorkOverHoursMangeModels>datas,string  SiteRootPath,string  filePath,string  fileName)
+        public DownLoadFileModel WorkOverHoursDatasDLFM_direct(List<WorkOverHoursMangeModels> datas, string SiteRootPath, string filePath, string fileName)
         {
             try
             {
-                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
-                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();             
-                 return dataGroupping.WorkOverHoursListToExcel<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath).WorkOverExcelTemplae("加班报表"); 
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
+                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
+                return dataGroupping.WorkOverHoursListToExcel_direct<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath).WorkOverExcelTemplae("加班报表");
             }
             catch (Exception ex)
             {
@@ -130,15 +141,52 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             }
 
         }
+        /// <summary>
+        /// 间接员工
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        public DownLoadFileModel WorkOverHoursDatasDLFM(List<WorkOverHoursMangeModels>datas,string  SiteRootPath,string  filePath,string  fileName)
+        {
+            try
+            {
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
+                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();             
+                 return dataGroupping.WorkOverHoursListToExcel<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath).WorkOverExcelTemplae("加班报表"); 
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
         public DownLoadFileModel WorkOverHoursDatasSumDLFM(List<WorkOverHoursMangeModels> datas, string SiteRootPath1, string filePath1, string fileName1)
         {
             try
             {
-                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
 
                 return dataGroupping.WorkOverHoursListToExcelSum<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath1).WorkOverExcelTemplae("汇总报表");
            
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public DownLoadFileModel WorkOverHoursDatasSumDLFM1(List<WorkOverHoursMangeModels> datas, string SiteRootPath1, string filePath1, string fileName1)
+        {
+            try
+            {
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
+                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
+
+                return dataGroupping.WorkOverHoursListToExcelSum1<WorkOverHoursMangeModels>(CreateFieldMapping(), filePath1).WorkOverExcelTemplae("汇总报表");
+
 
             }
             catch (Exception ex)
@@ -166,12 +214,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 new FileFieldMapping("QryDate","年月份"),
                 new FileFieldMapping("WorkReason","加班原因"),
                 new FileFieldMapping("WorkDayTime","白班日期"),
-                new FileFieldMapping("WorkNightTime","晚班日期")
-               // new FileFieldMapping("WorkOverHoursCount","加班总时数")
-              
-
-
-
+                new FileFieldMapping("WorkNightTime","晚班日期"),
+                //new FileFieldMapping("WorkDayTime1","白班日期"),
+                //new FileFieldMapping("WorkNightTime1","晚班日期")
+               // new FileFieldMapping("WorkOverHoursCount","加班总时数")            
             };
             return fieldmapping;
 

@@ -38,12 +38,13 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
         });
     };
     //查询请假数据
-    dataAccess.getLeaveAskManagerData = function (workerId,leaveSate,department,mode) {
+    dataAccess.getLeaveAskManagerData = function (workerId,leaveSate,department,leaveType,mode) {
         var url = urlPrefix + 'GetLeaveAskManagerDatas';
         return ajaxService.getData(url, {
             workerId: workerId,
             leaveSate:leaveSate,
-            department:department,
+            department: department,
+            leaveType: leaveType,
             mode: mode
         });
 
@@ -141,6 +142,18 @@ proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
             workDate: workDate
         })
     }  
+
+    //计算时间
+    dataAccess.calculateDate = function (date2, date1) {
+        var url = urlPrefix + 'CalculateDate';
+        return ajaxService.getData(url, {
+            date2: date2,
+            date1:date1
+        })
+    }
+
+
+
     return dataAccess;
 })
 //人员注册管理器
@@ -280,11 +293,12 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {
         workerId: null,
-        leaveSate:null
+        leaveSate: null,
+        leaveType:null
     };
     $scope.query = queryFields;
     var vmManager = {  
-       
+        activeTab: 'initTab',
         isLocal: true,
         init: function () {
             uiVM = _.clone(originalVM);
@@ -339,7 +353,24 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
         workTimeEnd: new Date(00, 00, 00),  
         leaveStats: [{ id: '未填写', text: '未填写' }, { id: '己填写', text: "己填写" }],
         selectDepartment: null,
-        DepartmentDatas: [],      
+        DepartmentDatas: [],  
+        selectLeaveType: [],
+        //添加请假类别
+        addLeaveType: function () {
+            selectLeaveType=[],
+            vmManager.selectLeaveType = vmManager.selectLeaveType + " " + uiVM.LeaveType;
+            uiVM.LeaveType = vmManager.selectLeaveType;
+        },
+        //删除请假类别
+        deleteLeaveType: function () {
+            if (uiVM.LeaveType == undefined) {
+                vmManager.selectLeaveType=[]
+                uiVM.LeaveType = []
+            }
+            else {
+                vmManager.selectLeaveType = uiVM.LeaveType
+            }         
+        },
         //拼接时间
         SetDate: function ()
         {                              
@@ -349,12 +380,14 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             uiVM.LeaveTimerEnd = workEnd;         
         },
         //查询请假数据
-        getLeaveAskManagerDatas: function (mode) { 
+        getLeaveAskManagerDatas: function (mode) {    
+            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return;}        
             queryFields.workerId = uiVM.WorkerId; 
             queryFields.leaveSate = uiVM.LeaveState;
+            queryFields.leaveType = uiVM.LeaveType;
             vmManager.searchDatas = [];  
-            vmManager.datasource = [];
-            var datas = proEmployeeDataService.getLeaveAskManagerData(queryFields.workerId,queryFields.leaveSate,vmManager.selectDepartment, mode).then(function (datas) {
+            vmManager.datasource = [];      
+            var datas = proEmployeeDataService.getLeaveAskManagerData(queryFields.workerId,queryFields.leaveSate,vmManager.selectDepartment,queryFields.leaveType, mode).then(function (datas) {
                 vmManager.searchDatas = datas;
                 vmManager.datasource = datas;
             });
@@ -390,8 +423,6 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 });
             });
         }
-
-
     }); 
     //编辑
     operate.editItem = function (item) {
@@ -413,7 +444,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {                   
                        vmManager.init();
-                        vmManager.getLeaveAskManagerDatas(1);
+                       vmManager.getLeaveAskManagerDatas(4);
                         deleteDialog.close();
                     }
                 })
@@ -435,7 +466,7 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
                             vmManager.datasource.push(mode);
                         }                   
                         vmManager.init();
-                        vmManager.getLeaveAskManagerDatas(1);
+                        vmManager.selectLeaveType=[],
                         dialog.close();
                     }
                 });
@@ -448,6 +479,20 @@ proEmployeeModule.controller('proAskLeaveManagerCtrl', function ($scope, $filter
             vmManager.init();
         });
     };
+
+    //计算时数
+    operate.calculateHours = function () { 
+ 
+        uiVM.LeaveApplyDate = $scope.vm.LeaveApplyDate;
+        uiVM.LeaveAskDate = $scope.vm.LeaveAskDate; 
+       
+        var dt01 = uiVM.LeaveApplyDate + " " + vmManager.workTimeStart.pattern("HH:mm");
+        var dt02 = uiVM.LeaveAskDate + " " + vmManager.workTimeEnd.pattern("HH:mm");   
+        proEmployeeDataService.calculateDate(dt02, dt01).then(function (data) {
+            $scope.vm.LeaveHours = data;        
+        });
+    }
+
    // vmManager.getDepartments();
     vmManager.bindingDepartments();
 
@@ -470,8 +515,11 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         WorkReason: '产线加班',
         WorkDayTime: null,
         WorkNightTime: null,
+        WorkDayTime1: null,
+        WorkNightTime1: null,
         PostNature: null, 
-        WorkOverHoursCount:0,
+        WorkOverHoursCount: 0,
+        WorkOverHoursNightCount:0,
         ParentDataNodeText: leeDataHandler.dataStorage.getLoginedUser().organization.B,
         BackgroundIndex: null,
         OpPerson: leeDataHandler.dataStorage.getLoginedUser().userName,
@@ -504,11 +552,17 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         changeworkDate: null,
         workDayDate: null,
         workNightDate: null,
+        workDayDate1: null,
+        workNightDate1: null,
         workDayTimeStart: new Date(00, 00, 00),
         workDayTimeEnd: new Date(00, 00, 00),
         workNightTimeStart: new Date(00, 00, 00),
         workNightTimeEnd: new Date(00, 00, 00),
-        classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: "晚班" }],
+        workDayTimeStart1: new Date(00, 00, 00),
+        workDayTimeEnd1: new Date(00, 00, 00),
+        workNightTimeStart1: new Date(00, 00, 00),
+        workNightTimeEnd1: new Date(00, 00, 00),
+        classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: "晚班" }],      
         overTypes: [{ id: '平时加班', text: '平时加班' }, { id: '假日加班', text: '假日加班' }, { id: '节假日加班', text: '节假日加班' }],
         workOverHourss: [{ id: 0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0 }, { id: 2.5, text: 2.5 }],
         workStatuss: [{ id: '在职', text: '在职' }, { id: '离职', text: '离职' }],
@@ -532,7 +586,10 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         dataSource: [],
         DepartmentDatas: [],
         signDepSum: 'true',
-        signPerSum:'false',
+        signPerSum: 'false',  
+        workhoursDayCount: null,
+        workhoursNightCount:null,
+        workhoursNightCountShow: 'false',
         init: function () {
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
@@ -925,7 +982,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         },
         //查询
         getWorkOverHoursByDatas: function (mode) {
-
+            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return; }  
             $scope.searchPromise = proEmployeeDataService.getWorkOverHoursData(qryDto.workDate, vmManager.selectDepartment, mode).then(function (datas) {
                 vmManager.dataSource = datas;
                 vmManager.searchDatas = datas;
@@ -935,14 +992,17 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
 
         //后台查询
         getWorkOverHoursDatas: function (mode) {
+            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return; }  
             var datas = proEmployeeDataService.getWorkOverHoursData(qryDto.workDate, vmManager.selectDepartment, 1).then(function (datas) {
                 vmManager.searchDatas = datas;
             })
         },
         //加班汇总
         getWorkOverHourSumss: function (mode) {
+            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return; }  
             vmManager.signDepSum = true;
-            vmManager.signPerSum = false;
+            vmManager.signPerSum = false;        
+           vmManager.workhoursNightCountShow = true;  
             vmManager.dataSourceSum = [];
             if (vmManager.selectDepartment == null) {
                 var datas = proEmployeeDataService.getWorkOverHourSums(vmManager.searchYear, uiVM.ParentDataNodeText, 1).then(function (datas) {
@@ -959,6 +1019,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         },
         //按工号查询汇总
         getWorkOverHourSumsByWorkId: function (mode) {
+            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return; }  
             vmManager.dataSourceSum = [];
             vmManager.signPerSum = true;
             vmManager.signDepSum = false;
@@ -968,15 +1029,14 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         },
         //查询员工明细
         getWorkOverHoursWorkIdBydetail: function (mode) {
+            if (vmManager.selectDepartment == null) { leePopups.alert("亲，您未选择部门"); return; }  
             vmManager.dataSourceSum = [];
             vmManager.signPerSum = true;
             vmManager.signDepSum = false;
             var datas = proEmployeeDataService.getWorkOverHoursWorkIdBydetails(vmManager.searchYear, vmManager.selectDepartment, 3).then(function (datas) {
                 vmManager.dataSourceSum = datas;
             })
-
         },
-
         //获取正在编辑的行
         getEdittingRow: function () {
             var rowItem = _.find(vmManager.dataSets, { rowindex: vmManager.edittingRowIndex });
@@ -984,16 +1044,12 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         },
         //快速查找员工
         getWorkName: function () {
-
             var qryItem = _.find(vmManager.dataSets, { WorkerName: vmManager.qryWorkName });
-
             if (qryItem != null) {
                 vmManager.editworkOverHours(qryItem);
                 vmManager.qryWorkName = null;
             }
-
         },
-
         //加载部门信息
         getDepartment: function () {
             vmManager.DepartmentDatas = [];
@@ -1001,22 +1057,21 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 vmManager.DepartmentDatas = datas;
             })
         },
-
         bindingDepartments: function () {
+            vmManager.workhoursNightCountShow = false;
             var departments;
             var user = leeDataHandler.dataStorage.getLoginedUser();
             if (_.isObject(user)) {
                 vmManager.organizationUnits = user.organizationUnits;
             }
-
         },
         //载入模板
-        getWorkOverHoursModes: function () {
+        getWorkOverHoursModes: function () {    
             vmManager.dataSets = [];
             vmManager.dataSource = [];
             tempVm.workOverCount = 0;
             if (vmManager.selectPostNature==null) {
-                $scope.searchPromise = proEmployeeDataService.getWorkOverHoursMode(qryDto.departmentText,vmManager.selectPostNature, qryDto.workDate,1).then(function (datas) {
+                $scope.searchPromise = proEmployeeDataService.getWorkOverHoursMode(vmManager.selectDepartment,vmManager.selectPostNature, qryDto.workDate,1).then(function (datas) {
                     //构建索引号
                     var rindex = 1;
                     angular.forEach(datas, function (item) {
@@ -1138,9 +1193,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                     vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
                 };
             },
-        }),
-
-       
+        }),           
     };
     //导入excel
     $scope.selectFile = function (el) {
@@ -1158,7 +1211,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
 
                 })
             });
-        });
+        });   
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -1168,11 +1221,10 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         var dataitem = _.clone(item);
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;
         item.ParentDataNodeText = $scope.vm.ParentDataNodeText;
-        item.OpPerson = $scope.vm.OpPerson;
+        item.OpPerson = $scope.vm.OpPerson;     
+        dialog.show();
         $scope.vm = item;
-        vmManager.changeworkDate = item.WorkDate;
-        vmManager.workDayDate = item.WorkDate;
-        vmManager.workNightDate = item.WorkDate;
+        vmManager.changeworkDate = item.WorkDate;     
         dialog.show();
     };
     //后台编辑
@@ -1190,6 +1242,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         $scope.vm = uiVM = item;
         vmManager.workDayDate = item.WorkDate;
         vmManager.workNightDate = item.WorkDate;
+        vmManager.workDayDate1 = item.WorkDate;
+        vmManager.workNightDate1 = item.WorkDate;
         vmManager.BackgroundIndexFirst = item.rowindex1;
         dialog.show();
     };
@@ -1206,6 +1260,8 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         $scope.vm = uiVM = item;
         vmManager.workDayDate = item.WorkDate;
         vmManager.workNightDate = item.WorkDate;
+        vmManager.workDayDate1 = item.WorkDate;
+        vmManager.workNightDate1 = item.WorkDate;
         vmManager.BackgroundIndexFirst = item.rowindex1;
         dialog.show();
     }
@@ -1252,44 +1308,101 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         });
 
     }
-
     //关闭窗口
     operate.updateItem = function (item) {
+        vmManager.workDayDate = $scope.vmManager.workDayDate;
+        vmManager.workNightDate = $scope.vmManager.workNightDate;
+        vmManager.workDayDate1 = $scope.vmManager.workDayDate1;
+        vmManager.workNightDate1 = $scope.vmManager.workNightDate1;    
         tempVm.workOverCount = 0;
         uiVM.WorkoverType = $scope.vm.WorkoverType;
         uiVM.DepartmentText = $scope.vm.DepartmentText;
         uiVM.WorkDate = $scope.vm.WorkDate;
         uiVM.WorkClassType = $scope.vm.WorkClassType;
-        uiVM.PostNature = $scope.vm.PostNature;
-        uiVM.WorkOverHours = $scope.vm.WorkOverHours
+        uiVM.PostNature = $scope.vm.PostNature;      
         uiVM.Remark = $scope.vm.Remark;
         uiVM.ParentDataNodeText = $scope.vm.ParentDataNodeText;
         uiVM.OpPerson = $scope.vm.OpPerson;
         if (vmManager.changeworkDate == null) { leePopups.alert("亲！您未选择申请日期"); return; }
-        if (uiVM.WorkReason == null) { leePopups.alert("亲！您未填写加班原因"); return; }
-        vmManager.workDayDate = uiVM.WorkDate;
-        vmManager.workNightDate = uiVM.WorkDate;
-        var _workDayTime = "从 " + uiVM.WorkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm") + " 至 " + vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");      
+        if (uiVM.WorkReason == null) { leePopups.alert("亲！您未填写加班原因"); return; }    
+        var _workDayTime = "从 " + uiVM.WorkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm") + " 至 " + vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");
         var _workNightTime = "从 " + uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm") + " 至 " + vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");
-        var qryDateFormat = $filter('date')(uiVM.WorkDate, "yyyyMM");
+        var _workDayTime1 = "从 " + uiVM.WorkDate + " " + vmManager.workDayTimeStart1.pattern("HH:mm") + " 至 " + vmManager.workDayDate1 + " " + vmManager.workDayTimeEnd1.pattern("HH:mm");
+        var _workNightTime1 = "从 " + uiVM.WorkDate + " " + vmManager.workNightTimeStart1.pattern("HH:mm") + " 至 " + vmManager.workNightDate1 + " " + vmManager.workNightTimeEnd1.pattern("HH:mm");
+        var qryDateFormat = $filter('date')(uiVM.WorkDate, "yyyyMM");      
+        uiVM.WorkOverHours = $scope.vm.WorkOverHours;
         angular.forEach(vmManager.dataSets, function (row) {
             $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
             row.WorkDate = uiVM.WorkDate;
             row.WorkDayTime = _workDayTime;
             row.WorkNightTime = _workNightTime;
+            row.WorkDayTime1 = _workDayTime1;
+            row.WorkNightTime1 = _workNightTime1;         
             row.WorkoverType = uiVM.WorkoverType;
             row.QryDate = qryDateFormat;
-            row.WorkClassType = uiVM.WorkClassType;
+          //row.WorkClassType = uiVM.WorkClassType;
             row.WorkOverHours = uiVM.WorkOverHours;
             row.DepartmentText = uiVM.DepartmentText;
             row.ParentDataNodeText = uiVM.ParentDataNodeText;
             row.OpPerson = uiVM.OpPerson;
             row.WorkReason = uiVM.WorkReason;
             row.BackgroundIndex = null;
+           $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
         });
         dialog.close();
-        focusSetter['workeroverFocus'] = true;
+        //统计行数
+        $scope.tempVm.workOverCount = 0;
+        tempVm.tabCount = vmManager.dataSets.length;
+        angular.forEach(vmManager.dataSets, function (row) {
+            $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
+        })   
     },
+        //白班计算日期差值
+        operate.calculateDayDates1 = function ()
+        {
+           uiVM.WorkDate = $scope.vm.WorkDate;
+           vmManager.workDayDate =$scope.vmManager.workDayDate;      
+           var dt01 = uiVM.WorkDate + " " + vmManager.workDayTimeStart.pattern("HH:mm");
+           var dt02 = vmManager.workDayDate + " " + vmManager.workDayTimeEnd.pattern("HH:mm");   
+           
+           proEmployeeDataService.calculateDate(dt02, dt01).then(function (data)
+           {                       
+               $scope.vm.WorkOverHours = data;
+               vmManager.workhoursDayCount = data;
+           });                     
+        }
+        operate.calculateDayDates2 = function () {
+           var workdayCount = vmManager.workhoursDayCount;
+           uiVM.WorkDate = $scope.vm.WorkDate;
+           vmManager.workDayDate = $scope.vmManager.workDayDate;
+           vmManager.workDayDate1 = $scope.vmManager.workDayDate1;
+           var dt03 = vmManager.workDayDate + " " + vmManager.workDayTimeStart1.pattern("HH:mm");
+           var dt04 = vmManager.workDayDate1 + " " + vmManager.workDayTimeEnd1.pattern("HH:mm");
+           proEmployeeDataService.calculateDate(dt04, dt03).then(function (data) {
+               $scope.vm.WorkOverHours = data + workdayCount ;
+           });
+         }
+      //晚计算日期差值 
+        operate.calculateNightDates1 = function () {      
+            uiVM.WorkDate = $scope.vm.WorkDate;
+            vmManager.workNightDate = $scope.vmManager.workNightDate;          
+            var nt01 = uiVM.WorkDate + " " + vmManager.workNightTimeStart.pattern("HH:mm");
+            var nt02 = vmManager.workNightDate + " " + vmManager.workNightTimeEnd.pattern("HH:mm");       
+            proEmployeeDataService.calculateDate(nt02, nt01).then(function (data) {
+                $scope.vm.WorkOverHours = data;
+                vmManager.workhoursNightCount = data;             
+            });
+        }
+        operate.calculateNightDates2 = function () {
+           var worknightCount = vmManager.workhoursNightCount;
+           vmManager.workNightDate = $scope.vmManager.workNightDate;
+           vmManager.workNightDate1 = $scope.vmManager.workNightDate1;
+            var nt03 = vmManager.workNightDate+ " " + vmManager.workNightTimeStart1.pattern("HH:mm");
+            var nt04 = vmManager.workNightDate1+ " " + vmManager.workNightTimeEnd1.pattern("HH:mm");      
+            proEmployeeDataService.calculateDate(nt04, nt03).then(function (data) {
+                $scope.vm.WorkOverHours = data + worknightCount;                         
+            });                     
+        }  
         //批量保存提示窗口
         operate.saveDialog = function () {
             if (vmManager.dataSets.length == 0) {

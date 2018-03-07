@@ -771,6 +771,49 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             get { return _slotcardtime; }
         }
 
+        private string _LeaveType;
+
+        /// <summary>
+        ///请假类别
+        /// </summary>
+        public string LeaveType
+        {
+            set { _LeaveType = value; }
+            get { return _LeaveType; }
+        }
+
+        private double _LeaveHours;
+
+        /// <summary>
+        ///请假时数
+        /// </summary>
+        public double LeaveHours
+        {
+            set { _LeaveHours = value; }
+            get { return _LeaveHours; }
+        }
+
+        private string _LeaveTimeRegion;
+
+        /// <summary>
+        ///请假时段
+        /// </summary>
+        public string LeaveTimeRegion
+        {
+            set { _LeaveTimeRegion = value; }
+            get { return _LeaveTimeRegion; }
+        }
+
+        private string _LeaveDescription;
+
+        /// <summary>
+        ///请假描述
+        /// </summary>
+        public string LeaveDescription
+        {
+            set { _LeaveDescription = value; }
+            get { return _LeaveDescription; }
+        }
         #endregion Model
     }
 
@@ -973,6 +1016,109 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             get { return _id_key; }
         }
         #endregion Model
+    }
+
+    /// <summary>
+    /// 考勤请假条目
+    /// </summary>
+    public class AttendAskLeaveEntry
+    {
+        /// <summary>
+        /// 请假时数
+        /// </summary>
+        public double AskLeaveHours { get; set; }
+        /// <summary>
+        /// 请假类型
+        /// </summary>
+        public string AskLeaveType { get; set; }
+        /// <summary>
+        /// 请假时段
+        /// </summary>
+        public string AskLeaveRegion { get; set; }
+        /// <summary>
+        /// 请假描述信息
+        /// </summary>
+        public string AskLeaveDescription { get; set; }
+    }
+
+    /// <summary>
+    /// 考勤请假汇总项
+    /// </summary>
+    public class AttendAskLeaveSumerizeItem
+    {
+        public string WorkerId { get; private set; }
+
+        public string WorkerName { get; private set; }
+
+        public string Department { get; private set; }
+        /// <summary>
+        /// 直接/间接
+        /// </summary>
+        public string PostType { get; set; }
+        /// <summary>
+        /// 事假
+        /// </summary>
+        public double SJ { get; set; }
+        /// <summary>
+        /// 病假
+        /// </summary>
+        public double BJ { get; set; }
+        /// <summary>
+        /// 有薪事假
+        /// </summary>
+        public double YXSJ { get; set; }
+        /// <summary>
+        /// 有薪病假
+        /// </summary>
+        public double YXBJ { get; set; }
+        /// <summary>
+        /// 年休假
+        /// </summary>
+        public double NXJ { get; set; }
+
+        /// <summary>
+        /// 工伤假
+        /// </summary>
+        public double GSJ { get; set; }
+        /// <summary>
+        /// 婚假
+        /// </summary>
+        public double HJ { get; set; }
+        /// <summary>
+        /// 丧假
+        /// </summary>
+        public double ShangJ { get; set; }
+        /// <summary>
+        /// 产假
+        /// </summary>
+        public double CJ { get; set; }
+        /// <summary>
+        /// 陪产假
+        /// </summary>
+        public double PCJ { get; set; }
+        /// <summary>
+        /// 旷工
+        /// </summary>
+        public double KGJ { get; set; }
+
+        /// <summary>
+        /// 调休假
+        /// </summary>
+        public double TXJ { get; set; }
+
+        public AttendAskLeaveSumerizeItem()
+        { }
+
+        public AttendAskLeaveSumerizeItem(string workerId, string workerName, string department)
+        {
+            this.WorkerId = workerId;
+            this.WorkerName = workerName;
+            this.Department = department;
+        }
+        public static AttendAskLeaveSumerizeItem Create(string workerId, string workerName, string department)
+        {
+            return new AttendAskLeaveSumerizeItem(workerId, workerName, department);
+        }
     }
 
 }

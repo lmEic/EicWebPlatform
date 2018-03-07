@@ -35,9 +35,9 @@ namespace EicWorkPlatfrom.Controllers.Quality
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult AutoBuildingRmaId()
+        public JsonResult AutoBuildingRmaId(int buildYear)
         {
-            var data = RmaService.RmaManager.RmaReportBuilding.AutoBuildingRmaId();
+            var data = RmaService.RmaManager.RmaReportBuilding.AutoBuildingRmaId(buildYear);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         /// <summary>

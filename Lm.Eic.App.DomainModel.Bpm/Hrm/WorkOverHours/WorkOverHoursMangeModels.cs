@@ -55,6 +55,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
             set { _workOverHours = value; }
             get { return _workOverHours; }
         }
+        private double _workOverHoursNightCount = 0;
+        /// <summary>
+        /// 加班时数(晚班)
+        /// </summary>
+        public double WorkOverHoursNightCount
+        {
+            set { _workOverHoursNightCount = value; }
+            get { return _workOverHoursNightCount; }
+        }
         private double _workOverHoursCount = 0;
         /// <summary>
         /// 加班时数
@@ -136,6 +145,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours
         {
             set { _workNightTime = value; }
             get { return _workNightTime; }
+        }
+
+        private string _workDayTime1 = "NULL";
+        /// <summary>
+        /// 白班时间1
+        /// </summary>
+        public string WorkDayTime1
+        {
+            set { _workDayTime1 = value; }
+            get { return _workDayTime1; }
+        }
+        private string _workNightTime1 = "NULL";
+        /// <summary>
+        /// 晚班时间1
+        /// </summary>
+        public string WorkNightTime1
+        {
+            set { _workNightTime1 = value; }
+            get { return _workNightTime1; }
         }
         private string _parentDataNodeText;
         /// <summary>

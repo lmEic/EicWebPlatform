@@ -42,8 +42,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId))
             {
-                model.RmaYear = DateTime.Now.Year;
-                model.RmaMonth = DateTime.Now.Month;
                 model.RmaIdStatus = RmaHandleStatus.InitiateStatus;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
@@ -66,18 +64,42 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Entities.Where(e => e.RmaYear == nowYaer).Max(f => f.RmaId);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
         internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="formRmaYear"></param>
+        /// <param name="formRmaMonth"></param>
+        /// <param name="toRmaYear"></param>
+        /// <param name="toRmaMonth"></param>
+        /// <returns></returns>
         internal List<RmaReportInitiateModel> GetInitiateDatasBy(int formRmaYear, int formRmaMonth, int toRmaYear, int toRmaMonth)
         {
             return irep.GetInitiateDatasBy(formRmaYear, formRmaMonth, toRmaYear, toRmaMonth);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
         internal bool IsExist(string rmaId)
         {
             return irep.IsExist(e => e.RmaId == rmaId);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
         internal List<RmaReportInitiateModel> GetRmaReportInitiateDatas(int year, int month)
         {
             return irep.Entities.Where(e => e.RmaYear == year && e.RmaMonth == month).ToList();

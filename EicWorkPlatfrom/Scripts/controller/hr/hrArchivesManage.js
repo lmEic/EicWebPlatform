@@ -1012,7 +1012,7 @@ hrModule.controller('printCardCtrl', function ($scope, hrArchivesDataOpService) 
             leeHelper.remove(vmManager.dataSet, item);
         },
         getCardImgBg: function (item) {
-            var url = (item.PostNature === "直接") ? "../../Content/image/DirectCardTpl.jpg" : "../../Content/image/IndirectCardTpl.jpg";
+            var url = (item.PostNature === "间接") ? "../../Content/image/IndirectCardTpl.jpg" : "../../Content/image/DirectCardTpl.jpg";
             return url;
         }
     };

@@ -604,6 +604,11 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         confirmEdit: function () {
             vmManager.setAskLeaveTimeRegion($scope.vm, $scope.vm.Day, false);
             editDialog.close();
+        },
+        //导出到Excel
+        buildAskLeaveSumerizeReportFile: function () {
+            var url = "HrAttendanceManage/BuildAskLeaveSumerizeReportFile/?yearMonth=" + queryVM.yearMonth;
+            return url;
         }
     };
     $scope.vmManager = vmManager;
@@ -2235,6 +2240,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
 hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, connDataOpService) {
     var vmManager = $scope.vmManager = {
         activeYGTab: 'dataYGViewTab',
+        activeQueryFromTab: 'everyDayDataViewTab',
         analogDatas: null,
         reportDate: new Date(),
         getReportMealAnalogDatas: function () {

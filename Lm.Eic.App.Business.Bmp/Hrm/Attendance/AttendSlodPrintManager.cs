@@ -80,16 +80,35 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("WorkerName","姓名") ,
                   new FileFieldMapping ("Department","部门") ,
                   new FileFieldMapping ("ClassType","班别") ,
+                  new FileFieldMapping ("LeaveType","请假类别") ,
+                  new FileFieldMapping ("LeaveHours","请假时数") ,
+                  new FileFieldMapping ("LeaveTimeRegion","请假时段") ,
+                  new FileFieldMapping ("LeaveDescription","请假描述") ,
                   new FileFieldMapping ("AttendanceDate","刷卡日期") ,
                   new FileFieldMapping ("SlotCardTime1","第一次时间") ,
                   new FileFieldMapping ("SlotCardTime2","第一次时间") ,
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
             var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
-
             if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+            BindingAskLeaveDataToAttendance(datas, yearMonth);
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
             return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping).CreateDownLoadExcelFileModel("考勤数据-" + yearMonth);
+        }
+        private void BindingAskLeaveDataToAttendance(List<AttendanceDataModel> datas, string yearMonth)
+        {
+            var askLeaveDataSource = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatas(yearMonth);
+            datas.ForEach(d =>
+            {
+                AttendAskLeaveEntry item = AttendCrudFactory.AskLeaveCrud.GetAskLeaveDatasOfWorker(d.WorkerId, d.AttendanceDate, askLeaveDataSource);
+                if (item != null)
+                {
+                    d.LeaveHours = item.AskLeaveHours;
+                    d.LeaveTimeRegion = item.AskLeaveRegion;
+                    d.LeaveType = item.AskLeaveType;
+                    d.LeaveDescription = item.AskLeaveDescription;
+                }
+            });
         }
         public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
         {

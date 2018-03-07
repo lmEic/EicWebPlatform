@@ -404,7 +404,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Entities.Where(e => e.OrderId == orderid).ToList();
         }
 
-
+        internal bool isExsitOrderId(string orderid)
+        {
+            return irep.IsExist(e => e.OrderId == orderid);
+        }
         internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderid, string materialId,int takecount)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().OrderBy(f => f.MaterialInDate).Take(takecount).ToList();

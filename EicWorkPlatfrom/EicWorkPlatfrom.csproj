@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EicWorkPlatfrom</RootNamespace>
     <AssemblyName>EicWorkPlatfrom</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -331,7 +331,9 @@
     <Content Include="Content\image\DirectCardTpl.jpg" />
     <Content Include="Content\image\IndirectCardTpl.jpg" />
     <Content Include="Content\login\bg.jpg" />
+    <Content Include="Content\login\ezconn.jpg" />
     <Content Include="Content\login\input-spinner.gif" />
+    <Content Include="Content\login\lightmasterbk.jpg" />
     <Content Include="Content\login\lmlogo.png" />
     <Content Include="Content\login\login.css" />
     <Content Include="Content\login\profilepicture.jpg" />
@@ -642,6 +644,7 @@
     <Content Include="Content\ueditor\third-party\video-js\font\vjs.woff" />
     <Content Include="FileLibrary\WorkOverHours\加班汇总表.xls" />
     <Content Include="FileLibrary\WorkOverHours\加班数据模板直接.xls" />
+    <Content Include="FileLibrary\WorkOverHours\加班汇总表1.xls" />
     <Content Include="FileLibrary\WorkOverHours\加班数据模板间接.xls" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -1539,6 +1542,8 @@
     <Content Include="Views\QuaInspectionManage\InspectionFormManageOfIpqc.cshtml" />
     <Content Include="Views\ProEmployee\ProWorkOverHoursManage.cshtml" />
     <Content Include="Views\HrGeneralAffairsManage\GaMealReportQuery.cshtml" />
+    <Content Include="Views\CommonTpl\YearButtonTpl.cshtml" />
+    <Content Include="Views\QuaInspectionManage\IpqcInspectionItemConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
