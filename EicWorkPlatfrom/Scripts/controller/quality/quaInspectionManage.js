@@ -1820,7 +1820,6 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 })
-
 ///ipqc数据采集控制器
 qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
     $scope.opPersonInfo = { Department: '', ClassType: '' };

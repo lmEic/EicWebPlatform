@@ -1,137 +1,129 @@
-﻿
-<html>
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="bpm.developmentApp">
 <head>
-    <title>Js方向键切换输入框焦点</title>
-    <asp:ContentPlaceHolder id="head" runat="server">
-    </asp:ContentPlaceHolder>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width" />
+    <title>产品研发管理</title>
+    <style>
+        .bkcolor {
+            background-color: #87CEFA;
+        }
+    </style>
+    <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
+
+    <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
+
+    <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
+
+    @Styles.Render("~/css/anstrap")
 </head>
-<body> 
-    <asp:ContentPlaceHolder id="head" runat="server">
-        <table border="1" id="mm" onkeydown="keyDown(event)">
-            <tr>
-                <td> <input class="txt"> </td>
-                <td>  <input class="txt"></td>
-                <td> <input class="txt"> </td>
-                <td> <input class="txt"> </td>
-            </tr>
-            <tr>
-                <td> <input class="txt"> </td>
-                <td>  <input class="txt"></td>
-                <td> <input class="txt"> </td>
-                <td> <input class="txt"> </td>
-            </tr>
-            <tr>
-                <td> <input class="txt"> </td>
-                <td>  <input class="txt"></td>
-                <td> <input class="txt"> </td>
-                <td> <input class="txt"> </td>
-            </tr>
-            <tr>
-                <td> <input class="txt"> </td>
-                <td>  <input class="txt"></td>
-                <td> <input class="txt"> </td>
-                <td> <input class="txt"> </td>
-            </tr>
-            <tr>
-                <td> <input class="txt"> </td>
-                <td>  <input class="txt"></td>
-                <td> <input class="txt"> </td>
-                <td> <input class="txt"> </td>
-            </tr>
-        </table>
-        <script language="javascript" type="text/javascript">
-   // var inputs=document.getElementById("mm").getElementsByTagName("INPUT");
-    function keyDown(event) {
-        var inputs = $(".txt")
-        var focus = document.activeElement;                 //得到处于激活状态的控件
-        if (!document.getElementById("mm").contains(focus)) return;     //判断是否包含激活控件在指定的Table下
-        var event = window.event || event;                              //获取事件
-        var key = event.keyCode;                                        //得到按下的键盘Ascii码
-        var flag = -1;
+<body>
 
-        //得到激活控件在组合中的具体位置
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i] === focus) {
-                break;
-            }
-        }
-        switch (key) {
-            case 38:                //向上键
-                var j = i - 2;
-                var flag = false;
-
-                if (inputs.get(j).disabled == false) {              //判断接下来得到的焦点控件是否能够使用
-                    flag = true;
-                } else {
-                    for (j = i - 4; j >= 0; j = j - 2) {                    //之后控件不能获得焦点情况下寻找下一个控件
-                        if (inputs.get(j).disabled == false) {      //判断之后焦点是否可以获取焦点
-                            flag = true;
-                            break;
-                        }
-                    }
-                }
-                if (flag) {
-                    inputs[j].focus();
-                }
-                break;
-            case 40:                //向下键
-                var j = i + 2;
-                var flag = false;
-                if (inputs.get(j).disabled == false) {              //判断接下来得到的焦点控件是否能够使用
-                    flag = true;
-                } else {
-                    for (j = i + 4; j < inputs.length; j = j + 2) { //之后控件不能获得焦点情况下寻找下一个控件
-                        if (inputs.get(j).disabled == false) {      //判断之后焦点是否可以获取焦点
-                            flag = true;
-                            break;
-                        }
-                    }
-                }
-                if (flag) {
-                    inputs[j].focus();
-                }
-                break;
-            case 13:                //回车键
-                event.returnValue = false;                          //阻止自动提交
-                var j = i + 2;
-                var flag = false;
-                if (inputs.get(j).disabled == false) {
-                    flag = true;
-                } else {
-                    for (j = i + 4; j <= inputs.length - 1; j = j + 2) {
-                        if (inputs.get(j).disabled == false) {
-                            flag = true;
-                            break;
-                        }
-                    }
-                }
-                if (flag) {
-                    inputs[j].focus();
-                }
-                break;
-        }
+    @if (ViewBag.IsLoginMode)
+    {
+        <div yl-navigation-layout data-module-text="产品研发管理" data-module-name="DevelopmentManage"></div>
     }
-        </script>
-     </asp:ContentPlaceHolder>
-   
-    </body>
-</html>
+    else
+    { 
+        <div>
+            <header role="banner">
+                <nav role="navigation" class="navbar navbar-static-top navbar-inverse" ng-cloak>
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                                <span>
+                                    <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
+                                         src="@Url.Content("~/Content/login/lmlogo.png")"
+                                         style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 3px;" />
+                                    企业信息化平台(V1.0)
+                                </span>
+                            </a>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#">生产管理</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
 
-<td>性别:</td>
-<td>
-    <c:choose>
-        <c:when test="${'男' eq pd.SEX}">
-            <input type="radio" name="sex" value="男" checked="checked">男
-            <input type="radio" name="sex" value="女">女
-        </c:when>
-        <c:when test="${'女' eq pd.SEX}">
-            <input type="radio" name="sex" value="男">男
-            <input type="radio" name="sex" value="女" checked="checked">女
-        </c:when>
-        <c:otherwise>
-            <input type="radio" name="sex" value="男" checked="checked">男
-            <input type="radio" name="sex" value="女">女
-        </c:otherwise>
-    </c:choose>
-</td>     
+            <main class="container-fluid">
+                <div class="row" ng-cloak>
+                    <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
+                        <div class="bs-callout bs-callout-info">
+                            <h4>
+                                <span class="fa fa-list-ul">导航菜单</span>
+                                <span class="pull-right">
+                                    <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
+                                </span>
+                            </h4>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <ol class="rounded-list">
+                                    <li>
+                                        <a data-ui-sref-active="active" data-ui-sref="dReportUnproductionSet" style="cursor:pointer">非生产原因配置</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="dReportMachineSet" style="cursor:pointer">机台配置</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="dRRedoInput" style="cursor:pointer">重工登记</a>
+
+
+                                        <a data-ui-sref-active="active" data-ui-sref="proWorkOverHoursManage" style="cursor:pointer">加班管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="proAskLeaveManage" style="cursor:pointer">请假管理</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="dReportHoursSet" style="cursor:pointer">标准工时设定</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="dRProductOrderDispatching" style="cursor:pointer">生产工单分派管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="dReportInput" style="cursor:pointer">日报录入</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="checkOrderBills" style="cursor:pointer">工单订单对比</a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
+                        <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>
+                    </div>
+                    <div class="pull-right" style="width:{{navLayout.navMainSize}};">
+                        <div data-ui-view>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    }
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/angularJs")
+
+    @Scripts.Render("~/bundles/anstrap")
+
+    <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
+    <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/controller/developmnet/developmentApp.js")"></script>
+ 
+
+
+</body>
+</html>

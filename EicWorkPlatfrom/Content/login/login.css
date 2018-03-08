@@ -32,7 +32,7 @@
     border-radius: 5px 6px;
 }
 
-    /*.login-form:before {
+ .login-form:before {
         content: "";
         position: absolute;
         top: -50px;
@@ -44,7 +44,7 @@
         background: #fff url("profilepicture.jpg");
         background-size: cover;
         border-radius: 50px;
-    }*/
+    }
 
 .login-inputcontent {
     margin: 20px auto;
@@ -96,7 +96,7 @@
     position: relative;
 }
 
-    .error-messages.ng-active:after {
+.error-messages.ng-active:after {
         position: absolute;
         top: -10px;
         content: "";
