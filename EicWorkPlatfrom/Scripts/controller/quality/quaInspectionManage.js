@@ -306,8 +306,19 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             model: model
         })
     }
-    return quality;
+  
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         //Ipqc 创建检验数据采集模块   创建抽样表单项目
+         quality.createIpqcSampleFormItem = function (orderId, sampleCount) {
+        var url = quaInspectionManageUrl + 'CreateIpqcSampleFormItem';
+        return ajaxService.getData(url, {
+            orderId: orderId,
+            sampleCount: sampleCount,
+        });
+    };
+
+    return quality;
+
 })
 //检验方式转换配置
 qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
@@ -1824,9 +1835,9 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
 qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
     $scope.opPersonInfo = { Department: '', ClassType: '' };
     var vmManager = {
-        classTypes: [{ id: "白班", text: "白班" }, { id: "晚班", text: "晚班" }],
-        classType: "白班",
-        orderId: null,
+        classTypes: null,
+        classType: null,
+        orderId: '1231231321',
         orderInfo: null,
         //抽样批次数量
         sampleCount: 0,
@@ -1834,6 +1845,10 @@ qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspe
         currentInspectionItem: null,
         panelDataSource: [],
         panelDataSet: [],
+        //生成机台制令单抽样的样表
+        createIpqcOrderSampleDatas:function(){
+            console.log(989898989);
+        },
         //生成
         createTypeEInput: function () {
             vmManager.dataList = [];
@@ -1845,6 +1860,7 @@ qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspe
         cacheDatas: [],
         //生成抽样表单项
         createSampleFormItem: function () {
+            console.log(1212121);
             var noSampleCount = vmManager.orderInfo.MaterialInCount - vmManager.orderInfo.HaveInspectionSumCount;
             if (vmManager.sampleCount > noSampleCount) {
                 alert("抽样批次数量不能大于未抽样数!")
@@ -1854,7 +1870,7 @@ qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspe
                 alert("抽样批次数量不能小于等于0!")
                 return;
             };
-            qualityInspectionDataOpService.createFqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (inspectionItemDatas) {
+            qualityInspectionDataOpService.createIpqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (inspectionItemDatas) {
 
                 if (angular.isArray(inspectionItemDatas) && inspectionItemDatas.length > 0) {
                     var item = inspectionItemDatas[0];

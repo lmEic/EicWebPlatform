@@ -7,7 +7,7 @@ namespace EicWorkPlatfrom
     {
         static AuthenCheckManager()
         {
-           IsCheck = true;
+          // IsCheck = true;
         }
         private static bool isCheck = false;
         /// <summary>
@@ -50,7 +50,7 @@ namespace EicWorkPlatfrom
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Development", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "Quality", action = "Index", id = UrlParameter.Optional }
                          );
 
             }

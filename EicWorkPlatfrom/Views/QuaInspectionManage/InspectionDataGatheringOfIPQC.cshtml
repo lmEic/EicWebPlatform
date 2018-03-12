@@ -6,36 +6,22 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId" ng-keydown="vmManager.searchFqcOrderInfoKeyDown($event)">
+                    <span class="input-group-addon">日期</span>
+                    <input type="date" class="form-control" placeholder="检验日期"  >
+                  
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group">
+                    <span class="input-group-addon">部门</span>
+                    <input type="text" class="form-control" placeholder="部门" ng-model="vmManager.MachineId" ng-keydown="vmManager.searchFqcOrderInfoKeyDown($event)">
                     <span class="input-group-btn">
                         <button class="btn btn-info" type="button" ng-click="vmManager.getFqcOrderInfo()"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="input-group">
-                    <input type="number" class="form-control" placeholder="输入抽样批次数量" ng-model="vmManager.sampleCount">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button" ng-click="vmManager.createSampleFormItem()">生成抽样表单</button>
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-1 alert alert-danger" ng-show="vmManager.orderInfo.IsHaveItemConfig==false">
-                <i class="fa fa-ambulance">没有配置</i>
-            </div>
-            <div class="col-md-2 col-md-offset-2">
-                <div class="input-group">
-                    <input type="submit" class="form-control" value="总数量">
-                    <div class="input-group-addon">
-                        <label class="label label-primary">{{vmManager.orderInfo.MaterialInCount}}</label>
-                    </div>
-                    <div class="input-group-addon">
-                        已检数量：<label class="label label-success">{{vmManager.orderInfo.HaveInspectionSumCount}}</label>
-                    </div>
-                    <div class="input-group-addon">
-                        未检数量：<label class="label label-danger">{{vmManager.orderInfo.MaterialInCount-vmManager.orderInfo.HaveInspectionSumCount}}</label>
-                    </div>
-                </div>
+            <div class="col-md-2">
+                <button class="btn-group-sm btn btn-success" type="button" ng-click="vmManager.createIpqcOrderSampleDatas">生成IPQC样表<span class="glyphicon glyphicon-align-justify"></span></button>
             </div>
         </div>
         <div class="h-split"></div>
@@ -64,39 +50,14 @@
             </div>
             <div class="col-md-3">
                 <p>
-                    <label>供应商:</label>
+                    <label>图号:</label>
                     {{vmManager.orderInfo.MaterialSupplier}}
                 </p>
             </div>
         </div>
         <div class="h-split"></div>
-        <div class="row">
-            <div class="col-md-2">
-                <label>部门:</label>
-                {{vmManager.currentInspectionItem.ProductDepartment}}
-            </div>
-            <div class="col-md-2">
-                <label>班别:</label>
-                <button type="button" class="btn btn-default" ng-model="vmManager.currentInspectionItem.ClassType"
-                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="班别"
-                        data-bs-options="item.id as item.text for item in vmManager.classTypes" data-bs-select></button>
-            </div>
-            <div class="col-md-3">
-                <span>
-                    <label>机台号:</label>
-                    <input type="text" placeholder="请输入机台编号" ng-model="vmManager.currentInspectionItem.MachineId" />
-                </span>
-            </div>
-
-            <div class="col-md-2">
-                <p>
-                    <label>图号:</label>
-                    {{vmManager.orderInfo.MaterialDrawId}}
-                </p>
-            </div>
-        </div>
-        <div class="h-split"></div>
         <div class="row clearfix">
+            @*工单抽检批次列表*@
             <div class="col-md-3">
                 <div class="bs-callout bs-callout-info">
                     <p>
@@ -152,7 +113,7 @@
                     </div>
                 </div>
             </div>
-
+            @*生成的测试项目*@
             <div class="col-md-9">
                 <div class="bs-callout bs-callout-info" style="min-height:500px;">
                     <div class="well">

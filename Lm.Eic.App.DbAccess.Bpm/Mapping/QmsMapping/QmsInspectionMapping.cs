@@ -122,4 +122,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
 
     }
     #endregion
+
+
+    #region
+    public class IpqcInspectionDetailMapping : EntityTypeConfiguration<InspectionIpqcDetailModel>
+    {
+        public IpqcInspectionDetailMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_IpqcInspectionDetail");
+        }
+
+    }
+    #endregion
 }
