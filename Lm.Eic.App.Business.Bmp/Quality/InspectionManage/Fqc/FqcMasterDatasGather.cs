@@ -35,6 +35,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
+        public List<string> GetFqcInspectionMasterOrderIdList(DateTime opdate)
+        {
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterOrderIdList(opdate);
+        }
         /// <summary>
         /// 存储主表信息
         /// </summary>
@@ -58,7 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             else masterModel.InspectionItems = haveStoreMasterModel.InspectionItems;
 
-            var detailDatas = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailDatasBy(masterModel.OrderId, masterModel.OrderIdNumber);
+            var detailDatas = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(masterModel.OrderId, masterModel.OrderIdNumber);
             if (detailDatas != null && detailDatas.Count > 0)
             {
                 if (detailDatas.Count() == haveFinishData.Count)

@@ -117,15 +117,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 new FileFieldMapping ("MaterialId","料号") ,
                 new FileFieldMapping ("MaterialName","品名") ,
                 new FileFieldMapping ("MaterialSpec","规格") ,
-                new FileFieldMapping ("MaterialSupplier","供应商") ,
-                new FileFieldMapping ("MaterialInDate","进货日期") ,
-                new FileFieldMapping ("MaterialInCount","进货数量") ,
+                new FileFieldMapping ("ProductDepartment","供应商") ,
+                new FileFieldMapping ("FinishDate","送检日期") ,
+                new FileFieldMapping ("InspectionItemCount","送检数") ,
                 new FileFieldMapping ("MaterialDrawId","图号") ,
-                new FileFieldMapping ("InspectionCount","抽样数量") ,
+                new FileFieldMapping ("InspectionCount","抽样数") ,
                 new FileFieldMapping ("InspectionStatus","状态"),
                 new FileFieldMapping ("InspectionResult","检测结果") ,
-                new FileFieldMapping ("OpDate","完成时间") ,
-                new FileFieldMapping ("OpPerson","抽检人"),
+                 new FileFieldMapping ("OpPerson","抽检人"),
+                new FileFieldMapping ("OpPerson","审核人"),
+                 new FileFieldMapping ("MaterialInCount","工单数"),
+                
             };
             return fieldmappping;
         }

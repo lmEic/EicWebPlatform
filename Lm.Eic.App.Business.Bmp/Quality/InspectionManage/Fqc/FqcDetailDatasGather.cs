@@ -30,6 +30,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
         }
+        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId)
+        {
+            return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailDatasBy(orderId);
+        }
+
+        public OpResult addInspectionDetial(InspectionFqcDetailModel model)
+        {
+          
+            return InspectionManagerCrudFactory.FqcDetailCrud.AddDetailModel(model);
+        }
+
+       
     }
 
 }
