@@ -76,7 +76,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             if (haveStoreMasterModel.InspectionItemInspectors != null && haveStoreMasterModel.InspectionItemInspectors != string.Empty)
             {
-                havenIspectionItemInspectors = this.GetHaveFinishDatas(masterModel.InspectionItemInspectors); 
+                havenIspectionItemInspectors = this.GetHaveFinishDatas(haveStoreMasterModel.InspectionItemInspectors); 
                if (!havenIspectionItemInspectors.Contains(masterModel.InspectionItemInspectors) && haveStoreMasterModel.InspectionItemInspectors != string.Empty)
                {
                 ///检验员
@@ -87,12 +87,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
             if (haveStoreMasterModel.InspectionItemDetails != null && haveStoreMasterModel.InspectionItemDetails != string.Empty)
-            { hanveInspectionItemDetails = this.GetHaveFinishDatas(masterModel.InspectionItemDetails); }
+            { hanveInspectionItemDetails = this.GetHaveItemDetialDatas(haveStoreMasterModel.InspectionItemDetails); }
             if (!hanveInspectionItemDetails.Contains(masterModel.InspectionItemDetails) && haveStoreMasterModel.InspectionItemDetails != string.Empty)
             {
 
                 ///具体详细数量
-                masterModel.InspectionItemDetails = haveStoreMasterModel.InspectionItemDetails + "," + masterModel.InspectionItemDetails;
+                masterModel.InspectionItemDetails = haveStoreMasterModel.InspectionItemDetails + "&" + masterModel.InspectionItemDetails;
                 hanveInspectionItemDetails.Add(masterModel.InspectionItemDetails);
             }
             else masterModel.InspectionItemDetails = haveStoreMasterModel.InspectionItemDetails;
