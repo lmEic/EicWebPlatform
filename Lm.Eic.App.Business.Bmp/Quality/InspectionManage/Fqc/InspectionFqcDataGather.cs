@@ -177,6 +177,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnOpResult;
         }
 
+        /// <summary>
+        /// 存储收集数据 （二次调用，一次是新建存，一次是编辑）
+        /// </summary>
+        /// <param name="sumModel"></param>
+        /// <returns></returns>
+        public OpResult AddStoreFqcDataGather(InspectionItemDataSummaryVM sumModel)
+        {
+            var returnOpResult = new OpResult("采集数据模型不能为NULL", false);
+            InspectionFqcMasterModel masterModel = null;
+            InspectionFqcDetailModel detailModel = null;
+            ///先排除总表不能为空
+            GetMasterAndDetailModelFrom(sumModel, out masterModel, out detailModel);
+            if (detailModel == null || masterModel == null) return new OpResult("表单数据为空，保存失败", false);
+            /// 先保存副表  再更新主表信息
+            returnOpResult = DetailDatasGather.storeInspectionDetial(detailModel);
+           return returnOpResult;
+        }
+
         public OpResult DeletFqcDetailDatasAndMasterDatasBy(string orderId, int orderIdNumber)
         {
             OpResult opResult = InspectionManagerCrudFactory.FqcMasterCrud.DeleteFqcInspectionMasterBy(orderId, orderIdNumber);
@@ -578,7 +596,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                                     returnDatas.ForEach(m => {
                                         m.ClassType = "白班";
                                         m.InspectionItemStatus = e.InspectionStatus == "已审核" ? "Done" : "Doing";
-                                        StoreFqcDataGather(m);
+                                        AddStoreFqcDataGather(m);
                                     });
 
                                 }
@@ -587,8 +605,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         };
                     });
                 }
-              
-               
             }
             catch (Exception ex)
             {

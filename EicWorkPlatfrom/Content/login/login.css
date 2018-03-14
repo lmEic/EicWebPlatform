@@ -1,5 +1,5 @@
 ﻿body {
-    background: url(lightmaster.png) no-repeat 15% 50%;
+    background: url(ezconn.jpg);
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -8,8 +8,9 @@
 }
 
 .navigationBg {  
-    min-width: 100%;
-    min-height: 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
     margin: 100px 5px;
     padding: 2px;
 }
@@ -17,7 +18,7 @@
 .loginBg {
     background: url(bg.jpg);
     margin: auto;
-    padding: 1px;
+    padding: 2px;
 }
 
 .login-form {
@@ -32,7 +33,7 @@
     border-radius: 5px 6px;
 }
 
-    /*.login-form:before {
+  /*.login-form:before {
         content: "";
         position: absolute;
         top: -50px;
