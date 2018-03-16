@@ -215,11 +215,20 @@ namespace EicWorkPlatfrom.Controllers.Product
                 //        temModel.PostNature = item.PostNature;
                 //        temModel.Remark = item.Remark;
                 //        temModel.WorkStatus = item.WorkStatus;
-                       
+
                 //        datasList.Add(temModel);
-                                     
+
                 //    }
-                //}                
+                //}  
+                else
+                {
+                    foreach (var item in datas)
+                    {
+                        postNature = item.PostNature;
+
+                        break;
+                    }
+                }
                 if (postNature=="间接")
                 {
                     string filePath = SiteRootPath + @"FileLibrary\WorkOverHours\加班数据模板间接.xls";
