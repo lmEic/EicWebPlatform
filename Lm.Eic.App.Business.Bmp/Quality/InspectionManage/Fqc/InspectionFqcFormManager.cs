@@ -97,13 +97,86 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             try
             {
                 if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
-                var dataGroupping = datas.GetGroupList<InspectionFqcMasterModel>();
+                List<InspectionFqcMasterModel> needDatas = new List<InspectionFqcMasterModel>();
+                datas.ForEach(e =>
+                {
+                    e.InspectionItemInspectors = HandelInspectionItemInspectors(e.InspectionItemInspectors);
+                    e.InspectionItemDetails= HandelInspectionItemDetails(e.InspectionItemDetails);
+                    e.OpPerson = e.InspectionStatus != "已审核" ? string.Empty : e.OpPerson;
+                    needDatas.Add(e);
+                });
+                var dataGroupping = needDatas.GetGroupList<InspectionFqcMasterModel>();
                 return dataGroupping.ExportToExcelMultiSheets<InspectionFqcMasterModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("FQC检验数据");
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+        /// <summary>
+        /// 分析处理详细表 返不良项目和数据
+        /// </summary>
+        /// <param name="inspectionItemDetails"></param>
+        /// <returns></returns>
+        private string HandelInspectionItemDetails(string inspectionItemDetails)
+        {
+            List<string> inspectionItemDetailsList = new List<string>();
+            InspectionItemDataSummaryVM sumModel = null;
+            string returnstring = string.Empty;
+            if (inspectionItemDetails !=null&& inspectionItemDetails != string.Empty)
+            {
+                if (inspectionItemDetails.Contains("&"))
+                {
+                    inspectionItemDetailsList = inspectionItemDetails.Split('&').ToList();
+                    if (inspectionItemDetailsList.Count > 1)
+                        inspectionItemDetailsList.ForEach(m =>
+                        {
+                            sumModel = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m);
+                            if (sumModel != null)
+                            { returnstring += sumModel.InspectionItem + ":NG " + "Datas:" + sumModel.InspectionItemDatas; }
+                        });
+                }
+                else
+                {
+                    sumModel = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(inspectionItemDetails);
+                    if (sumModel != null)
+                    { returnstring = sumModel.InspectionItem + ":NG " + "Datas:" + sumModel.InspectionItemDatas; }
+                }
+            }
+            return returnstring;
+        }
+
+        /// <summary>
+        /// 分析处理检验人员信息
+        /// </summary>
+        /// <param name="inspectionItemInspectors"></param>
+        /// <returns></returns>
+        private string HandelInspectionItemInspectors(string inspectionItemInspectors)
+        {
+            string inspectorsUsers = string.Empty;
+            List<string> inspectorsSplit = new List<string>();
+            List<string> inspectorNameSplit = null;
+            if (inspectionItemInspectors.Contains(","))
+            {
+                inspectorsSplit = inspectionItemInspectors.Split(',').ToList();
+                if (inspectorsSplit.Count > 0)
+                {
+                    inspectorsSplit.ForEach(s =>
+                    {
+                        inspectorNameSplit = s.Contains(":") ? s.Split(':').ToList():new List<string>();
+                        if (inspectorNameSplit.Count == 2)
+                        {
+                            if (!inspectorsUsers.Contains(inspectorNameSplit[1]))
+                            {
+                                inspectorsUsers = (inspectorNameSplit[1] != "StartSetValue") ? ((inspectorsUsers == String.Empty) ? inspectorNameSplit[1] : (inspectorsUsers + "," + inspectorNameSplit[1])) : string.Empty;
+                            }
+                        }
+                    });
+                }
+
+            }
+            else return inspectionItemInspectors;
+            return inspectorsUsers;
         }
 
         private List<FileFieldMapping> CreateFieldMapping()
@@ -117,17 +190,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 new FileFieldMapping ("MaterialId","料号") ,
                 new FileFieldMapping ("MaterialName","品名") ,
                 new FileFieldMapping ("MaterialSpec","规格") ,
+                new FileFieldMapping ("MaterialDrawId","图号") ,
                 new FileFieldMapping ("ProductDepartment","供应商") ,
                 new FileFieldMapping ("FinishDate","送检日期") ,
-                new FileFieldMapping ("InspectionItemCount","送检数") ,
-                new FileFieldMapping ("MaterialDrawId","图号") ,
-                new FileFieldMapping ("InspectionCount","抽样数") ,
+                new FileFieldMapping ("InspectionCount","送检数") ,
+                new FileFieldMapping ("InspectionMaxNumber","抽样数") ,
+                new FileFieldMapping ("InspectionNgNumber","不良数") ,
                 new FileFieldMapping ("InspectionStatus","状态"),
                 new FileFieldMapping ("InspectionResult","检测结果") ,
-                 new FileFieldMapping ("OpPerson","抽检人"),
+                 new FileFieldMapping ("InspectionItemInspectors","抽检人"),
                 new FileFieldMapping ("OpPerson","审核人"),
-                 new FileFieldMapping ("MaterialInCount","工单数"),
-                
+                new FileFieldMapping ("MaterialInCount","工单数"),
+                new FileFieldMapping ("InspectionItemDetails","不良现象"),
+
             };
             return fieldmappping;
         }

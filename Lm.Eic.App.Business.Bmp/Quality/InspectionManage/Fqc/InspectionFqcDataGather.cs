@@ -433,7 +433,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
                 masterModel.InspectionMaxNumber = sumModel.InspectionCount;
                 masterModel.InspectionNgNumber = sumModel.InspectionNGCount;
-                masterModel.InspectionItemDetails = sumModel.InspectionItem + ":"+ ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel);
+               //记录NG值
+                masterModel.InspectionItemDetails = sumModel.InspectionItemResult == "NG"?ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel):string.Empty;
                 masterModel.InspectionItemInspectors = sumModel.InspectionItem +":"+ sumModel.OpPerson;
 
                 masterModel.InspectionItems = sumModel.InspectionItem;

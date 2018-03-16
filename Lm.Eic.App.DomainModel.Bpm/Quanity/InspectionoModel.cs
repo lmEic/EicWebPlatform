@@ -1645,6 +1645,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionNgNumber = value; }
             get { return _inspectionNgNumber; }
         }
+        
         private string _inspectionItemInspectors;
         /// <summary>
         ///检验的检查员

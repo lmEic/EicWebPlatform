@@ -59,12 +59,21 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// <returns>对象实体</returns>
         public static T ParseFormJson<T>(string szJson)
         {
-            T obj = Activator.CreateInstance<T>();
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(szJson)))
-            {
-                DataContractJsonSerializer dcj = new DataContractJsonSerializer(typeof(T));
-                return (T)dcj.ReadObject(ms);
-            }
+                T obj = Activator.CreateInstance<T>();
+                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(szJson)))
+                {
+                    try
+                    {
+                    DataContractJsonSerializer dcj = new DataContractJsonSerializer(typeof(T));
+                        return (T)dcj.ReadObject(ms);
+                    }
+                    catch (Exception ex)
+                    {
+                       return default(T);
+                      throw new Exception(ex.Message);
+                    }
+
+                }
         }
     }
 }
