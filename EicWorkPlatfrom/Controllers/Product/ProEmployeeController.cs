@@ -215,9 +215,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 //        temModel.PostNature = item.PostNature;
                 //        temModel.Remark = item.Remark;
                 //        temModel.WorkStatus = item.WorkStatus;
-
                 //        datasList.Add(temModel);
-
                 //    }
                 //}  
                 else
