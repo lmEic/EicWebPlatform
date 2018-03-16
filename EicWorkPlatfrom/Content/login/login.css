@@ -5,19 +5,22 @@
     overflow: hidden;
     margin: 0;
     padding: 0;
+
 }
 
 .navigationBg {  
-    min-width: 100%;
-    min-height: 100%;
+     
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
     margin: 100px 5px;
-    padding: 2px;
+    padding:2px;
 }
 
 .loginBg {
     background: url(bg.jpg);
     margin: auto;
-    padding: 1px;
+    padding: 2px;
 }
 
 .login-form {
@@ -32,7 +35,7 @@
     border-radius: 5px 6px;
 }
 
-    /*.login-form:before {
+  /*.login-form:before {
         content: "";
         position: absolute;
         top: -50px;

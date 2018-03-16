@@ -35,6 +35,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
+        public List<string> GetFqcInspectionMasterOrderIdList(DateTime opdate)
+        {
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterOrderIdList(opdate);
+        }
         /// <summary>
         /// 存储主表信息
         /// </summary>
@@ -43,22 +48,60 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult storeInspectionMasterial(InspectionFqcMasterModel masterModel)
         {
             var haveStoreMasterModel = InspectionManagerCrudFactory.FqcMasterCrud.GetStroeOldModel(masterModel.OrderId, masterModel.OrderIdNumber, masterModel.MaterialId);
-            if (haveStoreMasterModel == null) return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel, true);
+            ///初始化保存数据
+            if (haveStoreMasterModel == null)
+            {
+                ///没有必要保存初化保存的信息
+                masterModel.InspectionItemInspectors= masterModel.InspectionItemInspectors.Contains("StartSetValue") ?string.Empty: masterModel.InspectionItemInspectors;
+                return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel, true);
+            }
             ///初始化数据
             List<string> haveFinishData = new List<string>();
+            List<string> havenIspectionItemInspectors = new List<string>();
+            List<string> hanveInspectionItemDetails = new List<string>();
             if (masterModel.OpPerson == "StartSetValue") return OpResult.SetSuccessResult("初始已经保存", true);
             string inspecitonItem = masterModel.InspectionItems != null ? masterModel.InspectionItems.Trim() : string.Empty;
-
             if (haveStoreMasterModel.InspectionItems != null && haveStoreMasterModel.InspectionItems != string.Empty)
-            { haveFinishData = this.GetHaveFinishDatas(haveStoreMasterModel.InspectionItems); }
+            { haveFinishData = this.GetHaveFinishDatas(haveStoreMasterModel.InspectionItems); 
             if (!haveFinishData.Contains(inspecitonItem) && inspecitonItem != string.Empty)
-            {
-                masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
-                haveFinishData.Add(inspecitonItem);
-            }
+              {
+                  masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
+                  haveFinishData.Add(inspecitonItem);
+               }
             else masterModel.InspectionItems = haveStoreMasterModel.InspectionItems;
+            }
+            /// 最大数量
+            if (masterModel.InspectionMaxNumber < haveStoreMasterModel.InspectionMaxNumber)
+            {
+                masterModel.InspectionMaxNumber = haveStoreMasterModel.InspectionMaxNumber;
+                /// Ng数量
+                masterModel.InspectionNgNumber = haveStoreMasterModel.InspectionNgNumber + masterModel.InspectionNgNumber;
+            }
+            if (haveStoreMasterModel.InspectionItemInspectors != null && haveStoreMasterModel.InspectionItemInspectors != string.Empty)
+            {
+                havenIspectionItemInspectors = this.GetHaveFinishDatas(haveStoreMasterModel.InspectionItemInspectors);
+                if (!havenIspectionItemInspectors.Contains(masterModel.InspectionItemInspectors) && masterModel.InspectionItemInspectors != string.Empty)
+               {
+                ///检验员
+                    masterModel.InspectionItemInspectors = haveStoreMasterModel.InspectionItemInspectors + "," + masterModel.InspectionItemInspectors;
+                    havenIspectionItemInspectors.Add(masterModel.InspectionItemInspectors);
+               }
+                else masterModel.InspectionItemInspectors = haveStoreMasterModel.InspectionItemInspectors;
+            }
+            // 没有必要对每项的详细数据进行收集
+            if (haveStoreMasterModel.InspectionItemDetails != null && haveStoreMasterModel.InspectionItemDetails != string.Empty)
+            { hanveInspectionItemDetails = this.GetHaveItemDetialDatas(haveStoreMasterModel.InspectionItemDetails);
+              if (!hanveInspectionItemDetails.Contains(masterModel.InspectionItemDetails) && masterModel.InspectionItemDetails != string.Empty)
+               {
+                ///具体详细数量
+                masterModel.InspectionItemDetails = haveStoreMasterModel.InspectionItemDetails + "&" + masterModel.InspectionItemDetails;
+                hanveInspectionItemDetails.Add(masterModel.InspectionItemDetails);
+               }
+                else masterModel.InspectionItemDetails = haveStoreMasterModel.InspectionItemDetails;
+            }
+           
 
-            var detailDatas = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailDatasBy(masterModel.OrderId, masterModel.OrderIdNumber);
+            var detailDatas = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(masterModel.OrderId, masterModel.OrderIdNumber);
             if (detailDatas != null && detailDatas.Count > 0)
             {
                 if (detailDatas.Count() == haveFinishData.Count)

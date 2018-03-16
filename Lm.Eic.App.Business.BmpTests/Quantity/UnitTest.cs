@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.App.Business.Bmp.Quality.RmaManage;
 using System;
-
-
+using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 
 namespace Lm.Eic.App.Business.BmpTests.Quantity
 {
@@ -12,7 +11,12 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
         [TestMethod]
         public void QsTestMethod()
         {
-            //var n = QuantityService.IQCSampleItemsRecordManager.GetSamplePrintItemBy("32AAP00001200RM");
+            for (int i=1;i<=31;i++)
+            {
+                string days = i.ToString("00");
+                InspectionService.DataGatherManager.FqcDataGather.AddonlyDataDatialDatas("2018-01-"+ days);
+            }
+             
             //  /// 测工单从ERP中得到物料信息
 
 
