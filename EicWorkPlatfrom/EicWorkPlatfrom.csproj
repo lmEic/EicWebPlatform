@@ -331,7 +331,7 @@
     <Content Include="Content\image\DirectCardTpl.jpg" />
     <Content Include="Content\image\IndirectCardTpl.jpg" />
     <Content Include="Content\login\bg.jpg" />
-    <Content Include="Content\login\ezconn.jpg" />
+    <Content Include="Content\login\ezconn.png" />
     <Content Include="Content\login\input-spinner.gif" />
     <Content Include="Content\login\lightmasterbk.jpg" />
     <Content Include="Content\login\lmlogo.png" />
