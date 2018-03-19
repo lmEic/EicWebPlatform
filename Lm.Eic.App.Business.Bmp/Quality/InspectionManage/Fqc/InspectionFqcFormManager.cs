@@ -155,7 +155,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             string inspectorsUsers = string.Empty;
             List<string> inspectorsSplit = new List<string>();
+
             List<string> inspectorNameSplit = null;
+            if (inspectionItemInspectors == null || inspectionItemInspectors == string.Empty) return inspectorsUsers;
             if (inspectionItemInspectors.Contains(","))
             {
                 inspectorsSplit = inspectionItemInspectors.Split(',').ToList();

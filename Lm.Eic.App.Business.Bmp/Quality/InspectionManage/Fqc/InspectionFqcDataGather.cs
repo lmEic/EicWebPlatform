@@ -343,7 +343,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     ///初始化 综合模块
                     model = new InspectionItemDataSummaryVM();
-                    if (m.InspectionRuleDatas != null)
+                    if (m.InspectionRuleDatas != null&&m.InspectionRuleDatas != string.Empty)
                     {
                         model = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m.InspectionRuleDatas);
                         model.InspectionItemStatus = m.InspectionItemStatus;
