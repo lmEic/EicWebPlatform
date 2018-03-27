@@ -1,7 +1,4 @@
-﻿/// <reference path="../../common/angulee.js" />
-/// <reference path="../../angular.min.js" />
-
-angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
+﻿angular.module('bpm.developmentApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -50,9 +47,9 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     //------------------IPQC检验项目管理-----------------------------
 
     .state('ipqcInspectionItemConfiguration', {
-             //IPQC检验项目配置
-             templateUrl: inspectionUrlPrefix + 'IpqcInspectionItemConfiguration'
-         })
+        //IPQC检验项目配置
+        templateUrl: inspectionUrlPrefix + 'IpqcInspectionItemConfiguration'
+    })
     .state('inspectionDataGatheringOfIPQC', {
         //ipqc检验项目数据采集
         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIPQC'
@@ -91,9 +88,3 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 
     return dataAccess;
 })
-
-
-
-
-
-

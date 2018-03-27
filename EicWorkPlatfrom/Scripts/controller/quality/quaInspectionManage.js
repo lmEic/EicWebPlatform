@@ -1787,6 +1787,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
                 angular.forEach(datas, function (item) {
                     vmManager.createGataherDataUi(item.InspectionDataGatherType, item);
                 })
+                console.log(vmManager.detailDatas);
             })
         },
         //根据采集方式创建数据采集窗口
@@ -2126,4 +2127,9 @@ qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspe
             });
         }
     })();
+})
+/// ipqc配置
+qualityModule.controller("ipqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
+    $scope.opPersonInfo = { Department: '', ClassType: '' };
+   
 })

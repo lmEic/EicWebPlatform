@@ -258,6 +258,13 @@ namespace EicWorkPlatfrom.Controllers
 
         #endregion
 
+        #region IPQC
+        public ActionResult IpqcInspectionItemConfiguration()
+        {
+            return View();
+        }
+
+        #endregion
 
         #endregion
 
