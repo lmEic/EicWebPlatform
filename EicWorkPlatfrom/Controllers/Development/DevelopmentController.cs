@@ -2,7 +2,7 @@
 
 namespace EicWorkPlatfrom.Controllers
 {
-    public class DevelopmentController : Controller
+    public class DevelopmentController : EicBaseController
     {
         //
         // GET: /Development/

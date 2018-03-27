@@ -258,6 +258,13 @@ namespace EicWorkPlatfrom.Controllers
 
         #endregion
 
+        #region IPQC
+        public ActionResult IpqcInspectionItemConfiguration()
+        {
+            return View();
+        }
+
+        #endregion
 
         #endregion
 
@@ -497,6 +504,19 @@ namespace EicWorkPlatfrom.Controllers
         public ActionResult InspectionDataGatheringOfIPQC()
         {
             return View();
+        }
+        /// <summary>
+        /// 创建抽检表单项
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="sampleCount"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult CreateIpqcSampleFormItem(string orderId, int sampleCount)
+        {
+            var datas = InspectionService.DataGatherManager.FqcDataGather.BuildingFqcInspectionSummaryDatasBy(orderId, sampleCount);
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
         #endregion

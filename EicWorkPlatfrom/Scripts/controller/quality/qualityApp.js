@@ -48,6 +48,11 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfFqc'
     })
     //------------------IPQC检验项目管理-----------------------------
+
+    .state('ipqcInspectionItemConfiguration', {
+             //IPQC检验项目配置
+             templateUrl: inspectionUrlPrefix + 'IpqcInspectionItemConfiguration'
+         })
     .state('inspectionDataGatheringOfIPQC', {
         //ipqc检验项目数据采集
         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIPQC'
