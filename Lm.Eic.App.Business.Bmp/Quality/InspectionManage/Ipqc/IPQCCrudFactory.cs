@@ -19,13 +19,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage.Ipqc
         {
             this.AddOpItem(OpMode.Add, Add);
         }
-
-
-
         private OpResult Add(InspectionIpqcDetailModel model)
-        {
-           
-            return null;
+        {  return null;
         }
     
         #endregion
