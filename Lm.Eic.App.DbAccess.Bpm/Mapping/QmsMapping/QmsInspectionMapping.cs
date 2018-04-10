@@ -124,7 +124,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     #endregion
 
 
-    #region
+    #region Ipqc
     public class IpqcInspectionDetailMapping : EntityTypeConfiguration<InspectionIpqcDetailModel>
     {
         public IpqcInspectionDetailMapping()
@@ -132,6 +132,26 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Qms_IpqcInspectionDetail");
+        }
+
+    }
+    public class IpqcConfigMapping : EntityTypeConfiguration<InspectionIpqcConfigModel>
+    {
+        public IpqcConfigMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_IpqcInspectionItemConfig");
+        }
+
+    }
+    public class IpqcInspectionReportMapping : EntityTypeConfiguration<InspectionIpqcReportModel>
+    {
+        public IpqcInspectionReportMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_IpqcInspectionReportInfo");
         }
 
     }

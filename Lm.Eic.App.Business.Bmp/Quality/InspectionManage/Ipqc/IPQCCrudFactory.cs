@@ -26,4 +26,40 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage.Ipqc
         #endregion
 
     }
+
+    internal class IpqcConfigCrud : CrudBase<InspectionIpqcConfigModel, IpqcConfigRepository>
+    {
+        public IpqcConfigCrud() : base(new IpqcConfigRepository(), "IPQC配置表单")
+        { }
+        #region Crud
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, Add);
+        }
+        private OpResult Add(InspectionIpqcConfigModel model)
+        {
+            return null;
+        }
+
+        #endregion
+
+    }
+
+    internal class IpqcInspectionReportCrud : CrudBase<InspectionIpqcReportModel, IpqcInspectionReportlRepository>
+    {
+        public IpqcInspectionReportCrud() : base(new IpqcInspectionReportlRepository(), "IPQC日报表信息")
+        { }
+        #region Crud
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, Add);
+        }
+        private OpResult Add(InspectionIpqcReportModel model)
+        {
+            return null;
+        }
+
+        #endregion
+
+    }
 }
