@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage.Ipqc
+namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     internal class InspectionIpqcDatailCrud : CrudBase<InspectionIpqcDetailModel, IpqcInspectionDatailRepository>
     {

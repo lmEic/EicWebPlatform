@@ -83,6 +83,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         #endregion
+
+
+        #region Ipqc CRUD
+
+
+
+        #endregion
     }
     /// <summary>
     /// 检验方式配置CRUD

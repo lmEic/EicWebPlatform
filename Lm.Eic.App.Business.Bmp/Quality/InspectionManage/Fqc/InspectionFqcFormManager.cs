@@ -89,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         /// <summary>
-        /// 生成合格供应商清单
+        /// 下载文档数据
         /// </summary>
         /// <returns></returns>
         public DownLoadFileModel BuildDownLoadFileModel(List<InspectionFqcMasterModel> datas)
