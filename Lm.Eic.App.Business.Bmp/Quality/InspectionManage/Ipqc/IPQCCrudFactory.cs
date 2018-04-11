@@ -58,6 +58,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return null;
         }
+        internal List<InspectionIpqcReportModel> GetReportDatas(DateTime date,string department)
+        {
+            DateTime inspectionDate = date.ToDate();
+            return irep.Entities.Where(e => e.InspectionDate == inspectionDate && e.Department == department).ToList();
+        }
 
         #endregion
 

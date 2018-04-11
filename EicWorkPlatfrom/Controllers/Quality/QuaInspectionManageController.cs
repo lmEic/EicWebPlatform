@@ -518,6 +518,20 @@ namespace EicWorkPlatfrom.Controllers
 
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 获取FQC工单物料信息
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIpqcReportDatas(DateTime queteDate,string  department)
+        {
+
+
+            var datas = InspectionService.DataGatherManager.IpqcDataGather.getReportInfoDatas(queteDate, department);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
         #endregion
 

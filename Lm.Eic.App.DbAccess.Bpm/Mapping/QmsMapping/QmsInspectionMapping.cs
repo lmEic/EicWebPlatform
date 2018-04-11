@@ -151,7 +151,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Qms_IpqcInspectionReportInfo");
+            this.ToTable("Qms_IpqcDailyReportOrderInfo");
         }
 
     }
