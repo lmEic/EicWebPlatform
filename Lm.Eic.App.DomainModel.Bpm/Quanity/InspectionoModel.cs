@@ -1623,14 +1623,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _inspectionitems; }
         }
 
-    
-       /// ////////////////////////////////////////////////////
-     
+
+        /// ////////////////////////////////////////////////////
+
         private double _inspectionMaxNumber;
         /// <summary>
         ///检验最大数
         /// </summary>
-        public double  InspectionMaxNumber
+        public double InspectionMaxNumber
         {
             set { _inspectionMaxNumber = value; }
             get { return _inspectionMaxNumber; }
@@ -1645,7 +1645,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionNgNumber = value; }
             get { return _inspectionNgNumber; }
         }
-        
+
         private string _inspectionItemInspectors;
         /// <summary>
         ///检验的检查员
@@ -1665,9 +1665,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionItemDetails = value; }
             get { return _inspectionItemDetails; }
         }
-   
+
         /// //////////////////////////////////////////
-      
+
 
 
 
@@ -2682,7 +2682,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public double MaterialInCount { set; get; }
         /// <summary>
-        /// 送检验数量（与FQC=>InspectionCount）
+        /// 物料抽检此批数量
         /// </summary>
         public double MaterialCount { set; get; }
         /// <summary>
@@ -2714,7 +2714,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public string InspectionAQL { get; set; }
         /// <summary>
-        ///检验数(FQC 中这个是需要抽检的数量)
+        ///检验数
         /// </summary>
         public double InspectionCount { get; set; }
         /// <summary>
