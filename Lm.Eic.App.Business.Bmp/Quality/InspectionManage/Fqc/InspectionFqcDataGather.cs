@@ -408,7 +408,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 { masterModel = null; detailModel = null; }
                 masterModel = new InspectionFqcMasterModel();
                 OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcMasterModel>(sumModel, masterModel);
+
                 masterModel.InspectionItemCount = sumModel.InspectionItemSumCount;
+
+                masterModel.InspectionMaxNumber = sumModel.InspectionCount;
+                masterModel.InspectionNgNumber = sumModel.InspectionNGCount;
+                //记录NG值
+                masterModel.InspectionItemDetails = sumModel.InspectionItemResult == "NG" ? ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel) : string.Empty;
+                masterModel.InspectionItemInspectors = sumModel.InspectionItem + ":" + sumModel.OpPerson;
                 masterModel.InspectionItems = sumModel.InspectionItem;
                 masterModel.FinishDate = DateTime.Now.Date;
                 masterModel.InspectionStatus = "未抽检";
