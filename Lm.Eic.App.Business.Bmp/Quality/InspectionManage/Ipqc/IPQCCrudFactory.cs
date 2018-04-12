@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage.Ipqc
+namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     internal class InspectionIpqcDatailCrud : CrudBase<InspectionIpqcDetailModel, IpqcInspectionDatailRepository>
     {
@@ -23,6 +23,47 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage.Ipqc
         {  return null;
         }
     
+        #endregion
+
+    }
+
+    internal class IpqcConfigCrud : CrudBase<InspectionIpqcConfigModel, IpqcConfigRepository>
+    {
+        public IpqcConfigCrud() : base(new IpqcConfigRepository(), "IPQC配置表单")
+        { }
+        #region Crud
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, Add);
+        }
+        private OpResult Add(InspectionIpqcConfigModel model)
+        {
+            return null;
+        }
+
+        #endregion
+
+    }
+
+    internal class IpqcInspectionReportCrud : CrudBase<InspectionIpqcReportModel, IpqcInspectionReportlRepository>
+    {
+        public IpqcInspectionReportCrud() : base(new IpqcInspectionReportlRepository(), "IPQC日报表信息")
+        { }
+        #region Crud
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, Add);
+        }
+        private OpResult Add(InspectionIpqcReportModel model)
+        {
+            return null;
+        }
+        internal List<InspectionIpqcReportModel> GetReportDatas(DateTime date,string department)
+        {
+            DateTime inspectionDate = date.ToDate();
+            return irep.Entities.Where(e => e.InspectionDate == inspectionDate && e.Department == department).ToList();
+        }
+
         #endregion
 
     }

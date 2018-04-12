@@ -107,7 +107,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
     var uiVm = $scope.vm = {
         ReportId: null,
         DiscoverPosition: null,
-        AccountabilityDepartment: "品保部",
+        AccountabilityDepartment: null,
         OrderId: null,
         MaterialName: null,
         MaterialSpec: null,
@@ -211,7 +211,6 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         },
         showImage: function () {
             showImageDialog.show();
-            console.log(9999999);
         },
     };
     ///搜寻

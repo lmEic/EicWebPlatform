@@ -102,6 +102,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult Add(InspectionFqcDetailModel model)
         {
             if (model == null) return new OpResult("保存文件不能为空", false);
+            bool dd = IsExist(model.OrderId, model.OrderIdNumber, model.InspectionItem);
             //如果存在 (Id_key 已经赋值） 
             if (IsExist(model.OrderId, model.OrderIdNumber, model.InspectionItem))
             {

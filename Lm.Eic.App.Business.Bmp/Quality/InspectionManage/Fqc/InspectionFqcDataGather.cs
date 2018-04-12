@@ -12,8 +12,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class InspectionFqcDataGather : InspectionDateGatherManageBase
     {
-
-        private static Dictionary<string, List<InspectionFqcItemConfigModel>> BufferInspectionItemDatas = new Dictionary<string, List<InspectionFqcItemConfigModel>>();
         #region  对抽检项目 及 需要录入数据的数量 以后编改的接口 
         /// <summary>
         /// 需要录入的项目

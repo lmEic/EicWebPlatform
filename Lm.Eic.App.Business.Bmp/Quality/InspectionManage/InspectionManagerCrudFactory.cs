@@ -14,7 +14,7 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     /// <summary>
-    /// IQC 检验管理工厂
+    ///  检验管理工厂
     /// </summary>
     internal class InspectionManagerCrudFactory
     {
@@ -82,6 +82,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             get { return OBulider.BuildInstance<OrtMaterialConfigCrud>(); }
         }
 
+        #endregion
+
+
+        #region Ipqc CRUD
+        internal static InspectionIpqcDatailCrud IpqcDatialCrud
+        {
+            get { return OBulider.BuildInstance<InspectionIpqcDatailCrud>(); }
+        }
+        internal static IpqcConfigCrud IpqcConfigCrud
+        {
+            get { return OBulider.BuildInstance<IpqcConfigCrud>(); }
+        }
+
+        internal static IpqcInspectionReportCrud IpqcReportCrud
+        {
+            get { return OBulider.BuildInstance<IpqcInspectionReportCrud>(); }
+        }
         #endregion
     }
     /// <summary>

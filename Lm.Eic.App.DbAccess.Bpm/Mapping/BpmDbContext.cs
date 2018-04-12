@@ -104,6 +104,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<InspectionFqcDetailModel> FqcInspectionDetail { set; get; }
 
         #endregion
+        #region Ipqc
+        public DbSet<InspectionIpqcDetailModel> IpqcInspectionDetail { set; get; }
+        public DbSet<InspectionIpqcConfigModel> IpqcInspectionConfig { set; get; }
+        public DbSet<InspectionIpqcReportModel> IpqcInspectionReprot { set; get; }
+
+
+        #endregion
+
 
         #region  RMA
 
@@ -201,7 +209,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new FqcInspectionDetailMapping());
             //IPQC
             modelBuilder.Configurations.Add(new IpqcInspectionDetailMapping());
-           
+            modelBuilder.Configurations.Add(new IpqcConfigMapping());
+            modelBuilder.Configurations.Add(new IpqcInspectionReportMapping());
+
             // ORT
             modelBuilder.Configurations.Add(new OrtMaterialConfigMapping());
             // RMA
