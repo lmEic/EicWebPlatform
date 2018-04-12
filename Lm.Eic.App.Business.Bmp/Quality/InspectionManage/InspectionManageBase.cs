@@ -15,14 +15,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class InspectionDateGatherManageBase
     {
-        /// <summary>
-        /// 得到已经完成的数量
-        /// </summary>
-        /// <param name="inspectionItemResult">完成状态</param>
-        /// <param name="InspectionItemDatas">测试的数据</param>
-        /// <param name="needFinishDataNumber">需完成的数量</param>
-        /// <returns></returns>
-        public int DoHaveFinishDataNumber(string inspectionItemResult, string InspectionItemDatas, int needFinishDataNumber)
+  
+    /// <summary>
+    /// 得到已经完成的数量
+    /// </summary>
+    /// <param name="inspectionItemResult">完成状态</param>
+    /// <param name="InspectionItemDatas">测试的数据</param>
+    /// <param name="needFinishDataNumber">需完成的数量</param>
+    /// <returns></returns>
+    public int DoHaveFinishDataNumber(string inspectionItemResult, string InspectionItemDatas, int needFinishDataNumber)
         {
             return (inspectionItemResult == "OK") ? needFinishDataNumber : GetHaveFinishDataNumber(InspectionItemDatas);
         }
@@ -45,7 +46,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             string[] mm = inspectionDatas.Split(',');
             return mm.ToList();
         }
-
         /// <summary>
         /// 得到抽样物料信息
         /// </summary>
