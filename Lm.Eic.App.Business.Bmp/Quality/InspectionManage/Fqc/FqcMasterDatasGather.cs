@@ -89,9 +89,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 else masterModel.InspectionItemInspectors = haveStoreMasterModel.InspectionItemInspectors;
             }
             // 没有必要对每项的详细数据进行收集
-            if (haveStoreMasterModel.InspectionItemDetails != null && haveStoreMasterModel.InspectionItemDetails != string.Empty)
+            if (masterModel.InspectionItemDetails != null && masterModel.InspectionItemDetails != string.Empty)
             { hanveInspectionItemDetails = this.GetHaveItemDetialDatas(haveStoreMasterModel.InspectionItemDetails);
-              if (!hanveInspectionItemDetails.Contains(masterModel.InspectionItemDetails) && masterModel.InspectionItemDetails != string.Empty)
+              if (!hanveInspectionItemDetails.Contains(masterModel.InspectionItemDetails))
                {
                 ///具体详细数量
                 masterModel.InspectionItemDetails = haveStoreMasterModel.InspectionItemDetails + "&" + masterModel.InspectionItemDetails;
