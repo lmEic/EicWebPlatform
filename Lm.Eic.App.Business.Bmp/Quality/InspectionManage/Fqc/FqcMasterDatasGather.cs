@@ -62,16 +62,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 if (!haveFinishData.Contains(inspecitonItem) && inspecitonItem != string.Empty)
                 {
                     masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
+                    /// Ng数量
+                    masterModel.InspectionNgNumber = haveStoreMasterModel.InspectionNgNumber + masterModel.InspectionNgNumber;
                     haveFinishData.Add(inspecitonItem);
                 }
                 else masterModel.InspectionItems = haveStoreMasterModel.InspectionItems;
             }
-            /// 最大数量
+            /// 最大数量 如果数量大于现有 就不改变 如果小于它 就为现有的
             if (masterModel.InspectionMaxNumber < haveStoreMasterModel.InspectionMaxNumber)
             {
                 masterModel.InspectionMaxNumber = haveStoreMasterModel.InspectionMaxNumber;
-                /// Ng数量
-                masterModel.InspectionNgNumber = haveStoreMasterModel.InspectionNgNumber + masterModel.InspectionNgNumber;
             }
             if (haveStoreMasterModel.InspectionItemInspectors != null && haveStoreMasterModel.InspectionItemInspectors != string.Empty)
             {

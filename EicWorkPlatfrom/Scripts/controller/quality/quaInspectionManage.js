@@ -1590,11 +1590,14 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     operate.saveGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
+        dataItem.InspectionNGCount = 0;
+        console.log("测试Ng数量");
         if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "C" || dataItem.InspectionDataGatherType === "F") {
             //获取数据及判定结果
             angular.forEach(vmManager.dataList, function (item) {
                 dataList.push(item.data);
                 result = result && item.result;
+                if (item.result === false) { dataItem.InspectionNGCount++; }
             });
             //数据列表字符串
             dataItem.InspectionItemDatas = dataList.join(",");
@@ -1649,7 +1652,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     ///得到工号信息
     var loadWorkerInfo = (function () {
         var user = leeDataHandler.dataStorage.getLoginedUser();
-        console.log(88888);
         if (user) {
             connDataOpService.getWorkersBy(user.userId).then(function (users) {
                 if (_.isArray(users) && users.length > 0) {
