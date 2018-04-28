@@ -4,12 +4,15 @@
     </div>
     <div class="panel-body">
         <div class="row">
+            @*日期*@
             <div class="col-md-2">
+              
                 <div class="input-group">
                     <span class="input-group-addon">日期</span>
                     <input type="date" class="form-control" placeholder="检验日期" format-date ng-model="vmManager.inPutDate"  >
                 </div>
             </div>
+            @*部门*@
             <div class="col-md-2">
                 <div class="input-group">
                     <span class="input-group-addon">部门</span>
@@ -21,13 +24,15 @@
                     <span class="input-group-btn">
                             <button class="btn btn-info" type="button" ng-click="vmManager.getIpqcReportInfo()"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
-</div>
+                </div>
             </div>
+            @*查*@
             <div class="col-md-2">
                 <button class="btn-group-sm btn btn-success" type="button" ng-click="vmManager.createIpqcOrderSampleDatas">生成IPQC样表<span class="glyphicon glyphicon-align-justify"></span></button>
             </div>
         </div>
         <div class="h-split"></div>
+        @*品名规格图号*@
         <div class="row">
             <div class="col-md-2">
                 <label>工单号:</label>
@@ -59,9 +64,29 @@
             </div>
         </div>
         <div class="h-split"></div>
+        @*部门班别机台号*@
+        <div class="row">
+            <div class="col-md-2">
+                <label>部门:</label>
+                {{vmManager.currentInspectionItem.ProductDepartment}}
+            </div>
+            <div class="col-md-2">
+                <label>班别:</label>
+                <button type="button" class="btn btn-default" ng-model="vmManager.currentInspectionItem.ClassType"
+                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="班别"
+                        data-bs-options="item.id as item.text for item in vmManager.classTypes" data-bs-select></button>
+            </div>
+            <div class="col-md-3">
+                <span>
+                    <label>机台号:</label>
+                    <input type="text" placeholder="请输入机台编号" ng-model="vmManager.currentInspectionItem.MachineId" />
+                </span>
+            </div>
+        </div>
+        <div class="h-split"></div>
         <div class="row clearfix">
             @*工单抽检批次列表*@
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="bs-callout bs-callout-info">
                     <p>
                         <i class="fa fa-list-ul">工单抽检批次列表</i>
@@ -69,7 +94,7 @@
                 </div>
                 <div class="panel-group" id="accordion" ng-model="panels.activePanel" role="tablist" cg-busy="{promise:searchPromise}" style="height:450px;overflow-y:auto;" aria-multiselectable="true" bs-collapse>
                     <div class="panel panel-default" ng-repeat="item in vmManager.reportData" >
-                           <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderIdItem(item)">
+                       <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderIdItem(item)">
                             <a bs-collapse-toggle title="{{item.MachineId}}"> {{item.MachineId}}
                                 <span>
                                   <input ng-model="item.OrderId"/>
@@ -80,26 +105,7 @@
                                  </span>
                             </a>
                         </div>
-                           <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target cg-busy="{promise:searchPromise}">
-                            <a class="panel-body list-group-item" ng-repeat="inspectionItem in vmManager.panelDataSet"
-                               ng-class="{'active':inspectionItem===vmManager.currentInspectionItem}"
-                               ng-click="vmManager.selectInspectionItem(inspectionItem)">
-                                {{inspectionItem.orderId}}/{{inspectionItem.orderIdNumber}}
-                                <span class="pull-right">
-                                    <i class="fa fa-check badge-success" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='OK' && inspectionItem.InsptecitonItemIsFinished===true"></i>
-                                    <i class="fa fa-close badge-fail" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='NG' && inspectionItem.InsptecitonItemIsFinished==true"></i>
-                                </span>
-                                <span class="pull-right" title="数量显示标志" ng-class="{true: 'badge-info', false: 'badge-fail'}[inspectionItem.NeedFinishDataNumber===inspectionItem.HaveFinishDataNumber]">
-                                    {{inspectionItem.NeedFinishDataNumber}}/{{inspectionItem.HaveFinishDataNumber}}
-                                </span>
-                            </a>
-                            <div ng-if="item.dataSets.length>0"
-                                 yl-pagination data-dataset="item.dataSets"
-                                 data-datasource="item.inspectionItemDatas">
-                            </div>
-                        </div>
-                      
-                          <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target cg-busy="{promise:searchPromise}">
+                        <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target cg-busy="{promise:searchPromise}">
                             <a class="panel-body list-group-item" ng-repeat="inspectionItem in item.dataSets"
                                ng-class="{'active':inspectionItem===vmManager.currentInspectionItem}"
                                ng-click="vmManager.selectInspectionItem(inspectionItem)">
@@ -129,7 +135,7 @@
                 </div>
             </div>
             @*生成的测试项目*@
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="bs-callout bs-callout-info" style="min-height:500px;">
                     <div class="well">
                         <div class="row">
@@ -203,7 +209,7 @@
                                 <tbody>
                                     <tr ng-repeat="row in vmManager.inputDatas">
                                         <td ng-repeat="col in row.cols">
-                                            <span ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                            <span ng-class="{'invalidInputBg':!col.result,'':col.result}" ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
                                                 {{col.indata}}
                                             </span>
                                             <input ng-model="col.indata" style="text-align:center;width:120px;" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
