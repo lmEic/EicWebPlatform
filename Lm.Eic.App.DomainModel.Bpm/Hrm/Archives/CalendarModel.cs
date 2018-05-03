@@ -415,7 +415,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         private static LunarHolidayStruct[] lHolidayInfo = new LunarHolidayStruct[]{
             new LunarHolidayStruct(1,1,1,3, "春节"),
             new LunarHolidayStruct(1,15,15,0, "元宵节"),
-            new LunarHolidayStruct(4,4,4,3, "清明节"),
+           // new LunarHolidayStruct(4,4,4,3, "清明节"),
             new LunarHolidayStruct(5,5,5,1, "端午节"),
             new LunarHolidayStruct(8,15,15,1, "中秋节"),
             new LunarHolidayStruct(9,9,9,0, "重阳节"),
