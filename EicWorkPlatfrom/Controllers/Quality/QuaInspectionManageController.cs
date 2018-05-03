@@ -717,7 +717,18 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
 
         #region ipqc 检验单管理
+        [NoAuthenCheck]
         public ActionResult InspectionFormManageOfIpqc()
+        {
+            return View();
+        }
+        #endregion
+
+
+        #region ipqc 检验单管理
+
+        [NoAuthenCheck]
+        public ActionResult InspectionConfigCheckForm()
         {
             return View();
         }

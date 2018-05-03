@@ -506,6 +506,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.show)
     }
 })
+
 //iqc检验项目配置模块
 qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
     var uiVM = {
@@ -1122,6 +1123,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 })
+
 //fqc检验项目配置
 qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
     var uiVM = {
@@ -1845,6 +1847,12 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 })
+
+/// ipqc配置
+qualityModule.controller("ipqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
+    $scope.opPersonInfo = { Department: '', ClassType: '' };
+
+})
 ///ipqc数据采集控制器
 qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
     $scope.opPersonInfo = { Department: '', ClassType: '' };
@@ -2207,8 +2215,14 @@ qualityModule.controller("ipqcDataGatheringCtrl", function ($scope, qualityInspe
         }
     })();
 })
-/// ipqc配置
-qualityModule.controller("ipqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
-    $scope.opPersonInfo = { Department: '', ClassType: '' };
-   
+
+//检验单配置审核管理
+qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityInspectionDataOpService, $modal, $alert) {
+    var vmManager = $scope.vmManager = {
+       
+    };
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
 })
+
+

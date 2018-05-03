@@ -11,6 +11,8 @@ using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using System.IO;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -61,8 +63,14 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreCraet8DInitialData(Qua8DReportMasterModel initialData)
         {
+            if (initialData == null) return Json(new OpResult("数据为空", false));
+            if (initialData.FileName != null && initialData.FileName.Length > 1)
+            {
+                initialData.FilePath = Path.Combine(initialData.FilePath, initialData.FileName);
+                initialData.FilePath = initialData.FilePath.Replace(this.SiteRootPath, "");
+            }
             var result = Qua8DService.Qua8DManager.Qua8DMaster.StoreQua8DMaster(initialData);
-            return Json(result);
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 自动生成8D单单号
@@ -94,7 +102,7 @@ namespace EicWorkPlatfrom.Controllers
                 dto.FileName = customizeFileName;
                 result.PreviewFileName = (result.DocumentFilePath + "\\" + result.FileName).ToPhotoByte().ToBase64Url();
             }
-            return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -142,6 +150,12 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SaveQua8DHandleDatas(Qua8DReportDetailModel handelData)
         {
+            if (handelData == null) return Json(new OpResult("数据为空", false));
+            if (handelData.FileName != null && handelData.FileName.Length > 1)
+            {
+                handelData.FilePath = Path.Combine(handelData.FilePath, handelData.FileName);
+                handelData.FilePath = handelData.FilePath.Replace(this.SiteRootPath, "");
+            }
             var data = Qua8DService.Qua8DManager.Qua8DDatail.StoreQua8DHandleDatas(handelData);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
@@ -179,7 +193,7 @@ namespace EicWorkPlatfrom.Controllers
                 var imgBytes = imgFilePath.ToPhotoByte();
                 result.PreviewFileName = imgBytes.ToBase64Url();
             }
-            return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -242,7 +256,7 @@ namespace EicWorkPlatfrom.Controllers
                 dto.DocumentFilePath = filePath;
                 dto.FileName = customizeFileName;
             }
-            return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 下载8D归档文件

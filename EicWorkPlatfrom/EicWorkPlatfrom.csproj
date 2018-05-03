@@ -543,6 +543,7 @@
     <Content Include="Scripts\common\eloam.js" />
     <Content Include="Scripts\controller\ast\equipmentApp.js" />
     <Content Include="Scripts\controller\development\developmentApp.js" />
+    <Content Include="Scripts\controller\development\developmentProductsManage.js" />
     <Content Include="Scripts\controller\home\homeApp.js" />
     <Content Include="Scripts\controller\account\loginApp.js" />
     <Content Include="Scripts\controller\hr\hrApp.js" />
@@ -1545,6 +1546,7 @@
     <Content Include="Views\HrGeneralAffairsManage\GaMealReportQuery.cshtml" />
     <Content Include="Views\CommonTpl\YearButtonTpl.cshtml" />
     <Content Include="Views\QuaInspectionManage\IpqcInspectionItemConfiguration.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionConfigCheckForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
