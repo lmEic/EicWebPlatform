@@ -186,7 +186,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             try
             {
                 string postNature="";
-                double workhours = 0;
+                //double workhours = 0;
                 var datasList = new List<WorkOverHoursMangeModels>();
                 var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
                 if (datas == null || datas.Count == 0)
