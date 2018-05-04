@@ -97,4 +97,26 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 
     #endregion
 
+    #region   IQPC
+
+    public interface IIpqcInspectionDatailRepository : IRepository<InspectionIpqcDetailModel> { }
+
+    public class IpqcInspectionDatailRepository : BpmRepositoryBase<InspectionIpqcDetailModel>, IIpqcInspectionDatailRepository
+    { }
+
+
+
+    public interface IIpqcConfigRepository : IRepository<InspectionIpqcConfigModel> { }
+
+    public class IpqcConfigRepository : BpmRepositoryBase<InspectionIpqcConfigModel>, IIpqcConfigRepository
+    { }
+
+
+
+    public interface IIpqcInspectionReportRepository : IRepository<InspectionIpqcReportModel> { }
+
+    public class IpqcInspectionReportlRepository : BpmRepositoryBase<InspectionIpqcReportModel>, IIpqcInspectionReportRepository
+    { }
+    #endregion
+
 }

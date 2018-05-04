@@ -89,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         /// <summary>
-        /// 生成合格供应商清单
+        /// 下载文档数据
         /// </summary>
         /// <returns></returns>
         public DownLoadFileModel BuildDownLoadFileModel(List<InspectionFqcMasterModel> datas)
@@ -155,7 +155,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             string inspectorsUsers = string.Empty;
             List<string> inspectorsSplit = new List<string>();
+
             List<string> inspectorNameSplit = null;
+            if (inspectionItemInspectors == null || inspectionItemInspectors == string.Empty) return inspectorsUsers;
             if (inspectionItemInspectors.Contains(","))
             {
                 inspectorsSplit = inspectionItemInspectors.Split(',').ToList();

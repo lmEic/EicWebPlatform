@@ -29,5 +29,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionFqcFormManager>(); }
         }
+
+        /// <summary>
+        /// IPqc 表单管理
+        /// </summary>
+        public InspectionIpqcFormManager IpqcFromManager
+        {
+            get { return OBulider.BuildInstance<InspectionIpqcFormManager>(); }
+        }
     }
 }

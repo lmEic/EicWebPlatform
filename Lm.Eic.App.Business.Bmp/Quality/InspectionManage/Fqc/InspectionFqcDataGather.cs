@@ -12,8 +12,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class InspectionFqcDataGather : InspectionDateGatherManageBase
     {
-
-        private static Dictionary<string, List<InspectionFqcItemConfigModel>> BufferInspectionItemDatas = new Dictionary<string, List<InspectionFqcItemConfigModel>>();
         #region  对抽检项目 及 需要录入数据的数量 以后编改的接口 
         /// <summary>
         /// 需要录入的项目
@@ -343,7 +341,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     ///初始化 综合模块
                     model = new InspectionItemDataSummaryVM();
-                    if (m.InspectionRuleDatas != null)
+                    if (m.InspectionRuleDatas != null&&m.InspectionRuleDatas != string.Empty)
                     {
                         model = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m.InspectionRuleDatas);
                         model.InspectionItemStatus = m.InspectionItemStatus;

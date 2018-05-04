@@ -62,6 +62,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         /// <returns></returns>
         public OpResult StoreQua8DMaster(Qua8DReportMasterModel model)
         {
+            if(model!=null)
+            {
+                if (model.AccountabilityDepartment == null || model.AccountabilityDepartment == string.Empty)
+                    return OpResult.SetErrorResult("负责单位不能为空");
+                if (model.MaterialName == null || model.MaterialName == string.Empty)
+                    return OpResult.SetErrorResult("物料品名不能为空");
+            }
+
             return Qua8DCrudFactory.MasterCrud.Store(model, true);
         }
         /// <summary>
