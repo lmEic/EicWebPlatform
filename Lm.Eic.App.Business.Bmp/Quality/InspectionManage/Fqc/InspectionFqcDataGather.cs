@@ -175,24 +175,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnOpResult;
         }
 
-        /// <summary>
-        /// 存储收集数据 （二次调用，一次是新建存，一次是编辑）
-        /// </summary>
-        /// <param name="sumModel"></param>
-        /// <returns></returns>
-        public OpResult AddStoreFqcDataGather(InspectionItemDataSummaryVM sumModel)
-        {
-            var returnOpResult = new OpResult("采集数据模型不能为NULL", false);
-            InspectionFqcMasterModel masterModel = null;
-            InspectionFqcDetailModel detailModel = null;
-            ///先排除总表不能为空
-            GetMasterAndDetailModelFrom(sumModel, out masterModel, out detailModel);
-            if (detailModel == null || masterModel == null) return new OpResult("表单数据为空，保存失败", false);
-            /// 先保存副表  再更新主表信息
-            returnOpResult = DetailDatasGather.storeInspectionDetial(detailModel);
-           return returnOpResult;
-        }
-
         public OpResult DeletFqcDetailDatasAndMasterDatasBy(string orderId, int orderIdNumber)
         {
             OpResult opResult = InspectionManagerCrudFactory.FqcMasterCrud.DeleteFqcInspectionMasterBy(orderId, orderIdNumber);
@@ -341,7 +323,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     ///初始化 综合模块
                     model = new InspectionItemDataSummaryVM();
-                    if (m.InspectionRuleDatas != null&&m.InspectionRuleDatas != string.Empty)
+                    if (m.InspectionRuleDatas != null)
                     {
                         model = ObjectSerializer.ParseFormJson<InspectionItemDataSummaryVM>(m.InspectionRuleDatas);
                         model.InspectionItemStatus = m.InspectionItemStatus;
@@ -431,21 +413,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
                 masterModel.InspectionMaxNumber = sumModel.InspectionCount;
                 masterModel.InspectionNgNumber = sumModel.InspectionNGCount;
-               //记录NG值
-                masterModel.InspectionItemDetails = sumModel.InspectionItemResult == "NG"?ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel):string.Empty;
-                masterModel.InspectionItemInspectors = sumModel.InspectionItem +":"+ sumModel.OpPerson;
-
+                //记录NG值
+                masterModel.InspectionItemDetails = (sumModel.InspectionItemResult == "NG" ? ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel):string.Empty);
+                masterModel.InspectionItemInspectors = sumModel.InspectionItem + ":" + sumModel.OpPerson;
                 masterModel.InspectionItems = sumModel.InspectionItem;
                 masterModel.FinishDate = DateTime.Now.Date;
                 masterModel.InspectionStatus = "未抽检";
                 masterModel.InspectionResult = "未完成";
                 masterModel.InspectionCount = sumModel.MaterialCount;
-               
-
-
-
-
-
                 detailModel = new InspectionFqcDetailModel();
                 OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcDetailModel>(sumModel, detailModel);
                 detailModel.InspectionRuleDatas = ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel);
@@ -504,219 +479,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return retrunstirng;
         }
         #endregion
-
-
-
-        public void AddBuildingFqcInspectionSummaryDatasBy(string orderId)
-        {
-            try
-            {
-                List<InspectionItemDataSummaryVM> returnDatas = null;
-                ///一个工单 对应一个料号，有工单就是料号
-                InspectionFqcDetailModel addmodel = null; 
-                 var orderIdMasterInfoList = MasterDatasGather.GetFqcMasterOrderIdDatasBy(orderId);
-                if (orderIdMasterInfoList == null || orderIdMasterInfoList.Count == 0) return;
-                List<InspectionFqcDetailModel> orderIdDetailsInfoList = DetailDatasGather.GetFqcInspectionDetailDatasBy(orderId);
-                if(orderIdDetailsInfoList!=null&& orderIdDetailsInfoList.Count>0)
-                {
-                    int minNumber= orderIdDetailsInfoList.Min(f => f.OrderIdNumber);
-                    List<InspectionFqcDetailModel> detailModel = orderIdDetailsInfoList.FindAll(m => m.OrderIdNumber == minNumber);
-                    orderIdMasterInfoList.ForEach(e => {
-                        var DetailDatas = orderIdDetailsInfoList.FindAll(m=>m.OrderIdNumber== e.OrderIdNumber);
-                        if (DetailDatas == null || DetailDatas.Count == 0)
-                        {
-                           
-                            detailModel.ForEach(m =>
-                            {
-                                addmodel = new InspectionFqcDetailModel() {
-                                    OrderId = e.OrderId,
-                                    OrderIdNumber=e.OrderIdNumber,
-                                    ProductDepartment = e.ProductDepartment,
-                                    OrderIdCount = e.MaterialInCount,
-                                    MaterialId = e.MaterialId,
-                                    MaterialInDate = e.MaterialInDate,
-                                    MaterialCount = e.InspectionCount,
-                                  
-                                    OpTime = e.OpTime,
-                                    OpDate = e.OpDate,
-                                    OpPerson = e.OpPerson,
-
-                                    ClassType =m.ClassType,
-                                    DocumentPath=m.DocumentPath,
-                                    FileName = m.FileName,
-                                    EquipmentId =m.EquipmentId,
-                                    InspectionItemDatas = m.InspectionItemDatas,
-                                    InspectionRuleDatas = m.InspectionRuleDatas,
-
-                                    InspectionCount = m.InspectionCount,
-                                    InspectionMode = m.InspectionMode,
-                                    InspectionAcceptCount =m.InspectionAcceptCount,
-                                    InspectionRefuseCount = m.InspectionRefuseCount,
-                                    NeedPutInDataCount = m.NeedPutInDataCount,
-
-                                    InspectionDate =e.FinishDate,
-                                    InspectionItem=m.InspectionItem,
-                                    InspectionDataTimeRegion= "NewAddDatas",
-                                    InspectionItemResult=m.InspectionItemResult,
-                                    InspectionItemStatus = m.InspectionItemStatus,
-                                    InspectionMethod=m.InspectionMethod,
-                                    InspectionNGCount=m.InspectionNGCount,
-                                    InStorageOrderId= "Don'tUse",
-                                    OpSign="add",
-                                    Memo=m.Memo
-                                };
-                                addmodel. InspectionItemStatus = e.InspectionStatus == "已审核" ? "Done" : "Doing";
-                                var OpResultadd=   DetailDatasGather.addInspectionDetial(addmodel);
-                            });
-                        };
-                    });
-                }
-                /// 如果生成的数据大于 总数 则反回空
-                else
-                {
-                    orderIdMasterInfoList.ForEach(e => {
-
-                        var DetailDatas = DetailDatasGather.GetFqcInspectionDetailDatasBy(e.OrderId, e.OrderIdNumber);
-                        if (DetailDatas == null || DetailDatas.Count == 0)
-                        {
-
-                            ///得到需要检验的项目(h)
-                            var fqcNeedInspectionsItemdatas = InspectionManagerCrudFactory.FqcItemConfigCrud.FindFqcInspectionItemConfigDatasBy(e.MaterialId);
-
-                            if (fqcNeedInspectionsItemdatas != null || fqcNeedInspectionsItemdatas.Count >= 0)
-                            {
-
-                                ///处理数据
-                                returnDatas = AddHandleBuildingSummaryDataLabelModel(e, fqcNeedInspectionsItemdatas);
-                                ///
-                                if (returnDatas != null || returnDatas.Count >= 0)
-                                {
-                                    //存诸 表
-                                    returnDatas.ForEach(m => {
-                                        m.ClassType = "白班";
-                                        m.InspectionItemStatus = e.InspectionStatus == "已审核" ? "Done" : "Doing";
-                                        AddStoreFqcDataGather(m);
-                                    });
-
-                                }
-                            }
-
-                        };
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-        }
-
-        public  void AddonlyDataDatialDatas(string datetime)
-        {
-            DateTime opdate = datetime.ToDate();
-          List<string> orderIdlist=  MasterDatasGather.GetFqcInspectionMasterOrderIdList(opdate);
-            if(orderIdlist!=null && orderIdlist.Count>0)
-            {
-                orderIdlist.ForEach(e =>
-                {
-                    AddBuildingFqcInspectionSummaryDatasBy(e);
-                });
-            }
-        }
-
-        /// <summary>
-        /// 新建FQC总表
-        /// </summary>
-        /// <param name="sampleCount"></param>
-        /// <param name="orderIdNumber"></param>
-        /// <param name="orderMaterialInfo"></param>
-        /// <param name="fqcNeedInspectionsItemdatas"></param>
-        /// <returns></returns>
-        private List<InspectionItemDataSummaryVM> AddHandleBuildingSummaryDataLabelModel(InspectionFqcMasterModel orderIdMasterInfo, List<InspectionFqcItemConfigModel> fqcNeedInspectionsItemdatas)
-        {
-            try
-            {
-                List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
-              
-                int i = 0;
-                fqcNeedInspectionsItemdatas.ForEach(m =>
-                {
-                    i++;
-                   
-                    ///得到检验方案
-                    var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, orderIdMasterInfo.InspectionCount, orderIdMasterInfo.InspectionMode);
-                    ///初始化 综合模块
-                    var model = new InspectionItemDataSummaryVM()
-                    {
-                        OrderId = orderIdMasterInfo.OrderId,
-                        MaterialId = orderIdMasterInfo.MaterialId,
-                        InspectionItem = m.InspectionItem,
-                        MaterialInCount = orderIdMasterInfo.MaterialInCount,
-                        InspectionMethod = m.InspectionMethod,
-                        MaterialInDate = orderIdMasterInfo.MaterialInDate,
-                        OrderIdNumber = orderIdMasterInfo.OrderIdNumber,
-                        MaterialName = orderIdMasterInfo.MaterialName,
-                        MaterialSpec = orderIdMasterInfo.MaterialSpec,
-                        MaterialSupplier = orderIdMasterInfo.MaterialSupplier,
-                        MaterialDrawId = orderIdMasterInfo.MaterialDrawId,
-                        MaterialCount = orderIdMasterInfo.InspectionCount,
-                        EquipmentId = m.EquipmentId,
-                        InspectionCount = 0,
-                        AcceptCount = 0,
-                        RefuseCount = 0,
-                        InspectionItemDatas = string.Empty,
-                        DocumentPath = null,
-                        FileName = null,
-                        InspectionItemStatus = "Done",
-                        InspectionItemResult = orderIdMasterInfo.InspectionResult,
-                        InspectionNGCount = 0,
-                        ProductDepartment = m.ProductDepartment,
-                        //数据采集类型
-                        InspectionDataGatherType = m.InspectionDataGatherType,
-                        SizeLSL = m.SizeLSL,
-                        SizeUSL = m.SizeUSL,
-                        SizeMemo = m.SizeMemo,
-                        InspectionAQL = string.Empty,
-                        InspectionMode = string.Empty,
-                        InspectionLevel = string.Empty,
-                        InsptecitonItemIsFinished = false,
-                        ClassType = string.Empty,
-                        InStorageOrderId = "Don'tUse",
-                        InspectionItemSumCount = i,
-                        InspectionDataTimeRegion = "NewAddDatas",
-                        Memo = string.Empty,
-                        OpPerson = orderIdMasterInfo.OpPerson,
-                        NeedFinishDataNumber = orderIdMasterInfo.InspectionItemCount,
-                        HaveFinishDataNumber = orderIdMasterInfo.InspectionItemCount,
-                        OpSign = OpMode.Add,
-                    };
-
-                    /// OrderId, MaterialId, InspecitonItem, MaterialCount, InspectionMode, MaterialInDate, EquipmentId, 
-                    /// InspectionCount, InspectionAcceptCount, InspectionRefuseCount, InspectionItemDatas, DocumentPath, FileName, 
-                    /// InspectionItemStatus, InspectionItemResult, InspectionDate, InspectionNGCount,Memo,
-                    ///如果没有得到抽检验方案 侧为空
-                    if (inspectionModeConfigModelData != null)
-                    {
-                        model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
-                        model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
-                        model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
-                        model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
-                        model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
-                        model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
-                        //需要录入的数据个数 暂时为抽样的数量
-                        model.NeedFinishDataNumber = FqcNeedInputDataCountBy(model.OrderId, model.OrderIdNumber, model.MaterialId, model.InspectionDataGatherType, inspectionModeConfigModelData.InspectionCount);
-                    }
-                    returnList.Add(model);
-                });
-                return returnList;
-            }
-            catch (Exception ex)
-            {
-                return new List<InspectionItemDataSummaryVM>();
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
 
     }
 

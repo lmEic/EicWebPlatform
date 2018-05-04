@@ -527,8 +527,6 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetIpqcReportDatas(DateTime queteDate,string  department)
         {
-
-
             var datas = InspectionService.DataGatherManager.IpqcDataGather.getReportInfoDatas(queteDate, department);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -719,7 +717,18 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
 
         #region ipqc 检验单管理
+        [NoAuthenCheck]
         public ActionResult InspectionFormManageOfIpqc()
+        {
+            return View();
+        }
+        #endregion
+
+
+        #region ipqc 检验单管理
+
+        [NoAuthenCheck]
+        public ActionResult InspectionConfigCheckForm()
         {
             return View();
         }

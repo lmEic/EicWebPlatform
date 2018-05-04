@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width" />
-    <title>产品研发管理</title>
+    <title>研发管理</title>
     <style>
         .bkcolor {
             background-color: #87CEFA;
@@ -29,7 +29,7 @@
 
     @if (ViewBag.IsLoginMode)
     {
-        <div yl-navigation-layout data-module-text="产品研发管理" data-module-name="DevelopmentManage"></div>
+        <div yl-navigation-layout data-module-text="研发管理" data-module-name="DevelopmentManage"></div>
     }
     else
     { 
@@ -78,18 +78,25 @@
                             <div class="panel-body">
                                 <ol class="rounded-list">
                                     <li>
-                                        <a data-ui-sref-active="active" data-ui-sref="dReportUnproductionSet" style="cursor:pointer">非生产原因配置</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="dReportMachineSet" style="cursor:pointer">机台配置</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="dRRedoInput" style="cursor:pointer">重工登记</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="create8DForm" style="cursor:pointer">创建8D表单</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="handle8DFolw" style="cursor:pointer">报告登记</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="close8DForm" style="cursor:pointer">结案签核</a>
 
 
-                                        <a data-ui-sref-active="active" data-ui-sref="proWorkOverHoursManage" style="cursor:pointer">加班管理</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="proAskLeaveManage" style="cursor:pointer">请假管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="iqcInspectionModeConfiguration" style="cursor:pointer">进料检验IQC方式配置</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionModeSwitchConfiguration" style="cursor:pointer">检验方式转换配置</a>
 
-                                        <a data-ui-sref-active="active" data-ui-sref="dReportHoursSet" style="cursor:pointer">标准工时设定</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="dRProductOrderDispatching" style="cursor:pointer">生产工单分派管理</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="dReportInput" style="cursor:pointer">日报录入</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="checkOrderBills" style="cursor:pointer">工单订单对比</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="iqcInspectionItemConfiguration" style="cursor:pointer">进料检验IQC项目配置</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfIQC" style="cursor:pointer">IQC检验数据采集</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionFormManageOfIqc" style="cursor:pointer">IQC检验单管理</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="fqcInspectionItemConfiguration" style="cursor:pointer">FQC检验项目配置</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfFQC" style="cursor:pointer">FQC检验数据采集</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionFormManageOfFqc" style="cursor:pointer">FQC检验单管理</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="ipqcInspectionItemConfiguration" style="cursor:pointer">IPQC检验项目配置</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfIPQC" style="cursor:pointer">IPQC检验数据采集</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionFormManageOfIpqc" style="cursor:pointer">IPQC检验单管理</a>
                                     </li>
                                 </ol>
                             </div>
