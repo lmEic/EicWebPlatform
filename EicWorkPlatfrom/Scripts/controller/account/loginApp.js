@@ -25,6 +25,7 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
         userId: null,
         password: null,
         start: false,//开始登录
+
     };
     $scope.vm = vm;
 
@@ -48,8 +49,8 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
         }
     };
     ///登录验证
-    $scope.loginCheck = function (isValid) {
-        if (isValid) {
+    $scope.loginCheck = function (isValid) {   
+        if (isValid) {         
             vm.start = true;
             $http.get('/Account/LoginCheck', {
                 params: {
@@ -64,6 +65,7 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
                         window.location = "/Home/Index";
                     }
                     else {
+                        loginResult.message= data.LoginStatus.StatusMessage;
                         showErrorMsg(data);
                     }
                 }
@@ -76,7 +78,7 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
     var showErrorMsg = function (data) {
         vm.start = false;
         loginResult.isSuccess = false;
-        loginResult.message = data.LoginStatus.StatusMessage;
+        $scope.loginResult = data.LoginStatus.StatusMessage;
         (function () {
             setTimeout(function () {
                 loginResult.isSuccess = true;
