@@ -57,10 +57,16 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         //ipqc检验项目数据采集
         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIPQC'
     })
+
     .state('inspectionFormManageOfIpqc', {
         //ipqc检验单管理
         templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfIpqc'
     })
+     //inspectionConfigCheckFormManag
+    .state('inspectionConfigCheckFormManage', {
+        //检验单配置审核管理
+        templateUrl: inspectionUrlPrefix + 'InspectionConfigCheckForm'
+          })
     ////--------------RMA管理--------------------------
     .state('createRmaForm', {
         templateUrl: rmaUrlPrefix + 'CreateRmaForm'

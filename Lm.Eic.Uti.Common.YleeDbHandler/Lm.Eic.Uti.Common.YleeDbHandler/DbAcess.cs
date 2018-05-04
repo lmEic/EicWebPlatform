@@ -91,6 +91,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             catch (Exception ex)
             {
+                return new DataTable();
                 throw new Exception(ex.ToString());
             }
             finally

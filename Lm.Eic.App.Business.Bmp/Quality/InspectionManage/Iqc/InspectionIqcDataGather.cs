@@ -407,12 +407,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             List<MaterialModel> masterdatas = QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
             if (masterdatas == null || masterdatas.Count == 0) return retrunListdatas;
             ///如果详细表中没有，那么主表的显示数据就无效
-            if (DetailDatasGather.isExsitOrderId(orderId))
-            {
-                var masterInfos = MasterDatasGather.GetIqcMasterDatasBy(orderId);
-                ///ERP 物料数量 已抽物料数量 没有变化;
-                if (masterInfos != null && masterInfos.Count == masterdatas.Count) return masterInfos;
-            }
+            //if (DetailDatasGather.isExsitOrderId(orderId))
+            //{
+            //    var masterInfos = MasterDatasGather.GetIqcMasterDatasBy(orderId);
+            //    ///ERP 物料数量 已抽物料数量 没有变化;
+               
+            //  //  if (masterInfos != null && masterInfos.Count == masterdatas.Count) return masterInfos;
+            //}
             ///如果后面 ERP物料有所添加
             masterdatas.ForEach(e =>
             {
