@@ -115,8 +115,17 @@
                                 </div>
                                 <div class="col-md-3">
                                     <span>
-                                        <label>版体:</label>
-                                        {{vmManager.masterInfo.MaterialrawID}}
+                                        <label>版体:{{vmManager.itemConfigVersion}}</label>
+                                        @*<select id="assignModel-role" class="form-control" style="width: 200px;">
+                                            <option value="{{vmManager.itemConfigVersion}}">请选择</option>
+                                        </select>*@
+
+                                        @*<button type="button" class="btn  btn-default" ng-model="vmManager.itemConfigVersion"
+                                                data-html="1" data-multiple="0"
+                                                data-animation="am-flip-x" data-placeholder="版体号"
+                                                bs-options="item.id as item.text for item in vmManager.itemConfigVersionListr" bs-select>
+                                            <span class="caret"></span>
+                                        </button>*@
                                     </span>
                                 </div>
                             </div>
@@ -579,3 +588,5 @@
 
     </div>
 </div>
+
+

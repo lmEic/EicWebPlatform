@@ -2349,8 +2349,10 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         {
                vmManager.isShowDetailWindow = true;
                vmManager.masterInfo = item.MaterialInfo;
+
                vmManager.itemConfigVersion = item.ItemConfigVersion;
-               console.log(vmManager.masterInfo);
+
+               vmManager.itemConfigVersionList = 
                vmManager.detailDatas = item.MaterialIqcInspetionItem;
         },
         ////获取详细数据
