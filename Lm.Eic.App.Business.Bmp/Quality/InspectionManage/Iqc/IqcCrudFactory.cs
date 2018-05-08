@@ -75,7 +75,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcItemConfigModel> FindIqcInspectionItemConfigDatasBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId&&e.IsActivate.ToUpper()=="TRUE").OrderBy(e => e.InspectionItemIndex).ToList();
+        }
+        public List<InspectionIqcItemConfigModel> FindIqcInspectionItemConfigDatasBy(string checkStatus, DateTime dateFrom, DateTime dateTo)
+        {
+            DateTime startOpdate = dateFrom.ToDate();
+            DateTime endOpDate = dateTo.ToDate();
+            return irep.Entities.Where(e => e.OpDate>= startOpdate && e.OpDate<=endOpDate).OrderBy(e => e.InspectionItemIndex).ToList();
         }
         /// <summary>
         /// 
@@ -85,6 +91,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public InspectionIqcItemConfigModel FindFirstOrDefaultDataBy(string inspectionItem)
         {
             return irep.Entities.FirstOrDefault(e => e.InspectionItem == inspectionItem);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        public InspectionIqcItemConfigModel FindFirstOrDefaultDataBy(string MaterialId, string inspectionItem)
+        {
+            return irep.Entities.FirstOrDefault(e =>e.MaterialId==MaterialId&& e.InspectionItem == inspectionItem);
         }
         /// <summary>
         /// 特殊条件
@@ -104,13 +120,28 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal OpResult StoreInspectionItemConfigDatas(List<InspectionIqcItemConfigModel> modeldatas)
         {
             OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
+            //  InspectionItemInPutDate, CheckStatus, CheckPerson, CheckDate, ConfigVersion,
             SetFixFieldValue(modeldatas, OpMode.Add);
             int i = 0;
+            InspectionIqcItemConfigModel oldModel = null;
+            string configVersion = "001";
             //如果存在 就修改   
             modeldatas.ForEach(m =>
             {
                 if (this.irep.IsExist(e => e.MaterialId == m.MaterialId && e.InspectionItem == m.InspectionItem))
-                { m.OpSign = OpMode.Edit; }
+                {
+                     oldModel = FindFirstOrDefaultDataBy(m.MaterialId, m.InspectionItem);
+                    //如果版本变更 则添加新的版本信息
+                  if (oldModel.CheckStatus == "变更中" && oldModel.CheckStatus != null)
+                    {
+                        configVersion = (m.ConfigVersion.Split('.').ToList().LastOrDefault().ToInt() + 1).ToString("000");
+                        m.ConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + configVersion;
+                    }
+                  else   m.OpSign = OpMode.Edit;
+                }
+                else m.ConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + "001";
+                m.InspectionItemInPutDate = DateTime.Now.Date.ToDate();
+                m.CheckDate = DateTime.Now.Date.ToDate();
                 opResult = this.Store(m);
                 if (opResult.Result)
                     i = i + opResult.RecordCount;

@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
@@ -15,6 +16,42 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// </summary>
     public class InspectionIqcItemConfigManager
     {
+        /// <summary>
+        /// 物料号查询检验项目
+        /// （添加测试条件）
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public List<InspectionConfigMasterVm> GetIqcspectionItemConfigDatasBy(string checkStatus, DateTime dateFrom, DateTime dateTo)
+        {
+           
+            List<InspectionConfigMasterVm> returnDates = null;
+            InspectionConfigMasterVm data = null;
+           var listDate = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(checkStatus, dateFrom, dateTo);
+            if(listDate !=null&& listDate.Count>0)
+            {
+                List<string> MaterialIdList = listDate.Select(e=>e.MaterialId).Distinct().ToList();
+                if (MaterialIdList != null && MaterialIdList.Count > 0)
+                {
+                    returnDates = new List<InspectionConfigMasterVm>();
+                    MaterialIdList.ForEach(e =>
+                    {
+                        var materialInfo = QmsDbManager.MaterialInfoDb.GetProductInfoBy(e).FirstOrDefault();
+                        materialInfo.MaterialBelongDepartment = materialInfo.MaterialBelongDepartment.Trim()==string.Empty? "IQC" : materialInfo.MaterialBelongDepartment;
+                        data = new InspectionConfigMasterVm()
+                        {
+                            MaterialInfo = materialInfo,
+                            MaterialIqcInspetionItem = listDate.FindAll(m => m.MaterialId == e)
+                        };
+                        if (!returnDates.Contains(data))
+                            returnDates.Add(data);
+                    });
+                }
+            }
+            return returnDates;
+        }
+
+
         /// <summary>
         /// 物料号查询检验项目
         /// （添加测试条件）

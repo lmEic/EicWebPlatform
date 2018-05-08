@@ -260,11 +260,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     #region IQC
     /// <summary>
-    /// IQC物料检验配置文件
+    ///IQC物料检验配置文件
     /// </summary>
-    public class InspectionIqcItemConfigModel
+    [Serializable]
+    public partial class InspectionIqcItemConfigModel
     {
-
         public InspectionIqcItemConfigModel()
         { }
         #region Model
@@ -385,6 +385,60 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionaql = value; }
             get { return _inspectionaql; }
         }
+        private DateTime _inspectioniteminputdate;
+        /// <summary>
+        ///录入日期
+        /// </summary>
+        public DateTime InspectionItemInPutDate
+        {
+            set { _inspectioniteminputdate = value; }
+            get { return _inspectioniteminputdate; }
+        }
+        private string _isactivate;
+        /// <summary>
+        ///是否激活
+        /// </summary>
+        public string IsActivate
+        {
+            set { _isactivate = value; }
+            get { return _isactivate; }
+        }
+        private string _checkstatus;
+        /// <summary>
+        ///审核状态
+        /// </summary>
+        public string CheckStatus
+        {
+            set { _checkstatus = value; }
+            get { return _checkstatus; }
+        }
+        private string _checkperson;
+        /// <summary>
+        ///审核人
+        /// </summary>
+        public string CheckPerson
+        {
+            set { _checkperson = value; }
+            get { return _checkperson; }
+        }
+        private DateTime _checkdate;
+        /// <summary>
+        ///审核日期
+        /// </summary>
+        public DateTime CheckDate
+        {
+            set { _checkdate = value; }
+            get { return _checkdate; }
+        }
+        private string _configversion;
+        /// <summary>
+        ///配置版次
+        /// </summary>
+        public string ConfigVersion
+        {
+            set { _configversion = value; }
+            get { return _configversion; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -432,6 +486,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+
+
+
 
     /// <summary>
     /// IQC单据检验
@@ -2474,8 +2531,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     #endregion
 
-    #region  数据展示
 
+    #region  数据展示
     /// <summary>
     /// Fqc数据查询信息表
     /// </summary>
@@ -2539,6 +2596,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 检验的项数
         /// </summary>
         public double InspectionNumber { set; get; }
+        #endregion
 
     }
 
@@ -2783,6 +2841,76 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
 
     }
+
+    /// <summary>
+    ///配置文件主表显示
+    /// </summary>
+    public class InspectionConfigMasterVm
+    {
+      public   ProductMaterailDto MaterialInfo
+        {
+            set;get;
+        }
+      public int InspectionItemCount
+        {
+            get
+            {
+               if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                return     MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").Count();
+               else return  0;
+            }
+        }
+        public  string Status
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.LastOrDefault().CheckStatus;
+                else return string.Empty;
+            }
+        }
+        public string CheckPerson
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.LastOrDefault().CheckPerson;
+                else return string.Empty;
+            }
+        }
+        public string CheckDate
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.LastOrDefault().CheckDate.ToShortTimeString();
+               else  return string.Empty;
+            }
+        }
+        public  List<string> ItemConfigVersionList
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.Select(e=>e.ConfigVersion).Distinct().ToList();
+                else return new List<string>();
+            }
+        }
+        public string ItemConfigVersion
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").LastOrDefault().ConfigVersion;
+                else return string.Empty;
+            }
+        }
+        public List<InspectionIqcItemConfigModel> MaterialIqcInspetionItem
+        {
+            set;get;
+        }
+
+    }
     #endregion
-    #endregion
+
 }

@@ -64,6 +64,21 @@ namespace EicWorkPlatfrom.Controllers
             var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        ///   查询IQC物料配置信息  
+        /// </summary>
+        /// <param name="selectedDepartment">部门</param>
+        /// <param name="dateFrom">起始日期</param>
+        /// <param name="dateTo">结束日期</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult QueryIqcConfigInfos(string checkStatus, DateTime dateFrom, DateTime dateTo)
+        {
+
+            var datas = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcspectionItemConfigDatasBy(checkStatus,  dateFrom, dateTo);
+
+            return DateJsonResult(datas);
+        }
 
         /// <summary>
         /// 在数据库中是否存在此料号
@@ -627,7 +642,7 @@ namespace EicWorkPlatfrom.Controllers
             return DateJsonResult(Fqcdatas);
         }
         /// <summary>
-        ///   查询FQC中Erp订单检验信息
+        ///   查询FQC中Erp订单检验信息  
         /// </summary>
         /// <param name="selectedDepartment">部门</param>
         /// <param name="dateFrom">起始日期</param>
@@ -641,6 +656,8 @@ namespace EicWorkPlatfrom.Controllers
 
             return DateJsonResult(datas);
         }
+
+      
         /// <summary>
         /// 得到Master抽检验信息 GetInspectionFormMasterOfFqcDatas
         /// </summary>

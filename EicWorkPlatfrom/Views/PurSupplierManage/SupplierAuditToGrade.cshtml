@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" ng-model="vmManager.supplierId" placeholder="输入供应商编号">
                 </div>
-                <button type="submit" class="btn btn-default" ng-click="vmManager.searchBySupplierId('grade')"><i class="fa fa-search"></i></button>
+                <button type="submit" class="btn btn-default" ng-click="vmManager.filterBySupplierId()"><i class="fa fa-search"></i></button>
             </form>
         </nav>
 
@@ -113,7 +113,6 @@
                         </table>
                     </content>
                 </dialog>
-
                 @* 填写评分信息 *@
                 <dialog ng-if="editModelDialog.open" modal data-close="editModelDialog.close()" style="width:40%">
                     <content dialog-title class="editInfo"><i class="fa fa-th-list"></i> 供应商稽核评分信息</content>
