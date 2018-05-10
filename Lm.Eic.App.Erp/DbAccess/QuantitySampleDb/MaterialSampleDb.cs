@@ -518,7 +518,10 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             model.MaterialBelongDepartment = dr["MB068"].ToString();
             model.Memo = dr["MB028"].ToString();
         }
-
+        private string MaterialBelongDepartmentConvter(string department)
+        {
+            return null;
+        }
         /// <summary>
         /// 由物料料号得到物料所有相关信息
         /// </summary>

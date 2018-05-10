@@ -51,7 +51,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnDates;
         }
 
-
+        public OpResult checkIqcConfigItem(InspectionConfigMasterVm datas,string inspectionStatus)
+        {
+            OpResult opResult = OpResult.SetSuccessResult("", false);
+            if (datas!=null)
+            {
+                string isActivate = (inspectionStatus == "变更中") ? "false" : "True";
+                datas.MaterialIqcInspetionItem.ForEach(e =>
+                {
+                    e.CheckPerson = datas.OpPerson;
+                    e.CheckStatus = inspectionStatus;
+                    e.CheckDate = DateTime.Now.Date;
+                    e.OpSign = OpMode.Edit;
+                    e.IsActivate = isActivate;
+                });
+                opResult= StoreIqcInspectionItemConfig(datas.MaterialIqcInspetionItem);
+                opResult.Entity = datas;
+            }
+            return opResult;
+        }
         /// <summary>
         /// 物料号查询检验项目
         /// （添加测试条件）
@@ -60,7 +78,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
-            return InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
+            return InspectionManagerCrudFactory.IqcItemConfigCrud.FindAllIqcInspectionItemConfigDatasBy(materialId);
         }
         /// <summary>
         ///  在数据库中是否存在此料号
@@ -91,7 +109,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreIqcInspectionItemConfig(List<InspectionIqcItemConfigModel> modelList)
         {
-            return InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfigDatas(modelList);
+            OpResult opresult= InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfigDatas(modelList);
+            if (opresult.Result)
+            { InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.initialStoreCheckModel<InspectionIqcItemConfigModel>(modelList,"IQC"); }
+
+            return opresult;
         }
 
 

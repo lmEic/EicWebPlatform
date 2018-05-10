@@ -33,6 +33,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
         }
     }
 
+    /// <summary>
+    ///InspectionItemConfigCheckModel
+    /// </summary>
+    public class InspectionItemConfigCheckModelMapping : EntityTypeConfiguration<InspectionItemConfigCheckModel>
+    {
+        public InspectionItemConfigCheckModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_InspectionItemConfigCheck");
+        }
+    }
     #region  IQC
     /// <summary>
     /// 

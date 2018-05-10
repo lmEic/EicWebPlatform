@@ -254,7 +254,152 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
 
     }
-
+    /// <summary>
+    ///测试核对模式
+    /// </summary>
+    [Serializable]
+    public partial class InspectionItemConfigCheckModel
+    {
+        public InspectionItemConfigCheckModel()
+        { }
+        #region Model
+        private string _materialid;
+        /// <summary>
+        ///料号
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        private string _materailname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string MaterailName
+        {
+            set { _materailname = value; }
+            get { return _materailname; }
+        }
+        private string _materialspecify;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string MaterialSpecify
+        {
+            set { _materialspecify = value; }
+            get { return _materialspecify; }
+        }
+        private string _materialrawid;
+        /// <summary>
+        ///图号
+        /// </summary>
+        public string MaterialrawID
+        {
+            set { _materialrawid = value; }
+            get { return _materialrawid; }
+        }
+        private string _materialbelongdepartment;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string MaterialBelongDepartment
+        {
+            set { _materialbelongdepartment = value; }
+            get { return _materialbelongdepartment; }
+        }
+        private string _inspectionitemdatas;
+        /// <summary>
+        ///数据
+        /// </summary>
+        public string InspectionItemDatas
+        {
+            set { _inspectionitemdatas = value; }
+            get { return _inspectionitemdatas; }
+        }
+        private DateTime _inspectioniteminputdate;
+        /// <summary>
+        ///项目
+        /// </summary>
+        public DateTime InspectionItemInPutDate
+        {
+            set { _inspectioniteminputdate = value; }
+            get { return _inspectioniteminputdate; }
+        }
+        private int _inspectionitemcount;
+        /// <summary>
+        ///数据
+        /// </summary>
+        public int InspectionItemCount
+        {
+            set { _inspectionitemcount = value; }
+            get { return _inspectionitemcount; }
+        }
+        private string _checkstatus;
+        /// <summary>
+        ///状态
+        /// </summary>
+        public string CheckStatus
+        {
+            set { _checkstatus = value; }
+            get { return _checkstatus; }
+        }
+        private string _itemconfigversion;
+        /// <summary>
+        ///版本
+        /// </summary>
+        public string ItemConfigVersion
+        {
+            set { _itemconfigversion = value; }
+            get { return _itemconfigversion; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人员
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
     #endregion
 
 
@@ -487,7 +632,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
     }
 
-
+  
 
 
     /// <summary>
@@ -2856,7 +3001,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get
             {
                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
-                return     MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").Count();
+                {
+                    var mm = MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").ToList();
+                    return (mm != null && mm.Count > 0) ?
+                      mm.Count : MaterialIqcInspetionItem.Count;
+                }
+                    
                else return  0;
             }
         }
@@ -2901,9 +3051,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get
             {
                 if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
-                    return MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").LastOrDefault().ConfigVersion;
+                {
+                    var mm = MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").ToList();
+                    return (mm != null && mm.Count > 0) ?
+                      mm.LastOrDefault().ConfigVersion : MaterialIqcInspetionItem.LastOrDefault().ConfigVersion;
+                }
                 else return string.Empty;
             }
+        }
+
+        public string OpPerson
+        {
+            set;get;
         }
         public List<InspectionIqcItemConfigModel> MaterialIqcInspetionItem
         {

@@ -81,6 +81,18 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         /// <summary>
+        /// checkStatusData
+        /// </summary>
+        /// <param name="checkStatusData"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult ChcekConigfigDatas(InspectionConfigMasterVm checkStatusData,string inspectionStatus)
+        {
+            var datas = InspectionService.ConfigManager.IqcItemConfigManager.checkIqcConfigItem(checkStatusData, inspectionStatus);
+            return DateJsonResult(datas);
+
+        }
+        /// <summary>
         /// 在数据库中是否存在此料号
         /// </summary>
         /// <param name="materialId"></param>

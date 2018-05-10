@@ -10,6 +10,8 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.App.Erp.Bussiness.QmsManage;
+using System.Reflection;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
@@ -33,6 +35,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionModeSwithConfigCrud>(); }
         }
+
+        /// <summary>
+        /// 检验配置审核CRUD
+        /// </summary>
+        internal static InspectionItemConfigCheckCrud InspectionItemConfigCheckCrud
+        {
+            get { return OBulider.BuildInstance<InspectionItemConfigCheckCrud>(); }
+        }
+
+
 
         #region IQC Crud
         /// <summary>
@@ -233,6 +245,89 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
+    }
+
+
+    /// <summary>
+    /// 检验配置审核CRUD
+    /// </summary>
+    internal class InspectionItemConfigCheckCrud : CrudBase<InspectionItemConfigCheckModel, IInspectionItemConfigCheckRepository>
+    {
+        public InspectionItemConfigCheckCrud() : base(new InspectionItemConfigCheckRepository(), "检验配置审核")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddInspectionModeConfig);
+            this.AddOpItem(OpMode.Edit, EidtInspectionModeConfig);
+            this.AddOpItem(OpMode.Delete, DeleteInspectionModeConfig);
+        }
+
+        private OpResult DeleteInspectionModeConfig(InspectionItemConfigCheckModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+
+        private OpResult EidtInspectionModeConfig(InspectionItemConfigCheckModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        private OpResult AddInspectionModeConfig(InspectionItemConfigCheckModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        public PropertyInfo IsHasProperty<T>(T entity, string propertyName)
+        {
+            Type type = entity.GetType();
+            PropertyInfo pi = type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
+            return pi;
+        }
+        /// <summary>
+        /// 初始载入配置的审核数据
+        /// </summary>
+        /// <param name="MasterId"></param>
+        /// <returns></returns>
+        public OpResult initialStoreCheckModel<T>(List<T> Listentity,string belongDepartment=null) where T: class, new()
+        {
+            T entity = null;
+            string MasterId = string.Empty;
+            string inspectionItemDatas = string.Empty;
+            if (Listentity != null && Listentity.Count > 0)
+            {
+                entity = Listentity.FirstOrDefault();
+                Listentity.ForEach(e => {
+                    inspectionItemDatas += ObjectSerializer.GetJson<T>(e) + ";";
+                });
+            }
+            if (entity == null) return OpResult.SetErrorResult("此物料已经存在，不用初始化保存");
+             PropertyInfo pi = IsHasProperty<T>(entity, "MaterialId");
+              MasterId =( pi != null)? pi.GetValue(entity, null) as string  :string.Empty;
+            if (irep.IsExist(e => e.MaterialId == MasterId)) return OpResult.SetErrorResult("此物料已经存在，不用初始化保存");
+            List<ProductMaterailDto> materialInfoList = QmsDbManager.MaterialInfoDb.GetProductInfoBy(MasterId).ToList();
+            if (materialInfoList != null && materialInfoList.Count > 0)
+            {
+                ProductMaterailDto ms = materialInfoList.FirstOrDefault();
+                if (belongDepartment == null) belongDepartment = ms.MaterialBelongDepartment;
+                return this.Store(new InspectionItemConfigCheckModel()
+                {
+                    MaterialId = ms.ProductMaterailId,
+                    MaterailName = ms.MaterailName,
+                    MaterialBelongDepartment = belongDepartment,
+                    MaterialrawID = ms.MaterialrawID,
+                    MaterialSpecify = ms.MaterialSpecify,
+                    InspectionItemDatas = inspectionItemDatas,
+                    CheckStatus ="未审核",
+                    OpSign=OpMode.Add,
+                    InspectionItemInPutDate=DateTime.Now.Date.ToDate(),
+                    ItemConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + "001",
+                    InspectionItemCount=0,
+                },true);
+            }
+            return OpResult.SetErrorResult("没有此物料");
+        }
+
     }
 
 }

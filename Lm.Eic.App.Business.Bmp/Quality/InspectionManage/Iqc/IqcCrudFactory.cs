@@ -77,11 +77,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId&&e.IsActivate.ToUpper()=="TRUE").OrderBy(e => e.InspectionItemIndex).ToList();
         }
+
+        public List<InspectionIqcItemConfigModel> FindAllIqcInspectionItemConfigDatasBy(string materialId)
+        {
+            return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
+        }
         public List<InspectionIqcItemConfigModel> FindIqcInspectionItemConfigDatasBy(string checkStatus, DateTime dateFrom, DateTime dateTo)
         {
             DateTime startOpdate = dateFrom.ToDate();
             DateTime endOpDate = dateTo.ToDate();
-            return irep.Entities.Where(e => e.OpDate>= startOpdate && e.OpDate<=endOpDate).OrderBy(e => e.InspectionItemIndex).ToList();
+          return ( checkStatus==null|| checkStatus==string.Empty) ?
+                 irep.Entities.Where(e => e.OpDate >= startOpdate && e.OpDate <= endOpDate).OrderBy(e => e.InspectionItemIndex).ToList():
+            irep.Entities.Where(e => e.OpDate>= startOpdate && e.OpDate<=endOpDate & e.CheckStatus== checkStatus).OrderBy(e => e.InspectionItemIndex).ToList();
         }
         /// <summary>
         /// 
@@ -148,6 +155,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             });
             opResult = i.ToOpResult(OpContext);
             if (i == modeldatas.Count) opResult.Entity = modeldatas;
+
+            
             return opResult;
 
 
@@ -202,7 +211,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         internal List<InspectionIqcMasterModel> GetIqcInspectionMasterDatasBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId && e.InspectionStatus== "已审核").ToList();
         }
         internal List<InspectionIqcMasterModel> GetIqcMasterContainDatasBy(string orderId)
         {
