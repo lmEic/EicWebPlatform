@@ -2,9 +2,16 @@
 developmentModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     var development = {};
     var quaInspectionManageUrl = "/quaInspectionManage/";
-    ///////////////////////////////////////////////////iqc检验项目配置模块//////////////////////////////////////////////////////////////////////////
+   
+
   
 
     return development;
 
 })
+
+developmentModule.controller("developmentInputRecordCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
+    ///录入
+    
+});
+///

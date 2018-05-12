@@ -11,5 +11,9 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        public ActionResult DocumentInputRecord()
+        {
+            return View();
+        }
     }
 }

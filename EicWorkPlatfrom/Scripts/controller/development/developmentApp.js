@@ -1,20 +1,23 @@
-﻿angular.module('bpm.developmentApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
+﻿/// <reference path="../../common/angulee.js" />
+/// <reference path="../../angular.min.js" />
+
+angular.module('bpm.developmentApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
     //检验项目Url前缀
     var inspectionUrlPrefix = leeHelper.controllers.developmentProductsManage + "/";
-
-    //--------------IQC检验项目管理-------------------------
-    $stateProvider.state('iqcInspectionItemConfiguration', {
+    
+    //--------------设计变更录入-------------------------
+    $stateProvider.state('documentInputRecord', {
         //IQC检验项目配置
-        templateUrl: inspectionUrlPrefix + 'IqcInspectionItemConfiguration'
+        templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'
     })
 
-       //IQC检验方式配置
-    .state('iqcInspectionModeConfiguration', {
-        templateUrl: inspectionUrlPrefix + 'IqcInspectionModeConfiguration'
-    })
+       //
+    //.state('documentInputRecord', {
+    //    templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'
+    //})
 })
 .factory('developmentDataService', function (ajaxService) {
     var dataAccess = {};

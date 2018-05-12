@@ -306,7 +306,10 @@ var leeHelper = (function () {
         //华为协同
         TolCooperateWithHw: 'TolCooperateWithHw',
         //智能隧道
-        TolManPowerTunnel: 'TolManPowerTunnel'
+        TolManPowerTunnel: 'TolManPowerTunnel',
+        //质量抽样检验控制器
+        developmentProductsManage: 'DevelopmentProductsManage',
+
     };
     return {
         ///控制器名称
