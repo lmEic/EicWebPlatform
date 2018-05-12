@@ -56,8 +56,9 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcspectionItemConfigDatas(string materialId)
         {
-            //得到此物料的品名 ，规格 ，供应商，图号
+            //得到此物料的品名 ，规格 ，供应商，图号  
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
+            // InspectionService.ConfigManager.ConfigCheckManager.GetItemConfigCheckDataBy(materialId);
             //添加物料检验项
             var InspectionItemConfigModelList = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcspectionItemConfigDatasBy(materialId);
 
@@ -72,23 +73,22 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="dateTo">结束日期</param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult QueryIqcConfigInfos(string checkStatus, DateTime dateFrom, DateTime dateTo)
+        public ContentResult QueryIqcConfigInfos(string checkStatus, string department, DateTime dateFrom, DateTime dateTo)
         {
 
-            var datas = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcspectionItemConfigDatasBy(checkStatus,  dateFrom, dateTo);
-
+            var datas = InspectionService.ConfigManager.ConfigCheckManager.GetIqcspectionItemConfigDatasBy(checkStatus, department, dateFrom, dateTo);
+        
             return DateJsonResult(datas);
         }
-
         /// <summary>
         /// checkStatusData
         /// </summary>
         /// <param name="checkStatusData"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult ChcekConigfigDatas(InspectionConfigMasterVm checkStatusData,string inspectionStatus)
+        public ContentResult ChcekConigfigDatas(InspectionItemConfigCheckModel checkStatusData, string opProperty)
         {
-            var datas = InspectionService.ConfigManager.IqcItemConfigManager.checkIqcConfigItem(checkStatusData, inspectionStatus);
+            var datas = InspectionService.ConfigManager.ConfigCheckManager.checkIqcConfigItem(checkStatusData , opProperty);
             return DateJsonResult(datas);
 
         }

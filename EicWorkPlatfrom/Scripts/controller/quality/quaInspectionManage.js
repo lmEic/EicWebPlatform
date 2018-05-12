@@ -94,21 +94,22 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 
     ///获取Iqc物料配置表单数据 
-    quality.getIqcConfigInfos = function (checkStatus, dateFrom, dateTo) {
+    quality.getIqcConfigInfos = function (checkStatus, department, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'QueryIqcConfigInfos';
         return ajaxService.getData(url, {
             dateFrom: dateFrom,
             dateTo: dateTo,
             checkStatus: checkStatus,
+            department: department,
         })
     };
     ///Iqc物料配置表单审核 
-    quality.chcekConigfigDatas = function (checkStatusData, inspectionStatus)
+    quality.chcekConigfigDatas = function (checkStatusData, opProperty)
     {
         var url = quaInspectionManageUrl + 'ChcekConigfigDatas';
         return ajaxService.postData(url, {
             checkStatusData: checkStatusData,
-            inspectionStatus: inspectionStatus,
+            opProperty: opProperty,
         })
     }
 
@@ -2269,7 +2270,7 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         formStatuses: [{ label: "全部", value: "全部" }, { label: "未抽检", value: "未抽检" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         editIqcWindowWidth: "100%",
-   
+        qualPorty:null,
 
         itemConfigVersion: null,
         itemConfigVersionList:[],
@@ -2323,15 +2324,16 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         changeCheckModal: function (inspectionStatus) {
 
             leeHelper.setUserData(vmManager.currentItem);
-
+            vmManager.currentItem.CheckStatus = inspectionStatus;
             console.log(vmManager.currentItem);
-            qualityInspectionDataOpService.chcekConigfigDatas(vmManager.currentItem,inspectionStatus).then(function (opresult) {
+            qualityInspectionDataOpService.chcekConigfigDatas(vmManager.currentItem, "IQC").then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                         vmManager.checkModal.$promise.then(vmManager.checkModal.close);
                         vmManager.currentItem.status = inspectionStatus;
                         vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.hide);
-
+                        vmManager.detailDataSet = opresult.Entity;
+                        vmManager.detailDataSource = opresult.Entity;
                     });
                 }
             })
@@ -2339,12 +2341,45 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
       
 
         //获取Iqc置配表单数据
-        queryIqcOrderInspectionInfo: function () {
+        queryInspectionCnfigInfo: function (i) {
+            var depa = "IQC";
+            if (i != 0) depa = vmManager.selectedFqcDepartment;
+            vmManager.qualPorty = i;
+
             vmManager.iqcDataSets = vmManager.iqcDataSource = [];
-            $scope.searchPromise = qualityInspectionDataOpService.getIqcConfigInfos(vmManager.checkStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {  
+            $scope.searchPromise = qualityInspectionDataOpService.getIqcConfigInfos(vmManager.checkStatus, depa, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 vmManager.iqcDataSource = editDatas;
                 vmManager.iqcDataSets = editDatas;
+             
             })
+        },
+        //得到详细说表
+        getDetailDatas: function (item) {
+          
+            vmManager.currentItem = item;
+            console.log(item);
+            vmManager.isShowDetailWindow = true;
+            if (vmManager.qualPorty = 0) {
+                $scope.searchPromise = qualityInspectionDataOpService.getIqcspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+                    vmManager.masterInfo = item;
+                    vmManager.detailDataSet = datas.InspectionItemConfigModelList;
+                    vmManager.detailDataSource = datas.InspectionItemConfigModelList;
+                })
+            };
+            if (vmManager.qualPorty = 1) {
+                $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+                    vmManager.masterInfo = item;
+                    vmManager.detailDataSet = datas.InspectionItemConfigModelList;
+                    vmManager.detailDataSource = datas.InspectionItemConfigModelList;
+                })
+            };
+            if (vmManager.qualPorty = 3) {
+                $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+                    vmManager.masterInfo = item;
+                    vmManager.detailDataSet = datas.InspectionItemConfigModelList;
+                    vmManager.detailDataSource = datas.InspectionItemConfigModelList;
+                })
+            };
         },
 
         //审核
@@ -2357,13 +2392,7 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
                 vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.show);
             };
         },
-        getDetailDatas:function(item)
-        {
-            vmManager.currentItem = item;
-            vmManager.isShowDetailWindow = true;
-            vmManager.detailDataSet = vmManager.currentItem.MaterialIqcInspetionItem;
-            vmManager.detailDataSource = vmManager.currentItem.MaterialIqcInspetionItem;
-        },
+      
         refresh: function () {
             vmManager.isShowDetailWindow = false;
             vmManager.isShowMasterErpFrom = false;

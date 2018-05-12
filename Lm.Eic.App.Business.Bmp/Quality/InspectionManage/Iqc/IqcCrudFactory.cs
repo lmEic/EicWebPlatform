@@ -78,6 +78,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Entities.Where(e => e.MaterialId == materialId&&e.IsActivate.ToUpper()=="TRUE").OrderBy(e => e.InspectionItemIndex).ToList();
         }
 
+
+
         public List<InspectionIqcItemConfigModel> FindAllIqcInspectionItemConfigDatasBy(string materialId)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
@@ -130,6 +132,42 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //  InspectionItemInPutDate, CheckStatus, CheckPerson, CheckDate, ConfigVersion,
             SetFixFieldValue(modeldatas, OpMode.Add);
             int i = 0;
+            //如果存在 就修改   
+            modeldatas.ForEach(m =>
+            {
+                if(m.CheckStatus!= "变更中")
+                {
+                    if (this.irep.IsExist(e => e.MaterialId == m.MaterialId && e.InspectionItem == m.InspectionItem))
+                    { m.OpSign = OpMode.Edit; }
+                    else
+                    {
+                        m.InspectionItemInPutDate = DateTime.Now.Date.ToDate();
+                        m.CheckDate = DateTime.Now.Date.ToDate();
+                        m.CheckStatus = "未审核";
+                    }
+                    opResult = this.Store(m);
+                    if (opResult.Result) i = i + opResult.RecordCount;
+                }
+                else
+                {
+                    m.InspectionItemInPutDate = DateTime.Now.Date.ToDate();
+                    m.CheckDate = DateTime.Now.Date.ToDate();
+                    m.CheckStatus = "未审核";
+                    opResult = this.Store(m);
+                    if (opResult.Result) i = i + opResult.RecordCount;
+                };
+               
+            });
+            opResult = i.ToOpResult(OpContext);
+            if (i == modeldatas.Count) opResult.Entity = modeldatas;
+            return opResult;
+        }
+
+
+        internal OpResult UPdateCheckInspectionItemConfigDatas(List<InspectionIqcItemConfigModel> modeldatas)
+        {
+            OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
+            int i = 0;
             InspectionIqcItemConfigModel oldModel = null;
             string configVersion = "001";
             //如果存在 就修改   
@@ -137,29 +175,55 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (this.irep.IsExist(e => e.MaterialId == m.MaterialId && e.InspectionItem == m.InspectionItem))
                 {
-                     oldModel = FindFirstOrDefaultDataBy(m.MaterialId, m.InspectionItem);
+                    oldModel = FindFirstOrDefaultDataBy(m.MaterialId, m.InspectionItem);
                     //如果版本变更 则添加新的版本信息
-                  if (oldModel.CheckStatus == "变更中" && oldModel.CheckStatus != null)
+                    if (m.CheckStatus == "变更中" && oldModel.CheckStatus != null)
                     {
-                        configVersion = (m.ConfigVersion.Split('.').ToList().LastOrDefault().ToInt() + 1).ToString("000");
-                        m.ConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + configVersion;
+                        //opResult= irep.Update(e => e.Id_Key == oldModel.Id_Key,e=>new InspectionIqcItemConfigModel { IsActivate = "False" }).ToOpResult_Eidt("旧版失效");
+                        //if (opResult.Result)
+                        //{
+                            configVersion = (m.ConfigVersion.Split('.').ToList().LastOrDefault().ToInt() + 1).ToString("000");
+                            m.ConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + configVersion;
+                            m.OpSign = OpMode.Add;
+                        //}
                     }
-                  else   m.OpSign = OpMode.Edit;
+                    else {
+                        m.InspectionItemInPutDate = DateTime.Now.Date.ToDate();
+                        m.CheckDate = DateTime.Now.Date.ToDate();
+                    }
+                    opResult = this.Store(m);
+                    i = (opResult.Result)? i + opResult.RecordCount:i;
                 }
-                else m.ConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + "001";
-                m.InspectionItemInPutDate = DateTime.Now.Date.ToDate();
-                m.CheckDate = DateTime.Now.Date.ToDate();
-                opResult = this.Store(m);
-                if (opResult.Result)
-                    i = i + opResult.RecordCount;
             });
             opResult = i.ToOpResult(OpContext);
             if (i == modeldatas.Count) opResult.Entity = modeldatas;
 
-            
+
             return opResult;
 
 
+        }
+
+        internal OpResult OpCheckInspectionItemConfigDates(InspectionItemConfigCheckModel modelData)
+        {
+            var datas = irep.Entities.Where(e => e.MaterialId == modelData.MaterialId).ToList();
+            OpResult opResult = OpResult.SetSuccessResult("", false);
+            if (datas != null)
+            {
+                string isActivate = "True";
+                datas.ForEach(e =>
+                {
+                    e.CheckPerson = modelData.OpPerson;
+                    e.CheckStatus = modelData.CheckStatus;
+                    e.CheckDate = DateTime.Now.Date;
+                    e.OpSign = OpMode.Edit;
+                    e.IsActivate = isActivate;
+                    e.ConfigVersion = modelData.ItemConfigVersion;
+                });
+                opResult = UPdateCheckInspectionItemConfigDatas(datas);
+                opResult.Entity = datas;
+            }
+            return opResult;
         }
     }
 

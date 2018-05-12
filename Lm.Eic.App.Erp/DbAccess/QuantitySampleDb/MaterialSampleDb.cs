@@ -515,12 +515,49 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             model.UnitedName = dr["MB004"].ToString();
             model.UniteCount = dr["MB015"].ToString();
             model.MaterialrawID = dr["MB029"].ToString();
-            model.MaterialBelongDepartment = dr["MB068"].ToString();
+            model.MaterialBelongDepartment = DepartmentConvert(dr["MB068"].ToString());
             model.Memo = dr["MB028"].ToString();
         }
-        private string MaterialBelongDepartmentConvter(string department)
+        private string DepartmentConvert(string department)
         {
-            return null;
+           switch(department.Trim())
+            {
+                case "DE":
+                    return "设备课";
+                case "EAC":
+                    return "自动中心";
+                case "MS1":
+                    return "制一课";
+                case "MS10":
+                    return "制十课";
+                case "MS2":
+                    return "制二课";
+                case "MS3":
+                    return "制三课";
+                case "MS4":
+                    return "制四课";
+                case "MD":
+                    return "制造部";
+                case "MS5":
+                    return "制五课";
+                case "MS6":
+                    return "制六课";
+                case "MS7":
+                    return "制七课";
+                case "MS8":
+                    return "制八课";
+                case "MS9":
+                    return "制九课";
+                case "PF":
+                    return "电镀厂";
+                case "PT":
+                case "PT1":
+                    return "成型课";
+                case "RD":
+                    return "开发部";
+                default:  
+                    return "无";
+            }
         }
         /// <summary>
         /// 由物料料号得到物料所有相关信息

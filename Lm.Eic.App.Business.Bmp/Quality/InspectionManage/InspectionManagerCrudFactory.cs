@@ -278,7 +278,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        public PropertyInfo IsHasProperty<T>(T entity, string propertyName)
+       private  PropertyInfo IsHasProperty<T>(T entity, string propertyName)
         {
             Type type = entity.GetType();
             PropertyInfo pi = type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
@@ -294,22 +294,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             T entity = null;
             string MasterId = string.Empty;
             string inspectionItemDatas = string.Empty;
+            int inspectionItemCount = 0;
             if (Listentity != null && Listentity.Count > 0)
             {
                 entity = Listentity.FirstOrDefault();
                 Listentity.ForEach(e => {
                     inspectionItemDatas += ObjectSerializer.GetJson<T>(e) + ";";
+                    inspectionItemCount++;
                 });
             }
             if (entity == null) return OpResult.SetErrorResult("此物料已经存在，不用初始化保存");
              PropertyInfo pi = IsHasProperty<T>(entity, "MaterialId");
               MasterId =( pi != null)? pi.GetValue(entity, null) as string  :string.Empty;
-            if (irep.IsExist(e => e.MaterialId == MasterId)) return OpResult.SetErrorResult("此物料已经存在，不用初始化保存");
             List<ProductMaterailDto> materialInfoList = QmsDbManager.MaterialInfoDb.GetProductInfoBy(MasterId).ToList();
             if (materialInfoList != null && materialInfoList.Count > 0)
             {
                 ProductMaterailDto ms = materialInfoList.FirstOrDefault();
                 if (belongDepartment == null) belongDepartment = ms.MaterialBelongDepartment;
+                if (irep.IsExist(e => e.MaterialId == MasterId && e.MaterialBelongDepartment== belongDepartment)) return OpResult.SetErrorResult("此物料已经存在，不用初始化保存");
                 return this.Store(new InspectionItemConfigCheckModel()
                 {
                     MaterialId = ms.ProductMaterailId,
@@ -322,12 +324,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     OpSign=OpMode.Add,
                     InspectionItemInPutDate=DateTime.Now.Date.ToDate(),
                     ItemConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + "001",
-                    InspectionItemCount=0,
+                    InspectionItemCount= inspectionItemCount,
                 },true);
             }
             return OpResult.SetErrorResult("没有此物料");
         }
+        public List<InspectionItemConfigCheckModel> GetItemConfigCheckDates(string materialId)
+        {
+            return  irep.Entities.Where(e =>e.MaterialId== materialId).ToList();
+        }
+        public List<InspectionItemConfigCheckModel> GetItemConfigCheckDates(string checkStatus, string department, DateTime dateFrom, DateTime dateTo)
+        {
+            DateTime startOpdate = dateFrom.ToDate();
+            DateTime endOpDate = dateTo.ToDate();
 
+            return (checkStatus == null || checkStatus == string.Empty) ?
+                   irep.Entities.Where(e => e.InspectionItemInPutDate >= startOpdate && e.InspectionItemInPutDate <= endOpDate&&e.MaterialBelongDepartment== department).ToList() :
+              irep.Entities.Where(e => e.InspectionItemInPutDate >= startOpdate && e.InspectionItemInPutDate <= endOpDate & e.CheckStatus == checkStatus && e.MaterialBelongDepartment == department).ToList();
+        }
     }
 
 }
