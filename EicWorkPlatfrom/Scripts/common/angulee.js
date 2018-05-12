@@ -308,7 +308,7 @@ var leeHelper = (function () {
         //智能隧道
         TolManPowerTunnel: 'TolManPowerTunnel',
         //质量抽样检验控制器
-        developmentProductsManage: 'DevelopmentProductsManage',
+        developmentProductsManage: 'Development',
 
     };
     return {

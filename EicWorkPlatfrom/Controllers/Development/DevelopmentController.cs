@@ -6,11 +6,14 @@ namespace EicWorkPlatfrom.Controllers
     {
         //
         // GET: /Development/
-
+        [NoAuthenCheck]
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
+        [NoAuthenCheck]
+        [HttpGet]
         public ActionResult DocumentInputRecord()
         {
             return View();

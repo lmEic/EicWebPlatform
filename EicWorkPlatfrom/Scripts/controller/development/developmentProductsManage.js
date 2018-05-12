@@ -10,8 +10,8 @@ developmentModule.factory("qualityInspectionDataOpService", function (ajaxServic
 
 })
 
-developmentModule.controller("developmentInputRecordCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
-    ///录入
+developmentModule.controller("developmentInputRecordCtrl", function ($scope, qualityInspectionDataOpService, $modal, $alert) {
+    ///录入开发部记录设计更变文档
     
 });
 ///
