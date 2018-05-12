@@ -1547,7 +1547,6 @@
     <Content Include="Views\CommonTpl\YearButtonTpl.cshtml" />
     <Content Include="Views\QuaInspectionManage\IpqcInspectionItemConfiguration.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionConfigCheckForm.cshtml" />
-    <Content Include="Views\Development\IqcInspectionModeConfiguration.cshtml" />
     <Content Include="Views\Development\DocumentInputRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
