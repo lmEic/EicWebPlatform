@@ -94,12 +94,13 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 
     ///获取Iqc物料配置表单数据 
-    quality.getIqcConfigInfos = function (checkStatus, department, dateFrom, dateTo) {
-        var url = quaInspectionManageUrl + 'QueryIqcConfigInfos';
+    quality.getConfigCheckInfos = function (checkStatus, qualProperty, department, dateFrom, dateTo) {
+        var url = quaInspectionManageUrl + 'QueryConfigCheckInfos';
         return ajaxService.getData(url, {
             dateFrom: dateFrom,
             dateTo: dateTo,
             checkStatus: checkStatus,
+            qualProperty:qualProperty,
             department: department,
         })
     };
@@ -2250,7 +2251,9 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
             { value: "PT1", label: "成型课" }],
         checkStatus:null,
         checkStatues: [{ value: null, label: "全部" }, { value: "已审核", label: "已审核" }, { value: "未审核", label: "未审核" }],
-        fqcDepartments: [
+       
+        selecteDepartment: null, 
+        selecteDepartments: [
         { label: "全部", value: "全部" },
         { value: "制一课", label: "制一课" },
         { value: "制二课", label: "制二课" },
@@ -2260,13 +2263,12 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         { value: "制七课", label: "制七课" },
         { value: "制十课", label: "制十课" },
         { value: "成型课", label: "成型课" }],
+
         dateFrom: null,
         dateTo: null,
         fqcDateFrom: null,
         fqcDateTo: null,
         formStatus: "全部",
-        selectedDepartment: "",
-        selectedFqcDepartment: "",
         formStatuses: [{ label: "全部", value: "全部" }, { label: "未抽检", value: "未抽检" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         editIqcWindowWidth: "100%",
@@ -2275,27 +2277,35 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         itemConfigVersion: null,
         itemConfigVersionList:[],
         
-        masterInfo:[],
+        masterInfo: [],
 
-        isShowDetailWindow: false,
-        isShowMasterDetailFrom: false,
-        isShowMasterErpFrom: true,
+       
+
+        checkProperty: null,
+     
+
         currentItem: null,
 
-        detailDataSet: [],
-        detailDataSource: [],
         InspectionItemDatasArr: [],
        
-        dataSets: [],
+        isIqcShowDetailWindow: false,
+        isFqcShowDetailWindow: false,
+        isIpqcShowMasterDetailFrom: false,
+
         fqcDataSource: [],
         fqcDataSets: [],
 
         iqcDataSets: [],
         iqcDataSource: [],
 
+        ipqcDataSets: [],
+        ipqcDataSource: [],
+
         isShowTips: false,
         selectMasterItem: null,
       
+        itemConfigVersionListr:[],
+
         //审核模态框
         checkModal: $modal({
             title: "审核提示",
@@ -2326,7 +2336,7 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.CheckStatus = inspectionStatus;
             console.log(vmManager.currentItem);
-            qualityInspectionDataOpService.chcekConigfigDatas(vmManager.currentItem, "IQC").then(function (opresult) {
+            qualityInspectionDataOpService.chcekConigfigDatas(vmManager.currentItem, vmManager.checkProperty).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                         vmManager.checkModal.$promise.then(vmManager.checkModal.close);
@@ -2341,50 +2351,91 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
       
 
         //获取Iqc置配表单数据
-        queryInspectionCnfigInfo: function (i) {
-            var depa = "IQC";
-            if (i != 0) depa = vmManager.selectedFqcDepartment;
-            vmManager.qualPorty = i;
-
+        queryIqcInspectionCnfigInfo: function (i) {
             vmManager.iqcDataSets = vmManager.iqcDataSource = [];
-            $scope.searchPromise = qualityInspectionDataOpService.getIqcConfigInfos(vmManager.checkStatus, depa, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+            $scope.searchPromise = qualityInspectionDataOpService.getConfigCheckInfos(vmManager.checkStatus, "IQC", "IQC", $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 vmManager.iqcDataSource = editDatas;
                 vmManager.iqcDataSets = editDatas;
              
             })
         },
+        queryFqcInspectionCnfigInfo: function (i) {
+            vmManager.fqcDataSets = vmManager.fqcDataSource = [];
+            $scope.searchPromise = qualityInspectionDataOpService.getConfigCheckInfos(vmManager.checkStatus, "FQC",vmManager.selecteDepartment, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+                vmManager.fqcDataSource = editDatas;
+                vmManager.fqcDataSets = editDatas;
+
+            })
+        },
+        queryIpqcInspectionCnfigInfo: function (i) {
+            vmManager.fqcDataSets = vmManager.fqcDataSource = [];
+            $scope.searchPromise = qualityInspectionDataOpService.getConfigCheckInfos(vmManager.checkStatus, "IPQC", vmManager.selecteDepartment, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+                vmManager.fqcDataSource = editDatas;
+                vmManager.fqcDataSets = editDatas;
+            })
+        },
         //得到详细说表
-        getDetailDatas: function (item) {
-          
+        getIqcDetailDatas: function (item) {
             vmManager.currentItem = item;
-            console.log(item);
-            vmManager.isShowDetailWindow = true;
-            if (vmManager.qualPorty = 0) {
+            vmManager.isIqcShowDetailWindow = true;
                 $scope.searchPromise = qualityInspectionDataOpService.getIqcspectionItemConfigDatas(item.MaterialId).then(function (datas) {
                     vmManager.masterInfo = item;
-                    vmManager.detailDataSet = datas.InspectionItemConfigModelList;
-                    vmManager.detailDataSource = datas.InspectionItemConfigModelList;
+                    vmManager.iqcDetailDataSet = datas.InspectionItemConfigModelList;
+                    vmManager.iqcDetailDataSource = datas.InspectionItemConfigModelList;
                 })
-            };
-            if (vmManager.qualPorty = 1) {
+           
+            //if (vmManager.qualPorty = 1) {
+            //    $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+            //        vmManager.masterInfo = item;
+            //        vmManager.detailDataSet = datas.InspectionItemConfigModelList;
+            //        vmManager.detailDataSource = datas.InspectionItemConfigModelList;
+            //    })
+            //};
+            //if (vmManager.qualPorty = 3) {
+            //    $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+            //        vmManager.masterInfo = item;
+            //        vmManager.detailDataSet = datas.InspectionItemConfigModelList;
+            //        vmManager.detailDataSource = datas.InspectionItemConfigModelList;
+            //    })
+            //};
+        },
+        getFqcDetailDatas: function (item) {
+            vmManager.currentItem = item;
+            console.log(item);
+            vmManager.isFqcShowDetailWindow = true;
                 $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+                    console.log(datas);
                     vmManager.masterInfo = item;
-                    vmManager.detailDataSet = datas.InspectionItemConfigModelList;
-                    vmManager.detailDataSource = datas.InspectionItemConfigModelList;
-                })
-            };
-            if (vmManager.qualPorty = 3) {
-                $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+                    vmManager.fqcDetailDataSet = datas.InspectionItemConfigModelList;
+                    vmManager.fqcDetailDataSource = datas.InspectionItemConfigModelList;
+                });
+            
+            //if (vmManager.qualPorty = 3) {
+            //    $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
+            //        vmManager.masterInfo = item;
+            //        vmManager.detailDataSet = datas.InspectionItemConfigModelList;
+            //        vmManager.detailDataSource = datas.InspectionItemConfigModelList;
+            //    })
+            //};
+        },
+        getIpqcDetailDatas: function (item) {
+            vmManager.currentItem = item;
+            console.log(item);
+            vmManager.isIpqcShowDetailWindow = true;
+            $scope.searchPromise = qualityInspectionDataOpService.getIpqcInspectionItemConfigDatas(item.MaterialId).then(function (datas) {
                     vmManager.masterInfo = item;
-                    vmManager.detailDataSet = datas.InspectionItemConfigModelList;
-                    vmManager.detailDataSource = datas.InspectionItemConfigModelList;
-                })
-            };
+                    vmManager.IpqcDetailDataSet = datas.InspectionItemConfigModelList;
+                    vmManager.IpqcDetailDataSource = datas.InspectionItemConfigModelList;
+                }) ;
         },
 
         //审核
-        showCheckModal: function (item, iscancel) {
-            if (item) vmManager.currentItem = item;
+        showCheckModal: function (item, iscancel, checkproperty) {
+            if (item)
+            {
+                vmManager.currentItem = item;
+                vmManager.checkProperty = checkproperty;
+            }
             if (iscancel) {
                 vmManager.checkModal.$promise.then(vmManager.checkModal.show);
             }
@@ -2392,16 +2443,11 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
                 vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.show);
             };
         },
-      
         refresh: function () {
-            vmManager.isShowDetailWindow = false;
-            vmManager.isShowMasterErpFrom = false;
-            vmManager.isShowMasterDetailFrom = true;
-        },
-        refreshErp: function () {
-            vmManager.isShowDetailWindow = false;
-            vmManager.isShowMasterErpFrom = true;
-            vmManager.isShowMasterDetailFrom = false;
+            vmManager.isIqcShowDetailWindow = false;
+            vmManager.isFqcShowDetailWindow = false;
+            vmManager.isIpqcShowMasterErpFrom = false;
+           // vmManager.isShowMasterDetailFrom = false;
         }
     };
 

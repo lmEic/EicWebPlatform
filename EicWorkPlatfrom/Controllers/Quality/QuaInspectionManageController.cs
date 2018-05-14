@@ -73,11 +73,9 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="dateTo">结束日期</param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult QueryIqcConfigInfos(string checkStatus, string department, DateTime dateFrom, DateTime dateTo)
+        public ContentResult QueryConfigCheckInfos(string checkStatus,string  qualProperty, string department, DateTime dateFrom, DateTime dateTo)
         {
-
             var datas = InspectionService.ConfigManager.ConfigCheckManager.GetIqcspectionItemConfigDatasBy(checkStatus, department, dateFrom, dateTo);
-        
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -90,7 +88,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             var datas = InspectionService.ConfigManager.ConfigCheckManager.checkIqcConfigItem(checkStatusData , opProperty);
             return DateJsonResult(datas);
-
         }
         /// <summary>
         /// 在数据库中是否存在此料号

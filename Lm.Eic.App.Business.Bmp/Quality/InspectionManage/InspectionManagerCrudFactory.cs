@@ -73,8 +73,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         #region  FQC CRUD
-
-
         internal static InspectionFqcItemConfigCrud FqcItemConfigCrud
         {
             get { return OBulider.BuildInstance<InspectionFqcItemConfigCrud>(); }
@@ -95,8 +93,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         #endregion
-
-
         #region Ipqc CRUD
         internal static InspectionIpqcDatailCrud IpqcDatialCrud
         {
@@ -156,8 +152,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
     /// <summary>
     /// 检验方式转换配置CRUD
-    /// </summary>
-
+    /// </summary
     internal class InspectionModeSwithConfigCrud : CrudBase<InspectionModeSwitchConfigModel, IInspectionModeSwitchConfigRepository>
     {
         public InspectionModeSwithConfigCrud() : base(new InspectionModeSwitchConfigRepository(), "检验方式转换")
@@ -246,8 +241,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
     }
-
-
     /// <summary>
     /// 检验配置审核CRUD
     /// </summary>
@@ -337,7 +330,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             DateTime startOpdate = dateFrom.ToDate();
             DateTime endOpDate = dateTo.ToDate();
-
             return (checkStatus == null || checkStatus == string.Empty) ?
                    irep.Entities.Where(e => e.InspectionItemInPutDate >= startOpdate && e.InspectionItemInPutDate <= endOpDate&&e.MaterialBelongDepartment== department).ToList() :
               irep.Entities.Where(e => e.InspectionItemInPutDate >= startOpdate && e.InspectionItemInPutDate <= endOpDate & e.CheckStatus == checkStatus && e.MaterialBelongDepartment == department).ToList();

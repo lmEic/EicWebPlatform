@@ -1050,15 +1050,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public InspectionFqcItemConfigModel()
         { }
         #region Model
-        private string _isneedort;
-        /// <summary>
-        ///是否要ORT
-        /// </summary>
-        public string IsNeedORT
-        {
-            set { _isneedort = value; }
-            get { return _isneedort; }
-        }
         private string _materialid;
         /// <summary>
         ///料号
@@ -1068,15 +1059,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private string _inspectiondatagathertype;
-        /// <summary>
-        ///数据录入方式
-        /// </summary>
-        public string InspectionDataGatherType
-        {
-            set { _inspectiondatagathertype = value; }
-            get { return _inspectiondatagathertype; }
-        }
         private string _productdepartment;
         /// <summary>
         ///生产部门
@@ -1085,6 +1067,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _productdepartment = value; }
             get { return _productdepartment; }
+        }
+        private string _isneedort;
+        /// <summary>
+        ///是否要ORT
+        /// </summary>
+        public string IsNeedORT
+        {
+            set { _isneedort = value; }
+            get { return _isneedort; }
         }
         private string _inspectionitem;
         /// <summary>
@@ -1158,6 +1149,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmethod = value; }
             get { return _inspectionmethod; }
         }
+        private string _inspectiondatagathertype;
+        /// <summary>
+        ///数据录入方式
+        /// </summary>
+        public string InspectionDataGatherType
+        {
+            set { _inspectiondatagathertype = value; }
+            get { return _inspectiondatagathertype; }
+        }
         private string _sipinspectionstandard;
         /// <summary>
         ///Sip检验规则
@@ -1193,6 +1193,60 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionaql = value; }
             get { return _inspectionaql; }
+        }
+        private string _isactivate;
+        /// <summary>
+        ///是否启用
+        /// </summary>
+        public string IsActivate
+        {
+            set { _isactivate = value; }
+            get { return _isactivate; }
+        }
+        private string _checkstatus;
+        /// <summary>
+        ///审核状态
+        /// </summary>
+        public string CheckStatus
+        {
+            set { _checkstatus = value; }
+            get { return _checkstatus; }
+        }
+        private string _checkperson;
+        /// <summary>
+        ///审核人
+        /// </summary>
+        public string CheckPerson
+        {
+            set { _checkperson = value; }
+            get { return _checkperson; }
+        }
+        private DateTime _inspectioniteminputdate;
+        /// <summary>
+        ///项目录入日期
+        /// </summary>
+        public DateTime InspectionItemInPutDate
+        {
+            set { _inspectioniteminputdate = value; }
+            get { return _inspectioniteminputdate; }
+        }
+        private DateTime _checkdate;
+        /// <summary>
+        ///审核日期
+        /// </summary>
+        public DateTime CheckDate
+        {
+            set { _checkdate = value; }
+            get { return _checkdate; }
+        }
+        private string _configversion;
+        /// <summary>
+        ///版本号
+        /// </summary>
+        public string ConfigVersion
+        {
+            set { _configversion = value; }
+            get { return _configversion; }
         }
         private string _memo;
         /// <summary>

@@ -275,7 +275,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         opResult = InspectionManagerCrudFactory.IqcItemConfigCrud.OpCheckInspectionItemConfigDates(datas);
                         break;
                     case "FQC":
-                       
+                        opResult = InspectionManagerCrudFactory.FqcItemConfigCrud.OpCheckInspectionItemConfigDates(datas);
                         break;
                     case "IPQC":
                        
