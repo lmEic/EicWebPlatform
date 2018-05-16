@@ -2320,8 +2320,8 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         }),
         //撤消审核模态框
         cancelCheckModal: $modal({
-            title: "撤消审核审核提示",
-            content: "亲~您确定要撤消审核吗",
+            title: "变更审核提示",
+            content: "亲~您确定要变更审核吗",
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
@@ -2332,19 +2332,18 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         }),
 
         changeCheckModal: function (inspectionStatus) {
-
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.CheckStatus = inspectionStatus;
-            console.log(vmManager.currentItem);
+            vmManager.currentItem.OpSign = "edit";
             qualityInspectionDataOpService.chcekConigfigDatas(vmManager.currentItem, vmManager.checkProperty).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                        vmManager.checkModal.$promise.then(vmManager.checkModal.close);
                         vmManager.currentItem.status = inspectionStatus;
-                        vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.hide);
                         vmManager.detailDataSet = opresult.Entity;
                         vmManager.detailDataSource = opresult.Entity;
                     });
+                    vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
+                    vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.hide);
                 }
             })
         },
