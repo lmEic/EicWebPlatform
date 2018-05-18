@@ -81,6 +81,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
                 { m.OpSign = "edit"; }
+                else
+                {
+                    m.InspectionItemInPutDate = DateTime.Now.Date.ToDate();
+                    m.CheckDate = DateTime.Now.Date.ToDate();
+                    m.CheckStatus = "未审核";
+                }
                 opResult = this.Store(m);
                 if (opResult.Result)
                     i = i + opResult.RecordCount;
