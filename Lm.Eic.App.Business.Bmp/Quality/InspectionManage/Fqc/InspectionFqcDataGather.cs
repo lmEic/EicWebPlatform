@@ -414,12 +414,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 masterModel.InspectionMaxNumber = sumModel.InspectionCount;
                 masterModel.InspectionNgNumber = sumModel.InspectionNGCount;
                 //记录NG值
-                masterModel.InspectionItemDetails = (sumModel.InspectionItemResult == "NG" ? ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel):string.Empty);
+                masterModel.InspectionItemDetails = (sumModel.InspectionItemResult == InspectionConstant.InspectionResult.NoPass ? ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel):string.Empty);
                 masterModel.InspectionItemInspectors = sumModel.InspectionItem + ":" + sumModel.OpPerson;
                 masterModel.InspectionItems = sumModel.InspectionItem;
                 masterModel.FinishDate = DateTime.Now.Date;
-                masterModel.InspectionStatus = "未抽检";
-                masterModel.InspectionResult = "未完成";
+                masterModel.InspectionStatus = InspectionConstant.InspectionStatus.NotInspect;
+                masterModel.InspectionResult = InspectionConstant.InspectionResult.unfinished;
                 masterModel.InspectionCount = sumModel.MaterialCount;
                 detailModel = new InspectionFqcDetailModel();
                 OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcDetailModel>(sumModel, detailModel);
@@ -447,7 +447,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///3，比较 对比
             ///4，返回一个 转换的状态
             ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
-            string retrunstirng = "正常";
+            string retrunstirng = InspectionConstant.InspectionMode.Normal;
             var DetailModeList = MasterDatasGather.GetFqcMasterModeListlBy(materialId);
             if (DetailModeList == null || DetailModeList.Count <= 0) return retrunstirng;
             var currentStatus = DetailModeList.Last().InspectionMode;
@@ -458,22 +458,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
             int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
             int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
-            var getNumber = DetailModeList.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == "NG");
+            var getNumber = DetailModeList.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == InspectionConstant.InspectionResult.NoPass);
             switch (currentStatus)
             {
-                case "加严":
-                    retrunstirng = (getNumber >= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                case InspectionConstant.InspectionMode.Stricter:
+                    retrunstirng = (getNumber >= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : currentStatus;
                     break;
-                case "放宽":
-                    retrunstirng = (getNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                case InspectionConstant.InspectionMode.Broaden:
+                    retrunstirng = (getNumber <= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : currentStatus;
                     break;
-                case "正常":
-                    if (getNumber <= AcceptNumberVauleMin) retrunstirng = "放宽";
-                    if (getNumber >= AcceptNumberVauleMax) retrunstirng = "加严";
-                    else retrunstirng = "正常";
+                case InspectionConstant.InspectionMode.Normal:
+                    if (getNumber <= AcceptNumberVauleMin) retrunstirng = InspectionConstant.InspectionMode.Broaden;
+                    if (getNumber >= AcceptNumberVauleMax) retrunstirng = InspectionConstant.InspectionMode.Stricter;
+                    else retrunstirng = InspectionConstant.InspectionMode.Normal;
                     break;
                 default:
-                    retrunstirng = "正常";
+                    retrunstirng = InspectionConstant.InspectionMode.Normal;
                     break;
             }
             return retrunstirng;

@@ -248,7 +248,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         private OpResult Add(MealReportManageModel entity)
         {
             entity.ReportTime = DateTime.Now;
-            var existItem = this.irep.FirstOfDefault(e => e.Department == entity.Department && e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay);
+            var existItem = this.irep.FirstOfDefault(e => e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay);
             if (existItem == null)
             {
                 return this.irep.Insert(entity).ToOpResult_Add(this.OpContext);
