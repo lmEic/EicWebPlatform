@@ -348,7 +348,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
                 ///3，比较 对比
                 ///4，返回一个 转换的状态
-                string retrunstirng = "正常";
+                string retrunstirng = InspectionConstant.InspectionMode.Normal;
                 var DetailModeDatas = DetailDatasGather.GetIqcMasterModeDatasBy(materialId);
                 ///是否检验过此物料  如没有 为正常
                 if (DetailModeDatas == null) return retrunstirng;

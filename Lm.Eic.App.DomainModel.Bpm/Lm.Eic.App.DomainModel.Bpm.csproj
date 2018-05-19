@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Ast\EquipmentModel.cs" />
     <Compile Include="Ast\QueryEquipmentDto.cs" />
+    <Compile Include="Dev\DesignDevelopInputModel.cs" />
     <Compile Include="Hrm\Archives\CalendarModel.cs" />
     <Compile Include="Hrm\Archives\QueryWorkerArchivesDto.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursDto.cs" />

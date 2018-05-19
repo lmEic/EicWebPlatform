@@ -17,6 +17,7 @@ using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.LeaveAsk;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.DevMapping;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -231,6 +232,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
             #region 请假管理
             modelBuilder.Configurations.Add(new LeaveAskMapping());
+            #endregion
+
+            #region 设计开发管理
+
+
+            modelBuilder.Configurations.Add(new DesignDevelopInputModelMapping());
+
+
             #endregion
         }
     }

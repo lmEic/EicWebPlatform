@@ -16,7 +16,7 @@ angular.module('bpm.developmentApp', ['eicomm.directive', 'mp.configApp', 'ngAni
 
        //
     //.state('documentInputRecord', {
-    //    templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'
+    //   templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'
     //})
 })
 .factory('developmentDataService', function (ajaxService) {
