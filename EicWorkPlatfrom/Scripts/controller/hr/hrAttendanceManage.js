@@ -1993,6 +1993,8 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                             leeDataHandler.dataOperate.initDataItemFromServer(reportMealData, vmManager.dbDataSet);
                             weekDay.bsData = reportMealData;
                         }
+                        //2018.05.29 没有数据是清空
+                        else { weekDay.bsData = null; }
                     });
                 });
             }
@@ -2012,9 +2014,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             if (!vmManager.validateDepartment()) return;
             if (vmManager.workerInfo !== null) {
                 vmManager.initCalendarDatas();
-                vmManager.getReportMealDatas(vmManager.department, vmManager.workerInfo.WorkerId, function (datas) {
-                    vmManager.bindingServerDatasToUI(datas);
-                });
+                vmManager.getReportMealDatas(vmManager.department, vmManager.workerInfo.WorkerId, function (datas) {vmManager.bindingServerDatasToUI(datas);});
             }
         },
         loadCalendarDatas: function () {
