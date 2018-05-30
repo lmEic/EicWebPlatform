@@ -252,7 +252,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Dev
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
             set { _id_key = value; }
             get { return _id_key; }

@@ -72,6 +72,8 @@
     <Compile Include="Ast\EquipmentManager.cs" />
     <Compile Include="Ast\EquipmentRepairedManager.cs" />
     <Compile Include="Dev\DesignDevelop\ProductsDesignDevelopManger.cs" />
+    <Compile Include="Dev\DevelopManagerCrudFactory.cs" />
+    <Compile Include="Dev\DevelopSerivce.cs" />
     <Compile Include="Hrm\Archives\ArCalendarManger.cs" />
     <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />

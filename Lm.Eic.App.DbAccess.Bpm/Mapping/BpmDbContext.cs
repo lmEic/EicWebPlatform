@@ -235,11 +235,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             #endregion
 
             #region 设计开发管理
-
-
             modelBuilder.Configurations.Add(new DesignDevelopInputModelMapping());
-
-
             #endregion
         }
     }

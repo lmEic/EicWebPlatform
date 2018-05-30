@@ -16,8 +16,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.DevMapping
     {
         public DesignDevelopInputModelMapping()
         {
-            this.HasKey(t => t.Id_key);
-            this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Dev_DesignDevelopInput");
         }
     }

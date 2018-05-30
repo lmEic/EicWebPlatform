@@ -1,13 +1,14 @@
-﻿var developmentModule = angular.module('bpm.developmentApp');
-developmentModule.factory("qualityInspectionDataOpService", function (ajaxService) {
+﻿
+/// <reference path="../../common/angulee.js" />
+/// <reference path="../../angular.min.js" />
+var developmentModule = angular.module('bpm.developmentApp');
+developmentModule.factory("develpmentDataOpService", function (ajaxService) {
     var development = {};
     var quaInspectionManageUrl = "/quaInspectionManage/";
-
-
-
     return development;
 })
-developmentModule.controller("developmentInputRecordCtrl", function ($scope, qualityInspectionDataOpService, $modal, $alert) {
+
+developmentModule.controller("developmentInputRecordCtrl", function ($scope, develpmentDataOpService, $modal, $alert) {
     ///录入开发部记录设计更变文档
     var uiVm ={
         RdId: 'NRD18026',
@@ -37,11 +38,9 @@ developmentModule.controller("developmentInputRecordCtrl", function ($scope, qua
         OpSign: null,
         Id_key: null,
     }
-
     $scope.vm = uiVm;
     var vmManager = {
     };
-
     $scope.vmManager = vmManager;
 });
 ///
