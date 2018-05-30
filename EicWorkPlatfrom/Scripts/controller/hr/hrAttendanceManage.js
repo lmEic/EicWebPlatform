@@ -80,18 +80,34 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
             workerId: workerId,
         });
     };
-    //获取报餐汇总数据
+    //获取报餐天汇总数据
     hr.getReportMealSumerizeDatas = function (reportMealDate) {
         var url = generalAffairsUrl + 'GetReportMealSumerizeDatas';
         return ajaxService.getData(url, {
             reportMealDate: reportMealDate,
         });
     };
-    //获取报餐明细数据
+    //获取报餐月汇总数据
+    hr.getReportMealYearMonthSumerizeDatas = function (reportMealYearMonth) {
+        var url = generalAffairsUrl + 'GetReportSumerizeMonthDatas';
+        return ajaxService.getData(url, {
+            reportMealYearMonth: reportMealYearMonth,
+        });
+    };
+    //获取报餐明细数据 
     hr.getReportMealDetialDatas = function (reportMealDate, reportMealType, department) {
         var url = generalAffairsUrl + 'GetReportMealDetialDatas';
         return ajaxService.getData(url, {
             reportMealDate: reportMealDate,
+            reportMealType: reportMealType,
+            department: department,
+        });
+    };
+    //处理月报餐明细数据 
+    hr.HandelDetialMonthDatas = function (reportMealType, department, datas) {
+        var url = generalAffairsUrl + 'HandleMonthDetialDatas';
+        return ajaxService.postData(url, {
+            datas: datas,
             reportMealType: reportMealType,
             department: department,
         });
@@ -2243,10 +2259,35 @@ hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, co
         activeQueryFromTab: 'everyDayDataViewTab',
         analogDatas: null,
         reportDate: new Date(),
+     
         getReportMealAnalogDatas: function () {
             $scope.searchPromise = hrDataOpService.getReportMealSumerizeDatas(vmManager.reportDate).then(function (datas) {
                 vmManager.analogDatas = datas;
+                console.log(datas);
             });
+        },
+        activeYMonthGTab: 'dataYGMonthViewTab',
+        yearMonth: null,
+        monthanalogData: null,
+        getReportMonthMealAnalogDatas: function () {
+            $scope.searchPromise = hrDataOpService.getReportMealYearMonthSumerizeDatas(vmManager.yearMonth).then(function (datas) {
+                console.log(datas);
+                vmManager.monthanalogData = datas;
+                
+            });
+        },
+        monthDataSets: [],
+        reportMealMonthDetailDisplay: false,
+        getReportMealMonthDetail: function (reportMealType, department) {
+            if ( !_.isUndefined(vmManager.monthanalogData)) {
+                var datas = vmManager.monthanalogData;
+                console.log(999999);
+                $scope.searchPromise = hrDataOpService.HandelDetialMonthDatas(reportMealType, department,datas).then(function (data) {
+                    vmManager.monthDataSets = data;
+                    vmManager.reportMealMonthDetailDisplay = true;
+                });
+            };
+            vmManager.reportMealMonthDetailDisplay = true;
         },
         dataSets: [],
         getReportMealDetail: function (reportMealType, department) {
@@ -2258,4 +2299,5 @@ hrModule.controller("reportMealQueryCtrl", function ($scope, hrDataOpService, co
         },
         reportMealDetailDisplay: false,
     };
+  
 });

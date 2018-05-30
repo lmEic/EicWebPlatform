@@ -113,6 +113,19 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var data = GeneralAffairsService.ReportMealManager.GetReportMealDetailDatas(reportMealDate, reportMealType, department);
             return DateJsonResult(data);
         }
+        //HandleReportMealMonthDetialDatas  reportMealType, department,datas
+
+        [NoAuthenCheck]
+        public ContentResult HandleMonthDetialDatas(string reportMealType, string department, MealReportedAnalogModel datas)
+        {//DandelMonthReportMealDatas
+           
+            var data = datas != null? GeneralAffairsService.ReportMealManager.DandelMonthReportMealDatas(reportMealType, department, datas.DetailDatas):null;
+            return DateJsonResult(data);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [NoAuthenCheck]
         public FileResult ExportReportMealSumerizeDatas()
         {
@@ -120,16 +133,17 @@ namespace EicWorkPlatfrom.Controllers.Hr
 
             return this.DownLoadFile(GeneralAffairsService.ReportMealManager.ExportAnalogData(data));
         }
-        public ContentResult GetReportSumerizeMonthDatas(string yearMonth)
+        [NoAuthenCheck]
+        public ContentResult GetReportSumerizeMonthDatas(string reportMealYearMonth)
         {
-            var data = GeneralAffairsService.ReportMealManager.GetSumerizeMonthDatas(yearMonth);
+            var data = GeneralAffairsService.ReportMealManager.GetSumerizeMonthDatas(reportMealYearMonth);
             TempData["ReportMealSumerizeMonth"] = data;
             return DateJsonResult(data);
         }
         [NoAuthenCheck]
-        public FileResult ExportReportMealSumerizeMonthDatas(DateTime reportMealDate)
+        public FileResult ExportReportMealYearMonthSumerizeMonthDatas()
         {
-            var data = TempData["ReportMealSumerizeMonth"] as List<MealReportManageModel>;
+            var data = TempData["ReportMealSumerizeMonth"] as MealReportedAnalogModel;
 
             return this.DownLoadFile(GeneralAffairsService.ReportMealManager.ExportAnalogMonthData(data));
         }
