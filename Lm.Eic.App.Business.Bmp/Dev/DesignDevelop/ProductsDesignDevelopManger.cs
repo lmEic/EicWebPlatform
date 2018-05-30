@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Dev.DesignDevelop
 {
- public    class ProductsDesignDevelopManger
+ public  class ProductsDesignDevelopManger
     {
     }
 }
