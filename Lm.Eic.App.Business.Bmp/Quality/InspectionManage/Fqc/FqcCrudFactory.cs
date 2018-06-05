@@ -392,7 +392,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId).OrderByDescending(e=>e.Id_Key).ToList();
         }
         /// <summary>
         /// 更新状主要状态

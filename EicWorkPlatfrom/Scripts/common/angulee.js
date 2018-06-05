@@ -307,7 +307,7 @@ var leeHelper = (function () {
         TolCooperateWithHw: 'TolCooperateWithHw',
         //智能隧道
         TolManPowerTunnel: 'TolManPowerTunnel',
-        //质量抽样检验控制器
+        //开发管理控制器
         developmentProductsManage: 'Development',
 
     };

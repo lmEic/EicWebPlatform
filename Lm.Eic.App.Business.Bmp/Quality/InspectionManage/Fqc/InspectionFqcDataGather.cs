@@ -223,12 +223,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
                 if (orderMaterialInfo == null) return returnList;
+                ///得到检验方式 “正常” “放宽” “加严”
+                string inspectionMode = GetJudgeFQCInspectionMode("FQC", orderMaterialInfo.ProductID);
                 int i = 0;
                 fqcNeedInspectionsItemdatas.ForEach(m =>
                 {
                     i++;
                     ///得到检验方式 “正常” “放宽” “加严”
-                    var inspectionMode = GetJudgeFQCInspectionMode("FQC", m.MaterialId);
+                    /// var inspectionMode = GetJudgeFQCInspectionMode("FQC", m.MaterialId);
                     ///得到检验方案
                     var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, sampleCount, inspectionMode);
                     ///初始化 综合模块
@@ -425,6 +427,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcDetailModel>(sumModel, detailModel);
                 detailModel.InspectionRuleDatas = ObjectSerializer.GetJson<InspectionItemDataSummaryVM>(sumModel);
                 detailModel.OrderIdCount = sumModel.MaterialInCount;
+                detailModel.InspectionNGCount = sumModel.InspectionNGCount;
                 detailModel.InspectionAcceptCount = sumModel.AcceptCount;
                 detailModel.InspectionRefuseCount = sumModel.RefuseCount;
                 detailModel.InspectionDate = DateTime.Now.ToDate();
@@ -448,30 +451,36 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///4，返回一个 转换的状态
             ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
             string retrunstirng = InspectionConstant.InspectionMode.Normal;
+            //倒序
             var DetailModeList = MasterDatasGather.GetFqcMasterModeListlBy(materialId);
             if (DetailModeList == null || DetailModeList.Count <= 0) return retrunstirng;
             var currentStatus = DetailModeList.Last().InspectionMode;
             ///2，通当前状态 得到抽样规则 抽样批量  拒受数
             var modeSwithParameterList = InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(inspectionClass, currentStatus);
+
             if (modeSwithParameterList == null || modeSwithParameterList.Count <= 0) return retrunstirng;
+            //抽取数量最小数
             int sampleNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Min();
+            //接授数量最大数
             int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
+            //抽取数量最大数
             int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
+            //接授数量最小数
             int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
-            var getNumber = DetailModeList.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == InspectionConstant.InspectionResult.NoPass);
+
+            var getNgNumber = DetailModeList.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == InspectionConstant.InspectionResult.NoPass);
             switch (currentStatus)
             {
                 case InspectionConstant.InspectionMode.Stricter:
-                    retrunstirng = (getNumber >= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : currentStatus;
+                    retrunstirng = (getNgNumber >= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : currentStatus;
                     break;
                 case InspectionConstant.InspectionMode.Broaden:
-                    retrunstirng = (getNumber <= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : currentStatus;
+                    retrunstirng = (getNgNumber <= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : currentStatus;
                     break;
                 case InspectionConstant.InspectionMode.Normal:
-                    if (getNumber <= AcceptNumberVauleMin) retrunstirng = InspectionConstant.InspectionMode.Broaden;
-                    if (getNumber >= AcceptNumberVauleMax) retrunstirng = InspectionConstant.InspectionMode.Stricter;
-                    else retrunstirng = InspectionConstant.InspectionMode.Normal;
-                    break;
+                    if (getNgNumber <= AcceptNumberVauleMin)  return InspectionConstant.InspectionMode.Broaden;
+                    if (getNgNumber >= AcceptNumberVauleMax)  return  InspectionConstant.InspectionMode.Stricter;
+                    else return retrunstirng ;
                 default:
                     retrunstirng = InspectionConstant.InspectionMode.Normal;
                     break;

@@ -89,6 +89,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public ContentResult GetReportMealDatas(string reportType, string yearMonth, string department = null, string workerId = null)
         {
+
             var datas = GeneralAffairsService.ReportMealManager.GetReportMealDatas(reportType, yearMonth, department, workerId);
             return DateJsonResult(datas, "yyyy-MM-dd HH:mm:ss");
         }

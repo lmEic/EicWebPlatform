@@ -922,9 +922,12 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         var dataItem = vmManager.currentInspectionItem;
         if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "C" || dataItem.InspectionDataGatherType === "F") {
             //获取数据及判定结果
+            dataItem.InspectionNGCount = 0;
+            //获取数据及判定结果
             angular.forEach(vmManager.dataList, function (item) {
                 dataList.push(item.data);
                 result = result && item.result;
+                if (item.result === false) { dataItem.InspectionNGCount++; }
             });
             //数据列表字符串
             dataItem.InspectionItemDatas = dataList.join(",");
@@ -1613,10 +1616,9 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     operate.saveGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
-        dataItem.InspectionNGCount = 0;
-        console.log("测试Ng数量");
         if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "C" || dataItem.InspectionDataGatherType === "F") {
             //获取数据及判定结果
+            dataItem.InspectionNGCount = 0;
             angular.forEach(vmManager.dataList, function (item) {
                 dataList.push(item.data);
                 result = result && item.result;
@@ -1631,6 +1633,9 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         }
         else if (dataItem.InspectionDataGatherType === "D") {
+            if (dataItem.InspectionItemDatas === '' || dataItem.InspectionItemDatas === null) {
+                dataItem.InspectionItemDatas = 'NG'
+            }
             dataItem.InspectionItemResult = dataItem.InspectionItemDatas;
             dataItem.HaveFinishDataNumber = dataItem.NeedFinishDataNumber;
         }

@@ -251,6 +251,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             StringBuilder sbMsg = new StringBuilder();
             entities.ForEach(m =>
             {
+                if (GeneralAffairsFactory.ReportMealStore.IsExsitModel(m))
+                { m.OpSign = OpMode.Edit; }
                 if (m.OpSign == OpMode.Edit)
                 {
                     if (now > targetTime)
@@ -382,6 +384,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         internal List<MealReportManageModel> GetReportMealMonthDatas(string yearMonth)
         {
             return this.irep.Entities.Where(e =>e.YearMonth== yearMonth).ToList();
+        }
+
+        internal bool IsExsitModel(MealReportManageModel entity)
+        {
+            return this.irep.IsExist(e => e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay);
         }
         #endregion
 

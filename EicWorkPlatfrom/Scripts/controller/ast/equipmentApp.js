@@ -94,6 +94,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     };
     //保存设备档案记录
     ast.saveEquipmentRecord = function (equipment) {
+        console.log(99999);
         var url = astUrlPrefix + 'SaveEquipmentRecord';
         return ajaxService.postData(url, {
             equipment: equipment
@@ -548,6 +549,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //存储
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
+            console.log(98989);
             astDataopService.saveEquipmentRecord(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     var equipment = _.clone(uiVM);

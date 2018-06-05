@@ -2009,8 +2009,8 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                             leeDataHandler.dataOperate.initDataItemFromServer(reportMealData, vmManager.dbDataSet);
                             weekDay.bsData = reportMealData;
                         }
-                        //2018.05.29 没有数据是清空
-                        else { weekDay.bsData = null; }
+                       // 2018.05.29 没有数据是清空
+                       else { weekDay.bsData = []; }
                     });
                 });
             }
@@ -2185,14 +2185,17 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         //登记陆干餐记录
         reportLeaderMealRecord: function (item, mealTime, isReported) {
+            console.log(9999999);
+            console.log(item);
             if (!vmManager.validateCanEdit(item.Date)) return;
             if (!vmManager.validateCanOperate()) return;
             if (vmManager.workerInfo === null) {
                 leePopups.alert("请先输入作业工号！", 2);
                 return;
             }
+            
             var dataitem;
-            if (_.isUndefined(item.bsData)) {
+            if (_.isUndefined(item.bsData) || item.bsData.length==0) {
                 dataitem = vmManager.createLeaderMealModel(_.clone(mealReportVM));
                 vmManager.setAttachData(item, dataitem);
                 leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
@@ -2201,8 +2204,6 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             else {
                 dataitem = item.bsData;
             }
-
-
             if (mealTime == "中") {
                 dataitem.CountOfLunch = isReported ? 1 : 0;
             }
@@ -2228,18 +2229,16 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             }
             else {
                 if (dataitem.CountOfLunch !== 0 && dataitem.CountOfSupper !== 0) {
+
                     leeDataHandler.dataOperate.createDataItemFromClient(dataitem, vmManager.dbDataSet);
                 }
             }
         }
     };
     $scope.vmManager = vmManager;
-
     var employeeMealDialog = $scope.employeeMealDialog = leePopups.dialog();
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
     operate.saveAll = function () {
         if (vmManager.dbDataSet.length === 0) return;
         hrDataOpService.storeReportMealDatas(vmManager.dbDataSet).then(function (opResult) {
