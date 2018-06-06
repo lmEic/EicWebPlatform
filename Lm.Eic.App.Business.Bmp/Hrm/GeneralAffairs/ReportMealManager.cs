@@ -36,7 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 bool result = true;
                 foreach (var m in entities)
                 {
-                    if (GeneralAffairsFactory.ReportMealStore.IsExsitModel(m))
+                    if (GeneralAffairsFactory.ReportMealStore.IsExsitModel(m)&&m.OpSign!=OpMode.Delete)
                     { m.OpSign = OpMode.Edit; }
                     result = result && GeneralAffairsFactory.ReportMealStore.Store(m).Result;
                     if (!result) break;
