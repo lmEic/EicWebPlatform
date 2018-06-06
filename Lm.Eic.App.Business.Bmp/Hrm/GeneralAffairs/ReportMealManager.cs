@@ -36,6 +36,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 bool result = true;
                 foreach (var m in entities)
                 {
+                    if (GeneralAffairsFactory.ReportMealStore.IsExsitModel(m))
+                    { m.OpSign = OpMode.Edit; }
                     result = result && GeneralAffairsFactory.ReportMealStore.Store(m).Result;
                     if (!result) break;
                 }
@@ -247,12 +249,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             DateTime now = DateTime.Now;
             DateTime nowday = now.ToDate();
             DateTime targetTime = new DateTime(now.Year, now.Month, now.Day, 16, 0, 0);
-
             StringBuilder sbMsg = new StringBuilder();
             entities.ForEach(m =>
             {
-                if (GeneralAffairsFactory.ReportMealStore.IsExsitModel(m))
-                { m.OpSign = OpMode.Edit; }
                 if (m.OpSign == OpMode.Edit)
                 {
                     if (now > targetTime)
@@ -388,7 +387,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
         internal bool IsExsitModel(MealReportManageModel entity)
         {
-            return this.irep.IsExist(e => e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay);
+           return  (entity!=null &&entity.WorkerId!= "员工餐")
+                ? this.irep.IsExist(e => e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay):
+            this.irep.IsExist(e => e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay&&e.Department==entity.Department);
         }
         #endregion
 
