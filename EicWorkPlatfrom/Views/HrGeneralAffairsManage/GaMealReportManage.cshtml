@@ -82,7 +82,7 @@
                                                 <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
                                                 <div ng-if="item.Day!==''">
                                                     <div class="h-split"></div>
-                                                    <a class="text-success" title="报餐业务办理" ng-if="!item.bsData"
+                                                    <a class="text-success" title="报餐业务办理" ng-if="item.bsData"
                                                        ng-click="vmManager.createEmployeeMealRecord(item)">
                                                         <i class="fa fa-calendar-plus-o"></i>
                                                     </a>
@@ -97,7 +97,7 @@
                                                 夜宵：{{item.bsData.CountOfMidnight}}人<br />
                                                 <div class="h-split"></div>
                                                 <span class="pull-right">
-                                                    <a class="text-primary" title="编辑报餐数据" ng-click="vmManager.editEmployeeMealRecord(item)">
+                                                    <a class="text-primary" title="编辑报餐数据" ng-click="vmManager.editEmployeeMealRecord(item,2)">
                                                         <i class="fa fa-pencil-square-o"></i>
                                                     </a>
                                                     <a class="text-danger" title="删除报餐数据" ng-click="vmManager.removeEmployeeMealRecord(item)">

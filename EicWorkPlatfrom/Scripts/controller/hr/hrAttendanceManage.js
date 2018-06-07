@@ -2122,6 +2122,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             leeHelper.setUserData(dataitem);
             dataitem.Department = vmManager.department;
         },
+           //创建员工餐记录
         createEmployeeMealModel(dataitem) {
             dataitem.WorkerId = "员工餐";
             dataitem.WorkerName = "员工餐";
@@ -2134,6 +2135,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
         },
         //创建员工报餐记录
         createEmployeeMealRecord: function (item) {
+            console.log(777777);
             if (!vmManager.validateCanEdit(item.Date)) return;
             if (!vmManager.validateCanOperate()) return;
             var dataitem = _.clone(initVM);
@@ -2149,13 +2151,19 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             }
             //绑定业务数据
             item.bsData = dataitem;
-            vmManager.editEmployeeMealRecord(item);
+            vmManager.editEmployeeMealRecord(item,1);
         },
-        editEmployeeMealRecord: function (item) {
+        ///编辑报餐人员
+        editEmployeeMealRecord: function (item,type) {
+            console.log(item.bsData);
             if (!vmManager.validateCanEdit(item.Date)) return;
             var dataitem = $scope.vm = mealReportVM = item.bsData;
             if (leeHelper.isServerObject(dataitem)) {
                 dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+            }
+            if (type == 2 &&( _.isUndefined(dataitem.OpSign) || dataitem.OpSign==leeDataHandler.dataOpMode.add)) {
+                leePopups.alert("先应该添加然后才能编辑", 1);
+                return;
             }
             employeeMealDialog.show();
         },
@@ -2174,6 +2182,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             employeeMealDialog.close();
         },
         createLeaderMealModel(dataitem) {
+            console.log(dataitem);
             dataitem.WorkerId = vmManager.workerInfo.WorkerId;
             dataitem.WorkerName = vmManager.workerInfo.Name;
             dataitem.WorkerType = vmManager.reportMealType;
@@ -2193,7 +2202,6 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                 leePopups.alert("请先输入作业工号！", 2);
                 return;
             }
-            
             var dataitem;
             if (_.isUndefined(item.bsData) || item.bsData.length==0) {
                 dataitem = vmManager.createLeaderMealModel(_.clone(mealReportVM));

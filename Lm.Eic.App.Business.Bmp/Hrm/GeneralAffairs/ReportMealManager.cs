@@ -28,16 +28,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             try
             {
                 if (entities == null || entities.Count == 0) return OpResult.SetErrorResult("没有要存储的数据！");
-                string errMsg = string.Empty;
-                if (!CheckCanStoreRule(entities.ToList(), out errMsg))
-                {
-                    return OpResult.SetErrorResult(errMsg);
-                }
+                //string errMsg = string.Empty;
+                //if (!CheckCanStoreRule(entities.ToList(), out errMsg))
+                //{
+                //    return OpResult.SetErrorResult(errMsg);
+                //}
                 bool result = true;
                 foreach (var m in entities)
                 {
-                    if (GeneralAffairsFactory.ReportMealStore.IsExsitModel(m)&&m.OpSign!=OpMode.Delete)
-                    { m.OpSign = OpMode.Edit; }
+                    //if (GeneralAffairsFactory.ReportMealStore.IsExsitModel(m)&&m.OpSign!=OpMode.Delete)
+                   // { m.OpSign = OpMode.Edit; }
                     result = result && GeneralAffairsFactory.ReportMealStore.Store(m).Result;
                     if (!result) break;
                 }
@@ -333,7 +333,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         private OpResult Add(MealReportManageModel entity)
         {
             entity.ReportTime = DateTime.Now;
-            var existItem = this.irep.FirstOfDefault(e => e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay);
+            var existItem = this.irep.FirstOfDefault(e => e.WorkerId == entity.WorkerId && e.Department==entity.Department&& e.ReportDay == entity.ReportDay);
+            if (entity.WorkerType!= "员工餐")
+            {
+                 existItem = this.irep.FirstOfDefault(e => e.WorkerId == entity.WorkerId && e.ReportDay == entity.ReportDay);
+            }
+            
             if (existItem == null)
             {
                 return this.irep.Insert(entity).ToOpResult_Add(this.OpContext);

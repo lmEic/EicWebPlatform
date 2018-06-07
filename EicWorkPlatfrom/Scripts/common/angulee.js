@@ -124,7 +124,8 @@ var leeDataHandler = (function () {
         initDataItemFromServer: function (dataitem, dbDataset) {
             leeHelper.setObjectGuid(dataitem);//创建唯一标志
             leeHelper.setObjectServerSign(dataitem);//设置客户端创建对象标志
-            if (dataitem.OpSign !== undefined)
+            ///2018.06.07  改 dataitem.OpSign !== undefined
+            if (dataitem.OpSign === undefined)
                 dataitem.OpSign = leeDataOpMode.none;//设置数据处理标志
             leeHelper.insertWithId(dbDataset, dataitem);
         },
