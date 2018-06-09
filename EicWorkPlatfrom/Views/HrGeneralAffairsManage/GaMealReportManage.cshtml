@@ -82,13 +82,12 @@
                                                 <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
                                                 <div ng-if="item.Day!==''">
                                                     <div class="h-split"></div>
-                                                    <a class="text-success" title="报餐业务办理" ng-if="item.bsData"
+                                                    <a class="text-success" title="报餐业务办理" 
                                                        ng-click="vmManager.createEmployeeMealRecord(item)">
                                                         <i class="fa fa-calendar-plus-o"></i>
                                                     </a>
                                                 </div>
                                             </div>
-
                                             <div class="bs-callout bs-callout-success pull-right" title="{{item.bsData.Department}}"
                                                  ng-if="item.bsData">
                                                 早餐：{{item.bsData.CountOfBreakfast}}人<br />

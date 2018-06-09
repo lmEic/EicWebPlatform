@@ -2013,6 +2013,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
                        else { weekDay.bsData = []; }
                     });
                 });
+                console.log(vmManager.calendar.WeekCalendars);
             }
             else {
                 vmManager.initCalendarDatas();
@@ -2052,6 +2053,7 @@ hrModule.controller('reportMealManageCtrl', function ($scope, $modal, hrDataOpSe
             vmManager.dbDataSet = [];
             if (vmManager.reportMealType === "员工餐") {
                 vmManager.getReportMealDatas(vmManager.department, null, function (datas) {
+                    console.log(99999999999);
                     vmManager.bindingServerDatasToUI(datas);
                 });
             }
