@@ -12,7 +12,10 @@ angular.module('bpm.developmentApp', ['eicomm.directive', 'mp.configApp', 'ngAni
         //设计变更录入
         templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'
     })
-
+    $stateProvider.state('sponsorDocumentInputRecord', {
+        //设计发启录入
+        templateUrl: inspectionUrlPrefix + 'SponsorDocumentInputRecord'
+    })
        //
     //.state('documentInputRecord', {
     //   templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'

@@ -14,9 +14,21 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 研发文档
+        /// </summary>
+        /// <returns></returns>
         [NoAuthenCheck]
-        [HttpGet]
         public ActionResult DocumentInputRecord()
+        {
+            return View();
+        }
+        /// <summary>
+        ///开发文档
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult SponsorDocumentInputRecord()
         {
             return View();
         }

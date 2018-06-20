@@ -3,17 +3,88 @@
 
 namespace Lm.Eic.App.DomainModel.Bpm.Dev
 {
-   
-    
-     /// <summary>
-     ///设计开发输入模形
-     /// </summary>
-     [Serializable]
-     public partial class DesignDevelopInputModel
+
+    /// <summary>
+    ///设计开发输入模形
+    /// </summary>
+    [Serializable]
+    public partial class DesignDevelopInputModel
     {
         public DesignDevelopInputModel()
         { }
         #region Model
+        private string _sdid;
+        /// <summary>
+        ///发文Id
+        /// </summary>
+        public string SdId
+        {
+            set { _sdid = value; }
+            get { return _sdid; }
+        }
+        private DateTime _sdputindate;
+        /// <summary>
+        ///发文日期
+        /// </summary>
+        public DateTime SdPutInDate
+        {
+            set { _sdputindate = value; }
+            get { return _sdputindate; }
+        }
+        private string _sdcustomer;
+        /// <summary>
+        ///顾客
+        /// </summary>
+        public string SdCustomer
+        {
+            set { _sdcustomer = value; }
+            get { return _sdcustomer; }
+        }
+        private string _triggerdevunit;
+        /// <summary>
+        ///发文单位
+        /// </summary>
+        public string TriggerDevUnit
+        {
+            set { _triggerdevunit = value; }
+            get { return _triggerdevunit; }
+        }
+        private string _fillInPreparer;
+        /// <summary>
+        ///填表人
+        /// </summary>
+        public string FillInPreparer
+        {
+            set { _fillInPreparer = value; }
+            get { return _fillInPreparer; }
+        }
+        private string _fillincheckpreparer;
+        /// <summary>
+        ///核对日期
+        /// </summary>
+        public string FillInCheckPreparer
+        {
+            set { _fillincheckpreparer = value; }
+            get { return _fillincheckpreparer; }
+        }
+        private string _acceptsdpreparer;
+        /// <summary>
+        ///接收发文人
+        /// </summary>
+        public string AcceptSdPreparer
+        {
+            set { _acceptsdpreparer = value; }
+            get { return _acceptsdpreparer; }
+        }
+        private DateTime _acceptrdiddata;
+        /// <summary>
+        ///接发仍日期
+        /// </summary>
+        public DateTime AcceptRdIdData
+        {
+            set { _acceptrdiddata = value; }
+            get { return _acceptrdiddata; }
+        }
         private string _rdid;
         /// <summary>
         ///开发接单编号
@@ -22,24 +93,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Dev
         {
             set { _rdid = value; }
             get { return _rdid; }
-        }
-        private string _sdid;
-        /// <summary>
-        ///发文编号
-        /// </summary>
-        public string SDId
-        {
-            set { _sdid = value; }
-            get { return _sdid; }
-        }
-        private string _sdpreparer;
-        /// <summary>
-        ///发文人
-        /// </summary>
-        public string SDPreparer
-        {
-            set { _sdpreparer = value; }
-            get { return _sdpreparer; }
         }
         private string _productname;
         /// <summary>
@@ -259,5 +312,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Dev
         }
         #endregion Model
     }
+
 
 }

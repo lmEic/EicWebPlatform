@@ -2,8 +2,8 @@
         <div class="panel-heading">
         <h6 class="panel-title">设计开发输入审查表</h6>
     </div>
+    <div class="DivInput">
         <div class="panel-body">
-            <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
                 <div bs-pane data-title="设计开发输入登记" data-name="initTab">
                     <div class="row">
                         <div class="col-md-8">
@@ -12,122 +12,135 @@
                                     <fieldset>
                                         <legend>发文单位信息</legend>
                                         <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">发文单位:</label>
-                                            <div class="col-md-2">
-                                                <input name="installationlocation" class="form-control" ng-model="vm.TriggerDevUnit" />
+                                            <label for="sdId" class="col-md-1 control-label">编号:</label>
+                                            <div class="col-md-3">
+                                                <input name="sdId" id="Text1" type="text" class="form-control" ng-model="vm.SdId" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">填表人:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm. FillInPreparer" />
+                                            <label for="sdPutInDate" class="col-md-1 control-label">日期:</label>
+                                            <div class="col-md-3">
+                                                <input name="sdPutInDate" type="date" class="form-control" ng-model="vm.SdPutInDate" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">确认人:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.FillInCheckPreparer" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">发文编号:</label>
-                                            <div class="col-md-2">
-                                                <input name="installationlocation" class="form-control" ng-model="vm.RdId" />
-                                            </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">填表日期:</label>
-                                            <div class="col-md-2">
-                                                <input name="fu"  type="date"  class="form-control"  ng-model="vm.RdPutInDate" />
-                                            </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">顾客名称:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.CustomerName" />
+                                            <label for="sdCustomer" class="col-md-1 control-label">顾客:</label>
+                                            <div class="col-md-3">
+                                                <input name="functionDescription" id="Text2" type="text" class="form-control" ng-model="vm.SdCustomer" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">产品规规范说明:</label>
-                                            <div class="col-md-4">
-                                                <input name="installationlocation" class="form-control" ng-model="vm. ProductName" />
+                                            <label for="triggerDevUnit" class="col-md-1 control-label">单位:</label>
+                                            <div class="col-md-3">
+                                                <input name="triggerDevUnit" id="Text3" type="text" class="form-control" ng-model="vm.TriggerDevUnit" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">产品规范—附件:</label>
-                                            <div class="col-md-4">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.ProductNameDescriptionAttachmentPath" />
+                                            <label for="fillInPreparer"   class="col-md-2 control-label">填表人:</label>
+                                            <div class="col-md-2">
+                                                <input name="fillInPreparer" id="Text4" type="text" rows="2" class="form-control" ng-model="vm.FillInPreparer" />
+                                            </div>
+                                            <label for="fillInCheckPreparer" class="col-md-2 control-label">确认人:</label>
+                                            <div class="col-md-2">
+                                                <input name="fillInCheckPreparer" type="text" class="form-control" ng-model="vm.FillInCheckPreparer" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="installationlocation" class="col-md-1 control-label">规范说明:</label>
+                                            <div class="col-md-5">
+                                                <input name="installationlocation" type="text" class="form-control" ng-model="vm. ProductName" />
+                                            </div>
+                                            <label for="functionDescription" class="col-md-1 control-label">规范附件:</label>
+                                            <div class="col-md-5">
+                                                <textarea name="functionDescription" type="text" class="form-control" ng-model="vm.ProductNameDescriptionAttachmentPath" />
                                             </div>
 
                                         </div>
                                         <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">预估生产量:</label>
-                                            <div class="col-md-2">
-                                                <input name="installationlocation" class="form-control" ng-model="vm.ExpectedProductionNumber" />
+                                            <label for="installationlocation" class="col-md-1 control-label">预产量:</label>
+                                            <div class="col-md-3">
+                                                <input name="installationlocation" type="text"  class="form-control" ng-model="vm.ExpectedProductionNumber" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">样品数量:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.SampleDemandQuantity" />
+                                            <label for="functionDescription" type="text" class="col-md-1 control-label">样品数量:</label>
+                                            <div class="col-md-3">
+                                                <input name="functionDescription"  type="text" class="form-control" ng-model="vm.SampleDemandQuantity" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">需求日期:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.DemandDate" />
+                                            <label for="functionDescription" class="col-md-1 control-label">需求日期:</label>
+                                            <div class="col-md-3">
+                                                <input name="functionDescription"  type="date" class="form-control" ng-model="vm.DemandDate" />
                                             </div>
 
                                         </div>
                                     </fieldset>
+
                                     <fieldset>
-                                        <legend>研发说明</legend>
+                                        <legend class="alert alert-info">研发说明</legend>
                                         <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">研发接单编号:</label>
-                                            <div class="col-md-2">
+                                            <label for="installationlocation" class="col-md-1 control-label">接单编号:</label>
+                                            <div class="col-md-3">
                                                 <input name="installationlocation" class="form-control" ng-model="vm.RdId" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">接受日期:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdData" />
+                                            <label for="functionDescription" class="col-md-1 control-label">接受日期:</label>
+                                            <div class="col-md-3">
+                                                <input name="functionDescription" type="date" class="form-control" ng-model="vm.AcceptRdIdData" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">接受签名:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdPreparer" />
+                                            <label for="functionDescription" class="col-md-1 control-label">接受签名:</label>
+                                            <div class="col-md-3">
+                                                <input name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptSdPreparer" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">是否曾经研发过类似产品:</label>
-                                            <div class="col-md-2">
-                                                <input name="installationlocation" class="form-control" ng-model="vm.RdId" />
+                                            <label for="installationlocation" class="col-md-1 control-label">是否新品:</label>
+                                            <div class="col-md-3">
+                                                <input name="installationlocation" class="form-control" ng-model="vm.IsHaveTheClassProduct" />
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">相关设备是否准备:</label>
+                                            <label for="installationlocation" class="col-md-2 control-label">开发难度:</label>
                                             <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdData" />
+                                                <select ng-model="vm.DevelopmentDifficultyLevel" ng-options="item.name  for item in vmManager.difficultyLevels"></select>
                                             </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">是否量产:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdPreparer" />
+                                            <label for="functionDescription" class="col-md-1 control-label">设备情况:</label>
+                                            <div class="col-md-3">
+                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.ProductSpecAndEquipmentIsAllReady" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">量产数量:</label>
-                                            <div class="col-md-2">
-                                                <input name="installationlocation" class="form-control" ng-model="vm.RdId" />
+                                            <label for="functionDescription" class="col-md-4 control-label">设备/新产品的补充说明:</label>
+                                            <div class="col-md-8">
+                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.ProductSpecAndEquipmentAllReadyDescription" />
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="functionDescription" class="col-md-1 control-label">是否量产:</label>
+                                            <div class="col-md-3">
+                                                <input name="functionDescription" class="form-control" ng-model="vm.IsNeedTryProduction" />
+                                            </div>
+                                            <label for="installationlocation" class="col-md-1 control-label">量产数量:</label>
+                                            <div class="col-md-3">
+                                                <input name="installationlocation" class="form-control" ng-model="vm.NeedTryProductionNumber" />
+                                            </div>
+                                            <label for="functionDescription" class="col-md-1 control-label">材料成本:</label>
+                                            <div class="col-md-3">
+                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.TheCostEstimate" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+
                                             <label for="functionDescription" class="col-md-2 control-label">负责人:</label>
                                             <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdData" />
+                                                <input name="functionDescription" class="form-control" ng-model="vm.CertifiedScrumProductOwner" />
                                             </div>
                                             <label for="functionDescription" class="col-md-2 control-label">指派人:</label>
                                             <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdPreparer" />
+                                                <input name="functionDescription" class="form-control" ng-model="vm.DesignatedPerson" />
+                                            </div>
+                                            <label for="installationlocation" class="col-md-2 control-label">完成天数:</label>
+                                            <div class="col-md-2">
+                                                <input name="installationlocation" class="form-control" ng-model="vm.ScheduledCompletionDays" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="installationlocation" class="col-md-2 control-label">预定完成天数:</label>
-                                            <div class="col-md-2">
-                                                <input name="installationlocation" class="form-control" ng-model="vm.RdId" />
-                                            </div>
-                                            <label for="functionDescription" class="col-md-2 control-label">材料成本:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdData" />
-                                            </div>
                                             <label for="functionDescription" class="col-md-2 control-label">补充说明:</label>
-                                            <div class="col-md-2">
-                                                <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.AcceptRdIdPreparer" />
+                                            <div class="col-md-9">
+                                                <textarea name="functionDescription"  rows="2" class="form-control" ng-model="vm.OtherSupplementDescription" />
                                             </div>
                                         </div>
                                     </fieldset>
-                                   
-                                   
-                                    <hr/>
+
+                                    <hr />
                                     <div class="alert alert-info">
                                         <div class="row">
                                             <div class="col-md-2">
@@ -162,23 +175,24 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="list-group-item" ng-click="vmManager.selectEquipment(item)"
-                                    data-title="设备型号:{{item.EquipmentSpec}}" data-bs-tooltip
-                                    ng-repeat="item in vmManager.equipments track by $index">
+                                <li class="list-group-item" ng-click="vmManager.selectDevelopmentOrder(item)"
+                                    data-title="设计编号:{{item.DevelopmentRmId}}" data-bs-tooltip
+                                    ng-repeat="item in vmManager.DevelopmentRmIds track by $index">
                                     编号：
-                                    <span class="label label-success" style="cursor:pointer">{{item.AssetNumber}}</span>
+                                    <span class="label label-success" style="cursor:pointer">{{item.RmId}}</span>
                                     -----
-                                    名称：
+                                    设计产品名称：
                                     <span>
                                         <i class="fa fa-envelope-o"></i>
-                                        {{item.EquipmentName}}
+                                        {{item.ProductName}}
                                     </span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
-        <div class="panel-footer"/> 
+        <div class="panel-footer" /> 
+    </div>
+    
 </div>

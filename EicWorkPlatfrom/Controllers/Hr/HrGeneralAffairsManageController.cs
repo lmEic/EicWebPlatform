@@ -114,12 +114,11 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var data = GeneralAffairsService.ReportMealManager.GetReportMealDetailDatas(reportMealDate, reportMealType, department);
             return DateJsonResult(data);
         }
-        //HandleReportMealMonthDetialDatas  reportMealType, department,datas
+        
 
         [NoAuthenCheck]
         public ContentResult HandleMonthDetialDatas(string reportMealType, string department, MealReportedAnalogModel datas)
-        {//DandelMonthReportMealDatas
-           
+        {
             var data = datas != null? GeneralAffairsService.ReportMealManager.DandelMonthReportMealDatas(reportMealType, department, datas.DetailDatas):null;
             return DateJsonResult(data);
         }

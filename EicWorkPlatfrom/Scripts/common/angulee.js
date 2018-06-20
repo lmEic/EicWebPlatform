@@ -310,6 +310,8 @@ var leeHelper = (function () {
         TolManPowerTunnel: 'TolManPowerTunnel',
         //开发管理控制器
         developmentProductsManage: 'Development',
+        //仓库管理控制器
+        WarehouseManage: 'WarehouseManage',
 
     };
     return {
