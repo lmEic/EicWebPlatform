@@ -18,6 +18,10 @@ angular.module('bpm.developmentApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     })
        //
     //.state('documentInputRecord', {
+    //<div data-ui-view="" class="ng-scope" data-ng-animate="1">
+    //
+
+
     //   templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'
     //})
 })
