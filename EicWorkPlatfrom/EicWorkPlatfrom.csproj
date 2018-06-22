@@ -1551,6 +1551,7 @@
     <Content Include="Views\QuaInspectionManage\InspectionConfigCheckForm.cshtml" />
     <Content Include="Views\Development\DocumentInputRecord.cshtml" />
     <Content Include="Views\Development\SponsorDocumentInputRecord.cshtml" />
+    <Content Include="Views\WarehouseManage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1558,7 +1559,6 @@
     <Folder Include="FileLibrary\PreviewFiles\" />
     <Folder Include="FileLibrary\ReportProblemHandleDataFile\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\WarehouseManage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
