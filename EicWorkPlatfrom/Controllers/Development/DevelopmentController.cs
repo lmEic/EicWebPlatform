@@ -19,6 +19,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
+        [HttpGet]
         public ActionResult DocumentInputRecord()
         {
             return View();
@@ -28,11 +29,13 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
+        [HttpGet]
         public ActionResult SponsorDocumentInputRecord()
         {
             return View();
         }
         [NoAuthenCheck]
+        [HttpGet]
         public JsonResult StoreDisgnDveData(DesignDevelopInputModel model)
         {
             var opResult = DevelopSerivce.DesignDevManager.StoreDesignModel(model);

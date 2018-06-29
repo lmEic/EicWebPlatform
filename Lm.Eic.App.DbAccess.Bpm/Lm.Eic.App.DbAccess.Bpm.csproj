@@ -68,6 +68,7 @@
     <Compile Include="Mapping\QmsMapping\Qua8DReportMapping.cs" />
     <Compile Include="Mapping\QmsMapping\QmsInspectionMapping.cs" />
     <Compile Include="Mapping\QmsMapping\QmsRmaMapping.cs" />
+    <Compile Include="Mapping\WarehouseMapping\ExpressMapping.cs" />
     <Compile Include="Mapping\WorkFlowMapping\InternalContactFormModelMapping .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AstRep\EquipmentRepository.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Repository\QmsRep\QmsRmaReository.cs" />
     <Compile Include="Repository\QmsRep\QmsInspectionReposity.cs" />
     <Compile Include="Repository\ToolsOnLine\WorkTaskManageRepository.cs" />
+    <Compile Include="Repository\WarehouseRep\ExpressRep\ExpressRepository.cs" />
     <Compile Include="Repository\WorkFlow\GeneralForm\InternalContactFormRepository.cs" />
   </ItemGroup>
   <ItemGroup>

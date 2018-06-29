@@ -6,13 +6,18 @@ angular.module('bpm.warehouseApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
     //检验项目Url前缀
     var inspectionUrlPrefix = leeHelper.controllers.WarehouseManage + "/";
-
-    //--------------设计变更录入-------------------------
-    //$stateProvider.state('documentInputRecord', {
-    //    //设计变更录入
-    //    templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'
-    //})
- 
+    console.log(inspectionUrlPrefix);
+    $stateProvider.state('receptionExpress', {
+        //
+     
+        templateUrl: inspectionUrlPrefix + 'ReceptionExpress'
+    })
+    $stateProvider.state('takeExpress', {
+        templateUrl: inspectionUrlPrefix + 'TakeExpress'
+    })
+    $stateProvider.state('queriesExpress', {
+        templateUrl: inspectionUrlPrefix + 'QueriesExpress'
+    })
     //
     //.state('documentInputRecord', {
     //   templateUrl: inspectionUrlPrefix + 'DocumentInputRecord'

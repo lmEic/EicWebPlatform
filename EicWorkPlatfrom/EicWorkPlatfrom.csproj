@@ -573,6 +573,7 @@
     <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
     <Content Include="Scripts\controller\warehouseManage\warehouseApp.js" />
+    <Content Include="Scripts\controller\warehouseManage\WarehouseSystemManage.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -1551,7 +1552,10 @@
     <Content Include="Views\QuaInspectionManage\InspectionConfigCheckForm.cshtml" />
     <Content Include="Views\Development\DocumentInputRecord.cshtml" />
     <Content Include="Views\Development\SponsorDocumentInputRecord.cshtml" />
-    <Content Include="Views\WarehouseManage\Index.cshtml" />
+    <Content Include="Views\Warehouse\Index.cshtml" />
+    <Content Include="Views\Warehouse\ReceptionExpress.cshtml" />
+    <Content Include="Views\Warehouse\QueriesExpress.cshtml" />
+    <Content Include="Views\Warehouse\TakeExpress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

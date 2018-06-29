@@ -18,6 +18,7 @@ using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.LeaveAsk;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.LeaveAsk;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.DevMapping;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.WarehouseMapping;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -236,6 +237,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
             #region 设计开发管理
             modelBuilder.Configurations.Add(new DesignDevelopInputModelMapping());
+            #endregion
+
+            #region  快弟收发系统
+               modelBuilder.Configurations.Add(new ExpressModelMapping());
             #endregion
         }
     }

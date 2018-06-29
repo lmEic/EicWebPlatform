@@ -4,7 +4,7 @@
 var developmentModule = angular.module('bpm.developmentApp');
 developmentModule.factory("develpmentDataOpService", function (ajaxService) {
     var dev = {};
-    var devUrlPrefix = "/development/";
+    var devUrlPrefix = "/" + leeHelper.controllers.developmentProductsManage+ "/";
 
     //保存档案记录
     dev.saveDevepmentRecord = function (model) {
@@ -155,15 +155,15 @@ developmentModule.controller("dponsorDocumentInputRecordCtrl", function ($scope,
         });
     };
 
-    //回车交点转下一个
-    var $txtInput = $('input:text');
-    $txtInput.first().focus();
-    $txtInput.bind('keydown', function (e) {
-        if (e.which == 13) {
-            e.preventDefault();
-            var nxtIdx = $txtInput.index(this) + 1;
-            $txtInput.filter(":eq(" + nxtIdx + ")").focus();
-        }
-    });
+    ////回车交点转下一个
+    //var $txtInput = $('input:text');
+    //$txtInput.first().focus();
+    //$txtInput.bind('keydown', function (e) {
+    //    if (e.which == 13) {
+    //        e.preventDefault();
+    //        var nxtIdx = $txtInput.index(this) + 1;
+    //        $txtInput.filter(":eq(" + nxtIdx + ")").focus();
+    //    }
+    //});
 });
 ///

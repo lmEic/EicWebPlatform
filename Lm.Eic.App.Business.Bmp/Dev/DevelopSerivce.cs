@@ -9,7 +9,6 @@ namespace Lm.Eic.App.Business.Bmp.Dev
 {
   public  class DevelopSerivce
     {
-
         public static ProductsDesignDevelopManger DesignDevManager
         {
             get { return OBulider.BuildInstance<ProductsDesignDevelopManger>(); }

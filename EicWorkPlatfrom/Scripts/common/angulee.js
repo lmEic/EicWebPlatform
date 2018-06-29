@@ -311,7 +311,7 @@ var leeHelper = (function () {
         //开发管理控制器
         developmentProductsManage: 'Development',
         //仓库管理控制器
-        WarehouseManage: 'WarehouseManage',
+        WarehouseManage: 'Warehouse',
 
     };
     return {

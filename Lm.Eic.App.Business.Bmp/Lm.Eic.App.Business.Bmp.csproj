@@ -163,6 +163,9 @@
     <Compile Include="Quality\RmaManage\RmaReportManager.cs" />
     <Compile Include="Quality\RmaManage\RmaManager.cs" />
     <Compile Include="Quality\RmaManage\RmaService.cs" />
+    <Compile Include="Warehouse\ExpressionManger\ExpressTransceiverManger.cs" />
+    <Compile Include="Warehouse\WarehouseCrudFactory.cs" />
+    <Compile Include="Warehouse\WarehouseSeries.cs" />
     <Compile Include="WorkFlow\ElectronicFormBase.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormCrudFactory.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormService.cs" />

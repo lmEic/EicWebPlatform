@@ -63,6 +63,7 @@
     <Compile Include="Quanity\InspectionoModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
     <Compile Include="Quanity\QmsRmaModel.cs" />
+    <Compile Include="Warehouse\ExprssModel.cs" />
     <Compile Include="WorkFlow\GeneralForm\InternalContactFormModel.cs" />
     <Compile Include="WorkFlow\GeneralForm\WfFormCheckFlowModel.cs" />
   </ItemGroup>
