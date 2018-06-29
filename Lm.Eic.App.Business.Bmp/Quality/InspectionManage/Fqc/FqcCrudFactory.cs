@@ -65,7 +65,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public bool IsExistFqcConfigmaterailId(string materailId)
         {
-            return irep.IsExist(e => e.MaterialId == materailId&&e.IsActivate.ToUpper()== "TRUE");
+            return irep.IsExist(e => e.MaterialId == materailId&&e.IsActivate.ToUpper()== "TRUE"&&e.CheckStatus== "已审核");
         }
         public InspectionFqcItemConfigModel FindFirstOrDefaultDataBy(string MaterialId, string inspectionItem)
         {

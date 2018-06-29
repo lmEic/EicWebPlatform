@@ -652,6 +652,7 @@
     <Content Include="FileLibrary\WorkOverHours\加班汇总表1.xls" />
     <Content Include="FileLibrary\WorkOverHours\加班数据模板间接.xls" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
