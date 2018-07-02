@@ -168,7 +168,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="entity"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        private PropertyInfo IsHasProperty(TEntity entity, string propertyName)
+        private  PropertyInfo IsHasProperty(TEntity entity, string propertyName)
         {
             Type type = entity.GetType();
             PropertyInfo pi = type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);

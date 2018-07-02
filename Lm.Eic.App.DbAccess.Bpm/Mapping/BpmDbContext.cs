@@ -199,6 +199,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
             modelBuilder.Configurations.Add(new InspectionModeConfigMapping());
             modelBuilder.Configurations.Add(new InspectionModeSwitchConfigMapping());
+            modelBuilder.Configurations.Add(new InspectionItemConfigCheckModelMapping());
             //IQC
             modelBuilder.Configurations.Add(new IqcInspectionItemConfigMapping());
             modelBuilder.Configurations.Add(new IqcInspectionMasterMapping());

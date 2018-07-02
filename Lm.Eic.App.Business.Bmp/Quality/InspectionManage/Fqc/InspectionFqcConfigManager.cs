@@ -60,7 +60,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 if (InspectionManagerCrudFactory.OrtMaterialConfigCrud.ChangeMaterialIsValid(modelList.FirstOrDefault().MaterialId, isNeedOrt).Result)
                     modelList.ForEach(e => e.IsNeedORT = isNeedOrt);
             }
-            return InspectionManagerCrudFactory.FqcItemConfigCrud.StoreFqcItemConfigList(modelList);
+            OpResult opresult = InspectionManagerCrudFactory.FqcItemConfigCrud.StoreFqcItemConfigList(modelList);
+            if (opresult.Result)
+            { InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.initialStoreCheckModel<InspectionFqcItemConfigModel>(modelList); }
+
+            return opresult;
 
         }
 

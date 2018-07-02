@@ -81,6 +81,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 new FileFieldMapping ("Number","项次") ,
                 new FileFieldMapping ("SupplierId","供应商Id") ,
                 new FileFieldMapping ("SupplierName","供应商全称") ,
+                 new FileFieldMapping ("QualityCheck","品质考核") ,
                 new FileFieldMapping ("AuditPrice","价格考核") ,
                 new FileFieldMapping ("DeliveryDate","交期考核") ,
                 new FileFieldMapping ("ActionLiven","配合度考核") ,

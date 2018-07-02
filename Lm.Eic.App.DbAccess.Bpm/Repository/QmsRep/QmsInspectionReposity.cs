@@ -13,14 +13,34 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     {
 
     }
+    /// <summary>
+    /// InspectionModeSwitchConfigModel
+    /// </summary>
     public class InspectionModeConfigRepository : BpmRepositoryBase<InspectionModeConfigModel>, IInspectionModeConfigRepository
     {
     }
+ 
 
     public interface IInspectionModeSwitchConfigRepository : IRepository<InspectionModeSwitchConfigModel>
     {
     }
+    /// <summary>
+    /// 检验配置转换管理
+    /// </summary>
     public class InspectionModeSwitchConfigRepository : BpmRepositoryBase<InspectionModeSwitchConfigModel>, IInspectionModeSwitchConfigRepository
+    {
+    }
+
+
+
+    public interface IInspectionItemConfigCheckRepository : IRepository<InspectionItemConfigCheckModel>
+    {
+
+    }
+    /// <summary>
+    /// 检验配置审核管理
+    /// </summary>
+    public class InspectionItemConfigCheckRepository : BpmRepositoryBase<InspectionItemConfigCheckModel>, IInspectionItemConfigCheckRepository
     {
     }
     #endregion

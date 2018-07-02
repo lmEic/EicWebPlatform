@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
@@ -21,9 +22,51 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
+      
+        //public OpResult checkIqcConfigItem(InspectionItemConfigCheckModel datas)
+        //{
+        //    /// OpSign ==edit     审核
+        //    ///  OpSign ==add     变更
+        //    /// ItemConfigVersion 在原来的基础上加1
+        //    /// CheckStatus       已审核
+        //    OpResult opResult = InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.Store(datas);
+        //    if (opResult.Result)
+        //    {
+        //        opResult= InspectionManagerCrudFactory.IqcItemConfigCrud.OpCheckInspectionItemConfigDates(datas);
+              
+        //    }
+        //    return opResult;
+        //}
+
+
+        //public OpResult checkIqcConfigItem(InspectionConfigMasterVm datas, string inspectionStatus)
+        //{
+        //    OpResult opResult = OpResult.SetSuccessResult("", false);
+        //    if (datas != null)
+        //    {
+        //        string isActivate = (inspectionStatus == "变更中") ? "false" : "True";
+        //        datas.MaterialIqcInspetionItem.ForEach(e =>
+        //        {
+        //            e.CheckPerson = datas.OpPerson;
+        //            e.CheckStatus = inspectionStatus;
+        //            e.CheckDate = DateTime.Now.Date;
+        //            e.OpSign = OpMode.Edit;
+        //            e.IsActivate = isActivate;
+        //        });
+        //        opResult = StoreIqcInspectionItemConfig(datas.MaterialIqcInspetionItem);
+        //        opResult.Entity = datas;
+        //    }
+        //    return opResult;
+        //}
+        ///<summary>
+        /// 物料号查询检验项目
+        /// （添加测试条件）
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         public List<InspectionIqcItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
-            return InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
+            return InspectionManagerCrudFactory.IqcItemConfigCrud.FindAllIqcInspectionItemConfigDatasBy(materialId);
         }
         /// <summary>
         ///  在数据库中是否存在此料号
@@ -54,7 +97,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreIqcInspectionItemConfig(List<InspectionIqcItemConfigModel> modelList)
         {
-            return InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfigDatas(modelList);
+            OpResult opresult= InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfigDatas(modelList);
+            if (opresult.Result)
+            { InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.initialStoreCheckModel<InspectionIqcItemConfigModel>(modelList,"IQC"); }
+
+            return opresult;
         }
 
 

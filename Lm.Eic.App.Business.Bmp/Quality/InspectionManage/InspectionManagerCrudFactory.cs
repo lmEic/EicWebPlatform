@@ -10,6 +10,8 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.App.Erp.Bussiness.QmsManage;
+using System.Reflection;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
@@ -33,6 +35,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionModeSwithConfigCrud>(); }
         }
+
+        /// <summary>
+        /// 检验配置审核CRUD
+        /// </summary>
+        internal static InspectionItemConfigCheckCrud InspectionItemConfigCheckCrud
+        {
+            get { return OBulider.BuildInstance<InspectionItemConfigCheckCrud>(); }
+        }
+
+
 
         #region IQC Crud
         /// <summary>
@@ -61,8 +73,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         #region  FQC CRUD
-
-
         internal static InspectionFqcItemConfigCrud FqcItemConfigCrud
         {
             get { return OBulider.BuildInstance<InspectionFqcItemConfigCrud>(); }
@@ -83,8 +93,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         #endregion
-
-
         #region Ipqc CRUD
         internal static InspectionIpqcDatailCrud IpqcDatialCrud
         {
@@ -144,8 +152,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
     /// <summary>
     /// 检验方式转换配置CRUD
-    /// </summary>
-
+    /// </summary
     internal class InspectionModeSwithConfigCrud : CrudBase<InspectionModeSwitchConfigModel, IInspectionModeSwitchConfigRepository>
     {
         public InspectionModeSwithConfigCrud() : base(new InspectionModeSwitchConfigRepository(), "检验方式转换")
@@ -232,6 +239,100 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 throw new Exception(ex.InnerException.Message);
             }
 
+        }
+    }
+    /// <summary>
+    /// 检验配置审核CRUD
+    /// </summary>
+    internal class InspectionItemConfigCheckCrud : CrudBase<InspectionItemConfigCheckModel, IInspectionItemConfigCheckRepository>
+    {
+        public InspectionItemConfigCheckCrud() : base(new InspectionItemConfigCheckRepository(), "检验配置审核")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddInspectionModeConfig);
+            this.AddOpItem(OpMode.Edit, EidtInspectionModeConfig);
+            this.AddOpItem(OpMode.Delete, DeleteInspectionModeConfig);
+        }
+
+        private OpResult DeleteInspectionModeConfig(InspectionItemConfigCheckModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+
+        private OpResult EidtInspectionModeConfig(InspectionItemConfigCheckModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        private OpResult AddInspectionModeConfig(InspectionItemConfigCheckModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+       private  PropertyInfo IsHasProperty<T>(T entity, string propertyName)
+        {
+            Type type = entity.GetType();
+            PropertyInfo pi = type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
+            return pi;
+        }
+        /// <summary>
+        /// 初始载入配置的审核数据
+        /// </summary>
+        /// <param name="MasterId"></param>
+        /// <returns></returns>
+        public OpResult initialStoreCheckModel<T>(List<T> Listentity,string belongDepartment=null) where T: class, new()
+        {
+            T entity = null;
+            string MasterId = string.Empty;
+            string inspectionItemDatas = string.Empty;
+            int inspectionItemCount = 0;
+            if (Listentity != null && Listentity.Count > 0)
+            {
+                entity = Listentity.FirstOrDefault();
+                Listentity.ForEach(e => {
+                    inspectionItemDatas += ObjectSerializer.GetJson<T>(e) + ";";
+                    inspectionItemCount++;
+                });
+            }
+            if (entity == null) return OpResult.SetErrorResult("此物料已经存在，不用初始化保存");
+             PropertyInfo pi = IsHasProperty<T>(entity, "MaterialId");
+              MasterId =( pi != null)? pi.GetValue(entity, null) as string  :string.Empty;
+            List<ProductMaterailDto> materialInfoList = QmsDbManager.MaterialInfoDb.GetProductInfoBy(MasterId).ToList();
+            if (materialInfoList != null && materialInfoList.Count > 0)
+            {
+                ProductMaterailDto ms = materialInfoList.FirstOrDefault();
+                if (belongDepartment == null) belongDepartment = ms.MaterialBelongDepartment;
+                if (irep.IsExist(e => e.MaterialId == MasterId && e.MaterialBelongDepartment== belongDepartment)) return OpResult.SetErrorResult("此物料已经存在，不用初始化保存");
+                return this.Store(new InspectionItemConfigCheckModel()
+                {
+                    MaterialId = ms.ProductMaterailId,
+                    MaterailName = ms.MaterailName,
+                    MaterialBelongDepartment = belongDepartment,
+                    MaterialrawID = ms.MaterialrawID,
+                    MaterialSpecify = ms.MaterialSpecify,
+                    InspectionItemDatas = inspectionItemDatas,
+                    CheckStatus ="未审核",
+                    OpSign=OpMode.Add,
+                    InspectionItemInPutDate=DateTime.Now.Date.ToDate(),
+                    ItemConfigVersion = DateTime.Now.ToString("yy") + "." + DateTime.Now.ToString("MM") + "." + "001",
+                    InspectionItemCount= inspectionItemCount,
+                },true);
+            }
+            return OpResult.SetErrorResult("没有此物料");
+        }
+        public List<InspectionItemConfigCheckModel> GetItemConfigCheckDates(string materialId)
+        {
+            return  irep.Entities.Where(e =>e.MaterialId== materialId).ToList();
+        }
+        public List<InspectionItemConfigCheckModel> GetItemConfigCheckDates(string checkStatus, string department, DateTime dateFrom, DateTime dateTo)
+        {
+            DateTime startOpdate = dateFrom.ToDate();
+            DateTime endOpDate = dateTo.ToDate();
+            return (checkStatus == null || checkStatus == string.Empty) ?
+                   irep.Entities.Where(e => e.InspectionItemInPutDate >= startOpdate && e.InspectionItemInPutDate <= endOpDate&&e.MaterialBelongDepartment== department).ToList() :
+              irep.Entities.Where(e => e.InspectionItemInPutDate >= startOpdate && e.InspectionItemInPutDate <= endOpDate & e.CheckStatus == checkStatus && e.MaterialBelongDepartment == department).ToList();
         }
     }
 
