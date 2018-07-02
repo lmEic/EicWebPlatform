@@ -156,8 +156,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         }
     }
 
-
-
     /// <summary>
     /// 查询职工档案转输入对象
     /// 0: 默认载入全部在职数据

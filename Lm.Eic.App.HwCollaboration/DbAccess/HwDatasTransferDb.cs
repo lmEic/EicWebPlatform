@@ -36,6 +36,8 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         {
             return DbHelper.Bpm.Update(entity, this._tableName).ToOpResult();
         }
+
+       
     }
 
     /// <summary>

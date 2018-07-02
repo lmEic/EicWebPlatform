@@ -55,7 +55,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
             string sql = "Select IdentityID, WorkerId,Name,Post, PostNature,Organizetion, Department,ClassType,PersonalPicture from Archives_EmployeeIdentityInfo ";
             if (whereAppend != "")
                 sql = sql + " where " + whereAppend;
-            return DbHelper.Hrm.LoadEntities<ArWorkerInfo>(sql);
+            return DbHelper.Ezconn.LoadEntities<ArWorkerInfo>(sql);
         }
         /// <summary>
         /// 获取出勤人员的信息

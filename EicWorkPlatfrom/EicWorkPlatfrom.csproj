@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EicWorkPlatfrom</RootNamespace>
     <AssemblyName>EicWorkPlatfrom</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -157,6 +157,7 @@
     <Compile Include="Controllers\Development\DevelopmentController.cs" />
     <Compile Include="Controllers\BaseController\EicBaseController.cs" />
     <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
+    <Compile Include="Controllers\Product\CuttingLineController.cs" />
     <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
     <Compile Include="Controllers\ProRedoProductAreaController.cs" />
@@ -1544,6 +1545,7 @@
     <Content Include="Views\HrGeneralAffairsManage\GaMealReportQuery.cshtml" />
     <Content Include="Views\CommonTpl\YearButtonTpl.cshtml" />
     <Content Include="Views\QuaInspectionManage\IpqcInspectionItemConfiguration.cshtml" />
+    <Content Include="Views\CuttingLine\CLMOCManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -65,7 +65,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("Hrm", "MS5", "LightMasterHRM", "sa", "lm2011"); }
         }
-
+        public static DbAcess Ezconn
+        {
+            get { return CreateInstance("Ezconn", ".", "Ezconn", "sa", "ezconnsa"); }
+        }
         /// <summary>
         /// 权限数据访问接口
         /// </summary>

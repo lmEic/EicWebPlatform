@@ -1,18 +1,15 @@
 ﻿<div class="panel panel-primary" ng-controller="workOverHoursManageCtrl">
+
     <div class="panel-heading">
         <h6 class="panel-title"><i class="fa fa-hand-peace-o">加班管理</i></h6>
     </div>
+
     <div class="panel-body" id="editWindow">
         <div class="bs-callout bs-callout-info">
             <div class="row">
                 <div class="col-md-6">
                     <form for="form" class="form-inline">
-                        @*<div class="form-group">
-            <select class="form-control" ng-model="vmManager.selectDepartment">
-                <option></option>
-                <option ng-repeat="item in vmManager.DepartmentDatas" value={{item.DataNodeText}}>{{item.DataNodeText}}</option>
-            </select>
-        </div>*@      <div class="form-group">
+                       <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-model="vmManager.selectDepartment" 

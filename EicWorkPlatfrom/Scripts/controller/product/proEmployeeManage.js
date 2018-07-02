@@ -1404,13 +1404,15 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             });                     
         }  
         //批量保存提示窗口
-        operate.saveDialog = function () {
+    operate.saveDialog = function () {
+        alert(uiVM.Remark);
+       
             if (vmManager.dataSets.length == 0) {
                 leePopups.alert("亲，没有任何记录！");
                 return;
             }
             leePopups.confirm("保存提示", "加班单编辑好了，您确定保存吗？", function () {
-
+                alert(vmManager.dataSet);
                 operate.saveAll();
             });
         },
@@ -1430,6 +1432,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         }
     //批量保存
     operate.saveAll = function () {
+   
         proEmployeeDataService.storeHandlWorkOverHoursDt(vmManager.dataSets).then(function (opResult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                 vmManager.dataSets = [];

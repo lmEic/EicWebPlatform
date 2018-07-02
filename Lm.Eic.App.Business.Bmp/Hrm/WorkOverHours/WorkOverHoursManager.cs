@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
         /// 查询(1、按日期查询 2、按部门查询)
         /// </summary>
         /// <param name="Dto"></param>
-        /// <returns></returns>
+        /// <returns></returns>*****
         public List<WorkOverHoursMangeModels> FindRecordBy(WorkOverHoursDto Dto)
         {
             return WorkOverHoursFactory.WorkOverHoursCrud.FindBy(Dto);
