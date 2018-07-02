@@ -7,7 +7,7 @@
 <html ng-app="bpm.homeApp">
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>光圣科技企业信息化平台</title>
+    <title>光圣科技信息中心</title>
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
@@ -28,8 +28,8 @@
                         <span>
                             <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
                                  src="@Url.Content("~/Content/login/lmlogo.png")"
-                                 style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 3px;" />
-                            企业信息化平台(V1.0)
+                                 style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 25px;" />
+                            EIC <span style="font-size:8px">(V01.012)</span>
                         </span>
                     </a>
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -63,14 +63,14 @@
             </div>
         </nav>
     </header>
-
+    @*行事历*@
     <main class="container-fluid" ng-controller="layoutCtrl">
         <div class="row" ng-cloak>
             <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
                 <div class="bs-callout bs-callout-info">
                     <h4>
                         <span class="fa fa-list-ul">
-                            我的地盘
+                            我的行事历
                         </span>
                         <span class="pull-right">
                             <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
@@ -128,7 +128,12 @@
             </div>
             <div class="pull-right" style="width:{{navLayout.navMainSize}};">
                 <div data-ui-view>
-
+                    <span>
+                        <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
+                             src="@Url.Content("~/Content/login/lightmaster.png")"
+                           style="margin-left: 250px;margin-top: 50px;"  />
+                       
+                    </span>
                 </div>
             </div>
         </div>
@@ -140,7 +145,7 @@
                 <div class="col-md-4">
                 </div>
                 <div class="col-md-4">
-                    <span class="footer-links">All copyright reserved by EZconn Corporation 2017</span>
+                    <span class="footer-links">All copyright reserved by EZconn Corporation 2018</span>
                 </div>
                 <div class="col-md-4">
                 </div>

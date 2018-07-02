@@ -61,7 +61,7 @@ namespace EicWorkPlatfrom.Controllers
                 }
                 else
                 {
-                    user.UserId = "003095";
+                    user.UserId = "001359";
                     user.UserName = "开发调试者";
                     user.Role = new RoleModel()
                     {

@@ -254,17 +254,162 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
 
     }
-
+    /// <summary>
+    ///测试核对模式
+    /// </summary>
+    [Serializable]
+    public partial class InspectionItemConfigCheckModel
+    {
+        public InspectionItemConfigCheckModel()
+        { }
+        #region Model
+        private string _materialid;
+        /// <summary>
+        ///料号
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        private string _materailname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string MaterailName
+        {
+            set { _materailname = value; }
+            get { return _materailname; }
+        }
+        private string _materialspecify;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string MaterialSpecify
+        {
+            set { _materialspecify = value; }
+            get { return _materialspecify; }
+        }
+        private string _materialrawid;
+        /// <summary>
+        ///图号
+        /// </summary>
+        public string MaterialrawID
+        {
+            set { _materialrawid = value; }
+            get { return _materialrawid; }
+        }
+        private string _materialbelongdepartment;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string MaterialBelongDepartment
+        {
+            set { _materialbelongdepartment = value; }
+            get { return _materialbelongdepartment; }
+        }
+        private string _inspectionitemdatas;
+        /// <summary>
+        ///数据
+        /// </summary>
+        public string InspectionItemDatas
+        {
+            set { _inspectionitemdatas = value; }
+            get { return _inspectionitemdatas; }
+        }
+        private DateTime _inspectioniteminputdate;
+        /// <summary>
+        ///项目
+        /// </summary>
+        public DateTime InspectionItemInPutDate
+        {
+            set { _inspectioniteminputdate = value; }
+            get { return _inspectioniteminputdate; }
+        }
+        private int _inspectionitemcount;
+        /// <summary>
+        ///数据
+        /// </summary>
+        public int InspectionItemCount
+        {
+            set { _inspectionitemcount = value; }
+            get { return _inspectionitemcount; }
+        }
+        private string _checkstatus;
+        /// <summary>
+        ///状态
+        /// </summary>
+        public string CheckStatus
+        {
+            set { _checkstatus = value; }
+            get { return _checkstatus; }
+        }
+        private string _itemconfigversion;
+        /// <summary>
+        ///版本
+        /// </summary>
+        public string ItemConfigVersion
+        {
+            set { _itemconfigversion = value; }
+            get { return _itemconfigversion; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人员
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
     #endregion
 
 
     #region IQC
     /// <summary>
-    /// IQC物料检验配置文件
+    ///IQC物料检验配置文件
     /// </summary>
-    public class InspectionIqcItemConfigModel
+    [Serializable]
+    public partial class InspectionIqcItemConfigModel
     {
-
         public InspectionIqcItemConfigModel()
         { }
         #region Model
@@ -385,6 +530,60 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionaql = value; }
             get { return _inspectionaql; }
         }
+        private DateTime _inspectioniteminputdate;
+        /// <summary>
+        ///录入日期
+        /// </summary>
+        public DateTime InspectionItemInPutDate
+        {
+            set { _inspectioniteminputdate = value; }
+            get { return _inspectioniteminputdate; }
+        }
+        private string _isactivate;
+        /// <summary>
+        ///是否激活
+        /// </summary>
+        public string IsActivate
+        {
+            set { _isactivate = value; }
+            get { return _isactivate; }
+        }
+        private string _checkstatus;
+        /// <summary>
+        ///审核状态
+        /// </summary>
+        public string CheckStatus
+        {
+            set { _checkstatus = value; }
+            get { return _checkstatus; }
+        }
+        private string _checkperson;
+        /// <summary>
+        ///审核人
+        /// </summary>
+        public string CheckPerson
+        {
+            set { _checkperson = value; }
+            get { return _checkperson; }
+        }
+        private DateTime _checkdate;
+        /// <summary>
+        ///审核日期
+        /// </summary>
+        public DateTime CheckDate
+        {
+            set { _checkdate = value; }
+            get { return _checkdate; }
+        }
+        private string _configversion;
+        /// <summary>
+        ///配置版次
+        /// </summary>
+        public string ConfigVersion
+        {
+            set { _configversion = value; }
+            get { return _configversion; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -432,6 +631,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+
+  
+
 
     /// <summary>
     /// IQC单据检验
@@ -848,15 +1050,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public InspectionFqcItemConfigModel()
         { }
         #region Model
-        private string _isneedort;
-        /// <summary>
-        ///是否要ORT
-        /// </summary>
-        public string IsNeedORT
-        {
-            set { _isneedort = value; }
-            get { return _isneedort; }
-        }
         private string _materialid;
         /// <summary>
         ///料号
@@ -866,15 +1059,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private string _inspectiondatagathertype;
-        /// <summary>
-        ///数据录入方式
-        /// </summary>
-        public string InspectionDataGatherType
-        {
-            set { _inspectiondatagathertype = value; }
-            get { return _inspectiondatagathertype; }
-        }
         private string _productdepartment;
         /// <summary>
         ///生产部门
@@ -883,6 +1067,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _productdepartment = value; }
             get { return _productdepartment; }
+        }
+        private string _isneedort;
+        /// <summary>
+        ///是否要ORT
+        /// </summary>
+        public string IsNeedORT
+        {
+            set { _isneedort = value; }
+            get { return _isneedort; }
         }
         private string _inspectionitem;
         /// <summary>
@@ -956,6 +1149,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmethod = value; }
             get { return _inspectionmethod; }
         }
+        private string _inspectiondatagathertype;
+        /// <summary>
+        ///数据录入方式
+        /// </summary>
+        public string InspectionDataGatherType
+        {
+            set { _inspectiondatagathertype = value; }
+            get { return _inspectiondatagathertype; }
+        }
         private string _sipinspectionstandard;
         /// <summary>
         ///Sip检验规则
@@ -991,6 +1193,60 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionaql = value; }
             get { return _inspectionaql; }
+        }
+        private string _isactivate;
+        /// <summary>
+        ///是否启用
+        /// </summary>
+        public string IsActivate
+        {
+            set { _isactivate = value; }
+            get { return _isactivate; }
+        }
+        private string _checkstatus;
+        /// <summary>
+        ///审核状态
+        /// </summary>
+        public string CheckStatus
+        {
+            set { _checkstatus = value; }
+            get { return _checkstatus; }
+        }
+        private string _checkperson;
+        /// <summary>
+        ///审核人
+        /// </summary>
+        public string CheckPerson
+        {
+            set { _checkperson = value; }
+            get { return _checkperson; }
+        }
+        private DateTime _inspectioniteminputdate;
+        /// <summary>
+        ///项目录入日期
+        /// </summary>
+        public DateTime InspectionItemInPutDate
+        {
+            set { _inspectioniteminputdate = value; }
+            get { return _inspectioniteminputdate; }
+        }
+        private DateTime _checkdate;
+        /// <summary>
+        ///审核日期
+        /// </summary>
+        public DateTime CheckDate
+        {
+            set { _checkdate = value; }
+            get { return _checkdate; }
+        }
+        private string _configversion;
+        /// <summary>
+        ///版本号
+        /// </summary>
+        public string ConfigVersion
+        {
+            set { _configversion = value; }
+            get { return _configversion; }
         }
         private string _memo;
         /// <summary>
@@ -1588,7 +1844,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _inspectioncount;
         /// <summary>
-        ///检验数量
+        ///送检数量
         /// </summary>
         public double InspectionCount
         {
@@ -1606,7 +1862,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private int _inspectionItemCount = 0;
         /// <summary>
-        /// 检验项目数量
+        /// 需要检验项目数量
         /// </summary>
         public int InspectionItemCount
         {
@@ -1615,13 +1871,62 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _inspectionitems;
         /// <summary>
-        ///检验项目
+        ///检验项目（以豆号分开）
         /// </summary>
         public string InspectionItems
         {
             set { _inspectionitems = value; }
             get { return _inspectionitems; }
         }
+
+
+        /// ////////////////////////////////////////////////////
+
+        private double _inspectionMaxNumber;
+        /// <summary>
+        ///检验最大数
+        /// </summary>
+        public double InspectionMaxNumber
+        {
+            set { _inspectionMaxNumber = value; }
+            get { return _inspectionMaxNumber; }
+        }
+
+        private int _inspectionNgNumber;
+        /// <summary>
+        ///检验不良数
+        /// </summary>
+        public int InspectionNgNumber
+        {
+            set { _inspectionNgNumber = value; }
+            get { return _inspectionNgNumber; }
+        }
+
+        private string _inspectionItemInspectors;
+        /// <summary>
+        ///检验的检查员
+        /// </summary>
+        public string InspectionItemInspectors
+        {
+            set { _inspectionItemInspectors = value; }
+            get { return _inspectionItemInspectors; }
+        }
+
+        private string _inspectionItemDetails;
+        /// <summary>
+        /// 项目详细列表
+        /// </summary>
+        public string InspectionItemDetails
+        {
+            set { _inspectionItemDetails = value; }
+            get { return _inspectionItemDetails; }
+        }
+
+        /// //////////////////////////////////////////
+
+
+
+
         private DateTime _finishdate;
         /// <summary>
         ///完成日期
@@ -1754,9 +2059,679 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     #endregion
 
+    #region  IQPC
+    /// <summary>
+    /// 数据详细表
+    /// </summary>
+    public class InspectionIpqcDetailModel
+    {
+
+        public InspectionIpqcDetailModel()
+        { }
+        #region Model
+        private string _orderid;
+        /// <summary>
+        ///制令单
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        private int _orderidnumber;
+        /// <summary>
+        ///序号
+        /// </summary>
+        public int OrderIdNumber
+        {
+            set { _orderidnumber = value; }
+            get { return _orderidnumber; }
+        }
+        private string _productdepartment;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string ProductDepartment
+        {
+            set { _productdepartment = value; }
+            get { return _productdepartment; }
+        }
+        private string _classtype;
+        /// <summary>
+        ///班别
+        /// </summary>
+        public string ClassType
+        {
+            set { _classtype = value; }
+            get { return _classtype; }
+        }
+        private string _materialid;
+        /// <summary>
+        ///物料
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        private string _inspectionitem;
+        /// <summary>
+        ///检验项目
+        /// </summary>
+        public string InspectionItem
+        {
+            set { _inspectionitem = value; }
+            get { return _inspectionitem; }
+        }
+        private double _orderidcount;
+        /// <summary>
+        ///制令单数量
+        /// </summary>
+        public double OrderIdCount
+        {
+            set { _orderidcount = value; }
+            get { return _orderidcount; }
+        }
+        private DateTime _materialindate;
+        /// <summary>
+        ///生产日期
+        /// </summary>
+        public DateTime MaterialInDate
+        {
+            set { _materialindate = value; }
+            get { return _materialindate; }
+        }
+        private double _materialcount;
+        /// <summary>
+        ///生产数量
+        /// </summary>
+        public double MaterialCount
+        {
+            set { _materialcount = value; }
+            get { return _materialcount; }
+        }
+        private string _inspectionmethod;
+        /// <summary>
+        ///检验方法
+        /// </summary>
+        public string InspectionMethod
+        {
+            set { _inspectionmethod = value; }
+            get { return _inspectionmethod; }
+        }
+        private string _equipmentid;
+        /// <summary>
+        ///检验冶具
+        /// </summary>
+        public string EquipmentId
+        {
+            set { _equipmentid = value; }
+            get { return _equipmentid; }
+        }
+        private double _inspectioncount;
+        /// <summary>
+        ///检验数量
+        /// </summary>
+        public double InspectionCount
+        {
+            set { _inspectioncount = value; }
+            get { return _inspectioncount; }
+        }
+        private string _inspectionitemdatas;
+        /// <summary>
+        ///检验数据
+        /// </summary>
+        public string InspectionItemDatas
+        {
+            set { _inspectionitemdatas = value; }
+            get { return _inspectionitemdatas; }
+        }
+        private string _documentpath;
+        /// <summary>
+        ///文档路经
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentpath = value; }
+            get { return _documentpath; }
+        }
+        private string _filename;
+        /// <summary>
+        ///文档名称
+        /// </summary>
+        public string FileName
+        {
+            set { _filename = value; }
+            get { return _filename; }
+        }
+        private string _inspectionitemstatus;
+        /// <summary>
+        ///检验状态
+        /// </summary>
+        public string InspectionItemStatus
+        {
+            set { _inspectionitemstatus = value; }
+            get { return _inspectionitemstatus; }
+        }
+        private string _inspectionitemresult;
+        /// <summary>
+        ///检验结果
+        /// </summary>
+        public string InspectionItemResult
+        {
+            set { _inspectionitemresult = value; }
+            get { return _inspectionitemresult; }
+        }
+        private string _inspectiondatatimeregion;
+        /// <summary>
+        ///检验时间段
+        /// </summary>
+        public string InspectionDataTimeRegion
+        {
+            set { _inspectiondatatimeregion = value; }
+            get { return _inspectiondatatimeregion; }
+        }
+        private int _inspectionngcount;
+        /// <summary>
+        ///不良数
+        /// </summary>
+        public int InspectionNGCount
+        {
+            set { _inspectionngcount = value; }
+            get { return _inspectionngcount; }
+        }
+        private DateTime _inspectiondate;
+        /// <summary>
+        ///检验日期
+        /// </summary>
+        public DateTime InspectionDate
+        {
+            set { _inspectiondate = value; }
+            get { return _inspectiondate; }
+        }
+        private string _inspectionruledatas;
+        /// <summary>
+        ///检验具体的数据
+        /// </summary>
+        public string InspectionRuleDatas
+        {
+            set { _inspectionruledatas = value; }
+            get { return _inspectionruledatas; }
+        }
+        private string _memo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Memo
+        {
+            set { _memo = value; }
+            get { return _memo; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+
+    }
+
+    /// <summary>
+    ///IPQC项目配置模
+    /// </summary>
+    [Serializable]
+    public partial class InspectionIpqcConfigModel
+    {
+        public InspectionIpqcConfigModel()
+        { }
+        #region Model
+        private string _materialid;
+        /// <summary>
+        ///机台编号
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        private string _productdepartment;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string ProductDepartment
+        {
+            set { _productdepartment = value; }
+            get { return _productdepartment; }
+        }
+        private string _inspectionitem;
+        /// <summary>
+        ///测试项目
+        /// </summary>
+        public string InspectionItem
+        {
+            set { _inspectionitem = value; }
+            get { return _inspectionitem; }
+        }
+        private int _inspectionitemindex;
+        /// <summary>
+        ///序号
+        /// </summary>
+        public int InspectionItemIndex
+        {
+            set { _inspectionitemindex = value; }
+            get { return _inspectionitemindex; }
+        }
+        private double _sizeusl;
+        /// <summary>
+        ///上限
+        /// </summary>
+        public double SizeUSL
+        {
+            set { _sizeusl = value; }
+            get { return _sizeusl; }
+        }
+        private double _sizelsl;
+        /// <summary>
+        ///下限
+        /// </summary>
+        public double SizeLSL
+        {
+            set { _sizelsl = value; }
+            get { return _sizelsl; }
+        }
+        private string _sizememo;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string SizeMemo
+        {
+            set { _sizememo = value; }
+            get { return _sizememo; }
+        }
+        private string _keylevel;
+        /// <summary>
+        ///关键值
+        /// </summary>
+        public string KeyLevel
+        {
+            set { _keylevel = value; }
+            get { return _keylevel; }
+        }
+        private string _equipmentid;
+        /// <summary>
+        ///测试设备
+        /// </summary>
+        public string EquipmentId
+        {
+            set { _equipmentid = value; }
+            get { return _equipmentid; }
+        }
+        private string _inspectionmethod;
+        /// <summary>
+        ///测试方法
+        /// </summary>
+        public string InspectionMethod
+        {
+            set { _inspectionmethod = value; }
+            get { return _inspectionmethod; }
+        }
+        private string _inspectiondatagathertype;
+        /// <summary>
+        ///收集数据类型
+        /// </summary>
+        public string InspectionDataGatherType
+        {
+            set { _inspectiondatagathertype = value; }
+            get { return _inspectiondatagathertype; }
+        }
+        private string _sipinspectionstandard;
+        /// <summary>
+        ///SIP抽样准标
+        /// </summary>
+        public string SIPInspectionStandard
+        {
+            set { _sipinspectionstandard = value; }
+            get { return _sipinspectionstandard; }
+        }
+        private string _memo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Memo
+        {
+            set { _memo = value; }
+            get { return _memo; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+    /// <summary>
+    ///Ipqc检验日报信息
+    /// </summary>
+    [Serializable]
+    public partial class InspectionIpqcReportModel
+    {
+        public InspectionIpqcReportModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _machineid;
+        /// <summary>
+        ///机台
+        /// </summary>
+        public string MachineId
+        {
+            set { _machineid = value; }
+            get { return _machineid; }
+        }
+        private string _orderid;
+        /// <summary>
+        ///工单
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        private string _materialid;
+        /// <summary>
+        ///物料料号
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        private string _materialname;
+        /// <summary>
+        ///物料名称
+        /// </summary>
+        public string MaterialName
+        {
+            set { _materialname = value; }
+            get { return _materialname; }
+        }
+        private string _materialsupplier;
+        /// <summary>
+        ///生产部门
+        /// </summary>
+        public string MaterialSupplier
+        {
+            set { _materialsupplier = value; }
+            get { return _materialsupplier; }
+        }
+        private string _materialspec;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string MaterialSpec
+        {
+            set { _materialspec = value; }
+            get { return _materialspec; }
+        }
+        private int _needinspectioncount;
+        /// <summary>
+        ///需要检验数量
+        /// </summary>
+        public int NeedInspectionCount
+        {
+            set { _needinspectioncount = value; }
+            get { return _needinspectioncount; }
+        }
+        private string _datastartsign;
+        /// <summary>
+        ///开始标识
+        /// </summary>
+        public string DataStartSign
+        {
+            set { _datastartsign = value; }
+            get { return _datastartsign; }
+        }
+        private string _class;
+        /// <summary>
+        ///班别
+        /// </summary>
+        public string Class
+        {
+            set { _class = value; }
+            get { return _class; }
+        }
+        private string _inspectionresult;
+        /// <summary>
+        ///抽检结果
+        /// </summary>
+        public string InspectionResult
+        {
+            set { _inspectionresult = value; }
+            get { return _inspectionresult; }
+        }
+        private int _inspectioncount;
+        /// <summary>
+        ///抽验数量
+        /// </summary>
+        public int InspectionCount
+        {
+            set { _inspectioncount = value; }
+            get { return _inspectioncount; }
+        }
+        private int _inspectionitemcount;
+        /// <summary>
+        ///抽验项次数量
+        /// </summary>
+        public int InspectionItemCount
+        {
+            set { _inspectionitemcount = value; }
+            get { return _inspectionitemcount; }
+        }
+        private string _inspectionitems;
+        /// <summary>
+        ///抽验项次
+        /// </summary>
+        public string InspectionItems
+        {
+            set { _inspectionitems = value; }
+            get { return _inspectionitems; }
+        }
+        private string _inspectionitemdetails;
+        /// <summary>
+        ///抽验项目详细表
+        /// </summary>
+        public string InspectionItemDetails
+        {
+            set { _inspectionitemdetails = value; }
+            get { return _inspectionitemdetails; }
+        }
+        private string _inspectioniteminspectors;
+        /// <summary>
+        ///抽验人
+        /// </summary>
+        public string InspectionItemInspectors
+        {
+            set { _inspectioniteminspectors = value; }
+            get { return _inspectioniteminspectors; }
+        }
+        private string _inspectionstatus;
+        /// <summary>
+        ///抽验状态
+        /// </summary>
+        public string InspectionStatus
+        {
+            set { _inspectionstatus = value; }
+            get { return _inspectionstatus; }
+        }
+        private DateTime _finishdate;
+        /// <summary>
+        ///完成日期
+        /// </summary>
+        public DateTime FinishDate
+        {
+            set { _finishdate = value; }
+            get { return _finishdate; }
+        }
+        private DateTime _inspectiondate;
+        /// <summary>
+        ///检验日期
+        /// </summary>
+        public DateTime InspectionDate
+        {
+            set { _inspectiondate = value; }
+            get { return _inspectiondate; }
+        }
+        private string _inspectiondatamodel;
+        /// <summary>
+        ///检验数据
+        /// </summary>
+        public string InspectionDataModel
+        {
+            set { _inspectiondatamodel = value; }
+            get { return _inspectiondatamodel; }
+        }
+        private string _oppseson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPseson
+        {
+            set { _oppseson = value; }
+            get { return _oppseson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+
+    #endregion
+
 
     #region  数据展示
-
     /// <summary>
     /// Fqc数据查询信息表
     /// </summary>
@@ -1820,6 +2795,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 检验的项数
         /// </summary>
         public double InspectionNumber { set; get; }
+        #endregion
 
     }
 
@@ -2064,6 +3040,90 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
 
     }
+
+    /// <summary>
+    ///配置文件主表显示
+    /// </summary>
+    public class InspectionConfigMasterVm
+    {
+      public   ProductMaterailDto MaterialInfo
+        {
+            set;get;
+        }
+      public int InspectionItemCount
+        {
+            get
+            {
+               if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                {
+                    var mm = MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").ToList();
+                    return (mm != null && mm.Count > 0) ?
+                      mm.Count : MaterialIqcInspetionItem.Count;
+                }
+                    
+               else return  0;
+            }
+        }
+        public  string Status
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.LastOrDefault().CheckStatus;
+                else return string.Empty;
+            }
+        }
+        public string CheckPerson
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.LastOrDefault().CheckPerson;
+                else return string.Empty;
+            }
+        }
+        public string CheckDate
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.LastOrDefault().CheckDate.ToShortTimeString();
+               else  return string.Empty;
+            }
+        }
+        public  List<string> ItemConfigVersionList
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                    return MaterialIqcInspetionItem.Select(e=>e.ConfigVersion).Distinct().ToList();
+                else return new List<string>();
+            }
+        }
+        public string ItemConfigVersion
+        {
+            get
+            {
+                if (MaterialIqcInspetionItem != null && MaterialIqcInspetionItem.Count > 0)
+                {
+                    var mm = MaterialIqcInspetionItem.Where(e => e.IsActivate.ToUpper() == "TRUE").ToList();
+                    return (mm != null && mm.Count > 0) ?
+                      mm.LastOrDefault().ConfigVersion : MaterialIqcInspetionItem.LastOrDefault().ConfigVersion;
+                }
+                else return string.Empty;
+            }
+        }
+
+        public string OpPerson
+        {
+            set;get;
+        }
+        public List<InspectionIqcItemConfigModel> MaterialIqcInspetionItem
+        {
+            set;get;
+        }
+
+    }
     #endregion
-    #endregion
+
 }

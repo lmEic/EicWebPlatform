@@ -2,12 +2,19 @@
 
 namespace EicWorkPlatfrom.Controllers
 {
-    public class DevelopmentController : Controller
+    public class DevelopmentController : EicBaseController
     {
         //
         // GET: /Development/
-
+        [NoAuthenCheck]
+        [HttpGet]
         public ActionResult Index()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        [HttpGet]
+        public ActionResult DocumentInputRecord()
         {
             return View();
         }

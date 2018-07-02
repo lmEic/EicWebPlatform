@@ -1,7 +1,7 @@
-﻿/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/print/print.min.js" />
+﻿/// <reference path="E:\Project\EicWebPlatform\EicWorkPlatfrom\Content/print/print.min.js" />
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
+/// <reference path="E:\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 var proEmployeeModule = angular.module('bpm.productApp');
 proEmployeeModule.factory('proEmployeeDataService', function (ajaxService) {
     var dataAccess = {};

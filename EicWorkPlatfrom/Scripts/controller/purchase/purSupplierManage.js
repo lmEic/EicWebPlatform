@@ -203,7 +203,6 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         },
         CreateQualifiedSupplierList: function () {
             $scope.searchPromise = supplierDataOpService.CreateQualifiedSupplierInfoList(vmManager.datasource).then(function () {
-
             });
         },
         editItem: null,
@@ -607,6 +606,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         supGradeInfoEditDatas: [],
         yearQuarter: '',
         dataSource: [],
+        datasourceCopy: [],
         gradeTypes: [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
                       { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
                       { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }],
@@ -638,6 +638,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             $scope.searchPromise = supplierDataOpService.getPurSupGradeInfo(vmManager.yearQuarter).then(function (datas) {
                 vmManager.editDatas = datas;
                 vmManager.dataSource = datas;
+                vmManager.datasourceCopy = _.clone(datas);
             });
         },
 
@@ -683,6 +684,14 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
                 };
             }
         }),
+        //////
+        filterBySupplierId: function () {
+          
+            vmManager.dataSource = _.clone(vmManager.datasourceCopy);
+            if (vmManager.supplierId !== null && vmManager.supplierId.length > 0) {
+                vmManager.dataSource = _.clone(_.where(vmManager.dataSource, { SupplierId: vmManager.supplierId }));
+            }
+        }
     };
 });
 //供应商综合查询

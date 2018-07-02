@@ -321,7 +321,8 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
 
             var datas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoBy(yearQuarter);
-            TempData["SupplierGradeInfoData"] = datas;
+            // 加超出二年的供应商稽核提醒（二个）
+            TempData["SupplierGradeInfoDatas"] = datas;
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]
@@ -337,9 +338,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public FileResult CreateSupplierGradeInfoDataToExcel()
         {
-            var datas = TempData["SupplierGradeInfoData"] as List<SupplierSeasonTutorModel>;
+            var datass = TempData["SupplierGradeInfoDatas"] as List<SupplierGradeInfoVm>;
             ///Excell
-            var dlfm = datas.ToDownLoadExcelFileModel<SupplierSeasonTutorModel>("供应商考评分模板", "供应商考评分数模板清单");
+            var dlfm = datass.ToDownLoadExcelFileModel<SupplierGradeInfoVm>("供应商考评分模板", "供应商考评分数模板清单");
             return this.DownLoadFile(dlfm);
         }
         /// <summary>

@@ -33,6 +33,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
         }
     }
 
+    /// <summary>
+    ///InspectionItemConfigCheckModel
+    /// </summary>
+    public class InspectionItemConfigCheckModelMapping : EntityTypeConfiguration<InspectionItemConfigCheckModel>
+    {
+        public InspectionItemConfigCheckModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_InspectionItemConfigCheck");
+        }
+    }
     #region  IQC
     /// <summary>
     /// 
@@ -118,6 +130,40 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Qms_FqcInspectionMaster");
+        }
+
+    }
+    #endregion
+
+
+    #region Ipqc
+    public class IpqcInspectionDetailMapping : EntityTypeConfiguration<InspectionIpqcDetailModel>
+    {
+        public IpqcInspectionDetailMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_IpqcInspectionDetail");
+        }
+
+    }
+    public class IpqcConfigMapping : EntityTypeConfiguration<InspectionIpqcConfigModel>
+    {
+        public IpqcConfigMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_IpqcInspectionItemConfig");
+        }
+
+    }
+    public class IpqcInspectionReportMapping : EntityTypeConfiguration<InspectionIpqcReportModel>
+    {
+        public IpqcInspectionReportMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_IpqcDailyReportOrderInfo");
         }
 
     }

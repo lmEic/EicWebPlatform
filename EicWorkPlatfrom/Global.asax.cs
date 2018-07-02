@@ -25,8 +25,6 @@ namespace EicWorkPlatfrom
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-
             ValueProviderFactories.Factories.Remove(ValueProviderFactories.Factories.OfType<JsonValueProviderFactory>().FirstOrDefault());
             ValueProviderFactories.Factories.Add(new JsonDotNetValueProviderFactory());
         }

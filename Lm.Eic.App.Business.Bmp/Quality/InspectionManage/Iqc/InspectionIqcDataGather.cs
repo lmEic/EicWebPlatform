@@ -80,7 +80,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 var orderMaterialInfo = GetPuroductSupplierInfo(orderId).Find(e => e.ProductID == materialId);
                 if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryVM>();
                 var iqcNeedInspectionsItemdatas = ItemCondition.getIqcNeedInspectionItemDatas(orderId, materialId, orderMaterialInfo.ProduceInDate);
-                if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryVM>();
+                if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return null;
                 //保存单头数据
                 return HandleInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
             }
@@ -350,10 +350,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///4，返回一个 转换的状态
                 string retrunstirng = "正常";
                 var DetailModeDatas = DetailDatasGather.GetIqcMasterModeDatasBy(materialId);
+                ///是否检验过此物料  如没有 为正常
                 if (DetailModeDatas == null) return retrunstirng;
+                /// 载取一百批
                 var DetailModeData = DetailModeDatas.OrderByDescending(e => e.MaterialInDate).Take(100).ToList();
+                /// 如果 一批都没有截取到 为正常
                 if (DetailModeData == null || DetailModeData.Count <= 0) return retrunstirng;
+                /// 得到 目前的状态 取最后一个
                 var currentStatus = DetailModeData.Last().InspectionMode;
+
+
                 ///2，通当前状态 得到抽样规则 抽样批量  拒受数
                 var modeSwithParameterList = InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(InspectionClass, currentStatus);
                 if (modeSwithParameterList == null || modeSwithParameterList.Count <= 0) return retrunstirng;
@@ -407,16 +413,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             List<MaterialModel> masterdatas = QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
             if (masterdatas == null || masterdatas.Count == 0) return retrunListdatas;
             ///如果详细表中没有，那么主表的显示数据就无效
-            if (DetailDatasGather.isExsitOrderId(orderId))
-            {
-                var masterInfos = MasterDatasGather.GetIqcMasterDatasBy(orderId);
-                ///ERP 物料数量 已抽物料数量 没有变化;
-                if (masterInfos != null && masterInfos.Count == masterdatas.Count) return masterInfos;
-            }
+            //if (DetailDatasGather.isExsitOrderId(orderId))
+            //{
+            //    var masterInfos = MasterDatasGather.GetIqcMasterDatasBy(orderId);
+            //    ///ERP 物料数量 已抽物料数量 没有变化;
+               
+            //  //  if (masterInfos != null && masterInfos.Count == masterdatas.Count) return masterInfos;
+            //}
             ///如果后面 ERP物料有所添加
             masterdatas.ForEach(e =>
             {
                 var masterInfo = MasterDatasGather.GetIqcMasterDatasBy(e.OrderID, e.ProductID);
+                var mmm = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(e.ProductID);
+                string inspectionStatus = (mmm != null && mmm.Count > 0) ? "未抽检" : "配置未审核";
                 if (masterInfo != null) iqcMasterDatas = masterInfo;
                 else iqcMasterDatas = new InspectionIqcMasterModel()
                 {
@@ -428,8 +437,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialDrawId = e.ProductDrawID,
                     MaterialInDate = e.ProduceInDate,
                     MaterialCount = e.ProduceNumber,
-                    InspectionStatus = "未抽检",
-                    InspectionResult = "未抽检",
+                    InspectionStatus = inspectionStatus,
+                    InspectionResult = inspectionStatus,
                     FinishDate = DateTime.Now.Date.ToDate()
                };
                 if (!retrunListdatas.Contains(iqcMasterDatas))

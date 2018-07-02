@@ -56,15 +56,39 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcspectionItemConfigDatas(string materialId)
         {
-            //得到此物料的品名 ，规格 ，供应商，图号
+            //得到此物料的品名 ，规格 ，供应商，图号  
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
+            // InspectionService.ConfigManager.ConfigCheckManager.GetItemConfigCheckDataBy(materialId);
             //添加物料检验项
             var InspectionItemConfigModelList = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcspectionItemConfigDatasBy(materialId);
 
             var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        ///   查询IQC物料配置信息  
+        /// </summary>
+        /// <param name="selectedDepartment">部门</param>
+        /// <param name="dateFrom">起始日期</param>
+        /// <param name="dateTo">结束日期</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult QueryConfigCheckInfos(string checkStatus,string  qualProperty, string department, DateTime dateFrom, DateTime dateTo)
+        {
+            var datas = InspectionService.ConfigManager.ConfigCheckManager.GetIqcspectionItemConfigDatasBy(checkStatus, department, dateFrom, dateTo);
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// checkStatusData
+        /// </summary>
+        /// <param name="checkStatusData"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult ChcekConigfigDatas(InspectionItemConfigCheckModel checkStatusData, string opProperty)
+        {
+            var datas = InspectionService.ConfigManager.ConfigCheckManager.checkIqcConfigItem(checkStatusData , opProperty);
+            return DateJsonResult(datas);
+        }
         /// <summary>
         /// 在数据库中是否存在此料号
         /// </summary>
@@ -258,6 +282,13 @@ namespace EicWorkPlatfrom.Controllers
 
         #endregion
 
+        #region IPQC
+        public ActionResult IpqcInspectionItemConfiguration()
+        {
+            return View();
+        }
+
+        #endregion
 
         #endregion
 
@@ -498,6 +529,31 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 创建抽检表单项
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="sampleCount"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult CreateIpqcSampleFormItem(string orderId, int sampleCount)
+        {
+            var datas = InspectionService.DataGatherManager.FqcDataGather.BuildingFqcInspectionSummaryDatasBy(orderId, sampleCount);
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 获取FQC工单物料信息
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIpqcReportDatas(DateTime queteDate,string  department)
+        {
+            var datas = InspectionService.DataGatherManager.IpqcDataGather.getReportInfoDatas(queteDate, department);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
         #endregion
 
@@ -595,7 +651,7 @@ namespace EicWorkPlatfrom.Controllers
             return DateJsonResult(Fqcdatas);
         }
         /// <summary>
-        ///   查询FQC中Erp订单检验信息
+        ///   查询FQC中Erp订单检验信息  
         /// </summary>
         /// <param name="selectedDepartment">部门</param>
         /// <param name="dateFrom">起始日期</param>
@@ -609,6 +665,8 @@ namespace EicWorkPlatfrom.Controllers
 
             return DateJsonResult(datas);
         }
+
+      
         /// <summary>
         /// 得到Master抽检验信息 GetInspectionFormMasterOfFqcDatas
         /// </summary>
@@ -685,7 +743,18 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
 
         #region ipqc 检验单管理
+        [NoAuthenCheck]
         public ActionResult InspectionFormManageOfIpqc()
+        {
+            return View();
+        }
+        #endregion
+
+
+        #region ipqc 检验单管理
+
+        [NoAuthenCheck]
+        public ActionResult InspectionConfigCheckForm()
         {
             return View();
         }

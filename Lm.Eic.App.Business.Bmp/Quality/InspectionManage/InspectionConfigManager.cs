@@ -33,6 +33,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
 
+        public  InspectionConfigCheckManager ConfigCheckManager
+        {
+            get { return OBulider.BuildInstance<InspectionConfigCheckManager>(); }
+        }
+
+
         /// <summary>
         ///Iqc检验项目配置管理器
         /// </summary>
@@ -47,6 +53,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionFqcItemConfigManager>(); }
         }
+
+        /// <summary>
+        /// Ipqc检验项目配置管理器
+        /// </summary>
+        public InspectionIpqcItemConfigManager IpqcItemConfigManager
+        {
+            get { return OBulider.BuildInstance<InspectionIpqcItemConfigManager>(); }
+        }
+
+
     }
 
     /// <summary>
@@ -230,5 +246,47 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         //    };
 
         //}
+    }
+
+    public class InspectionConfigCheckManager
+    {
+        public List<InspectionItemConfigCheckModel> GetIqcspectionItemConfigDatasBy(string checkStatus, string department, DateTime dateFrom, DateTime dateTo)
+        {
+
+            return InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.GetItemConfigCheckDates(checkStatus, department, dateFrom, dateTo);
+        }
+        public InspectionItemConfigCheckModel GetItemConfigCheckDataBy(string checkStatus)
+        {
+           var datas = InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.GetItemConfigCheckDates(checkStatus);
+           return  (datas!=null&&datas.Count>0)?datas.FirstOrDefault():null;
+        }
+        public OpResult checkIqcConfigItem(InspectionItemConfigCheckModel datas,string opProperty)
+        {
+            /// OpSign ==edit     审核
+            ///  OpSign ==add     变更
+            /// ItemConfigVersion 在原来的基础上加1
+            /// CheckStatus       已审核
+            OpResult opResult = InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.Store(datas);
+            if (opResult.Result)
+            {
+               switch(opProperty)
+                {
+                    case "IQC":
+                        opResult = InspectionManagerCrudFactory.IqcItemConfigCrud.OpCheckInspectionItemConfigDates(datas);
+                        break;
+                    case "FQC":
+                        opResult = InspectionManagerCrudFactory.FqcItemConfigCrud.OpCheckInspectionItemConfigDates(datas);
+                        break;
+                    case "IPQC":
+                       
+                        break;
+                    default:
+                        opResult = OpResult.SetErrorResult("数据没有更新");
+                        break;
+
+                }
+            }
+            return opResult;
+        }
     }
 }
