@@ -79,17 +79,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("WorkerId","工号") ,
                   new FileFieldMapping ("WorkerName","姓名") ,
                   new FileFieldMapping ("Department","部门") ,
+                  new FileFieldMapping ("AttendanceDate","考勤日期"),
                   new FileFieldMapping ("ClassType","班别") ,
+                   new FileFieldMapping ("WeekDay","星期") ,
+                   new FileFieldMapping ("SpecialCause","异常原因"),
                   new FileFieldMapping ("LeaveType","请假类别") ,
                   new FileFieldMapping ("LeaveHours","请假时数") ,
                   new FileFieldMapping ("LeaveTimeRegion","请假时段") ,
-                  new FileFieldMapping ("LeaveDescription","请假描述") ,
-                  new FileFieldMapping ("AttendanceDate","刷卡日期") ,
-                  new FileFieldMapping ("SlotCardTime1","第一次时间") ,
-                  new FileFieldMapping ("SlotCardTime2","第一次时间") ,
+                  new FileFieldMapping ("LeaveDescription","描述") ,
+             
+                  new FileFieldMapping ("SlotCardTime1","上班时间") ,
+                  new FileFieldMapping ("SlotCardTime2","下班时间") ,
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
-            var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
+            //var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
+           List<AttendanceDataModel> datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy( yearMonth );
             if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
             BindingAskLeaveDataToAttendance(datas, yearMonth);
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");

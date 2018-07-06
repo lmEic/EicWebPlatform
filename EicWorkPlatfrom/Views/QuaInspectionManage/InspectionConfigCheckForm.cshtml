@@ -146,8 +146,8 @@
                                                 <td>{{item.MaterialId}}</td>
                                                 <td>{{item.InspectionItem}}</td>
                                                 <td>{{item.SizeMemo}}</td>
-                                                <td>{{item.SizeLSL}}</td>
                                                 <td>{{item.SizeUSL}}</td>
+                                                <td>{{item.SizeLSL}}</td>
                                                 <td>{{item.InspectionDataGatherType}}</td>
                                                 <td>{{item.InspectionMethod}}</td>
                                                 <td>{{item.InspectionMode}}</td>
@@ -243,7 +243,7 @@
                                             <td>
                                                 <label ng-show="item.CheckStatus=== '已审核'">审核人：{{item.OpPerson}}</label>
                                                 <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getFqcDetailDatas(item)" ng-show="item.CheckStatus=== '已审核'">已审核</button>
-                                                <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.getFqcDetailDatas(item)" ng-show="item.CheckStatus!= '已审核'">侍审核</button>
+                                                <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.getFqcDetailDatas(item)" ng-show="item.CheckStatus== '未审核'">待审核</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -327,8 +327,8 @@
                                                 <td>{{item.MaterialId}}</td>
                                                 <td>{{item.InspectionItem}}</td>
                                                 <td>{{item.SizeMemo}}</td>
-                                                <td>{{item.SizeLSL}}</td>
                                                 <td>{{item.SizeUSL}}</td>
+                                                <td>{{item.SizeLSL}}</td>
                                                 <td>{{item.InspectionDataGatherType}}</td>
                                                 <td>{{item.InspectionMethod}}</td>
                                                 <td>{{item.InspectionMode}}</td>

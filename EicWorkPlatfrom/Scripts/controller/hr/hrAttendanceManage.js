@@ -1,7 +1,7 @@
-﻿/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/print/print.min.js" />
+﻿///// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/print/print.min.js" />
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
+////*// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />*/
 var hrModule = angular.module('bpm.hrApp');
 hrModule.factory('hrDataOpService', function (ajaxService) {
     var hr = {};
@@ -430,8 +430,8 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
         yearMonth: '',
         //导出到Excel
         exportYearMonthDatasToExcel: function () {
-            var url = "HrAttendanceManage/ExoportAttendanceMonthDatasToExcel/?yearMonth=" + vmManager.yearMonth;
-            return url;
+                var url = "HrAttendanceManage/ExoportAttendanceMonthDatasToExcel/?yearMonth=" + vmManager.yearMonth;
+                return url;
         }
     };
 

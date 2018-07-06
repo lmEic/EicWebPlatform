@@ -2278,39 +2278,31 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         editWindowWidth: "100%",
         editIqcWindowWidth: "100%",
         qualPorty:null,
-
         itemConfigVersion: null,
         itemConfigVersionList:[],
-        
         masterInfo: [],
-
-       
-
         checkProperty: null,
-     
-
         currentItem: null,
-
         InspectionItemDatasArr: [],
-       
         isIqcShowDetailWindow: false,
         isFqcShowDetailWindow: false,
         isIpqcShowMasterDetailFrom: false,
 
-        fqcDataSource: [],
-        fqcDataSets: [],
-
+        iqcDataSource :[],
         iqcDataSets: [],
-        iqcDataSource: [],
+        iqcDetailDataSet: [],
+        iqcDetailDataSource: [],
 
+        fqcDetailDataSource: [],
+        fqcDetailDataSet: [],
+        fqcDataSets: [],
+        fqcDataSource:[],
+      
         ipqcDataSets: [],
         ipqcDataSource: [],
-
         isShowTips: false,
         selectMasterItem: null,
-      
         itemConfigVersionListr:[],
-
         //审核模态框
         checkModal: $modal({
             title: "审核提示",
@@ -2344,8 +2336,14 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                         vmManager.currentItem.status = inspectionStatus;
-                        vmManager.detailDataSet = opresult.Entity;
-                        vmManager.detailDataSource = opresult.Entity;
+                        if (vmManager.checkProperty === "FQC") {
+                            vmManager.fqcDetailDataSet = opresult.Entity;
+                            vmManager.fqcDetailDataSource = opresult.Entity;
+                        }
+                        if (vmManager.checkProperty === "IQC") {
+                            vmManager.iqcDetailDataSet = opresult.Entity;
+                            vmManager.iqcDetailDataSource = opresult.Entity;
+                        }
                     });
                     vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
                     vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.hide);
@@ -2435,7 +2433,7 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
 
         //审核
         showCheckModal: function (item, iscancel, checkproperty) {
-            if (item)
+            if (_.isUndefined(item))
             {
                 vmManager.currentItem = item;
                 vmManager.checkProperty = checkproperty;
