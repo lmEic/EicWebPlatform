@@ -11,6 +11,7 @@ namespace Lm.Eic.App.Business.Bmp.Warehouse.ExpressionManger
     {
         public OpResult StoreExpressModel(ExpressModel model)
         {
+           
             return WarehouseCrudFactory.ExpressCrud.Store(model, true);
         }
     }

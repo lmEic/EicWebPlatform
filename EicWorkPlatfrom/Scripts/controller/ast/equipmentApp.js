@@ -1026,7 +1026,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         eloam.UnLoad();
     });
 })
-
 ///录入设备维修单
 .controller('astInputRepairedRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
 

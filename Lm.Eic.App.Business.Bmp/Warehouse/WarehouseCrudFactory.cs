@@ -33,7 +33,23 @@ namespace Lm.Eic.App.Business.Bmp.Warehouse
             }
             private OpResult AddModel(ExpressModel model)
             {
+                if( irep.IsExist(e => e.ExpressId == model.ExpressId))
+                {
+                    OpResult returnResult = OpResult.SetErrorResult("此单号已存在"); ;
+                     returnResult.Entity = GetEntriyBy(model.ExpressId);
+                    return returnResult;
+                }
                 return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            internal OpResult IsExsitEntriy(string expressId)
+            {
+                return (irep.IsExist(e => e.ExpressId == expressId))?
+                    OpResult.SetErrorResult("此单号已存在"):
+                    OpResult.SetSuccessResult("此单号不存在");
+            }
+            internal ExpressModel GetEntriyBy(string expressId)
+            {
+                return irep.FirstOfDefault(e => e.ExpressId == expressId);
             }
             private OpResult EidtModel(ExpressModel model)
             {

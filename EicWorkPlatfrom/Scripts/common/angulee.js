@@ -49,7 +49,7 @@ var leeDataHandler = (function () {
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
-
+            //     stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
             var msgtype = opresult.Result === true ? "success" : "error";
             new PNotify({
                 title: "提示",
@@ -60,7 +60,7 @@ var leeDataHandler = (function () {
                 styling: 'brighttheme',
                 addclass: "stack-bar-top",
                 cornerclass: "",
-                width: "82%",
+                width: "60%",
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
                 after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
@@ -96,7 +96,7 @@ var leeDataHandler = (function () {
                 styling: 'brighttheme',
                 addclass: "stack-bar-top",
                 cornerclass: "",
-                width: "82%",
+                width: "60%",
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
                 after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;

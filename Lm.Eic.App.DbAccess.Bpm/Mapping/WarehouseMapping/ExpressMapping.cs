@@ -15,7 +15,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.WarehouseMapping
     public class ExpressModelMapping : EntityTypeConfiguration<ExpressModel>
     {
         public ExpressModelMapping()
-        {
+        { 
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Wms_GoodsDelivery");
