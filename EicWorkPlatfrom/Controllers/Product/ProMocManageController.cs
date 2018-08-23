@@ -33,7 +33,12 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
-
+        [HttpGet]
+        [NoAuthenCheck]
+        public ActionResult ProductionSnManger()
+        {
+            return View();
+        }
         /// <summary>
         /// 获取校验清单
         /// </summary>

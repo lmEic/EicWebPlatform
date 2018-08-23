@@ -285,7 +285,7 @@ namespace EicWorkPlatfrom.Controllers
             string[] f = fileName.Split('-');
             string assetNum = string.Empty;
             string imgUrl = string.Empty;
-            if (f.Length == 3)
+            if (f.Length >= 3)
             {
                 assetNum = f[1];
                 string sourceFileName = CombinedFilePath("FileLibrary", "PreviewFiles") + "\\" + fileName;

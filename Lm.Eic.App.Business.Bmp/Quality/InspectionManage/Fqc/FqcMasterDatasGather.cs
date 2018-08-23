@@ -101,10 +101,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (detailDatas.Count() <= haveFinishData.Count)
                 {
-                    masterModel.InspectionStatus = "待审核";
-                    masterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
+                    masterModel.InspectionStatus = InspectionConstant.InspectionStatus.WaitCheck;
+                    masterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == InspectionConstant.InspectionResult.NoPass) > 0 ? InspectionConstant.InspectionResult.NoPass : InspectionConstant.InspectionResult.Pass);
                 }
-                else masterModel.InspectionStatus = "未完成";
+                else masterModel.InspectionStatus = InspectionConstant.InspectionStatus.unfinished;
             }
             /// 如果 是新增 只添加一次 
             masterModel.Id_Key = haveStoreMasterModel.Id_Key;

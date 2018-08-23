@@ -1,0 +1,55 @@
+﻿<div class="panel panel-primary container" ng-controller="productionSnManagerCtrl">
+
+    <!--Search hav-->
+    <div class="row clearfix">
+        <div class="col-md-11 column">
+            <div class="h-split">
+                <div class="nav">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <label>工单单号:<input type="text" class="form-control" ng-model="vmManager.department" placeholder="输入ERP单号" /></label>
+                        </div>
+                        <button type="button" class="btn btn-success" ng-click="vmManager.getProductTypeMonitor()">载入</button>
+                        <a href="@Url.Action("CreateProductTypeMonitoList", "ProMocManage")" class="btn btn-success"><i class="fa fa-file-excel-o"></i>导出</a>
+                        <Label ng-model=" ProductType">内部产品型号:</Label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Equipment Info -->
+    <div class="row clearfix" cg-busy="{promise:searchPromise}">
+        <div class="col-md-11 column">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="info">
+                            <th>内部型号</th>
+                            <th>外部型号</th>
+                            <th>产品料号</th>
+                            <th>起始码</th>
+                            <th>结束码</th>
+                            <th>工单号</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody style="white-space:nowrap;overflow:hidden;">
+                        <tr ng-repeat="item in vmManager.dataSource track by $index">
+                            <td>{{item.ProductType}}</td>
+                            <td>{{item.ProductSpecify}}</td>
+                            <td>{{item.SumCount}}</td>
+                            <td>{{item.OrderCount}}</td>
+                            <td>{{item.LocaleFinishedCount}}</td>
+                            <td>{{item.FreeTradeInHouseCount}}</td>
+                            <td>{{item.AllCheckOrderCount}}</td>
+                            <td>{{item.PutInMaterialCount}}</td>
+                            <td>{{item.DifferenceCount}}</td>
+                            <td>{{item.More}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div yl-pagination data-dataset="vmManager.datasets" data-datasource="vmManager.datasource"></div>
+            </div>
+        </div>
+    </div>
+</div>

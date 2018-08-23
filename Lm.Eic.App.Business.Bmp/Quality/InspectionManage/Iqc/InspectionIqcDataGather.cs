@@ -348,7 +348,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
                 ///3，比较 对比
                 ///4，返回一个 转换的状态
-                string retrunstirng = "正常";
+                string retrunstirng = InspectionConstant.InspectionMode.Normal;
                 var DetailModeDatas = DetailDatasGather.GetIqcMasterModeDatasBy(materialId);
                 ///是否检验过此物料  如没有 为正常
                 if (DetailModeDatas == null) return retrunstirng;
@@ -357,7 +357,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 /// 如果 一批都没有截取到 为正常
                 if (DetailModeData == null || DetailModeData.Count <= 0) return retrunstirng;
                 /// 得到 目前的状态 取最后一个
-                var currentStatus = DetailModeData.Last().InspectionMode;
+                var currentStatus = DetailModeData.FirstOrDefault().InspectionMode;
 
 
                 ///2，通当前状态 得到抽样规则 抽样批量  拒受数
@@ -367,33 +367,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
                 int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
                 int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
-                var getFailNumber = DetailModeData.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == "FAIL");
+                var getFailNumber = DetailModeData.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == InspectionConstant.InspectionResult.NoPass);
 
                 switch (currentStatus)
                 {
-                    case "加严":
+                    case InspectionConstant.InspectionMode.Stricter:
                      ///从加严到正常(NG数小于等于接受的数 侧回到正常)
-                        retrunstirng = (getFailNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                        retrunstirng = (getFailNumber <= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : currentStatus;
                         break;
                     ///从放宽到正常  （NG数大于等于接受的数 就不放宽)
-                    case "放宽":
-                        retrunstirng = (getFailNumber >= AcceptNumberVauleMin) ? "正常" : "放宽";
+                    case InspectionConstant.InspectionMode.Broaden:
+                        retrunstirng = (getFailNumber >= AcceptNumberVauleMin) ? InspectionConstant.InspectionMode.Normal : InspectionConstant.InspectionMode.Broaden;
                         break;
-                    case "正常":
+                    case InspectionConstant.InspectionMode.Normal:
                         ///如果录入的数量 小于抽样的数量 则反回 正常
-                        if (DetailModeData.Count < sampleNumberVauleMin) return "正常";
+                        if (DetailModeData.Count < sampleNumberVauleMin) return InspectionConstant.InspectionMode.Normal;
                         if (DetailModeData.Count >= sampleNumberVauleMax)
                         {
-                            if (getFailNumber <= AcceptNumberVauleMin) return "放宽";
+                            if (getFailNumber <= AcceptNumberVauleMin) return InspectionConstant.InspectionMode.Broaden;
                         }
                         if (DetailModeData.Count >= sampleNumberVauleMin)
                         {
                             ///加严的数量
-                            int getTheNumber = DetailModeData.Take(sampleNumberVauleMin).Count(e => e.InspectionResult == "FAIL");
-                            if (getFailNumber >= AcceptNumberVauleMax) return "加严";
-                            else return "正常";
+                            int getTheNumber = DetailModeData.Take(sampleNumberVauleMin).Count(e => e.InspectionResult == InspectionConstant.InspectionResult.NoPass);
+                            if (getFailNumber >= AcceptNumberVauleMax) return InspectionConstant.InspectionMode.Stricter;
+                            else return InspectionConstant.InspectionMode.Normal;
                         }
-                        else return "正常";
+                        else return InspectionConstant.InspectionMode.Normal;
                     default:
                         break;
                 }

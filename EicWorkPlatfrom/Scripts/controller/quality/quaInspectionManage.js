@@ -922,9 +922,12 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         var dataItem = vmManager.currentInspectionItem;
         if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "C" || dataItem.InspectionDataGatherType === "F") {
             //获取数据及判定结果
+            dataItem.InspectionNGCount = 0;
+            //获取数据及判定结果
             angular.forEach(vmManager.dataList, function (item) {
                 dataList.push(item.data);
                 result = result && item.result;
+                if (item.result === false) { dataItem.InspectionNGCount++; }
             });
             //数据列表字符串
             dataItem.InspectionItemDatas = dataList.join(",");
@@ -1203,6 +1206,16 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         isNeedORTs: [{ id: "False", text: "False" }, { id: "True", text: "True" }],
         keyLevels: [{ id: "主要", text: "主要" }, { id: "次要", text: "次要" }, { id: "严重", text: "严重" }, { id: "<空>", text: "<空>" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }, { id: "F", text: "F" }],
+        fqcDepartments: [
+            { label: "全部", value: "全部" },
+            { value: "制一课", label: "制一课" },
+            { value: "制二课", label: "制二课" },
+            { value: "制三课", label: "制三课" },
+            { value: "制五课", label: "制五课" },
+            { value: "制六课", label: "制六课" },
+            { value: "制七课", label: "制七课" },
+            { value: "制十课", label: "制十课" },
+            { value: "成型课", label: "成型课" }],
         dataSource: [],
         dataSets: [],
         copyMaterialId: null,
@@ -1613,10 +1626,9 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     operate.saveGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
-        dataItem.InspectionNGCount = 0;
-        console.log("测试Ng数量");
         if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "C" || dataItem.InspectionDataGatherType === "F") {
             //获取数据及判定结果
+            dataItem.InspectionNGCount = 0;
             angular.forEach(vmManager.dataList, function (item) {
                 dataList.push(item.data);
                 result = result && item.result;
@@ -1631,6 +1643,9 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         }
         else if (dataItem.InspectionDataGatherType === "D") {
+            if (dataItem.InspectionItemDatas === '' || dataItem.InspectionItemDatas === null) {
+                dataItem.InspectionItemDatas = 'NG'
+            }
             dataItem.InspectionItemResult = dataItem.InspectionItemDatas;
             dataItem.HaveFinishDataNumber = dataItem.NeedFinishDataNumber;
         }
@@ -2273,39 +2288,31 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         editWindowWidth: "100%",
         editIqcWindowWidth: "100%",
         qualPorty:null,
-
         itemConfigVersion: null,
         itemConfigVersionList:[],
-        
         masterInfo: [],
-
-       
-
         checkProperty: null,
-     
-
         currentItem: null,
-
         InspectionItemDatasArr: [],
-       
         isIqcShowDetailWindow: false,
         isFqcShowDetailWindow: false,
         isIpqcShowMasterDetailFrom: false,
 
-        fqcDataSource: [],
-        fqcDataSets: [],
-
+        iqcDataSource :[],
         iqcDataSets: [],
-        iqcDataSource: [],
+        iqcDetailDataSet: [],
+        iqcDetailDataSource: [],
 
+        fqcDetailDataSource: [],
+        fqcDetailDataSet: [],
+        fqcDataSets: [],
+        fqcDataSource:[],
+      
         ipqcDataSets: [],
         ipqcDataSource: [],
-
         isShowTips: false,
         selectMasterItem: null,
-      
         itemConfigVersionListr:[],
-
         //审核模态框
         checkModal: $modal({
             title: "审核提示",
@@ -2320,8 +2327,8 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         }),
         //撤消审核模态框
         cancelCheckModal: $modal({
-            title: "撤消审核审核提示",
-            content: "亲~您确定要撤消审核吗",
+            title: "变更审核提示",
+            content: "亲~您确定要变更审核吗",
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
@@ -2332,19 +2339,24 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
         }),
 
         changeCheckModal: function (inspectionStatus) {
-
             leeHelper.setUserData(vmManager.currentItem);
             vmManager.currentItem.CheckStatus = inspectionStatus;
-            console.log(vmManager.currentItem);
+            vmManager.currentItem.OpSign = "edit";
             qualityInspectionDataOpService.chcekConigfigDatas(vmManager.currentItem, vmManager.checkProperty).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                        vmManager.checkModal.$promise.then(vmManager.checkModal.close);
                         vmManager.currentItem.status = inspectionStatus;
-                        vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.hide);
-                        vmManager.detailDataSet = opresult.Entity;
-                        vmManager.detailDataSource = opresult.Entity;
+                        if (vmManager.checkProperty === "FQC") {
+                            vmManager.fqcDetailDataSet = opresult.Entity;
+                            vmManager.fqcDetailDataSource = opresult.Entity;
+                        }
+                        if (vmManager.checkProperty === "IQC") {
+                            vmManager.iqcDetailDataSet = opresult.Entity;
+                            vmManager.iqcDetailDataSource = opresult.Entity;
+                        }
                     });
+                    vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
+                    vmManager.cancelCheckModal.$promise.then(vmManager.cancelCheckModal.hide);
                 }
             })
         },
@@ -2431,7 +2443,7 @@ qualityModule.controller("inspectionConfigCheckCtrl", function ($scope, qualityI
 
         //审核
         showCheckModal: function (item, iscancel, checkproperty) {
-            if (item)
+            if (_.isUndefined(item))
             {
                 vmManager.currentItem = item;
                 vmManager.checkProperty = checkproperty;

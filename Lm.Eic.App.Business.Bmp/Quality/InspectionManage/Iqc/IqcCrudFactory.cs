@@ -275,7 +275,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         internal List<InspectionIqcMasterModel> GetIqcInspectionMasterDatasBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId && e.InspectionStatus== "已审核").ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId && e.InspectionStatus== InspectionConstant.InspectionStatus.HaveCheck).OrderByDescending(e=>e.Id_Key).ToList();
         }
         internal List<InspectionIqcMasterModel> GetIqcMasterContainDatasBy(string orderId)
         {
@@ -432,7 +432,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal OpResult UpAuditInspectionDetailData(string orderId, string materialId, bool isCheck)
         {
             int i = 0;
-            string inspectionItemStatus = isCheck ? "Done" : "doing";
+            string inspectionItemStatus = isCheck ? InspectionConstant.InspectionItemStatus.Done : InspectionConstant.InspectionItemStatus.Doing;
             string str = isCheck ? "【审核】" : "【撤审】";
             var modellist = irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
             if (modellist != null && modellist.Count > 0)

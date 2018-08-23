@@ -4,6 +4,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
 {
+    /// <summary>
+    /// 注册的用户
+    /// </summary>
     public class RegistUserModelMapping : EntityTypeConfiguration<RegistUserModel>
     {
         public RegistUserModelMapping()
@@ -14,7 +17,9 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             this.ToTable("Authen_User");
         }
     }
-
+    /// <summary>
+    /// 用户角色
+    /// </summary>
     public class RoleModelMapping : EntityTypeConfiguration<RoleModel>
     {
         public RoleModelMapping()
@@ -25,7 +30,9 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             this.ToTable("Authen_Role");
         }
     }
-
+    /// <summary>
+    /// 平台集合
+    /// </summary>
     public class AssemblyModelMapping : EntityTypeConfiguration<AssemblyModel>
     {
         public AssemblyModelMapping()
@@ -36,7 +43,9 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             this.ToTable("Authen_Assembly");
         }
     }
-
+    /// <summary>
+    /// 用户角色配置
+    /// </summary>
     public class UserMatchRoleModelMapping : EntityTypeConfiguration<UserMatchRoleModel>
     {
         public UserMatchRoleModelMapping()
@@ -47,7 +56,9 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             this.ToTable("Authen_UserMatchRole");
         }
     }
-
+    /// <summary>
+    /// 角色配置模块
+    /// </summary>
     public class RoleMatchModuleModelMapping : EntityTypeConfiguration<RoleMatchModuleModel>
     {
         public RoleMatchModuleModelMapping()
@@ -58,7 +69,9 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             this.ToTable("Authen_RoleMatchModules");
         }
     }
-
+    /// <summary>
+    /// 数据模块导航
+    /// </summary>
     public class ModuleNavigationModelMapping : EntityTypeConfiguration<ModuleNavigationModel>
     {
         public ModuleNavigationModelMapping()
@@ -69,7 +82,9 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
         }
     }
 
-    
+    /// <summary>
+    /// 模块申查表
+    /// </summary>
     public class AuditModelMapping : EntityTypeConfiguration<AuditModel>
     {
         public AuditModelMapping()

@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mes_NbosaBigData\TRX_A0HA2H_ReturnRecordModel.cs" />
+    <Compile Include="Mes_Nbosa\HousingSN_ControllerModel.cs" />
     <Compile Include="Optical\Authen\UserInfo.cs" />
     <Compile Include="Optical\ProductShipping\PromShippingScheduleModel.cs" />
     <Compile Include="Optical\ProductWip\ProductWipModel.cs" />

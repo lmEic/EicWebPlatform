@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Ast\EquipmentModel.cs" />
     <Compile Include="Ast\QueryEquipmentDto.cs" />
+    <Compile Include="Dev\DesignDevelopInputModel.cs" />
     <Compile Include="Hrm\Archives\CalendarModel.cs" />
     <Compile Include="Hrm\Archives\QueryWorkerArchivesDto.cs" />
     <Compile Include="Hrm\WorkOverHours\WorkOverHoursDto.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Quanity\InspectionoModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
     <Compile Include="Quanity\QmsRmaModel.cs" />
+    <Compile Include="Warehouse\ExprssModel.cs" />
     <Compile Include="WorkFlow\GeneralForm\InternalContactFormModel.cs" />
     <Compile Include="WorkFlow\GeneralForm\WfFormCheckFlowModel.cs" />
   </ItemGroup>

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Drawing.Imaging;
+using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
@@ -44,7 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             if (materialBoard == null)
                  return BuildImageErr("未找到看板");
 
-            if (materialBoard.State == "待审核")
+            if (materialBoard.State == InspectionConstant.InspectionStatus.WaitCheck)
                  return BuildImageErr("看板未审核");
                
 
@@ -98,7 +99,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             //依据产品品号查找看板 
             var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(model.ProductID);
             model.OpSign = materialBoard == null ? OpMode.Add : OpMode.Edit;
-            model.State = "待审核";
+            model.State = InspectionConstant.InspectionStatus.WaitCheck;
             var viefyResult = CheckMaterialIdMatchProductId(model.MaterialID, model.ProductID);
             return viefyResult.Result ? BorardCrudFactory.MaterialBoardCrud.Store(model) : viefyResult;
         }
