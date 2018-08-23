@@ -110,15 +110,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             switch (inspectionStatus)
             {
-                case "待检验":
+                case InspectionConstant.InspectionStatus.WaitInspect:
                     return GetMasterTableDatasToSqlOrderAndMaterialBy(startTime, endTime);
-                case "未完成":
-                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, "未完成");
-                case "待审核":
-                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, "待审核");
-                case "已审核":
-                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, "已审核");
-                case "全部":
+                case InspectionConstant.InspectionStatus.unfinished:
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, InspectionConstant.InspectionStatus.unfinished);
+                case InspectionConstant.InspectionStatus.WaitCheck:
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, InspectionConstant.InspectionStatus.WaitCheck);
+                case InspectionConstant.InspectionStatus.HaveCheck:
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, InspectionConstant.InspectionStatus.HaveCheck);
+                case InspectionConstant.InspectionStatus.AllState:
                     return GetERPOrderAndMaterialBy(startTime, endTime);
                 default:
                     return new List<InspectionIqcMasterModel>();

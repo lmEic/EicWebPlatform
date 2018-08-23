@@ -55,7 +55,7 @@
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
                                 <li>
-                                    <a href="#">生产管理</a>
+                                    <a href="#">测试页面</a>
                                 </li>
                             </ul>
                         </div>
@@ -78,7 +78,7 @@
                             <div class="panel-body">
                                 <ol class="rounded-list">
                                     <li>
-                                        <a data-ui-sref-active="active" data-ui-sref="documentInputRecord" style="cursor:pointer">设计文档录入</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="receptionExpress" style="cursor:pointer">快递接收录入</a>
                                     </li>
                                 </ol>
                             </div>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="pull-right" style="width:{{navLayout.navMainSize}};">
                         <div data-ui-view>
-
+                            <a data-ui-sref-active="active" data-ui-sref="receptionExpress" style="cursor:pointer">快递接收录入</a>
                         </div>
                     </div>
                 </div>
@@ -110,13 +110,13 @@
     <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
     <script src="@Url.Content("~/Content/pdfmaker/pdfmake.min.js")"></script>
     <script src="@Url.Content("~/Content/pdfmaker/vfs_fonts.js")"></script>
-    <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
     <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
     <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
-    <script src="@Url.Content("~/Scripts/controller/quality/qualityApp.js")"></script>
+   
 
    
      <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/development/developmentApp.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/development/developmentProductsManage.js")"></script>
 </body>
 </html>

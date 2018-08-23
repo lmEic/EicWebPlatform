@@ -38,7 +38,11 @@
             </div>
             <div class="col-md-2">
                 <label>供应商:</label>
-                <span style="font-weight:100;" title="{{tableVm.MaterialBelongDepartment}}">{{tableVm.MaterialBelongDepartment}}</span>
+                <button class="btn btn-success " ng-model="tableVm.MaterialBelongDepartment"
+                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                        data-bs-options="department.value as department.label for department in vmManager.fqcDepartments track by $index" data-bs-select>
+                    <span class="caret"></span>
+                </button>
             </div>
             <div class="col-md-2">
                 <label>图号:</label>

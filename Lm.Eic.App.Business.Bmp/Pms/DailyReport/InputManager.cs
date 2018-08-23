@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
+
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
     /// <summary>
@@ -65,7 +67,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 else
                 {
                     //已审核数据模板
-                    var maxDailyReportDate = departmentAllDailyReportList.Where(m => m.CheckSign == "已审核").Max(m => m.DailyReportDate);
+                    var maxDailyReportDate = departmentAllDailyReportList.Where(m => m.CheckSign == InspectionConstant.InspectionStatus.HaveCheck).Max(m => m.DailyReportDate);
                     //得到最近数据
                     var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).OrderBy(e => e.InPutId).ToList();
                     var returnList = new List<DailyReportTempModel>();
@@ -184,7 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //清除正式表中的本部门的日报数据
             DailyReportInputCrudFactory.DailyReportCrud.DeleteDailyReportListBy(department, dailyReportDate.ToDate());
             //改审核状态
-            DailyReportInputCrudFactory.DailyReportTempCrud.ChangeChackSign(department, dailyReportDate.ToDate(), "已审核");
+            DailyReportInputCrudFactory.DailyReportTempCrud.ChangeChackSign(department, dailyReportDate.ToDate(), InspectionConstant.InspectionStatus.HaveCheck);
             //由DailyReportTempModel 转化为 DailyReportModel
             var dailyReportList = OOMaper.Mapper<DailyReportTempModel, DailyReportModel>(dailyReportTempList).ToList();
 
@@ -202,7 +204,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             auditModel.ModuleName = "DailyReport";
             auditModel.ParameterKey = string.Format("{0}&{1}&{2}", auditModel.ModuleName, department, date.ToString("yyyyMMdd"));
             auditModel.AuditRand = 0;
-            auditModel.AuditState = "已审核";
+            auditModel.AuditState = InspectionConstant.InspectionStatus.HaveCheck;
             auditModel.EndRand = 0;
             auditModel.AuditUser = "admin";
             return AuthenService.AuditManager.AddAuditRecoud(auditModel);

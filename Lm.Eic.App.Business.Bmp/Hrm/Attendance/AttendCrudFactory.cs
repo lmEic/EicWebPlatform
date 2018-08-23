@@ -181,8 +181,123 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <returns></returns>
         internal List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto)
         {
+
             return this.irep.LoadAttendanceDatasBy(qryDto);
         }
+        internal List<AttendanceDataModel> LoadAttendanceDatasBy(string  yearMonth)
+        {
+            List<AttendanceDataModel> returnDatas = new List<AttendanceDataModel>();
+            AttendanceDataModel addmodel = null;
+            AttendSlodFingerDataCurrentMonthModel model = null;
+            AttendanceClassTypeInfo classTypeInfo = null;
+            string year = yearMonth.Substring(0, 4);
+            string month = yearMonth.Substring(4, 2);
+            var wokrersInfoList= this.irep.WorkerIdList(new DateTime(year.ToInt(), month.ToInt(), 1));
+            var calenderListInfo = this.irep.CalenderListInfo(year, month);
+            wokrersInfoList.ForEach(e =>
+            {
+                DateTime WorkDate= e.LeaveDate.ToDate();
+              
+                foreach(var d in calenderListInfo)
+                {
+                    string classType = "白班";
+                  
+                    if (d.CalendarDate > WorkDate) continue;
+                    ///当天的出勤数据
+                     model = this.irep.Entities.Where(q => q.WorkerId == e.workerid && q.AttendanceDate == d.CalendarDate).FirstOrDefault();
+                    ///得到当然转班的详细数据
+                    classTypeInfo = this.irep.WorkerClassTypeInfoBY(e.workerid, d.CalendarDate).FirstOrDefault();
+                    ///针对 晚班 做一特别的数据处理
+                    if (classTypeInfo != null&&classTypeInfo.ClassType == "晚班")
+                    {
+                        DateTime secondLeaveWorkDate = d.CalendarDate.Date.AddDays(1).ToDate();
+                        ///取第二天的时间
+                        var secondmodel = this.irep.Entities.Where(q => q.WorkerId == e.workerid && q.AttendanceDate == secondLeaveWorkDate).FirstOrDefault();
+                        if (secondmodel != null)
+                        {
+                            if (model != null)
+                            {
+                                ///第一天上班时间  是正常的下班时间  而 第二天下班时间  是正常的上班时间 
+                                string dd = model.SlotCardTime2;
+                                
+                                model.SlotCardTime1 = dd;
+                                model.SlotCardTime2 = secondmodel.SlotCardTime1;
+                            }
+                            ///第一天数据为空 而第二天的数不为空
+                            else
+                            {
+                                model = new AttendSlodFingerDataCurrentMonthModel();
+                                OOMaper.Mapper<AttendSlodFingerDataCurrentMonthModel, AttendSlodFingerDataCurrentMonthModel>(secondmodel, model);
+                                string dd = secondmodel.SlotCardTime1;
+                                model.AttendanceDate = d.CalendarDate;
+                                model.SlotCardTime1 = "";
+                                model.SlotCardTime2 = dd;
+                            }
+                        }
+                        else
+                        {
+                            ///第一天的数据有 第二天的数据为空
+                            if (model != null)
+                            {
+                              
+                                string dd = model.SlotCardTime2;
+                                
+                                model.SlotCardTime1 = dd;
+
+                                model.SlotCardTime2 = "";
+                            }
+                        ///都为空用不管    
+                        }
+                        classType = classTypeInfo.ClassType;
+                    }
+                    if (model != null)
+                    {
+                        addmodel = new AttendanceDataModel();
+                        OOMaper.Mapper<AttendSlodFingerDataCurrentMonthModel, AttendanceDataModel>(model, addmodel);
+                        addmodel.ClassType = classType;
+                    }
+                    else
+                    {
+                       string  leaveDescription= d.DateProperty == "星期六日"?" ":"无数据";
+                       addmodel = new AttendanceDataModel()
+                        {
+                            WorkerId = e.workerid,
+                            WorkerName = e.workerName,
+                            Department = e.Department,
+                            AttendanceDate = d.CalendarDate,
+                            ClassType = classType,
+                            WeekDay = ChangeWeekDay(d.CalendarWeek),
+                            LeaveDescription = leaveDescription
+                       };
+                    };
+                    returnDatas.Add(addmodel);
+                }
+            });
+            return returnDatas;
+        }
+        string ChangeWeekDay(string calendarWeek)
+        {
+            switch (calendarWeek)
+            {
+                case "0":
+                    return "星期日";
+                case "1":
+                    return "星期一";
+                case "2":
+                    return "星期二";
+                case "3":
+                    return "星期三";
+                case "4":
+                    return "星期四";
+                case "5":
+                    return "星期五";
+                case "6":
+                    return "星期六";
+                default:
+                    return calendarWeek;
+            }
+        }
+        
         /// <summary>
         /// 载入今天的考勤数据
         /// </summary>

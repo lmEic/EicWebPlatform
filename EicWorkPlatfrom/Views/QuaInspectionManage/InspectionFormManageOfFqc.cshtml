@@ -285,7 +285,7 @@
                                     <h2>FQC检验记录表</h2>
                                     <div class="col-md-2 pull-right">
                                         <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
-                                        <button type="button" class="btn btn-warning " ng-click="vmManager.showCheckModal(vmManager.currentItem)" ng-show="vmManager.currentItem.InspectionStatus === '待审核'||vmManager.currentItem.InspectionResult==='已完成'">审核</button>
+                                        <button type="button" class="btn btn-warning " ng-click="vmManager.showCheckModal(vmManager.currentItem,true)" ng-show="vmManager.currentItem.InspectionStatus === '待审核'||vmManager.currentItem.InspectionResult==='已完成'">审核</button>
                                     </div>
                                 </div>
                                 <div class="row">

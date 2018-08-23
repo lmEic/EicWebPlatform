@@ -1,4 +1,5 @@
-﻿using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManagment;
+﻿using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
+using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManagment;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
@@ -71,7 +72,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         public OpResult AuditMaterialBoard(MaterialSpecBoardModel model)
         {
             DateTime opDate = DateTime.Now;
-            model.State = "已审核";
+            model.State = InspectionConstant.InspectionStatus.HaveCheck;
             model.OpSign = OpMode.Edit;
             return Store(model);
 
@@ -113,7 +114,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             try
             {
-                var tem = irep.Entities.Where(m => m.State == "待审核").ToList();
+                var tem = irep.Entities.Where(m => m.State == InspectionConstant.InspectionStatus.WaitCheck).ToList();
                 return tem;
             }
             catch (Exception ex)

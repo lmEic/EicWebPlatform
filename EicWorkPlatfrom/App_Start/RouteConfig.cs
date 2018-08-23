@@ -47,10 +47,11 @@ namespace EicWorkPlatfrom
                 //Quality
                 //ToolsOnLine
                 //Development
+                //WarehouseMange
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Quality", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "WarehouseMange", action = "Index", id = UrlParameter.Optional }
                          );
 
             }

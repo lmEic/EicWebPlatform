@@ -715,8 +715,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _week = value; }
             get { return _week; }
         }
-
-        private string _slotcardtime1;
+        /// <summary>
+        /// 星期
+        /// </summary>
+        public string  WeekDay { set; get; }
+        private string _slotcardtime1=string.Empty;
 
         /// <summary>
         ///刷卡时间1
@@ -727,7 +730,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             get { return _slotcardtime1; }
         }
 
-        private string _slotcardtime2;
+        private string _slotcardtime2 = string.Empty;
 
         /// <summary>
         ///刷卡时间2
@@ -749,15 +752,31 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             get { return _slotcardtime3; }
         }
 
-        private string _slotcardtime4;
-
+        private string _slotcardtime4=string.Empty;
         /// <summary>
         ///刷卡时间4
         /// </summary>
         public string SlotCardTime4
-        {
-            set { _slotcardtime4 = value; }
-            get { return _slotcardtime4; }
+        { 
+            get
+            {
+                if (SlotCardTime1!=null&&  SlotCardTime1 != string.Empty&& SlotCardTime1.Length>=16)
+                {
+                    if (SlotCardTime2 != null && SlotCardTime2 != string.Empty && SlotCardTime2.Length >= 16)
+                    {
+                        _slotcardtime4 = SlotCardTime1.Substring(11, 5)+"," + SlotCardTime2.Substring(11, 5);
+                    }
+                    else  _slotcardtime4 = SlotCardTime1.Substring(11, 5);
+                }
+               else
+                {
+                    if (SlotCardTime2 != null && SlotCardTime2 != string.Empty && SlotCardTime2.Length >= 16)
+                    {
+                        _slotcardtime4 = SlotCardTime2.Substring(11, 5);
+                    }
+                }
+                return _slotcardtime4;
+            }
         }
 
         private string _slotcardtime;
@@ -814,9 +833,272 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _LeaveDescription = value; }
             get { return _LeaveDescription; }
         }
+        DateTime _dayGoWorkTimePoint = Convert.ToDateTime("07:50");
+        /// <summary>
+        /// 白班上班时间点
+        /// </summary>
+        public DateTime DayGoWorkTimePoint
+        {
+            set { _dayGoWorkTimePoint = value; }
+            get { return _dayGoWorkTimePoint; }
+        }
+        DateTime _dayLeaveWorkTimePoint;
+        /// <summary>
+        /// 白班下班时间点
+        /// </summary>
+        public  DateTime DayLeaveWorkTimePoint
+        {
+            set { _dayLeaveWorkTimePoint = value; }
+
+            get
+            {
+                if (_dayGoWorkTimePoint != default(DateTime) && _dayLeaveWorkTimePoint == default(DateTime) )
+                    _dayLeaveWorkTimePoint = _dayGoWorkTimePoint.AddHours(9).AddMinutes(20);
+                return _dayLeaveWorkTimePoint;
+            }
+        }
+
+
+
+        DateTime _nightGoWorkTimePoint = Convert.ToDateTime("19:50") ;
+        /// <summary>
+        /// 晚班上班时间点
+        /// </summary>
+        public DateTime NightGoWorkTimePoint
+        {
+            set { _nightGoWorkTimePoint = value; }
+            get
+            {
+                return _nightGoWorkTimePoint;
+            }
+        }
+        DateTime _nightLeaveWorkTimePoint ;
+        /// <summary>
+        /// 晚班下班时间点
+        /// </summary>
+        public DateTime NightLeaveWorkTimePoint
+        {
+            set { _dayLeaveWorkTimePoint = value; }
+            get
+            {
+                if (_nightGoWorkTimePoint != default(DateTime) && _nightLeaveWorkTimePoint == default(DateTime))
+                    _dayLeaveWorkTimePoint = _nightGoWorkTimePoint.AddHours(9).AddMinutes(20); 
+                return _dayLeaveWorkTimePoint;
+            }
+        }
+
+        /// <summary>
+        /// 异常原因
+        /// </summary>
+        string _specialCause;
+        public string SpecialCause
+        {
+            set { _specialCause=value;}
+            get
+            {
+                return HandleSpecialCause(this.LeaveType,this.WeekDay,this.SlotCardTime1,this.SlotCardTime2);
+            }
+        }
+        /// <summary>
+        /// 处理异常原因
+        /// </summary>
+        /// <param name="leaveType">请假类型</param>
+        /// <param name="weekDay">星期</param>
+        /// <param name="slotCardTime1">上班时间</param>
+        /// <param name="slotCardTime2">下班时间</param>
+        /// <returns></returns>
+        private string HandleSpecialCause(string leaveType,string weekDay,string slotCardTime1,string slotCardTime2)
+        {
+            if (leaveType != null && leaveType != string.Empty) return " ";
+            if (weekDay == "星期日" || weekDay == "星期六" || weekDay == "法定假日" || weekDay == "星期六日")
+            {
+                ///都为空
+                if ((slotCardTime1 == null || slotCardTime1 == string.Empty || slotCardTime1.Length < 16) &&
+                       (slotCardTime2 == null || slotCardTime2 == string.Empty || slotCardTime2.Length < 16))
+                { return " "; }
+                ///都不空
+                if (slotCardTime1 != null && slotCardTime1 != string.Empty &&
+                     slotCardTime2 != null && slotCardTime2 != string.Empty)
+                { return " "; }
+                else return "漏刷卡";
+            }
+            if (ClassType == "白班")
+            {
+                if (slotCardTime1 != null && slotCardTime1 != string.Empty && slotCardTime1.Length >= 16)
+                {
+                    //上班时间
+                   DateTime doTime = Convert.ToDateTime(SlotCardTime1.Substring(11, 5));
+                    if (DayGoWorkTimePoint.AddMinutes(1) <= doTime && doTime <= DayGoWorkTimePoint.AddMinutes(6))
+                    {
+                        if (slotCardTime2 == null || slotCardTime2 == string.Empty) return "旷工";
+                        return "迟到";
+                    }
+                    if (doTime > DayGoWorkTimePoint.AddMinutes(6)) return "旷工";
+                    //下班时间
+                    if (slotCardTime2 == null || slotCardTime2 == string.Empty || slotCardTime2.Length < 16) return "漏刷卡";
+                    else
+                    {
+                        doTime = Convert.ToDateTime(slotCardTime2.Substring(11, 5));
+                        if (doTime < DayLeaveWorkTimePoint) return "旷工";
+                    }
+
+                }
+                else
+                {
+                    if (slotCardTime2 != null && slotCardTime2 != string.Empty) return "漏刷卡";
+                    else return "旷工";
+                }
+            }
+            if (ClassType == "晚班")
+            {
+                if (SlotCardTime1 != null && SlotCardTime1 != string.Empty && SlotCardTime1.Length >= 16)
+                {
+                    #region 上班时间
+              
+                    DateTime  doTime = Convert.ToDateTime(SlotCardTime1.Substring(11, 5));
+                    if (NightGoWorkTimePoint.AddMinutes(1) <= doTime && doTime <= NightGoWorkTimePoint.AddMinutes(6))
+                    {
+                        ///没有下班数据
+                        if (slotCardTime2 == null || slotCardTime2 == string.Empty) return "旷工";
+                        return "迟到";
+                    }
+                    ///上班时间超出 迟到充许的范围 
+                    if (doTime > NightGoWorkTimePoint.AddMinutes(6)) return "旷工";
+                    #endregion
+                    #region  下班时间
+                    ///没有下班时间
+                    if (slotCardTime2 == null || slotCardTime2 == string.Empty || slotCardTime2.Length < 16) return "漏刷卡";
+                    ///下班 上班时间 都有
+                    else
+                    {
+                        /// 先判断是不是 上班的第二天时间  
+                       if( Convert.ToDateTime( slotCardTime2).Date== Convert.ToDateTime(slotCardTime1).Date.AddDays(1))
+                        {
+                           /// 判定时间点是不是正确
+                           /// 上班时间日期  加要实际下班时间点   
+                            doTime = Convert.ToDateTime(NightLeaveWorkTimePoint.ToString("yyyy-MM-dd")+" "+slotCardTime2.Substring(11, 5));
+                            if (doTime < NightLeaveWorkTimePoint) return "旷工";
+                            else return " ";
+                        }
+                        else return "晚班时间点不对";
+                    }
+                    #endregion
+                }
+                else
+                {
+                    if (slotCardTime2 != null && slotCardTime2 != string.Empty) return "漏刷卡";
+                    else return "旷工";
+                }
+            }
+            return " ";
+        }
         #endregion Model
     }
+    /// <summary>
+    /// 考勤数据汇总所需人员信息
+    /// </summary>
+    public class AttendanceWrkInfo
+    {
+        public AttendanceWrkInfo()
+        {
+           
+        }
+        public string workerid { set; get; }
+        public string workerName { set; get; }
+        /// <summary>
+        /// 本月工作结束日期 WorkerName, LeaveDate
+        /// </summary>
+        public string LeaveDate { set; get; }
+        public string  sDepartment { set; get; }
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            
+            get { return Departmentchange(sDepartment); }
+        }
+        string Departmentchange(string department)
+        {
+            if (department == null) return string.Empty;
+            switch (department.Trim())
+            {
+                case "XZC": return "行政处";
+                case "FN": return "财务部";
+                case "AD": return "管理部";
+                case "HR": return "人事课";
+                case "GA": return "总务课";
+                case "PR": return "采购部";
+                case "SD": return "业务部";
+                case "JYQHS": return "经营企划室";
+                case "YFC": return "研发处";
+                case "RD": return "开发部";
+                case "DC1": return "设计一课";
+                case "DC2": return "设计二课";
+                case "DC3": return "设计三课";
+                case "ED": return "设备课";
+                case "IC": return "仪器课";
+                case "PT": return "生技部";
+                case "MC": return "机加工课";
+                case "MD": return "成型课";
+                case "QA": return "品保部";
+                case "RF": return "RF品保课";
+                case "OP": return "OP品保课";
+                case "ZZC": return "制造处";
+                case "PD": return "生管部";
+                case "PM": return "生管课";
+                case "PMC": return "资材课";
+                case "MD1": return "制一部";
+                case "MS1": return "制一课";
+                case "MS6": return "制六课";
+                case "MD3": return "制三部";
+                case "MS5": return "制五课";
+                case "MS8": return "制八课";
+                case "MS9": return "制九课";
+                case "EC": return "工程课";
+                case "MD5": return "制五部";
+                case "MS3": return "制三课";
+                case "MS7": return "制七课";
+                case "MD6": return "制六部";
+                case "MS2": return "制二课";
+                case "MS10": return "制十课";
+                case "EIC": return "企业讯息中心";
+                case "EAC": return "企业自动化中心";
+                case "PZYEHS": return "品质与EHS委员会";
+                case "HN": return "环安课";
+                case "IQC": return "IQC品保课";
+                case "FA": return "会计课";
+                case "CA": return "关务课";
+                default: 
+                    return department.Trim ();
+            }
+        }
+    }
 
+    public class CalenderListInfo
+    {
+        public DateTime CalendarDate { set; get; }
+        public string  CalendarYear { set; get; }
+        public string CalendarMonth { set; get; }
+        public string CalendarDay { set; get; }
+        public string CalendarWeek { set; get; }
+        public string  DateProperty { set; get; }
+    }
+    public class AttendanceClassTypeInfo
+    {
+        /// <summary>
+        /// 工号
+        /// </summary>
+        public string workerid { set; get; }
+        /// <summary>
+        /// 姓名
+        /// </summary>
+        public string workerName { set; get; }
+        /// <summary>
+        /// 班别
+        /// </summary>
+        public string ClassType { set; get; }
+    }
     /// <summary>
     ///请假领域模型
     /// </summary>

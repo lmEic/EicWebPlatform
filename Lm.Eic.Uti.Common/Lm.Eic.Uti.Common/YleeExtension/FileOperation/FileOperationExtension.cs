@@ -370,7 +370,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <returns></returns>
         public static MemoryStream ExportToExcel<T>(this List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList) where T : class, new()
         {
-
             MemoryStream stream = new MemoryStream();
             if (dataSource == null || dataSource.Count == 0) return stream;
             HSSFWorkbook workbook = new HSSFWorkbook();

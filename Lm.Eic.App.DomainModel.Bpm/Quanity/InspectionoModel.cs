@@ -2998,6 +2998,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///检验所有所得的数据
         /// </summary>
         public string InspectionItemDatas { get; set; }
+        
+      
         /// <summary>
         /// 备注说明
         /// </summary>
