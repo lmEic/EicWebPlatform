@@ -1,8 +1,6 @@
-﻿/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/print/print.min.js" />
+﻿
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
-
 var productModule = angular.module('bpm.productApp');
 productModule.factory('mocDataOpService', function (ajaxService) {
     var mocUrlPrefix = "/" + leeHelper.controllers.mocManage + "/";
@@ -46,4 +44,33 @@ productModule.controller('checkOrderBillsCtrl', function ($scope,mocDataOpServic
     };
 
     $scope.vmManager = vmManager;  
+});
+//工单对比核对
+productModule.controller('productionSnManagerCtrl', function ($scope, mocDataOpService, $modal) {
+
+    var UiVm = {
+        ProductType: '566272-B3215L',
+        ProductTypeCommon: null,
+        MaterialID: null,
+        StartSN: null,
+        EndSN: null,
+        IsEngraved: 0,
+        Memo: null,
+        OpPerson: null,
+        OpTime: null,
+        IsCompute: 0,
+        Id_Key: null,
+    };
+    var vmManager = {
+        department: null,
+        dataSource: [],
+
+        getProductTypeMonitor: function () {
+            $scope.searchPromise = mocDataOpService.getProductTypeMonitor(vmManager.department).then(function (datas) {
+                vmManager.dataSource = datas;
+            });
+        }
+    };
+
+    $scope.vmManager = vmManager;
 });

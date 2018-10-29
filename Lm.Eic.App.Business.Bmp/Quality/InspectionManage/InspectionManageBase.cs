@@ -38,7 +38,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             string[] mm = inspectionDatas.Split(',');
             return mm.Count();
         }
-        public List<string> GetHaveFinishDatas(string inspectionDatas )
+        public List<string> GetHaveFinishDatas(string inspectionDatas)
         {
             if (inspectionDatas == null || inspectionDatas == string.Empty) return new List<string>();
             if ((!inspectionDatas.Contains(","))) return new List<string>() { inspectionDatas };
@@ -132,4 +132,34 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
     }
 
+    public static class InspectionConstant
+    {
+
+        public static class InspectionMode
+        {
+            public const string Normal = "正常";
+            public const string Stricter = "加严";
+            public const string Broaden = "放宽";
+        }
+        public static class InspectionResult
+        {
+            public const string Pass = "OK";
+            public const string NoPass = "NG";
+            public const string unfinished = "未完成";
+        }
+        public static class InspectionStatus
+        {
+            public const string WaitCheck = "待审核";
+            public const string HaveCheck = "已审核";
+            public const string unfinished = "未完成";
+            public const string WaitInspect = "待检验";
+            public const string NotInspect = "未抽验";
+            public const string AllState = "全部";
+        }
+        public static class InspectionItemStatus
+        {
+            public const string Done = "Done";
+            public const string Doing = "doing";
+        }
+    }
 }

@@ -215,6 +215,7 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// </summary>
         public const string DeleteFile = "deleteFile";
     }
+
     /// <summary>
     /// OpResult的扩展方法集合
     /// </summary>

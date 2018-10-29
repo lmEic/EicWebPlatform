@@ -91,8 +91,8 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
     $scope.headPortrait = "../Content/login/profilepicture.jpg";
     ///载入个人头像
     $scope.loadHeadPortrait = function () {
-          //  var loginUser = leeDataHandler.dataStorage.getLoginedUser();
-        //$scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
+           var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+        $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
         $scope.headPortrait =  '../Content/login/profilepicture.jpg' ;
     };
     $scope.loadHeadPortrait();

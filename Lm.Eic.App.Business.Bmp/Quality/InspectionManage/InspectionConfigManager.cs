@@ -266,7 +266,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///  OpSign ==add     变更
             /// ItemConfigVersion 在原来的基础上加1
             /// CheckStatus       已审核
-            OpResult opResult = InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.Store(datas);
+            OpResult opResult = InspectionManagerCrudFactory.InspectionItemConfigCheckCrud.UpdateCheckStatusk(datas);
             if (opResult.Result)
             {
                switch(opProperty)

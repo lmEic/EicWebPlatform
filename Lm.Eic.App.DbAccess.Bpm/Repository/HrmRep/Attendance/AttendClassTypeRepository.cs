@@ -113,6 +113,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         /// <param name="slodCardDate"></param>
         /// <returns></returns>
         int UpdateClassTypeInfo(string classType, DateTime slodCardDate);
+        List<AttendanceWrkInfo> WorkerIdList(DateTime dateTime);
+        List<CalenderListInfo> CalenderListInfo(string calendarYear, string calendarMonth);
+
+        List<AttendanceClassTypeInfo> WorkerClassTypeInfoBY(string WorkerId,DateTime  dateAt);
     }
 
     /// <summary>
@@ -121,6 +125,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     public class AttendSlodFingerDataCurrentMonthRepository : HrmRepositoryBase<AttendSlodFingerDataCurrentMonthModel>, IAttendSlodFingerDataCurrentMonthRepository
     {
         private const string loadAttendDataSql = "SELECT WorkerId, WorkerName, Department, ClassType,LeaveType,LeaveHours,LeaveTimeRegion,LeaveDescription, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth";
+
+        public List<CalenderListInfo> CalenderListInfo(string calendarYear, string calendarMonth)
+        {
+           string  sqlText=string.Format  ("SELECT   CalendarDate, CalendarYear, CalendarMonth, CalendarDay, DateProperty ,CalendarWeek   FROM   Archives_CalenderList   WHERE   (CalendarYear = '{0}') AND (CalendarMonth = '{1}')", calendarYear, calendarMonth);
+            return DbHelper.Hrm.LoadEntities<CalenderListInfo>(sqlText.ToString());
+        }
+
         public List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto)
         {
             StringBuilder sqlText = new StringBuilder();
@@ -151,6 +162,33 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("Update Attendance_SlodFingerDataCurrentMonth set ClassType='{0}' where AttendanceDate='{1}'", classType, slodCardDate);
             return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
+        }
+
+        public List<AttendanceClassTypeInfo> WorkerClassTypeInfoBY(string WorkerId,DateTime dateAt)
+        {
+            string sqltext = string.Format("SELECT  WorkerId, WorkerName, ClassType    FROM   Attendance_ClassTypeDetail   WHERE   (WorkerId = '{0}') and ( DateAt='{1}')  ORDER BY DateAt", WorkerId, dateAt.ToDate());
+            return DbHelper.Hrm.LoadEntities<AttendanceClassTypeInfo>(sqltext.ToString());
+        }
+
+        public List<AttendanceWrkInfo> WorkerIdList(DateTime nowMonthFirsitdateTime)
+        {
+            
+            DateTime leaveDate = nowMonthFirsitdateTime.AddMonths(1).AddDays(-1).ToDate();
+            if (nowMonthFirsitdateTime.Month == DateTime.Now.Month)
+                leaveDate = DateTime.Now.Date.AddDays(-1).ToDate();
+            string InWorkerIdDataSql = "SELECT   WorkerId, Name as WorkerName ,";
+            StringBuilder iSsqlText = new StringBuilder();
+            iSsqlText.Append(InWorkerIdDataSql);
+            iSsqlText.AppendFormat(" '{0}' as LeaveDate,Department as sDepartment FROM    Archives_EmployeeIdentityInfo   WHERE   (WorkingStatus = '在职')", leaveDate);
+            List<AttendanceWrkInfo> inworkerinfos = DbHelper.Hrm.LoadEntities<AttendanceWrkInfo>(iSsqlText.ToString());
+
+            string LeaveWorkerIdDataSql = " SELECT  WorkerId, WorkerName, LeaveDate,Department as sDepartment  FROM  Archives_LeaveOffice  ";
+              StringBuilder sqlText = new StringBuilder();
+            sqlText.Append(LeaveWorkerIdDataSql);
+            sqlText.AppendFormat(" where  (LeaveDate >= '{0}') ", nowMonthFirsitdateTime.ToDate());
+            List<AttendanceWrkInfo>levewokerinfos= DbHelper.Hrm.LoadEntities<AttendanceWrkInfo>(sqlText.ToString());
+            inworkerinfos.AddRange(levewokerinfos);
+            return inworkerinfos;
         }
     }
 

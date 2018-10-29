@@ -266,6 +266,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+       public  OpResult UpdateCheckStatusk(InspectionItemConfigCheckModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, e=>
+            new InspectionItemConfigCheckModel() {
+                CheckStatus =model.CheckStatus,
+                OpPerson =model.OpPerson,
+                OpDate=DateTime.Now.Date.ToDate(),
+                OpTime=DateTime.Now
+            }).ToOpResult_Eidt(OpContext);
+        }
 
         private OpResult AddInspectionModeConfig(InspectionItemConfigCheckModel model)
         {

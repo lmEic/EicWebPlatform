@@ -34,9 +34,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 //先改变主表的状态
                 var retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.Store(model, true);
                 if (!retrunResult.Result) return OpResult.SetErrorResult("FQC主表审核状态更新失败");
-                string inspectionItemStatus = "Done";
+                string inspectionItemStatus = InspectionConstant.InspectionItemStatus.Done;
                 //主要更新成功 再   更新详细表的信息
-                if (model.InspectionStatus == "待审核") inspectionItemStatus = "doing";
+                if (model.InspectionStatus == InspectionConstant.InspectionStatus.WaitCheck) inspectionItemStatus = InspectionConstant.InspectionItemStatus.Doing;
                 retrunResult = InspectionManagerCrudFactory.FqcDetailCrud.UpAuditDetailDataStatus(model.OrderId, model.OrderIdNumber, inspectionItemStatus);
                 if (!retrunResult.Result) return OpResult.SetErrorResult("FQC详细表审核状态更新失败");
                 return retrunResult;
@@ -102,7 +102,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     e.InspectionItemInspectors = HandelInspectionItemInspectors(e.InspectionItemInspectors);
                     e.InspectionItemDetails= HandelInspectionItemDetails(e.InspectionItemDetails);
-                    e.OpPerson = e.InspectionStatus != "已审核" ? string.Empty : e.OpPerson;
+                    e.OpPerson = e.InspectionStatus != InspectionConstant.InspectionStatus.HaveCheck ? string.Empty : e.OpPerson;
                     needDatas.Add(e);
                 });
                 var dataGroupping = needDatas.GetGroupList<InspectionFqcMasterModel>();
@@ -204,7 +204,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 new FileFieldMapping ("OpPerson","审核人"),
                 new FileFieldMapping ("MaterialInCount","工单数"),
                 new FileFieldMapping ("InspectionItemDetails","不良现象"),
-
             };
             return fieldmappping;
         }

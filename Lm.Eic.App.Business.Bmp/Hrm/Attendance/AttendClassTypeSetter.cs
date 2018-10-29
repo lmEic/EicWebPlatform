@@ -157,6 +157,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return OpResult.SetSuccessResult("设置班别成功!", record > 0);
         }
+        /// <summary>
+        /// 储存修改（白晚班）主表
+        /// </summary>
+        /// <param name="record"></param>
+        /// <param name="ctMdl"></param>
+        /// <param name="dto"></param>
         private void StoreClassTypeData(ref int record, AttendClassTypeModel ctMdl, AttendClassTypeModel dto)
         {
             ctMdl = this.irep.Entities.FirstOrDefault(e => e.WorkerId == dto.WorkerId);
@@ -172,10 +178,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 record += this.irep.Insert(dto);
             }
         }
+        /// <summary>
+        /// 更新（白晚班）的详细表
+        /// </summary>
+        /// <param name="record"></param>
+        /// <param name="mdl"></param>
+        /// <param name="dto"></param>
         private void StoreClassTypeDetailData(ref int record, AttendClassTypeDetailModel mdl, AttendClassTypeModel dto)
         {
             DateTime dateFrom = dto.DateFrom;
             DateTime dateTo = dto.DateTo;
+            ///启始时间必须 大于 结束时间
             while (dateFrom <= dateTo)
             {
                 mdl = this.irepDetail.Entities.FirstOrDefault(e => e.WorkerId == dto.WorkerId && e.DateAt == dateFrom);

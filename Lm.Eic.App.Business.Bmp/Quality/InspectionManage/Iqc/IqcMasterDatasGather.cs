@@ -60,13 +60,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (detailDatas.Count() <= haveFinishData.Count)
                 {
-                    haveStoreMasterModel.InspectionStatus = "待审核";
-                    haveStoreMasterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
+                    haveStoreMasterModel.InspectionStatus = InspectionConstant.InspectionStatus.WaitCheck;
+                    haveStoreMasterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == InspectionConstant.InspectionResult.NoPass) > 0 ? InspectionConstant.InspectionResult.NoPass : InspectionConstant.InspectionResult.Pass);
                 }
                 else
                 {
-                    haveStoreMasterModel.InspectionStatus = "未完成";
-                    haveStoreMasterModel.InspectionResult = "未完成";
+                    haveStoreMasterModel.InspectionStatus = InspectionConstant.InspectionStatus.unfinished;
+                    haveStoreMasterModel.InspectionResult = InspectionConstant.InspectionResult.unfinished;
                 }
                 ///测试所以项目只要有一项为 Ng 
 
