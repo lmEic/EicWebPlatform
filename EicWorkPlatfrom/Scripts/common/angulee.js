@@ -49,7 +49,7 @@ var leeDataHandler = (function () {
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
-
+            //     stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
             var msgtype = opresult.Result === true ? "success" : "error";
             new PNotify({
                 title: "提示",
@@ -60,7 +60,7 @@ var leeDataHandler = (function () {
                 styling: 'brighttheme',
                 addclass: "stack-bar-top",
                 cornerclass: "",
-                width: "82%",
+                width: "60%",
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
                 after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
@@ -96,7 +96,7 @@ var leeDataHandler = (function () {
                 styling: 'brighttheme',
                 addclass: "stack-bar-top",
                 cornerclass: "",
-                width: "82%",
+                width: "60%",
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
                 after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
@@ -124,7 +124,8 @@ var leeDataHandler = (function () {
         initDataItemFromServer: function (dataitem, dbDataset) {
             leeHelper.setObjectGuid(dataitem);//创建唯一标志
             leeHelper.setObjectServerSign(dataitem);//设置客户端创建对象标志
-            if (dataitem.OpSign !== undefined)
+            ///2018.06.07  改 dataitem.OpSign !== undefined
+            if (dataitem.OpSign === undefined)
                 dataitem.OpSign = leeDataOpMode.none;//设置数据处理标志
             leeHelper.insertWithId(dbDataset, dataitem);
         },
@@ -307,8 +308,10 @@ var leeHelper = (function () {
         TolCooperateWithHw: 'TolCooperateWithHw',
         //智能隧道
         TolManPowerTunnel: 'TolManPowerTunnel',
-        //质量抽样检验控制器
+        //开发管理控制器
         developmentProductsManage: 'Development',
+        //仓库管理控制器
+        WarehouseManage: 'Warehouse',
 
     };
     return {

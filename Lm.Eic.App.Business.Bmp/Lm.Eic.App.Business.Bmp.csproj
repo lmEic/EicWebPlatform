@@ -71,6 +71,9 @@
     <Compile Include="Ast\EquipmentMaintenanceManager.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
     <Compile Include="Ast\EquipmentRepairedManager.cs" />
+    <Compile Include="Dev\DesignDevelop\ProductsDesignDevelopManger.cs" />
+    <Compile Include="Dev\DevelopManagerCrudFactory.cs" />
+    <Compile Include="Dev\DevelopSerivce.cs" />
     <Compile Include="Hrm\Archives\ArCalendarManger.cs" />
     <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
@@ -160,6 +163,9 @@
     <Compile Include="Quality\RmaManage\RmaReportManager.cs" />
     <Compile Include="Quality\RmaManage\RmaManager.cs" />
     <Compile Include="Quality\RmaManage\RmaService.cs" />
+    <Compile Include="Warehouse\ExpressionManger\ExpressTransceiverManger.cs" />
+    <Compile Include="Warehouse\WarehouseCrudFactory.cs" />
+    <Compile Include="Warehouse\WarehouseSeries.cs" />
     <Compile Include="WorkFlow\ElectronicFormBase.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormCrudFactory.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormService.cs" />

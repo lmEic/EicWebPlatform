@@ -184,6 +184,7 @@
     <Compile Include="Controllers\ToolsOnLine\TolWorkFlowController.cs" />
     <Compile Include="Controllers\ToolsOnLine\ToolsOnLineController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolOfficeAssistantController.cs" />
+    <Compile Include="Controllers\WarehouseManage\WarehouseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -571,6 +572,8 @@
     <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
+    <Content Include="Scripts\controller\warehouseManage\warehouseApp.js" />
+    <Content Include="Scripts\controller\warehouseManage\WarehouseSystemManage.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -649,6 +652,7 @@
     <Content Include="FileLibrary\WorkOverHours\加班汇总表1.xls" />
     <Content Include="FileLibrary\WorkOverHours\加班数据模板间接.xls" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
@@ -1548,6 +1552,12 @@
     <Content Include="Views\QuaInspectionManage\IpqcInspectionItemConfiguration.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionConfigCheckForm.cshtml" />
     <Content Include="Views\Development\DocumentInputRecord.cshtml" />
+    <Content Include="Views\Development\SponsorDocumentInputRecord.cshtml" />
+    <Content Include="Views\Warehouse\Index.cshtml" />
+    <Content Include="Views\Warehouse\ReceptionExpress.cshtml" />
+    <Content Include="Views\Warehouse\QueriesExpress.cshtml" />
+    <Content Include="Views\Warehouse\TakeExpress.cshtml" />
+    <Content Include="Views\ProMocManage\ProductionSnManger.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

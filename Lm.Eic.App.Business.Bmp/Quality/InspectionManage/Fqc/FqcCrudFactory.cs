@@ -58,9 +58,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (datas != null && datas.Count > 0) return datas.OrderBy(e => e.InspectionItemIndex).ToList();
             return datas;
         }
+        /// <summary>
+        /// 是否存在并且审核激活
+        /// </summary>
+        /// <param name="materailId"></param>
+        /// <returns></returns>
         public bool IsExistFqcConfigmaterailId(string materailId)
         {
-            return irep.IsExist(e => e.MaterialId == materailId);
+            return irep.IsExist(e => e.MaterialId == materailId&&e.IsActivate.ToUpper()== "TRUE"&&e.CheckStatus== "已审核");
         }
         public InspectionFqcItemConfigModel FindFirstOrDefaultDataBy(string MaterialId, string inspectionItem)
         {
@@ -76,6 +81,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
                 { m.OpSign = "edit"; }
+                else
+                {
+                    m.InspectionItemInPutDate = DateTime.Now.Date.ToDate();
+                    m.CheckDate = DateTime.Now.Date.ToDate();
+                    m.CheckStatus = "未审核";
+                }
                 opResult = this.Store(m);
                 if (opResult.Result)
                     i = i + opResult.RecordCount;
@@ -381,7 +392,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId).OrderByDescending(e=>e.Id_Key).ToList();
         }
         /// <summary>
         /// 更新状主要状态

@@ -10,10 +10,13 @@ using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Web;
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+
 namespace EicWorkPlatfrom.Controllers.Product
 {
+
     public class ProDailyReportController : EicBaseController
     {
+    
         //
         // GET: /DailyReport/
         public ActionResult Index()
