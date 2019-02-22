@@ -38,7 +38,6 @@ namespace Lm.Eic.App.DbAccess.Mes.Mes_NBOSA
         #endregion OnModelCreating
     }
 
-    #region Repository Framework
 
     /// <summary>
     /// 光主动数据库工作单元

@@ -17,12 +17,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         public static ItilEmailManageCrud ItilEmailManageCrud
         {
             get { return OBulider.BuildInstance<ItilEmailManageCrud>(); }
+            
         }
     }
 
     internal class ItilEmailManageCrud : CrudBase<Model.ITIL.ItilEmailManageModel, IItilEmailManageRepository>
     {
-        public ItilEmailManageCrud() : base(new ItilEmailManageRepository(), "邮箱管理")
+        public ItilEmailManageCrud() : base(new ItilEmailManageRepository(), "邮箱管理123")
         {
 
         }

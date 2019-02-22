@@ -546,7 +546,7 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
         getworkoverhours: null,
         getworkdate: null,
         getcolorindex: null,
-        selectDepartment: null,
+        selectDepartment: null,//selectDepartment
         selectPostNature:null,
         searchYear: new Date().getFullYear(),
         changeworkDate: null,
@@ -966,6 +966,9 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
             else {
                 uiVM.Department = null;
             }
+            if (true) {
+
+            }
         },
         //插入某一行
         insertRow: function (item) {
@@ -1107,7 +1110,9 @@ proEmployeeModule.controller('workOverHoursManageCtrl', function ($scope, $modal
                 })
 
             }
+            if (true) {
 
+            }
         },
         //编辑加班时数
         editworkOverHours: function (item) {

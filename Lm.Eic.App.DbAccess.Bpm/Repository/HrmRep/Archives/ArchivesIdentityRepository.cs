@@ -201,7 +201,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                 };
                 updateTable.ForEach(e =>
                 {
-
                     string UpdateSQlstring = "UPDATE  " + e + setSqlText + wheresqlText;
                     updateInt = DbHelper.Hrm.ExecuteNonQuery(UpdateSQlstring);
                 });
